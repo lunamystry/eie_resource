@@ -1,0 +1,10 @@
+{% extends "main_layout.html" %}
+{% block body %}
+  <title>Hello from Flask</title>
+  {% if name %}
+    <h1>Hello {{ name }}!</h1>
+  {% else %}
+    <h1>Hello Stanger!</h1>
+  {% endif %}
+  <p> Resource is being moved from Django to flask. Back soon </p>
+{% endblock %}
