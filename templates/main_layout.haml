@@ -1,2 +1,31 @@
-<!doctype html>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<!DOCTYPE html>
+%html lang="en"
+  %head
+    %title 
+      Resource
+    %meta http-equiv="content-type" content="text/html; charset=utf-8"
+    %link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}"
+  %body
+    %div.container-narrow
+      %div.masthead
+        %ul class="nav nav-pills pull-right" 
+          %li 
+            %a href="/"
+              Home
+          %li 
+            %a href="get_ipaddress"
+                DHCP registration
+        %div.muted
+          %h3
+            School of Electrical and Information Engineering
+        %hr.
+        %div.jumbotron
+          %h1
+            Resource
+        %div class="row-fluid marketing"
+          -block body
+        %hr.
+        %div.footer
+           %a href="http://flask.pocoo.org/"
+             %img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" border="0" alt="made with Flask"
+           by Mandla Mbuli
