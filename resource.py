@@ -19,10 +19,7 @@ def index():
 @app.route('/hello')
 @app.route('/hello/<name>')
 def hello(name=None):
-    if name != None:
-       return render_template('hello.html',name=name)
-    else:
-       return 'Hello stranger.'
+    return render_template('hello.haml',name=name)
 
 @app.errorhandler(404)
 def page_not_found(error):
