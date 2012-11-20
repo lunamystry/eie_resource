@@ -34,6 +34,11 @@ def get_ipaddress():
     form = Forms.RegistrationForm(request.form,csrf_enabled=False)
     return render_template('ipaddress_form.haml',form=form)
 
+@app.route('/lockers', methods=['GET', 'POST'])
+def get_locker():
+    form = Forms.LockerRegistrationForm(request.form,csrf_enabled=False)
+    return render_template('locker_form.haml',form=form)
+
 if __name__ == '__main__':
     app.jinja_env.hamlish_mode = 'indented'
     app.debug = True

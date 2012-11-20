@@ -14,3 +14,4 @@ class LockerRegistrationForm(Form):
     name = TextField("Name", validators=[Required()])
     student_number = TextField("Student number", validators=[Required()])
     email = TextField("email", validators=[Required()])
+    yos = TextField("Year of study", validators=[Required()])

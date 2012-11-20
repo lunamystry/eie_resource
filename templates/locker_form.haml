@@ -1,0 +1,22 @@
+-extends "main_layout.haml"
+-block body
+  %div.form-horizontal 
+   %form method="POST" action="."
+     %fieldset
+      %legend
+         Get contract for one of the Lockers in the Dlab
+      %div.control-group
+        {{ form.name.label(class="control-label") }} 
+        %div.controls << {{ form.name(size=20) }}
+      %div.control-group
+        {{ form.student_number.label(class="control-label") }} 
+        %div.controls << {{ form.student_number(size=20) }}
+      %div.control-group
+        {{ form.yos.label(class="control-label") }} 
+        %div.controls << {{ form.yos(size=20) }}
+      %div.control-group
+        {{ form.email.label(class="control-label") }} 
+        %div.controls << {{ form.email(size=20) }}
+      %div.control-group
+        %div.controls 
+          %input class='btn' type="submit" value="Print contract"
