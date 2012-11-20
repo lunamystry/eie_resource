@@ -38,4 +38,4 @@ if __name__ == '__main__':
     app.jinja_env.hamlish_mode = 'indented'
     app.debug = True
     app.secret_key = "@*ry$ecre#"
-    app.run(host='0.0.0.0',port=80)
+    app.run(host='0.0.0.0',port=81)
