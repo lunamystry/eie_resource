@@ -15,3 +15,15 @@ class LockerRegistrationForm(Form):
     student_number = TextField("Student number", validators=[Required()])
     email = TextField("email", validators=[Required()])
     yos = TextField("Year of study", validators=[Required()])
+
+class DlabBookingForm(Form):
+    name = TextField("Name", validators=[Required()])
+    person_number = TextField("Person number", validators=[Required()])
+    email = TextField("email", validators=[Required()])
+    role = TextField("Role", validators=[Required()])
+    forwhat = TextField("For what", validators=[Required()])
+    date = TextField("Date", validators=[Required()])
+    start_time = TextField("Start time", validators=[Required()])
+    end_time = TextField("End time", validators=[Required()])
+    pcs = TextField("Number of PCs", validators=[Required()])
+    notes = TextField("Special requirements", validators=[Required()])
