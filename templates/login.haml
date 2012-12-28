@@ -1,0 +1,20 @@
+-extends "main_layout.haml"
+-block body
+  %div.form-horizontal.offset3.span5
+
+   %form method="POST" action="/login"
+     %fieldset
+      %legend
+         Login
+      -if error:
+        %div.alert.alert-error
+          =error
+      %div.control-group
+        {{ form.username.label(class="control-label") }} 
+        %div.controls << {{ form.username(size=20) }}
+      %div.control-group
+        {{ form.password.label(class="control-label") }} 
+        %div.controls << {{ form.password(size=20) }}
+      %div.control-group
+        %div.controls 
+          %input class='btn' type="submit" value="Login"
