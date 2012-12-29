@@ -1,0 +1,6 @@
+include runserver.py 
+include resource/resource.cfg
+recursive-include resource/templates *
+recursive-include resource/static *
+recursive-include resource/scripts *
+recursive-include doc *
