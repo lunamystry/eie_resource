@@ -1,15 +1,7 @@
-from flask import Flask,url_for,render_template,request
-from werkzeug import ImmutableDict
-from hamlish_jinja import HamlishExtension
+from flask import url_for,render_template,request
+from resource import app
 
 import Forms
-
-class FlaskWithHamlish(Flask):
-    jinja_options = ImmutableDict(
-    		extensions=['jinja2.ext.autoescape', 'jinja2.ext.with_', 'hamlish_jinja.HamlishExtension']
-    		)
-
-app = FlaskWithHamlish(__name__)
 
 @app.route('/')
 def index():
@@ -40,9 +32,3 @@ def get_locker():
 def get_locker():
     form = Forms.DlabBookingForm(request.form,csrf_enabled=False)
     return render_template('dlab_booking_form.haml',form=form)
-
-if __name__ == '__main__':
-    app.jinja_env.hamlish_mode = 'indented'
-    app.debug = True
-    app.secret_key = "@*ry$ecre#"
-    app.run(host='0.0.0.0',port=81)
