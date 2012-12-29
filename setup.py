@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='EIE Resource frontend',
+    name='Resource',
     version='0.1',
     long_description=__doc__,
     packages=['resource'],
@@ -17,5 +17,6 @@ setup(
         'Werkzeug>=0.8.3',
         'python-ldap>=2.4.10',
         'Flask-Login>=0.1.3',
-        'SQLAlchemy>=0.6']
+        'SQLAlchemy>=0.6',
+        'Fabric>=1.5.1']
     )
