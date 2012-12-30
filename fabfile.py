@@ -27,3 +27,7 @@ def deploy():
     # and finally touch the .wsgi file so that mod_wsgi triggers
     # a reload of the application
     run('touch /var/www/resource.wsgi')
+
+def set-env():
+    "Intended to add convinience aliases to the bashrc file."
+    pass

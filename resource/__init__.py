@@ -8,11 +8,12 @@ class FlaskWithHamlish(Flask):
     		)
 
 app = FlaskWithHamlish(__name__)
+app.config.from_object('resource.default_settings')
+app.config.from_envvar('RESOURCE_SETTINGS')
+# mandatory config
+app.jinja_env.hamlish_mode = 'indented'
 
 import resource.routes
 
 if __name__ == '__main__':
-    app.jinja_env.hamlish_mode = 'indented'
-    app.debug = True
-    app.secret_key = "@*ry$ecre#"
     app.run(host='0.0.0.0')
