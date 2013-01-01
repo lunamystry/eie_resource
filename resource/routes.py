@@ -1,7 +1,7 @@
 from flask import url_for,render_template,request
 from resource import app
 
-import Forms
+import forms
 
 @app.route('/')
 def index():

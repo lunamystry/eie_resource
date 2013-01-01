@@ -30,8 +30,8 @@ class Users(MethodView):
             return render_template('hello.haml',name=user_id)
 
     def post(self):
-        # create a new user
-        pass
+        form = Forms.NewUserForm(request.form,csrf_enabled=False)
+
 
     def delete(self, user_id):
         # delete a single user
