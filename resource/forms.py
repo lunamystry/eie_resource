@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form, TextField, Required
 
-class RegistrationForm(Form):
+class DomainRegistrationForm(Form):
     name = TextField("Name", validators=[Required()])
     student_number = TextField("Student number", validators=[Required()])
     yos = TextField("Year of study", validators=[Required()])

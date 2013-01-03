@@ -1,4 +1,4 @@
-from flask import url_for,render_template,request
+from flask import url_for,render_template,request, redirect, flash
 from resource import app
 
 import forms
@@ -20,15 +20,18 @@ def page_not_found(error):
 @app.route('/get_ipaddress', methods=['GET', 'POST'])
 def get_ipaddress():
     # TODO: Why does csrf not work remotely
-    form = Forms.RegistrationForm(request.form,csrf_enabled=False)
-    return render_template('ipaddress_form.haml',form=form)
+    form = forms.DomainRegistrationForm(request.form)
+    if form.validate_on_submit():
+        flash('You will get an IP address if you qualify')
+        return redirect('/')
+    return render_template('ipaddress_form.haml',form=form,title="get an ipaddress")
 
 @app.route('/lockers', methods=['GET', 'POST'])
 def get_locker():
-    form = Forms.LockerRegistrationForm(request.form,csrf_enabled=False)
+    form = forms.LockerRegistrationForm(request.form,csrf_enabled=False)
     return render_template('locker_form.haml',form=form)
 
 @app.route('/dlab_bookings', methods=['GET', 'POST'])
 def get_locker():
-    form = Forms.DlabBookingForm(request.form,csrf_enabled=False)
+    form = forms.DlabBookingForm(request.form,csrf_enabled=False)
     return render_template('dlab_booking_form.haml',form=form)

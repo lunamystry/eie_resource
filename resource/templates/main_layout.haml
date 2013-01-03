@@ -2,8 +2,12 @@
 %html lang="en"
   %head
     %meta charset="utf-8"
-    %title 
-      Resource
+    -if title
+      %title 
+        = title + " - Resource"
+    -else
+      %title
+        Resource
     %meta http-equiv="content-type" content="text/html; charset=utf-8"
     %link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}"
     %link rel=stylesheet/less type=text/css href="{{ url_for('static', filename='css/style.less') }}"
@@ -34,7 +38,13 @@
                 Sign in
     %div.container.content
       %div.row
-        -block body
+      -with messages = get_flashed_messages()
+        -if messages
+          %ul
+            -for message in messages
+              %li
+                {{ message }}
+      -block body
       %hr.
       %footer
         %p.pull-right
