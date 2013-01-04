@@ -1,6 +1,7 @@
 from flask import Flask
 from werkzeug import ImmutableDict
 from hamlish_jinja import HamlishExtension
+from flask.ext.sqlalchemy import SQLAlchemy
 
 class FlaskWithHamlish(Flask):
     jinja_options = ImmutableDict(
@@ -13,7 +14,10 @@ app.config.from_envvar('RESOURCE_SETTINGS')
 # mandatory config
 app.jinja_env.hamlish_mode = 'indented'
 
-import resource.routes
+db = SQLAlchemy(app)
+
+from resource import routes, models
+
 import admin
 app.register_blueprint(admin.bp, url_prefix='/admin')
 
