@@ -18,18 +18,19 @@
 //     location: location.pathname.replace(/\/[^/]*$/, '')}]
 // };
 
-require(["dojo/fx", "dojo/dom", "eie/eg", "dojo/domReady!"], function(fx,dom,eg){
-  var greeting = dom.byId("greeting");
-  greeting.innerHTML += " Hello from Dojo!";
+// require(["dojo/fx", "dojo/dom", "eie/eg", "dojo/domReady!"], function(fx,dom,eg){
+//   var greeting = dom.byId("greeting");
+//   greeting.innerHTML += " Hello from Dojo!";
 
-  eg.setText("greeting", "Hello Dojo!");
-  setTimeout(function(){
-    eg.restoreText("greeting");
-  }, 500)
+//   eg.setText("greeting", "Hello Dojo!");
+//   setTimeout(function(){
+//     eg.restoreText("greeting");
+//   }, 500)
 
-  fx.slideTo({
-    top: 100,
-    left: 200,
-    node: greeting
-  }).play();
-});
+//   fx.slideTo({
+//     top: 100,
+//     left: 200,
+//     node: greeting
+//   }).play();
+// });
+require(["dojo/parser", "dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/AccordionContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionPane"]);

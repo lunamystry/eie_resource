@@ -10,14 +10,9 @@
         Resource
     %link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}"
     %link rel=stylesheet/less type=text/css href="{{ url_for('static', filename='css/style.less') }}"
-    %style
-      body {
-       padding-top: 60px;
-       padding-bottom: 40px;
-      }
+    %link rel=stylesheet type=text/css href="{{ url_for('static', filename='js/lib/dijit/themes/tundra/tundra.css') }}"
     %script src="{{ url_for('static', filename='js/lib/less.min.js') }}" type="text/javascript"
-
-  %body.claro
+  %body.tundra
     %div.navbar.navbar-fixed-top
       %div.navbar-inner
         %div.container
@@ -32,7 +27,7 @@
                 %a href="dlab_bookings"
                   Dlab bookings
               %li
-                %a href="hello"
+                %a href="/hello"
                   Hello
             -if session['user_uid'] == None
               %form class="navbar-form pull-right" action="/login" method="post"
@@ -45,21 +40,17 @@
                 =session['user_uid']
                 %a href="/logout"
                   Logout
-
-    %div.container.content
-      %div.row
+    %div.row
       -with messages = get_flashed_messages()
         -if messages
           %ul
             -for message in messages
               %li
                 {{ message }}
-      -block body
-      %hr.
-      %footer
-        %p.pull-right
-          %a href="http://flask.pocoo.org/"
-            %img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" border="0" alt="made with Flask"
-          by Mandla Mbuli
+    -block body
+    %div#footer
+      %a href="http://flask.pocoo.org/"
+        %img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" border="0" alt="made with Flask"
+      by Mandla Mbuli
     %script src="{{ url_for('static', filename='js/lib/dojo/dojo.js') }}" type="text/javascript" data-dojo-config="async: true, parseOnLoad: 1"
     %script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"
