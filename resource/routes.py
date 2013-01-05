@@ -8,6 +8,10 @@ def index():
     return render_template('index.haml')
     # return render_template('notice.html')
 
+@app.route('/dojo/dijit')
+def dijit_demo(name=None):
+    return render_template('dijit_demo.haml',name=name,title="Dojo diji demo")
+
 @app.route('/hello')
 @app.route('/hello/<name>')
 def hello(name=None):
