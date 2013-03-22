@@ -8,9 +8,10 @@ here what you will find:
 
 .. toctree::
    :maxdepth: 2
-   
+
    ldap/index
    webapp/index
+   admin/index
    acknowledgements
 
 First though...
@@ -29,4 +30,3 @@ Indices and tables
 #. :ref:`genindex`
 #. :ref:`modindex`
 #. :ref:`search`
-
