@@ -1,0 +1,31 @@
+## ROOT this will be stored in the hdb
+dn: dc=eie,dc=wits,dc=ac,dc=za
+dc: eie
+description: This is a directory used for playing around
+ with how to configure ldap following instructions from
+ zytrax.com mostly
+objectclass: dcObject
+objectclass: organization
+o: Wits, EIE
+
+## FIRST level hierarchy - people
+dn: ou=people,dc=eie,dc=wits,dc=ac,dc=za
+ou: people
+description: All people in the School of Electrical and 
+ information. Including any who just come to visit or 
+ whatever
+objectClass: organizationalunit
+
+## SECOND level hierarchy
+dn: cn=Leonard Mbuli,ou=people,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: inetOrgPerson
+cn: Leonard Mbuli
+cn: Leonard M Mbuli
+cn: leny mbuli
+sn: mbuli
+uid: leny
+userPassword: pass
+mail: leonard.mbuli@wits.ac.za
+mail: lm.mbuli@gmail.com
+description: All round swell fellow
+ou: IT

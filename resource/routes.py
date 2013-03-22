@@ -1,5 +1,6 @@
-from flask import url_for,render_template,request, redirect, flash
+from flask import url_for,render_template,request, redirect, flash, send_from_directory
 from resource import app
+import os
 
 import forms
 
@@ -39,3 +40,8 @@ def get_locker():
 def get_locker():
     form = forms.DlabBookingForm(request.form,csrf_enabled=False)
     return render_template('dlab_booking_form.haml',form=form)
+
+@app.route('/docs/<path:filename>')
+def documentation(filename):
+    cwd = os.path.dirname(__file__)
+    return send_from_directory(cwd + '/static/docs', filename)
