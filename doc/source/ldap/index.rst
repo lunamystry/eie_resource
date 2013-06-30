@@ -27,6 +27,9 @@ management and zypper when yast didn't want to listen to me. I have
 not used zypper to instal openldap so I don't know what the package
 is called.
 
+Some external dependencies:
+`sudo apt-get install python-dev libldap2-dev libsasl2-dev libssl-dev`
+
 Initial configuration
 =====================
 

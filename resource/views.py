@@ -1,15 +1,21 @@
-from flask import request,render_template,session,flash,url_for,redirect
+from flask import request
+from flask import render_template
+from flask import session
+from flask import flash
+from flask import url_for
+from flask import redirect
 from flask.views import MethodView
 import Forms
 
+
 class LoginManager(MethodView):
     def get(self):
-        form = Forms.LoginForm(request.form,csrf_enabled=False)
-        return render_template('login.haml',form=form)
+        form = Forms.LoginForm(request.form, csrf_enabled=False)
+        return render_template('login.haml', form=form)
 
     def post(self):
         error = None
-        form = Forms.LoginForm(request.form,csrf_enabled=False)
+        form = Forms.LoginForm(request.form, csrf_enabled=False)
         if request.form['username'] != 'raduser':
             error = 'Problem with username or password'
         elif request.form['password'] != 'pass':
@@ -18,20 +24,20 @@ class LoginManager(MethodView):
             session['user_uid'] = request.form['username']
             flash('You were logged in')
             return redirect(url_for('index'))
-        return render_template('login.haml',form=form, error=error)
-  
+        return render_template('login.haml', form=form, error=error)
+
+
 class Users(MethodView):
-    def get(self, user_id):
+    def get(self,  user_id):
         if user_id is None:
             # return a list of users
-            return render_template('hello.haml',name="Stranger")
+            return render_template('hello.haml', name="Stranger")
         else:
             # expose a single user
-            return render_template('hello.haml',name=user_id)
+            return render_template('hello.haml', name=user_id)
 
     def post(self):
-        form = Forms.NewUserForm(request.form,csrf_enabled=False)
-
+        form = Forms.NewUserForm(request.form, csrf_enabled=False)
 
     def delete(self, user_id):
         # delete a single user
@@ -40,6 +46,7 @@ class Users(MethodView):
     def put(self, user_id):
         # update a single user
         pass
+
 
 class Machines(MethodView):
     def get(self, machine_id):

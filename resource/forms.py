@@ -1,4 +1,7 @@
-from flask.ext.wtf import Form, TextField, Required
+from flask.ext.wtf import Form
+from flask.ext.wtf import TextField
+from flask.ext.wtf import Required
+
 
 class DomainRegistrationForm(Form):
     name = TextField("Name", validators=[Required()])
@@ -10,11 +13,13 @@ class DomainRegistrationForm(Form):
     supervisor_name = TextField("Supervisor Name", validators=[Required()])
     supervisor_email = TextField("Supervisor email", validators=[Required()])
 
+
 class LockerRegistrationForm(Form):
     name = TextField("Name", validators=[Required()])
     student_number = TextField("Student number", validators=[Required()])
     email = TextField("email", validators=[Required()])
     yos = TextField("Year of study", validators=[Required()])
+
 
 class DlabBookingForm(Form):
     name = TextField("Name", validators=[Required()])
