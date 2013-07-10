@@ -1,12 +1,89 @@
 -extends "base.haml"
+-macro text_field(label, id)
+  %div.control-group id='{{ id }}'
+    %label.control-label for='{{ id }}_input'
+       {{ label }}
+    %div.controls
+      %input.input-xlarge name='{{ id }}_input' type='text'
+    %span.help-inline
+
 -block body
-  %div.hero-unit
-    %h1
-      Resource
-    %p
-      Welcome to resource. A resource repository for Information and Electrical Engineering students
-      at Wits.
-      You need to sign in for a locker, DHCP and DNS and to make dlab bookings
-    %div
-      %a.btn.btn-primary.btn-large href='repository/'
-        Repository
+  %div#resource
+  %div#templates
+    %script#index-template type="text/x-mustache-template"
+      %div.hero-unit
+        %h1
+          Resource
+        %p
+          Welcome to resource. A resource repository for Information and Electrical Engineering students
+          at Wits.
+          You need to sign in for a locker, DHCP and DNS and to make dlab bookings
+        %div
+          %a.btn.btn-primary.btn-large href='repository/'
+            Repository
+
+    %script#login-template type="text/x-mustache-template"
+      %h2
+        Sign in
+      %div.login_form
+
+    %script#login-form-template type="text/x-mustache-template"
+      {{ text_field("Username", "username") }}
+      {{ text_field("Password", "password") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Sign in
+
+    %script#groups-template type="text/x-mustache-template"
+      %h2
+        There are:
+        -raw
+            {{ count }}
+        groups
+      %div.groups_form
+      %div.groups_list
+
+    %script#index-user-template type="text/x-mustache-template"
+      %div.well.span3.user
+        %span
+          %strong
+            -raw
+              {{ fullname }}  {{ points }}
+        -raw
+          %br
+          Username: {{ username }}
+        %div.control-group.controls
+          %button.btn.btn-danger
+            delete
+
+    %script#groups-group-template type="text/x-mustache-template"
+      %div.well.span3.group
+        %span
+          %strong
+            -raw
+              {{ name }}  {{ points }}
+        -raw
+          %br
+          Members {{ members }}
+        %div.control-group.controls
+          %button.btn.btn-danger
+            delete
+
+    %script#user-form-template type="text/x-mustache-template"
+      {{ text_field("Name", "first_name") }}
+      {{ text_field("Surname", "last_name") }}
+      {{ text_field("Username", "username") }}
+      {{ text_field("Gender", "gender") }}
+      {{ text_field("Address", "address") }}
+      {{ text_field("Email", "email") }}
+      {{ text_field("School", "school") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Create
+
+    %script#group-form-template type="text/x-mustache-template"
+      {{ text_field("Name", "name") }}
+      {{ text_field("Members", "members") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Create
