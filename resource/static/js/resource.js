@@ -1,36 +1,44 @@
-// // Require the module we just created
-// require(["eie/eg"], function(myModule){
-//   // Use our module to change the text in the greeting
-//   myModule.setText("greeting", "Hello Dojo!");
+(function() {
+  Ehlane.Router = Backbone.Router.extend({
+    initialize: function(options) {
+      this.el = options.el
+    },
+    routes: {
+      "": "index",
+      "login": "login",
+      "logout": "logout",
+      "users": "users",
+      "groups": "groups",
+    },
+    login: function() {
+      var view = new Ehlane.Login();
+      this.el.empty();
+      this.el.append(view.render().el);
+    },
+    logout: function() {
+      var session = new Ehlane.Session();
+      location.hash = "#index";
+    },
+    index: function() {
+      var view = new Ehlane.Index();
+      this.el.empty();
+      this.el.append(view.render().el);
+    },
+    users: function() {
+      var view = new Ehlane.Users.Index();
+      this.el.empty();
+      this.el.append(view.render().el);
+    },
+    groups: function() {
+      var view = new Ehlane.Groups.Index();
+      this.el.empty();
+      this.el.append(view.render().el);
+    },
+  });
 
-//   // After a few seconds, restore the text to its original state
-//   setTimeout(function(){
-//     myModule.restoreText("greeting");
-//   }, 3000);
-// });
-// var dojoConfig = {
-//   async: true,
-//   // This code registers the correct location of the "demo"
-//   // package so we can load Dojo from the CDN whilst still
-//   // being able to load local modules
-//   packages: [{
-//     name: "js",
-//     location: location.pathname.replace(/\/[^/]*$/, '')}]
-// };
-
-// require(["dojo/fx", "dojo/dom", "eie/eg", "dojo/domReady!"], function(fx,dom,eg){
-//   var greeting = dom.byId("greeting");
-//   greeting.innerHTML += " Hello from Dojo!";
-
-//   eg.setText("greeting", "Hello Dojo!");
-//   setTimeout(function(){
-//     eg.restoreText("greeting");
-//   }, 500)
-
-//   fx.slideTo({
-//     top: 100,
-//     left: 200,
-//     node: greeting
-//   }).play();
-// });
-require(["dojo/parser", "dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/AccordionContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionPane"]);
+  Ehlane.boot = function(container) {
+    container = $(container);
+    var router = new Ehlane.Router({el: container})
+    Backbone.history.start();
+  }
+})()
