@@ -3,17 +3,17 @@
     return Mustache.compile($('#'+name+'-template').html());
   };
 
-  Ehlane.Users.Index = Backbone.View.extend({
+  Resource.Users.Index = Backbone.View.extend({
     template: template('index'),
     initialize: function() {
-      this.users = new Ehlane.Users();
+      this.users = new Resource.Users();
       this.users.on('all', this.render, this);
       this.users.fetch();
     },
     render: function() {
       this.$el.html(this.template(this));
-      var usersView = new Ehlane.Users.List({collection: this.users});
-      var form = new Ehlane.Users.Form({collection: this.users});
+      var usersView = new Resource.Users.List({collection: this.users});
+      var form = new Resource.Users.Form({collection: this.users});
       this.$(".users_list").append(usersView.render().$el);
       this.$(".users_form").append(form.render().$el);
       return this;
@@ -21,23 +21,23 @@
     count: function() { return this.users.length; }
   });
 
-  Ehlane.Index = Backbone.View.extend({
+  Resource.Index = Backbone.View.extend({
     template: template('index'),
     initialize: function() {
     },
   });
 
-  Ehlane.Groups.Index = Backbone.View.extend({
+  Resource.Groups.Index = Backbone.View.extend({
     template: template('groups'),
     initialize: function() {
-      this.groups = new Ehlane.Groups();
+      this.groups = new Resource.Groups();
       this.groups.on('all', this.render, this);
       this.groups.fetch();
     },
     render: function() {
       this.$el.html(this.template(this));
-      var groupsView = new Ehlane.Groups.List({collection: this.groups});
-      var form = new Ehlane.Groups.Form({collection: this.groups});
+      var groupsView = new Resource.Groups.List({collection: this.groups});
+      var form = new Resource.Groups.Form({collection: this.groups});
       this.$(".groups_list").append(groupsView.render().$el);
       this.$(".groups_form").append(form.render().$el);
       return this;
@@ -45,23 +45,23 @@
     count: function() { return this.groups.length; }
   });
 
-  Ehlane.Login = Backbone.View.extend({
+  Resource.Login = Backbone.View.extend({
     template: template('login'),
     initialize: function() {
-      this.users = new Ehlane.Users();
+      this.users = new Resource.Users();
       this.users.on('all', this.render, this);
       this.users.fetch();
     },
     render: function() {
       this.$el.html(this.template(this));
-      var usersView = new Ehlane.Login.Form({collection: this.users});
+      var usersView = new Resource.Login.Form({collection: this.users});
       this.$(".login_form").append(usersView.render().$el);
       return this;
     },
     count: function() { return this.users.length; }
   });
 
-  Ehlane.Users.User = Backbone.View.extend({
+  Resource.Users.User = Backbone.View.extend({
     events: {
       "click button": "delete"
     },
@@ -84,7 +84,7 @@
     }
   });
 
-  Ehlane.Groups.Group = Backbone.View.extend({
+  Resource.Groups.Group = Backbone.View.extend({
     events: {
       "click button": "delete"
     },
@@ -100,11 +100,11 @@
     }
   });
 
-  Ehlane.Users.List = Backbone.View.extend({
+  Resource.Users.List = Backbone.View.extend({
     render: function() {
       /* loop over all the models, appending a view of that model */
       this.collection.each(function(user) {
-        var view = new Ehlane.Users.User({model: user});
+        var view = new Resource.Users.User({model: user});
         // console.log(user.attributes);
         this.$el.append(view.render().el);
       }, this)  /* bind it to the Users rather than each user */
@@ -112,17 +112,17 @@
     }
   });
 
-  Ehlane.Groups.List = Backbone.View.extend({
+  Resource.Groups.List = Backbone.View.extend({
     render: function() {
       this.collection.each(function(group) {
-        var view = new Ehlane.Groups.Group({model: group});
+        var view = new Resource.Groups.Group({model: group});
         this.$el.append(view.render().el);
       }, this)
         return this;
     }
   });
 
-  Ehlane.Users.Form = Backbone.View.extend({
+  Resource.Users.Form = Backbone.View.extend({
     tagName: "form",
     className: "form",
     template: template('user-form'),
@@ -171,7 +171,7 @@
     }
   });
 
-  Ehlane.Groups.Form = Backbone.View.extend({
+  Resource.Groups.Form = Backbone.View.extend({
     tagName: "form",
     className: "form",
     template: template('group-form'),
@@ -212,7 +212,7 @@
     }
   });
 
-  Ehlane.Login.Form = Backbone.View.extend({
+  Resource.Login.Form = Backbone.View.extend({
     tagName: "form",
     className: "form",
     template: template('login-form'),
@@ -225,7 +225,7 @@
     },
     submit: function(event) {
       event.preventDefault();
-      var session = new Ehlane.Session();
+      var session = new Resource.Session();
       session.save({
         'username': this.$('#username input').val(),
         'password': this.$('#password input').val(),

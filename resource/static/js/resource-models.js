@@ -1,8 +1,8 @@
 (function() {
-  var Ehlane = {};
-  window.Ehlane = Ehlane;
+  var Resource = {};
+  window.Resource = Resource;
 
-  Ehlane.Session = Backbone.Model.extend({
+  Resource.Session = Backbone.Model.extend({
     urlRoot: "/sessions",
     idAttribute: "_id",
     key: function() { return this.get("name"); },
@@ -10,7 +10,7 @@
     timeout: function() { return "timeout"; },
   });
 
-  Ehlane.User = Backbone.Model.extend({
+  Resource.User = Backbone.Model.extend({
     idAttribute: "_id",
     fullname: function() { return this.get("first_name") + " " + this.get("last_name") ; },
     username: function() { return this.get("username"); },
@@ -23,23 +23,23 @@
     role_id: function() { return this.get("role_id"); },
   });
 
-  Ehlane.Users = Backbone.Collection.extend({
+  Resource.Users = Backbone.Collection.extend({
     url: "/users",
-    model: Ehlane.User,
+    model: Resource.User,
     parse: function(response){
       return response.result;
     }
   });
 
-  Ehlane.Group = Backbone.Model.extend({
+  Resource.Group = Backbone.Model.extend({
     idAttribute: "_id",
     name: function() { return this.get("name"); },
     members: function() { return "MEMBERS LIST"; },
   });
 
-  Ehlane.Groups = Backbone.Collection.extend({
+  Resource.Groups = Backbone.Collection.extend({
     url: "/groups",
-    model: Ehlane.Group,
+    model: Resource.Group,
     parse: function(response){
       return response.result;
     }
