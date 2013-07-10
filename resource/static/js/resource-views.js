@@ -23,8 +23,10 @@
 
   Resource.Index = Backbone.View.extend({
     template: template('index'),
-    initialize: function() {
-    },
+    render: function() {
+      this.$el.html(this.template(this));
+      return this;
+    }
   });
 
   Resource.Groups.Index = Backbone.View.extend({
