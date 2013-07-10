@@ -5,6 +5,7 @@
 *.egg-info
 dist
 build
+resource-env
 eggs
 parts
 bin
