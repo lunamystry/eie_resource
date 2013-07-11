@@ -68,29 +68,38 @@ class EIELdap():
         return True
 
     def find(self):
-        result = manager.connection.search_s(
-            manager.base, ldap.SCOPE_SUBTREE, attr["uid"])
-        if result[]:
+        result = manager.connection.search_s(manager.base,
+                                             ldap.SCOPE_SUBTREE,
+                                             "uid=*")
+        if result:
             return result
 
     def find_one(self, attr):
-        result = manager.connection.search_s(
-            manager.base, ldap.SCOPE_SUBTREE, attr["uid"])
+        filterstr = "uid=" + attr["uid"]
+        result = manager.connection.search_s(manager.base,
+                                             ldap.SCOPE_SUBTREE,
+                                             filterstr)
         if result:
-            return result[0]
+            r, fields = result[0]
+            return fields
         else:
             return "Error, nothing found"
 
 
 if __name__ == '__main__':
     manager = EIELdap('../config/ldap.cfg')
-    r = manager.connection.search_s(manager.base, ldap.SCOPE_SUBTREE, 'uid=*')
-    # for dn, entry in r:
-    #     print dn
-    #     print 'Processing: ', repr(entry['uid'][-1])
-    #     print entry
-    r = manager.connection.search_s(manager.base, ldap.SCOPE_SUBTREE, 'uid=mandla')
-    print r
+    base = "ou=people," + manager.base
+    r = manager.connection.search_s(base, ldap.SCOPE_SUBTREE, 'uid=*')
+    safe = ['leny', 'raduser', 'root', 'testuser']
+    cnt = 1
+    for dn, entry in r:
+        if entry['uid'][-1] == 'ortleppk':
+            # print cnt, 'Processing: ', repr(entry['uid'][-1])
+            cnt += 1
+            print repr(entry['uidNumber'][-1]), repr(entry['uid'][-1])
+    # fields = manager.find_one({"uid": "moilwam"})
+    # print fields
+    # print fields["objectClass"]
     # dn = "cn=Leonard Mbuli,ou=people," + manager.base
     # manager.update(dn, {"description": "Extraordinary fellow"})
     # username = "lunamystry"
