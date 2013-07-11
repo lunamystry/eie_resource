@@ -93,7 +93,7 @@ if __name__ == '__main__':
     safe = ['leny', 'raduser', 'root', 'testuser']
     cnt = 1
     for dn, entry in r:
-        if entry['uid'][-1] == 'ortleppk':
+        if entry['uid'][-1] not in safe:
             # print cnt, 'Processing: ', repr(entry['uid'][-1])
             cnt += 1
             print repr(entry['uidNumber'][-1]), repr(entry['uid'][-1])
