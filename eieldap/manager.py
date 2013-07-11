@@ -1,25 +1,23 @@
 # commandline:
 #  ldapsearch -xLLL -H <host> -b <base> <search>
-from ConfigParser import SafeConfigParser
 import ldap
+from eieldap import config
 
 
-class EIELdap():
+class Manager():
     """This a module to help with managing the eieldap using python"""
 
-    def __init__(self,  config_location):
-        self.connect(config_location)
+    def __init__(self,  config=config):
+        self.connect(config)
 
     def __del__(self):
         self.disconnect()
 
-    def connect(self, config_location):
-        cfg = SafeConfigParser()
-        cfg.read(config_location)
-        self.server = cfg.get("ldap", "server")
-        self.dn = cfg.get("ldap", "dn")
-        self.pw = cfg.get("ldap", "pw")
-        self.base = cfg.get("ldap", "base")
+    def connect(self, config):
+        self.server = config.get("ldap", "server")
+        self.dn = config.get("ldap", "dn")
+        self.pw = config.get("ldap", "pw")
+        self.base = config.get("ldap", "base")
         self.connection = ldap.initialize('ldap://'+self.server)
         self.connection.simple_bind_s(self.dn, self.pw)
 
@@ -30,16 +28,16 @@ class EIELdap():
         modlist = []
         for key in attr.keys():
             modlist.append((key, attr[key]))
-        # TODO: Error checking
-        self.connection.add_s(dn, modlist)
+            # TODO: Error checking
+            self.connection.add_s(dn, modlist)
 
     def update(self, dn, attr):
         """ Attr is a dictionary of values for a single thing"""
         modlist = []
         for key in attr.keys():
             modlist.append((ldap.MOD_REPLACE, key, attr[key]))
-        # TODO: Error checking
-        self.connection.modify_s(dn, modlist)
+            # TODO: Error checking
+            self.connection.modify_s(dn, modlist)
 
     def delete(self, dn):
         self.connection.delete_s(dn)
@@ -67,37 +65,44 @@ class EIELdap():
         self.connection.bind_s(dn, password)
         return True
 
-    def find(self):
-        result = manager.connection.search_s(manager.base,
-                                             ldap.SCOPE_SUBTREE,
-                                             "uid=*")
+    def find(self, base=None):
+        if base is None:
+            base = self.base
+        result = self.connection.search_s(base,
+                                          ldap.SCOPE_SUBTREE,
+                                          "uid=*")
         if result:
-            return result
+            fields = [field for dn, field in result]
+            return fields
 
-    def find_one(self, attr):
+    def find_one(self, attr, base=None):
+        if base is None:
+            base = self.base
         filterstr = "uid=" + attr["uid"]
-        result = manager.connection.search_s(manager.base,
-                                             ldap.SCOPE_SUBTREE,
-                                             filterstr)
+        result = self.connection.search_s(base,
+                                          ldap.SCOPE_SUBTREE,
+                                          filterstr)
         if result:
-            r, fields = result[0]
+            dn, fields = result[0]
             return fields
         else:
             return "Error, nothing found"
 
 
 if __name__ == '__main__':
-    manager = EIELdap('../config/ldap.cfg')
+    manager = Manager(config)
     base = "ou=people," + manager.base
     r = manager.connection.search_s(base, ldap.SCOPE_SUBTREE, 'uid=*')
-    safe = ['leny', 'raduser', 'root', 'testuser']
-    cnt = 1
-    for dn, entry in r:
-        if entry['uid'][-1] not in safe:
-            # print cnt, 'Processing: ', repr(entry['uid'][-1])
-            cnt += 1
-            print repr(entry['uidNumber'][-1]), repr(entry['uid'][-1])
+    # safe = ['leny', 'raduser', 'root', 'testuser']
+    # cnt = 1
+    # for dn, entry in r:
+    #     if entry['uid'][-1] not in safe:
+    #         # print cnt, 'Processing: ', repr(entry['uid'][-1])
+    #         cnt += 1
+    #         print repr(entry['uidNumber'][-1]), repr(entry['uid'][-1])
     # fields = manager.find_one({"uid": "moilwam"})
+    print(manager.find())
+    print "All the people in " + manager.base
     # print fields
     # print fields["objectClass"]
     # dn = "cn=Leonard Mbuli,ou=people," + manager.base

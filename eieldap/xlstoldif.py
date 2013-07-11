@@ -142,8 +142,7 @@ def make_ldif(rows,  ldif_filename):
         entry += "homeDirectory: /home/ug/" + username + "\n"
         entry += "loginShell: /bin/bash \n"
         entry += "# 4*uid to get RID (the last number)\n"
-        entry += "sambaSID: S-1-5-21-3949128619-541665055-2325163404-" +
-        str(smbRid) + "\n"
+        entry += "sambaSID: S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid) + "\n"
         entry += "sambaAcctFlags: [U         ] \n"
         entry += "sambaNTPassword: " + nt_password + "\n"
         entry += "sambaLMPassword: " + lm_password + "\n"
