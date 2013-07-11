@@ -19,7 +19,7 @@ class Users():
         if user:
             eieldap.update(attr)
             return attr["dn"]
-        # else:
-        #     eieldap.create(attr)
-        #     return attr["dn"]
-        # return "error"
+        else:
+            eieldap.create(attr)
+            return attr["dn"]
+        return "error"

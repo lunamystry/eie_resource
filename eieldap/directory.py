@@ -67,11 +67,20 @@ class EIELdap():
         self.connection.bind_s(dn, password)
         return True
 
-    def search(self, criteria):
-        """The criteria is a ldap criteria """
-        return self.connection.search_s('cn=leny,dc=eie,dc=wits,dc=ac,dc=za',
-                                         'cn',
-                                         'leny')
+    def find(self):
+        result = manager.connection.search_s(
+            manager.base, ldap.SCOPE_SUBTREE, attr["uid"])
+        if result[]:
+            return result
+
+    def find_one(self, attr):
+        result = manager.connection.search_s(
+            manager.base, ldap.SCOPE_SUBTREE, attr["uid"])
+        if result:
+            return result[0]
+        else:
+            return "Error, nothing found"
+
 
 if __name__ == '__main__':
     manager = EIELdap('../config/ldap.cfg')
