@@ -26,6 +26,24 @@ class EIELdap():
     def disconnect(self):
         self.connection.unbind()
 
+    def create(self, dn, attr):
+        modlist = []
+        for key in attr.keys():
+            modlist.append((key, attr[key]))
+        # TODO: Error checking
+        self.connection.add_s(dn, modlist)
+
+    def update(self, dn, attr):
+        """ Attr is a dictionary of values for a single thing"""
+        modlist = []
+        for key in attr.keys():
+            modlist.append((ldap.MOD_REPLACE, key, attr[key]))
+        # TODO: Error checking
+        self.connection.modify_s(dn, modlist)
+
+    def delete(self, dn):
+        self.connection.delete_s(dn)
+
     def print_exception(self, exception):
         args = exception.args[0]  # Accessing using 0 feels wrong
         print "ERROR: Could not change password "
@@ -38,47 +56,60 @@ class EIELdap():
         dn = username + self.base
         print dn
         try:
-            self.connection.passwd_s(dn, oldpw, newpw)
+            self.connection.passwd_s(dn, None, newpw)
         except Exception as e:
             print e
-            # self.print_exception(e)
 
     def authenticate(self, username, password):
         dn = username + self.base
         # first search for the username. Each username is unique for
         # each user.
-        print dn
         self.connection.bind_s(dn, password)
         return True
 
-    def add_user(self, details):
-        pass
-
-    def add_machine(self, details):
-        pass
-
-    def delete_machine(self, dn):
-        pass
-
-    def delete_user(self, dn):
-        pass
-
     def search(self, criteria):
         """The criteria is a ldap criteria """
-        return self.connection.compare_s('cn=leny,dc=eie,dc=wits,dc=ac,dc=za',
+        return self.connection.search_s('cn=leny,dc=eie,dc=wits,dc=ac,dc=za',
                                          'cn',
                                          'leny')
 
 if __name__ == '__main__':
     manager = EIELdap('../config/ldap.cfg')
     r = manager.connection.search_s(manager.base, ldap.SCOPE_SUBTREE, 'uid=*')
-    for dn, entry in r:
-        # print dn
-        # print 'Processing: ', repr(entry['uid'][-1])
-        print entry, repr(entry['uid'][-1])
-    print manager.authenticate('cn=Leonard Mbuli,ou=people,', "passing")
+    # for dn, entry in r:
+    #     print dn
+    #     print 'Processing: ', repr(entry['uid'][-1])
+    #     print entry
+    r = manager.connection.search_s(manager.base, ldap.SCOPE_SUBTREE, 'uid=mandla')
+    print r
+    # dn = "cn=Leonard Mbuli,ou=people," + manager.base
+    # manager.update(dn, {"description": "Extraordinary fellow"})
+    # username = "lunamystry"
+    # first_name = "Mandla"
+    # last_name = "Mbuli"
+    # uid_number = 7000
+    # gid_number = 8000
+    # smb_rid = 231
+    # dn = "cn=Mandla Mbuli,ou=people," + manager.base
+    # user = {
+    #      # "dn": "uid=" + username + ",ou=ug,dc=eie,dc=wits,dc=ac,dc=za",
+    #      "objectclass": ["account", "posixAccount"],
+    #      "cn": first_name + " " + last_name,
+    #      "uid": username,
+    #      # "displayName": first_name + " " + last_name,
+    #      "uidNumber": str(uid_number),
+    #      "gidNumber": str(gid_number),
+    #      "homeDirectory": "/home/ug/" + username,
+    #      "loginShell": "/bin/bash",
+    #      # "sambaSID": "S-1-5-21-3949128619-541665055-2325163404-" + str(smb_rid),
+    #      # "sambaAcctFlags": "[U         ]",
+    #      # "sambaNTPassword": nt_password,
+    #      # "sambaLMPassword": lm_password
+    # }
+    # manager.create(dn, user)
+    # manager.delete(dn)
+    # print manager.authenticate('cn=Leonard Mbuli,ou=people,', "passing")
     # print manager.change_password('cn=Leonard Mbuli,ou=people,',
     #                               "pass",
     #                               "passing")
-
     # manager.change_password('uid=leny,ou=ug,'+manager.base,'pass', 'passing')
