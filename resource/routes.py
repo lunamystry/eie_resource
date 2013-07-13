@@ -4,6 +4,7 @@ from flask import send_from_directory
 from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
 from flask.ext.restful import abort
+import os
 from resource import RestAPI
 from resource import app
 from resource import api
@@ -27,6 +28,18 @@ def page_not_found(error):
 def documentation(filename):
     cwd = os.path.dirname(__file__)
     return send_from_directory(cwd + '/static/docs', filename)
+
+
+@app.route('/js/<path:filename>')
+def js(filename):
+    cwd = os.path.dirname(__file__)
+    return send_from_directory(cwd + '/static/js', filename)
+
+
+@app.route('/css/<path:filename>')
+def css(filename):
+    cwd = os.path.dirname(__file__)
+    return send_from_directory(cwd + '/static/css', filename)
 
 
 @app.errorhandler(500)
