@@ -101,7 +101,7 @@ if __name__ == '__main__':
     #         cnt += 1
     #         print repr(entry['uidNumber'][-1]), repr(entry['uid'][-1])
     # fields = manager.find_one({"uid": "moilwam"})
-    print(manager.find())
+    print manager.find()
     print "All the people in " + manager.base
     # print fields
     # print fields["objectClass"]

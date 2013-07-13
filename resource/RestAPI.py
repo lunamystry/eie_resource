@@ -11,6 +11,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from resource.validators import required
 from resource.validators import ValidationError
+from eieldap import models
 
 client = MongoClient()
 
@@ -190,5 +191,3 @@ class Users(Resource):
             if field_errors:
                 errors[key] = field_errors
         return data, errors
-
-
