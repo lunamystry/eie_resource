@@ -13,7 +13,8 @@
     %div.navbar.navbar-fixed-top
       %div.navbar-inner
         %div.container
-          %div.span1#logo href="#"
+          %a.brand href="#"
+            %img src="{{ url_for('static', filename='img/eielogo.png') }}"
           %div.nav-collapse.collapse
             %ul.nav
               %li

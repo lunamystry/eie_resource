@@ -1,36 +1,34 @@
 @import-once "./override.less";
 @main_bg: #6f47d7;
-@jorange: #e47224;
-@dorange: #aa4400;
+@jorange: #E48632;
+@dorange: #e47224;
 @header_height: 100px;
 @height_title: 60px;
 @height_subtitle: 30px;
 
 .clear { clear:both }
 html, body {
+    height: 100%;
     padding: 0px;
     margin: 0px;
 }
 body {
-    margin-top: 100px;
+    padding-top: 100px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #7F8C8D;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
 }
-#ehlane {
-    height: 100%;
+#resource {
+    background: none repeat scroll 0 0 #FFFFFF;
+    padding: 25px;
+    min-height: 400px;
 }
-#logo {
-    background:transparent url(eielogo.png) no-repeat center;
-    width: 150px;
-    height: @header_height;
-    margin: 0px;
-    padding: 0px;
-}
-#title-container {
-    height: @height_title;
-}
-#title {
-    padding-top: 10px;
-    color: @dorange;
-    font-weight: bold;
+.brand img {
+    display: block;
+    width: 190px;
 }
 #controls ul {
     color: white;
@@ -43,11 +41,13 @@ body {
     font-size: 15px;
 }
 #footer {
-    border-top: solid grey 1px;
     text-align: center;
-    margin-top: 25px;
-    padding-top: 25px;
+    background: none repeat scroll 0 0 #FFFFFF;
 }
-#content {
-    min-height: 400px;
+.users .list,
+.users .form {
+    margin: 0;
+}
+.users .list {
+    padding-left: 25px;
 }
