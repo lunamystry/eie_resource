@@ -2,42 +2,34 @@
 %html lang="en"
   %head
     %meta http-equiv="content-type" content="text/html; charset="utf-8"
-    -if title
-      %title
-        = title + " - Resource"
-    -else
-      %title
-        Resource
+    %meta name="language" content="en"
+    %title
+      Resource
+    %link rel=icon type=image/png href="{{ url_for('static', filename='img/favicon.png') }}"
     %link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}"
     %link rel=stylesheet/less type=text/css href="{{ url_for('static', filename='css/style.less') }}"
     %script src="{{ url_for('static', filename='js/lib/less.min.js') }}" type="text/javascript"
-    %style
-      body { padding-top: 150px; height: 80%; }
   %body
     %div.navbar.navbar-fixed-top
       %div.navbar-inner
         %div.container
-          %div.span1#logo
+          %div.span1#logo href="#"
           %div.nav-collapse.collapse
             %ul.nav
               %li
                 %a href="repository"
                   Repository
-    -block body
+    %div#content
+      %div.container
+        %div.row-fluid
+          -block body
+          %script data-main="js/main" src="js/lib/require.js" type="text/javascript"
     %div#footer
-      %div#copyright
-        (c) 2013 University Of The Witwatersrand, Johannesburg
-      %div#credit
-        %a href="http://flask.pocoo.org/"
-          %img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" border="0" alt="made with Flask"
-        by Mandla Mbuli
-    %script src="{{ url_for('static', filename='js/lib/jquery.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/lib/bootstrap.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/lib/underscore.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/lib/backbone.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/lib/mustache.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/resource-models.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/resource-views.js')}}" type="text/javascript"
-    %script src="{{ url_for('static', filename='js/resource.js') }}" type="text/javascript"
-    %script type="text/javascript"
-      $(function() {  Resource.boot($('#resource')); });
+      %div.inner
+        %div.container
+          %span#copyright
+            (c) 2013 University Of The Witwatersrand, Johannesburg
+          %div#credit
+            %a href="http://flask.pocoo.org/"
+              %img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" border="0" alt="made with Flask"
+            by Mandla Mbuli
