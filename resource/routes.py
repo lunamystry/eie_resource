@@ -18,7 +18,6 @@ api.add_resource(RestAPI.User, '/users/<string:user_id>')
 @app.route('/')
 def index():
     return render_template('index.haml')
-    # return render_template('notice.html')
 
 
 @app.errorhandler(404)
