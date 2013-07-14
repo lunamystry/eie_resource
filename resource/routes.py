@@ -10,6 +10,8 @@ from resource import api
 
 api.add_resource(RestAPI.Sessions, '/sessions')
 api.add_resource(RestAPI.Session, '/sessions/<string:session_id>')
+api.add_resource(RestAPI.Users, '/users')
+api.add_resource(RestAPI.User, '/users/<string:user_id>')
 
 
 @app.route('/')
