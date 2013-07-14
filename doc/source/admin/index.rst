@@ -3,7 +3,13 @@ Dlab Administration
 
 Imaging
 -------
-This is how you image
+
+Clonezilla
+++++++++++
+
+Installation
+~~~~~~~~~~~~
+
 
 .. toctree::
    :maxdepth: 2
