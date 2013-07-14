@@ -2,7 +2,7 @@ from eieldap import config
 from eieldap.manager import Manager
 
 
-class Users():
+class User():
     first_name = None
     last_name = None
     username = None

@@ -2,7 +2,7 @@
 #  ldapsearch -xLLL -H <host> -b <base> <search>
 import ldap
 from eieldap import config
-
+from eieldap import logger
 
 class Manager():
     """This a module to help with managing the eieldap using python"""
@@ -72,7 +72,10 @@ class Manager():
                                           ldap.SCOPE_SUBTREE,
                                           "uid=*")
         if result:
-            fields = [field for dn, field in result]
+            fields = []
+            for dn, field in result:
+                field.update({"dn": [dn]})
+                fields.append(field)
             return fields
 
     def find_one(self, attr, base=None):

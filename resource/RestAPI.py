@@ -129,11 +129,8 @@ class User(Resource):
 
 class Users(Resource):
     def get(self):
-        users = client.resource.users
-        user_list = [user for user in users.find()]
-        for user in user_list:
-            user["_id"] = str(user["_id"])
-        return jsonify({"result": user_list})
+        users = models.User().find()
+        return jsonify({"result": users[0]})
 
     def post(self):
         users = client.resource.users
