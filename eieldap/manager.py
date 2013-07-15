@@ -36,11 +36,23 @@ class Manager():
 
     def update(self, dn, attr):
         """ Attr is a dictionary of values for a single thing"""
-        modlist = []
-        for key in attr.keys():
-            modlist.append((ldap.MOD_REPLACE, key, attr[key]))
-            # TODO: Error checking
-            self.connection.modify_s(dn, modlist)
+        new_attr = self.find_one({"uid": attr["uid"]})
+        del(new_attr["dn"])
+        del(attr["dn"])
+        m = ldap.modlist.modifyModlist(attr, new_attr)
+        logger.debug(m)
+        # try:
+        #     self.connection.modify_s(dn, modlist)
+        #     return True
+        # except ldap.LDAPError as e:
+        #     logger.debug(e)
+        # return False
+
+        # modlist = []
+        # for key in attr.keys():
+        #     modlist.append((ldap.MOD_REPLACE, key, attr[key]))
+        #     # TODO: Error checking
+        #     self.connection.modify_s(dn, modlist)
 
     def delete(self, dn):
         self.connection.delete_s(dn)
@@ -74,6 +86,17 @@ class Manager():
                 result = self.de_list(result)
                 users.append(result)
             return users
+
+    def find_by_dn(self, strdn):
+        dn = ldap.dn.str2dn(strdn)
+        base = ldap.dn.dn2str(dn[1:])
+        filterstr = ldap.dn.dn2str(dn[:1])
+        result = self.connection.search_s(base,
+                                          ldap.SCOPE_SUBTREE,
+                                          filterstr)
+        if result:
+            fields = self.de_list(result[0])
+            return fields
 
     def find_one(self, attr, base=None):
         if base is None:
