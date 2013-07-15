@@ -68,11 +68,16 @@ class Manager():
     def find(self, base=None):
         if base is None:
             base = self.base
-        result = self.connection.search_s(base,
+        results = self.connection.search_s(base,
                                           ldap.SCOPE_SUBTREE,
                                           "uid=*")
-        if result:
-            return result
+        if results:
+            logger.info(results)
+            users = []
+            for result in results:
+                result = self.de_list(result)
+                users.append(result)
+            return users
 
     def find_one(self, attr, base=None):
         if base is None:
@@ -82,21 +87,19 @@ class Manager():
                                           ldap.SCOPE_SUBTREE,
                                           filterstr)
         if result:
-            dn, fields = result[0]
+            fields = self.de_list(result[0])
             return fields
         else:
             return "Error, nothing found"
 
-    def fix(self, user):
+    def de_list(self, user):
         fields = []
         list_fields = ['objectClass', 'mail']
-        for dn, field in result:
-            field.update({"dn": [dn]})
-            for key in field:
-                if key not in list_fields:
-                    field[key] = field[key][0]
-            fields.append(field)
-            logger.debug(field)
+        dn, fields = user
+        fields.update({"dn": [dn]})
+        for key in fields:
+            if key not in list_fields:
+                fields[key] = fields[key][0]
         return fields
 
 

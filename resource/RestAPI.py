@@ -129,16 +129,13 @@ class User(Resource):
 class Users(Resource):
     def get(self):
         users = models.User().find()
-        return jsonify({"result": users[0]})
+        return jsonify({"result": users})
 
     def post(self):
         users = client.resource.users
         args = request.values.to_dict()
         data, errors = self.validate(args)
-        data["salt"] = self.gen_salt()
         data["password"] = self.hashed("passing", data["salt"])
-        data["password_changed"] = False
-        data["points"] = 0
         if errors:
             return errors, 500
         users.insert(data)
@@ -148,27 +145,17 @@ class Users(Resource):
         else:
             return "User could not be created " + str(args), 500
 
-    def gen_salt(self):
-        salt = uuid.uuid4().hex
-        hashed_salt = hashlib.sha512(salt).hexdigest()
-        return hashed_salt
-
-    def hashed(self, password, salt):
-        return hashlib.sha512(password + salt).hexdigest()
-
     def validate(self, data):
         errors = {}
         validators = {"first_name": [required],
                       "last_name": [required],
                       "username": [required,
                                    functools.partial(length, min=3)],
-                      "gender": [],
-                      "address": [],
-                      "email": [],
-                      "school": [],
-                      "phone_no": [],
-                      "cellphone_no": [],
-                      "role_id": []}
+                      "student_no": [],
+                      "home_directory": [],
+                      "login_shell": [],
+                      "yos": [],
+                      "email": []}
         # make sure all value keys are there
         for key in validators.keys():
             try:

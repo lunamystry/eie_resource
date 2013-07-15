@@ -4,24 +4,13 @@ from eieldap import logger
 
 
 class User():
-    keys = {"dn": "id",
-            "uid": "username",
+    keys = {"uid": "username",
             "cn": "name",
             "homeDirectory": "home_directory",
             "loginShell": "login_shell",
             "uidNumber": "uid_number",
             "gidNumber": "gid_number",
             "mail": "email"}
-    name = None
-    username = None
-    display_name = None
-    uid_number = None
-    gid_number = None
-    home_directory = None
-    login_shell = None
-    smb_rid = None
-    password = None
-    password_changed = None
 
     def __init__(self, manager=None):
         if manager is None:
