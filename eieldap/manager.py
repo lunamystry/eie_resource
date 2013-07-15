@@ -72,11 +72,7 @@ class Manager():
                                           ldap.SCOPE_SUBTREE,
                                           "uid=*")
         if result:
-            fields = []
-            for dn, field in result:
-                field.update({"dn": [dn]})
-                fields.append(field)
-            return fields
+            return result
 
     def find_one(self, attr, base=None):
         if base is None:
@@ -90,6 +86,18 @@ class Manager():
             return fields
         else:
             return "Error, nothing found"
+
+    def fix(self, user):
+        fields = []
+        list_fields = ['objectClass', 'mail']
+        for dn, field in result:
+            field.update({"dn": [dn]})
+            for key in field:
+                if key not in list_fields:
+                    field[key] = field[key][0]
+            fields.append(field)
+            logger.debug(field)
+        return fields
 
 
 if __name__ == '__main__':

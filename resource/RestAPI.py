@@ -109,8 +109,7 @@ class Sessions(Resource):
 
 class User(Resource):
     def get(self, user_id):
-        user = client.resource.users.find_one({'_id': ObjectId(user_id)})
-        user["_id"] = str(user["_id"])
+        user = models.User().find_one({"uid": user_id})
         return user
 
     def delete(self, user_id):

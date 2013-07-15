@@ -1,18 +1,27 @@
 from eieldap import config
 from eieldap.manager import Manager
+from eieldap import logger
 
 
 class User():
-    first_name = None
-    last_name = None
+    keys = {"dn": "id",
+            "uid": "username",
+            "cn": "name",
+            "homeDirectory": "home_directory",
+            "loginShell": "login_shell",
+            "uidNumber": "uid_number",
+            "gidNumber": "gid_number",
+            "mail": "email"}
+    name = None
     username = None
-    yos = None
-    nt_password = None
-    lm_password = None
-    plain_password = None
+    display_name = None
     uid_number = None
     gid_number = None
+    home_directory = None
+    login_shell = None
     smb_rid = None
+    password = None
+    password_changed = None
 
     def __init__(self, manager=None):
         if manager is None:
@@ -39,11 +48,27 @@ class User():
 
     def find(self):
         """ Returns all the people in the directory (think ldap)"""
-        return self.manager.find(self.basedn)
+        users = self.manager.find(self.basedn)
+        users_list = []
+        for user in users:
+            new_user = self.fix(user)
+            users_list.append(new_user)
+        return users_list
 
     def find_one(self, attr):
         """ Returns a single user """
-        return self.manager.find_one(attr, self.basedn)
+        user = self.manager.find_one(attr, self.basedn)
+        return self.fix(user)
+
+    def fix(self, user):
+        new_user = {}
+        for key in user.keys():
+            try:
+                nkey = self.keys[key]
+                new_user[nkey] = user[key]
+            except KeyError:
+                logger.debug("key not mapped: " + key)
+        return new_user
 
 
 class Machines():
