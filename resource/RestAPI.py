@@ -1,3 +1,4 @@
+from flask import request
 from flask import jsonify
 from flask.views import MethodView
 from flask.ext.restful import Resource
@@ -10,8 +11,10 @@ from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from resource.validators import required
+from resource.validators import length
 from resource.validators import ValidationError
 from eieldap import models
+from eieldap import logger
 
 client = MongoClient()
 
@@ -132,15 +135,13 @@ class Users(Resource):
         return jsonify({"result": users})
 
     def post(self):
-        users = client.resource.users
-        args = request.values.to_dict()
+        users = models.User().find()
+        args = request.json
         data, errors = self.validate(args)
-        data["password"] = self.hashed("passing", data["salt"])
+        data["password"] = "passing"
         if errors:
             return errors, 500
-        users.insert(data)
-        if args["_id"] is not None:
-            args["_id"] = str(args["_id"])
+        if models.User().save(data):
             return args, 201
         else:
             return "User could not be created " + str(args), 500

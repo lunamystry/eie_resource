@@ -1,6 +1,7 @@
 # commandline:
 #  ldapsearch -xLLL -H <host> -b <base> <search>
 import ldap
+import ldap.modlist
 from eieldap import config
 from eieldap import logger
 
@@ -25,11 +26,13 @@ class Manager():
         self.connection.unbind()
 
     def create(self, dn, attr):
-        modlist = []
-        for key in attr.keys():
-            modlist.append((key, attr[key]))
-            # TODO: Error checking
+        modlist = ldap.modlist.addModlist(attr)
+        try:
             self.connection.add_s(dn, modlist)
+            return True
+        except ldap.LDAPError as e:
+            logger.debug(e)
+        return False
 
     def update(self, dn, attr):
         """ Attr is a dictionary of values for a single thing"""
@@ -41,12 +44,6 @@ class Manager():
 
     def delete(self, dn):
         self.connection.delete_s(dn)
-
-    def print_exception(self, exception):
-        args = exception.args[0]  # Accessing using 0 feels wrong
-        print "ERROR: Could not change password "
-        print "INFO:", args["info"]
-        print "DESC:", args["desc"]
 
     def change_password(self, username, oldpw, newpw):
         """ User the python ldap function to change the passord
@@ -72,7 +69,6 @@ class Manager():
                                           ldap.SCOPE_SUBTREE,
                                           "uid=*")
         if results:
-            logger.info(results)
             users = []
             for result in results:
                 result = self.de_list(result)
@@ -89,8 +85,6 @@ class Manager():
         if result:
             fields = self.de_list(result[0])
             return fields
-        else:
-            return "Error, nothing found"
 
     def de_list(self, user):
         fields = []

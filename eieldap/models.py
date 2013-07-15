@@ -4,30 +4,36 @@ from eieldap import logger
 
 
 class User():
-    keys = {"uid": "username",
-            "cn": "name",
-            "homeDirectory": "home_directory",
-            "loginShell": "login_shell",
-            "uidNumber": "uid_number",
-            "gidNumber": "gid_number",
-            "mail": "email"}
 
     def __init__(self, manager=None):
         if manager is None:
             manager = Manager(config)
         self.manager = manager
         self.basedn = "ou=people," + self.manager.base
+        self.keymap = {"uid": "username",
+                       "cn": "name",
+                       "homeDirectory": "home_directory",
+                       "loginShell": "login_shell",
+                       "uidNumber": "uid_number",
+                       "gidNumber": "gid_number",
+                       "mail": "email"}
+        self.inv_keymap = {v:k for k, v in self.keymap.items()}
 
     def save(self, attr):
         """ if the user exists update, if not create"""
-        user = eieldap.find_one(attr["dn"])
+        new_user = self.fix(attr, self.inv_keymap)
+        user = self.manager.find_one(new_user)
         if user:
-            eieldap.update(attr)
-            return attr["dn"]
+            logger.debug("updating user: " + str(new_user))
+            self.manager.update(new_user)
+            return True
         else:
-            eieldap.create(attr)
-            return attr["dn"]
-        return "error"
+            dn = "uid=" + new_user["uid"] + "," + self.basedn
+            logger.debug("creating user(dn): " + str(dn))
+            logger.debug("creating user(attr): " + str(new_user))
+            self.manager.create(dn, new_user)
+            return True
+        return False
 
     def delete(self, uid):
         """ Deletes a user """
@@ -40,7 +46,7 @@ class User():
         users = self.manager.find(self.basedn)
         users_list = []
         for user in users:
-            new_user = self.fix(user)
+            new_user = self.fix(user, self.keymap)
             users_list.append(new_user)
         return users_list
 
@@ -49,11 +55,11 @@ class User():
         user = self.manager.find_one(attr, self.basedn)
         return self.fix(user)
 
-    def fix(self, user):
+    def fix(self, user, keymap):
         new_user = {}
         for key in user.keys():
             try:
-                nkey = self.keys[key]
+                nkey = keymap[key]
                 new_user[nkey] = user[key]
             except KeyError:
                 logger.debug("key not mapped: " + key)
@@ -69,12 +75,12 @@ class Machines():
 
     def save(self, attr):
         """ if the machine exists update, if not create"""
-        machine = eieldap.find_one(attr["dn"])
+        machine = manager.find_one(attr["dn"])
         if machine:
-            eieldap.update(attr)
+            manager.update(attr)
             return attr["dn"]
         else:
-            eieldap.create(attr)
+            manager.create(attr)
             return attr["dn"]
         return "error"
 
