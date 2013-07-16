@@ -34,25 +34,31 @@ class Manager():
             logger.debug(e)
         return False
 
-    def update(self, dn, attr):
+    def update(self, dn, new_attr):
         """ Attr is a dictionary of values for a single thing"""
-        new_attr = self.find_one({"uid": attr["uid"]})
-        del(new_attr["dn"])
-        del(attr["dn"])
-        m = ldap.modlist.modifyModlist(attr, new_attr)
-        logger.debug(m)
-        # try:
-        #     self.connection.modify_s(dn, modlist)
-        #     return True
-        # except ldap.LDAPError as e:
-        #     logger.debug(e)
-        # return False
+        modlist = self.prepare_modlist(dn, new_attr)
+        try:
+            self.connection.modify_s(dn, modlist)
+            return True
+        except ldap.LDAPError as e:
+            logger.debug(e)
+        return False
 
-        # modlist = []
-        # for key in attr.keys():
-        #     modlist.append((ldap.MOD_REPLACE, key, attr[key]))
-        #     # TODO: Error checking
-        #     self.connection.modify_s(dn, modlist)
+    def prepare_modlist(self, dn, new_attr):
+        attr = self.find_by_dn(dn)
+        try:
+            del(attr["dn"])
+        except KeyError:
+            pass
+        try:
+            del(new_attr["dn"])
+        except KeyError:
+            pass
+        for key in attr.keys():
+            if key not in new_attr.keys():
+                new_attr[key] = attr[key]
+        modlist = ldap.modlist.modifyModlist(attr, new_attr)
+        return modlist
 
     def delete(self, dn):
         self.connection.delete_s(dn)
