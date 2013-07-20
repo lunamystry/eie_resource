@@ -61,24 +61,27 @@ class Manager():
         return modlist
 
     def delete(self, dn):
-        self.connection.delete_s(dn)
+        try:
+            self.connection.delete_s(dn)
+        except ldap.LDAPError as e:
+            logger.debug(e)
+        return False
 
-    def change_password(self, username, oldpw, newpw):
-        """ User the python ldap function to change the passord
-        of the user with the supplied uid"""
-        dn = username + self.base
-        print dn
+    def change_password(self, dn, oldpw, newpw):
         try:
             self.connection.passwd_s(dn, None, newpw)
-        except Exception as e:
-            print e
+        except ldap.LDAPError as e:
+            logger.debug(dn)
+            logger.debug(e)
 
-    def authenticate(self, username, password):
-        dn = username + self.base
-        # first search for the username. Each username is unique for
-        # each user.
-        self.connection.bind_s(dn, password)
-        return True
+    def authenticate(self, dn, password):
+        try:
+            self.connection.bind_s(dn, password)
+            return True
+        except ldap.LDAPError as e:
+            logger.debug(dn)
+            logger.debug(e)
+        return False
 
     def find(self, base=None):
         if base is None:

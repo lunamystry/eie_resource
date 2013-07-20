@@ -50,6 +50,16 @@ class User():
             users_list.append(new_user)
         return users_list
 
+    def change_password(self, uid, oldpw, newpw):
+        """ User the python ldap function to change the passord
+        of the user with the supplied uid"""
+        dn = "uid=" + uid + "," + self.basedn
+        return self.manager.change_password(dn, oldpw, newpw)
+
+    def authenticate(self, uid, password):
+        dn = "uid=" + uid + "," + self.basedn
+        return self.manager.authenticate(dn, password)
+
     def find_one(self, attr):
         """ Returns a single user """
         user = self.manager.find_one(attr, self.basedn)

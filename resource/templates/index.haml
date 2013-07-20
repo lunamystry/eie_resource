@@ -16,13 +16,19 @@
           Welcome to resource. A resource repository for Information and Electrical Engineering students
           at Wits.
           You need to sign in for a locker, DHCP and DNS and to make dlab bookings
-        %div
-          %a.btn.btn-warning.btn-large href='#login'
-            Login
-          %a.btn.btn-primary.btn-large href='#users'
-            Users
-          %a.btn.btn-primary.btn-large href='repository/'
-            Repository
+
+    %script#menu-template type="text/x-mustache-template"
+      %li
+        %a href="#users"
+          users
+      %li
+        %a href="/repository"
+          repository
+
+    %script#profile-template type="text/x-mustache-template"
+      -raw
+        %a href="#{{ link_href }}"
+          {{ link_name }}
 
     %script#login-template type="text/x-mustache-template"
       %div.offset5
