@@ -41,7 +41,9 @@ define([
       "login": "login",
       "logout": "logout",
       "users": "users",
-      "about": "about"
+      "about": "about",
+      "bookings": "bookings",
+      "book": "book"
     },
     login: function() {
       document.title = "Sign in - Resource";
@@ -51,8 +53,8 @@ define([
     },
     logout: function() {
       document.title = "Logout - Resource";
-      var session = new Ehlane.Session();
-      location.hash = "#index";
+      AppState.endSession();
+      location.hash = "#login";
     },
     index: function() {
       var view = new IndexView();
@@ -70,7 +72,19 @@ define([
       document.title = "About - Resource";
       $("#title").html("About");
       this.el.empty();
-      this.el.html("Information about the impact will go here");
+      this.el.html("This has information about the dlab and some useful links");
+    },
+    book: function() {
+      document.title = "About - Resource";
+      $("#title").html("About");
+      this.el.empty();
+      this.el.html("Under construction");
+    },
+    bookings: function() {
+      document.title = "About - Resource";
+      $("#title").html("About");
+      this.el.empty();
+      this.el.html("Under construction");
     }
   });
 
