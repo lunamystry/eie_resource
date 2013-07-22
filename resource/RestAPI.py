@@ -22,25 +22,25 @@ client = MongoClient()
 class Session(Resource):
     def get(self, session_id):
         session = client.resource.sessions.find_one({
-            '_id': ObjectId(session_id)})
+            'id': ObjectId(session_id)})
         if self.is_active(session):
-            session["_id"] = str(session["_id"])
+            session["id"] = str(session["id"])
             return session
         else:
             return "{'session': 'Session not found'}", 404
 
     def delete(self, session_id):
-        client.resource.sessions.remove({'_id': ObjectId(session_id)})
+        client.resource.sessions.remove({'id': ObjectId(session_id)})
         return "", 204
 
     def put(self, session_id):
         session = client.resource.sessions.find_one({
-            '_id': ObjectId(session_id)})
+            'id': ObjectId(session_id)})
         args = request.json
         for key in args.keys():
             session[key] = args[key]
         client.resource.sessions.save(session)
-        session["_id"] = str(session["_id"])
+        session["id"] = str(session["id"])
         return session, 201
 
     def is_active(self, session):
@@ -60,7 +60,7 @@ class Sessions(Resource):
         sessions = client.resource.sessions
         session_list = [session for session in sessions.find()]
         for session in session_list:
-            session["_id"] = str(session["_id"])
+            session["id"] = str(session["id"])
             session["timestamp"] = str(session["timestamp"])
             if not Session().is_active(session):
                 sessions.remove(session)
@@ -69,22 +69,23 @@ class Sessions(Resource):
     def post(self):
         """ Login means POSTing to this, this checks the credentials
         If they are valid, it returns a temporary uuid (not very secure)
-        which is the session key stored in mongo"""
+        which is the session key stored mongodb"""
         args = request.json
         data, errors = self.validate(args)
         if errors:
             return errors, 500
-        user = client.resource.users.find_one({'username': data["username"]})
+        user = models.User().find_one({'username': data["username"]})
         if(self.authenticate(data["username"], data["password"])):
             session = client.resource.sessions.find_one({
-                "user_id": str(user["_id"])})
+                "user_id": str(user["id"])})
             if not session:
-                session = {"user_id": str(user["_id"])}
+                session = {"user_id": str(user["id"])}
             session["key"] = str(uuid.uuid4())
             session["timestamp"] = str(
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             client.resource.sessions.save(session)
-            return "session created: " + str(session["_id"]), 201
+            session['id'] = str(session['id'])
+            return jsonify({"result": session})
         return {"username": "Username or Password error"}, 500
 
     def validate(self, args):
@@ -101,10 +102,7 @@ class Sessions(Resource):
         return args, errors
 
     def authenticate(self, username, password):
-        user = client.resource.users.find_one({'username': username})
-        if user:
-            return user["password"] == self.hashed(password, user["salt"])
-        return False
+        return models.User().authenticate(username, password)
 
     def hashed(self, password, salt):
         return hashlib.sha512(password + salt).hexdigest()
@@ -116,11 +114,11 @@ class User(Resource):
         return user
 
     def delete(self, user_id):
-        client.resource.users.remove({'_id': ObjectId(user_id)})
+        client.resource.users.remove({'id': ObjectId(user_id)})
         return "", 204
 
     def put(self, user_id):
-        user = client.resource.users.find_one({'_id': ObjectId(user_id)})
+        user = client.resource.users.find_one({'id': ObjectId(user_id)})
         args = request.values.to_dict()
         data, errors = self.validate(args)
         if errors:

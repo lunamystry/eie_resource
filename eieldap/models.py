@@ -10,7 +10,8 @@ class User():
             manager = Manager(config)
         self.manager = manager
         self.basedn = "ou=people," + self.manager.base
-        self.keymap = {"uid": "username",
+        self.keymap = {"dn": "id",
+                       "uid": "username",
                        "cn": "name",
                        "homeDirectory": "home_directory",
                        "loginShell": "login_shell",
@@ -24,21 +25,38 @@ class User():
         new_user = self.fix(attr, self.inv_keymap)
         user = self.manager.find_one(new_user)
         if user:
-            logger.debug("updating user: " + str(new_user))
+            logger.info("updating user: " + str(new_user))
             self.manager.update(new_user)
             return True
         else:
             dn = "uid=" + new_user["uid"] + "," + self.basedn
-            logger.debug("creating user(dn): " + str(dn))
+            logger.info("creating user(dn): " + str(dn))
             logger.debug("creating user(attr): " + str(new_user))
+            # new_user["objectClass"] = ["account", "posixAccount", "sambaSamAccount"]
+            # new_user["uidNumber"] =
+            # new_user["uidNumber"] =
+            # new_user["homeDirectory"] = "/home/ug/" + uid
+            # lm_password, nt_password = smb_encrypt(attr["password"])
+            # new_user["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid)
+            # new_user["sambaAcctFlags"] = "[U         ]"
+            # new_user["sambaNTPassword"] = nt_password
+            # new_user["sambaLMPassword"] = lm_password
             self.manager.create(dn, new_user)
             return True
         return False
 
+    def smb_encrypt(self, password):
+        """ Calls an smbencrypt which comes with freeradius-utils on Ubuntu
+        to encrypt the password given in smbencrypt form
+        """
+        smbencrypt_output = subprocess.check_output(["smbencrypt", password])
+        lm_password = smbencrypt_output[0:32].strip()
+        nt_password = smbencrypt_output[32:].strip()
+        return lm_password, nt_password
+
     def delete(self, uid):
         """ Deletes a user """
         dn = "uid=" + uid + "," + self.basedn
-        #TODO: errors
         self.manager.delete(dn)
 
     def find(self):
@@ -62,8 +80,9 @@ class User():
 
     def find_one(self, attr):
         """ Returns a single user """
-        user = self.manager.find_one(attr, self.basedn)
-        return self.fix(user)
+        ldap_attr = self.fix(attr, self.inv_keymap)
+        user = self.manager.find_one(ldap_attr, self.basedn)
+        return self.fix(user, self.keymap)
 
     def fix(self, user, keymap):
         new_user = {}
