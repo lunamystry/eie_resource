@@ -2,6 +2,13 @@ from flask import url_for
 from flask import render_template
 from flask import request
 from resource.admin import bp
+from resource.admin import RestAPI
+from resource import api
+
+api.add_resource(RestAPI.Sessions, '/admin/sessions')
+api.add_resource(RestAPI.Session, '/admin/sessions/<string:session_id>')
+api.add_resource(RestAPI.Users, '/users')
+api.add_resource(RestAPI.User, '/users/<string:user_id>')
 
 
 @bp.before_request

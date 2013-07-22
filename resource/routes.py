@@ -1,18 +1,9 @@
 from flask import render_template
 from flask import request
 from flask import send_from_directory
-from flask.ext.restful import Resource
-from flask.ext.restful import reqparse
-from flask.ext.restful import abort
 import os
-from resource import RestAPI
 from resource import app
 from resource import api
-
-api.add_resource(RestAPI.Sessions, '/sessions')
-api.add_resource(RestAPI.Session, '/sessions/<string:session_id>')
-api.add_resource(RestAPI.Users, '/users')
-api.add_resource(RestAPI.User, '/users/<string:user_id>')
 
 
 @app.route('/')
