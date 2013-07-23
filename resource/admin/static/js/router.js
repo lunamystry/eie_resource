@@ -1,4 +1,4 @@
-// Filename: router.js
+// Filename: admin.router.js
 define([
   'jquery',
   'underscore',
@@ -38,23 +38,8 @@ define([
     routes: {
       "": "index",
       "index": "index",
-      "login": "login",
-      "logout": "logout",
       "users": "users",
-      "about": "about",
-      "bookings": "bookings",
-      "book": "book"
-    },
-    login: function() {
-      document.title = "Sign in - Resource";
-      var view = new LoginView();
-      this.el.empty();
-      this.el.append(view.render().el);
-    },
-    logout: function() {
-      document.title = "Logout - Resource";
-      AppState.endSession();
-      location.hash = "#login";
+      "machines": "machines",
     },
     index: function() {
       var view = new IndexView();
@@ -68,23 +53,12 @@ define([
       this.el.empty();
       this.el.append(view.render().el);
     },
-    about: function() {
-      document.title = "About - Resource";
-      $("#title").html("About");
+    machines: function() {
+      document.title = "Users - Resource";
+      $("#title").html("Users");
+      var view = new UsersView();
       this.el.empty();
-      this.el.html("This has information about the dlab and some useful links");
-    },
-    book: function() {
-      document.title = "About - Resource";
-      $("#title").html("About");
-      this.el.empty();
-      this.el.html("Under construction");
-    },
-    bookings: function() {
-      document.title = "About - Resource";
-      $("#title").html("About");
-      this.el.empty();
-      this.el.html("Under construction");
+      this.el.append(view.render().el);
     }
   });
 

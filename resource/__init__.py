@@ -18,7 +18,7 @@ api = Api(app)
 
 from resource import routes
 import admin
-app.register_blueprint(admin.bp, url_prefix='/admin')
+app.register_blueprint(admin.admin, url_prefix='/admin')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

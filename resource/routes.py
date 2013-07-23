@@ -16,12 +16,6 @@ def page_not_found(error):
     return render_template('page_not_found.haml'), 404
 
 
-@app.route('/docs/<path:filename>')
-def documentation(filename):
-    cwd = os.path.dirname(__file__)
-    return send_from_directory(cwd + '/static/docs', filename)
-
-
 @app.route('/js/<path:filename>')
 def js(filename):
     cwd = os.path.dirname(__file__)
