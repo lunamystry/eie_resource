@@ -133,16 +133,18 @@ if __name__ == '__main__':
     manager = Manager(config)
     base = "ou=people," + manager.base
     r = manager.connection.search_s(base, ldap.SCOPE_SUBTREE, 'uid=*')
-    # safe = ['leny', 'raduser', 'root', 'testuser']
+    # safe = ['leny', 'raduser', 'root', 'testuser', 'mbulil']
     # cnt = 1
     # for dn, entry in r:
     #     if entry['uid'][-1] not in safe:
+    #         print dn
     #         # print cnt, 'Processing: ', repr(entry['uid'][-1])
     #         cnt += 1
     #         print repr(entry['uidNumber'][-1]), repr(entry['uid'][-1])
+    #         manager.delete(dn)
     # fields = manager.find_one({"uid": "moilwam"})
-    print manager.find()
-    print "All the people in " + manager.base
+    # print manager.find()
+    # print "All the people in " + manager.base
     # print fields
     # print fields["objectClass"]
     # dn = "cn=Leonard Mbuli,ou=people," + manager.base
@@ -171,8 +173,10 @@ if __name__ == '__main__':
     # }
     # manager.create(dn, user)
     # manager.delete(dn)
-    # print manager.authenticate('cn=Leonard Mbuli,ou=people,', "passing")
-    # print manager.change_password('cn=Leonard Mbuli,ou=people,',
-    #                               "pass",
-    #                               "passing")
+    # print manager.authenticate('uid=moilwam,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "0201672w")
+    print manager.authenticate('uid=mbulil,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "pass")
+    # print manager.authenticate('uid=raduser,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "pass")
+    print manager.change_password('uid=mbulil,ou=people,dc=eie,dc=wits,dc=ac,dc=za',
+                                  'passing',
+                                  "pass")
     # manager.change_password('uid=leny,ou=ug,'+manager.base,'pass', 'passing')

@@ -3,18 +3,17 @@ define([
   'underscore',
   'mustache',
   'backbone',
-  'models/session',
-  'jquery_cookie'
-], function($, _, Mustache, Backbone, SessionModel) {
+  'models/users',
+], function($, _, Mustache, Backbone, UsersModel, UserView) {
 
   var template = function(name) {
     return Mustache.compile($('#'+name+'-template').html());
   };
 
-  var LoginForm = Backbone.View.extend({
+  var UsersForm = Backbone.View.extend({
     tagName: "form",
     className: "form",
-    template: template('login-form'),
+    template: template('user-form'),
     events: {
       "submit": "submit"
     },
@@ -24,31 +23,34 @@ define([
     },
     submit: function(event) {
       event.preventDefault();
-      var session = new SessionModel();
-      session.save({
+      var user = this.collection.create({
+        'first_name': this.$('#first_name input').val(),
+        'last_name': this.$('#last_name input').val(),
         'username': this.$('#username input').val(),
-        'password': this.$('#password input').val(),
+        'email': this.$('#email input').val(),
+        'gender': this.$('#gender input').val(),
+        'address': this.$('#address input').val(),
+        'school': this.$('#school input').val(),
+        'phone_no': this.$('#phone_no input').val(),
+        'cellphone_no': this.$('#cellphone_no input').val(),
+        'role_id': this.$('#role_id input').val(),
       },{
-        success: function(session, response) {
-          result = response.result;
-          $.cookie(result.user_id, result.key);
-          $.cookie("user_id", result.user_id);
-          console.log("Success");
-          location.hash = "#index";
+        wait: true,
+        success: function(model, response) {
+          console.log(model);
         },
         error: function(model, response) {
           errors = $.parseJSON(response.responseText);
           for (var field in model.attributes) {
             if (model.attributes.hasOwnProperty(field)) {
               this.$('#' + field + " input").val(model.attributes[field]);
-              this.$('#' + field + " .help-inline").html("");
               this.$('#' + field).removeClass('error');
             }
           }
           for (var field in errors) {
             if (errors.hasOwnProperty(field)) {
               this.$('#' + field).addClass('error');
-              this.$('#' + field + " .help-inline").html(errors[field]);
+              this.$('#' + field + " .help-inline").html(errors[field].join("<br/>"));
             }
           }
         }
@@ -56,5 +58,5 @@ define([
     }
   });
 
-  return LoginForm;
+  return UsersForm;
 });

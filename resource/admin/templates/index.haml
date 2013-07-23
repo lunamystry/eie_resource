@@ -1,0 +1,109 @@
+-extends "base.haml"
+-macro text_field(label, id)
+  %div.control-group id='{{ id }}'
+    %div.controls
+      %input.input name='{{ id }}_input' type='text' placeholder='{{ label }}'
+    %span.help-inline
+
+-block body
+  %div#resource
+  %div#templates
+    %script#index-template type="text/x-mustache-template"
+      %div.hero-unit
+        %h1
+          Resource
+        %p
+          Welcome to resource. A resource repository for Information and Electrical Engineering students
+          at Wits.
+          You need to sign in for a locker, DHCP and DNS and to make dlab bookings
+
+    %script#menu-template type="text/x-mustache-template"
+      %li
+        %a href="#"
+          home
+      %li
+        %a href="admin/#users"
+          users
+      %li
+        %a href="#bookings"
+          bookings
+      %li
+        %a href="/repository"
+          repository
+
+    %script#profile-template type="text/x-mustache-template"
+      -raw
+        %a href="#{{ link_href }}"
+          {{ link_name }}
+
+    %script#login-template type="text/x-mustache-template"
+      %div.offset5
+        %h2
+          Sign in
+        %div.login_form
+
+    %script#login-form-template type="text/x-mustache-template"
+      {{ text_field("Username", "username") }}
+      %div.control-group id='password'
+        %div.controls
+          %input.input name='password_input' type='password' placeholder='Password'
+        %span.help-inline
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Sign in
+
+    %script#users-index-template type="text/x-mustache-template"
+      %div.form.span3#users_form
+      %div.list.span9#users_list
+        %h2
+          There are:
+          -raw
+              {{ count }}
+          users
+
+    %script#user-template type="text/x-mustache-template"
+      %span.well.span3.user
+        %span
+          %strong
+            -raw
+              {{ fullname }}  {{ points }}
+        -raw
+          %br
+          Username: {{ username }}
+        %div.control-group.controls
+          %button.btn-view.btn.btn-warning
+            view
+          %button.btn-delete.btn.btn-danger
+            delete
+
+    %script#groups-group-template type="text/x-mustache-template"
+      %div.well.span3.group
+        %span
+          %strong
+            -raw
+              {{ name }}  {{ points }}
+        -raw
+          %br
+          Members {{ members }}
+        %div.control-group.controls
+          %button.btn.btn-danger
+            delete
+
+    %script#user-form-template type="text/x-mustache-template"
+      {{ text_field("Name", "first_name") }}
+      {{ text_field("Surname", "last_name") }}
+      {{ text_field("Username", "username") }}
+      {{ text_field("Gender", "gender") }}
+      {{ text_field("Address", "address") }}
+      {{ text_field("Email", "email") }}
+      {{ text_field("School", "school") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Create
+
+    %script#group-form-template type="text/x-mustache-template"
+      {{ text_field("Name", "name") }}
+      {{ text_field("Members", "members") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Create
