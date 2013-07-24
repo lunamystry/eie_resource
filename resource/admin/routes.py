@@ -7,8 +7,6 @@ from resource.admin import RestAPI
 from resource import api
 import logging
 
-api.add_resource(RestAPI.Sessions, '/admin/sessions')
-api.add_resource(RestAPI.Session, '/admin/sessions/<string:session_id>')
 api.add_resource(RestAPI.Users, '/users')
 api.add_resource(RestAPI.User, '/users/<string:user_id>')
 

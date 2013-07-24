@@ -31,10 +31,19 @@
         %a href="#help"
           help
       %li
+        %a href="#about"
+          about
+      %li
         %a href="#profile"
           profile
 
     %script#profile-template type="text/x-mustache-template"
+      -raw
+        %span
+          {{ fullname }}
+
+
+    %script#nav-profile-template type="text/x-mustache-template"
       -raw
         %a href="#{{ link_href }}"
           {{ link_name }}

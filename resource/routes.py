@@ -3,8 +3,11 @@ from flask import request
 from flask import send_from_directory
 import os
 from resource import app
+from resource import RestAPI
 from resource import api
 
+api.add_resource(RestAPI.Sessions, '/sessions')
+api.add_resource(RestAPI.Session, '/sessions/<string:session_id>')
 
 @app.route('/')
 def index():

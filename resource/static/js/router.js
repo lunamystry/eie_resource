@@ -7,9 +7,9 @@ define([
   'views/menu',
   'views/index',
   'views/login',
-  'views/users_index',
+  'views/profile_index',
   'jquery_cookie'
-], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, UsersView){
+], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, ProfileView){
 
   function authorized() {
     if (typeof $.cookie("user_id") != 'undefined') {
@@ -38,12 +38,11 @@ define([
     routes: {
       "": "index",
       "index": "index",
-      "login": "login",
-      "logout": "logout",
-      "users": "users",
       "about": "about",
       "bookings": "bookings",
-      "book": "book"
+      "profile": "profile",
+      "login": "login",
+      "logout": "logout"
     },
     login: function() {
       document.title = "Sign in - Resource";
@@ -61,18 +60,20 @@ define([
       this.el.empty();
       this.el.append(view.render().el);
     },
-    users: function() {
-      document.title = "Users - Resource";
-      $("#title").html("Users");
-      var view = new UsersView();
-      this.el.empty();
-      this.el.append(view.render().el);
-    },
     about: function() {
       document.title = "About - Resource";
       $("#title").html("About");
       this.el.empty();
       this.el.html("This has information about the dlab and some useful links");
+    },
+    profile: function() {
+      if(!authorized()) {
+        document.title = "Profile - Resource";
+        $("#title").html("About");
+        var view = new ProfileView();
+        this.el.empty();
+        this.el.append(view.render().el);
+      }
     },
     book: function() {
       document.title = "About - Resource";

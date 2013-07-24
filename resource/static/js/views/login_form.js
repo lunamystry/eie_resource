@@ -3,9 +3,10 @@ define([
   'underscore',
   'mustache',
   'backbone',
+  'state',
   'models/session',
   'jquery_cookie'
-], function($, _, Mustache, Backbone, SessionModel) {
+], function($, _, Mustache, Backbone, AppState, SessionModel) {
 
   var template = function(name) {
     return Mustache.compile($('#'+name+'-template').html());
@@ -31,10 +32,8 @@ define([
       },{
         success: function(session, response) {
           result = response.result;
-          $.cookie(result.user_id, result.key);
-          $.cookie("user_id", result.user_id);
-          console.log("Success");
-          location.hash = "#index";
+          AppState.newSession(response.result);
+          location.hash = "#home"
         },
         error: function(model, response) {
           errors = $.parseJSON(response.responseText);
