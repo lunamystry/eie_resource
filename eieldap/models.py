@@ -82,17 +82,21 @@ class User():
         """ Returns a single user """
         ldap_attr = self.fix(attr, self.inv_keymap)
         user = self.manager.find_one(ldap_attr, self.basedn)
-        return self.fix(user, self.keymap)
+        if user:
+            return self.fix(user, self.keymap)
 
     def fix(self, user, keymap):
-        new_user = {}
-        for key in user.keys():
-            try:
-                nkey = keymap[key]
-                new_user[nkey] = user[key]
-            except KeyError:
-                logger.debug("key not mapped: " + key)
-        return new_user
+        if user:
+            new_user = {}
+            for key in user.keys():
+                try:
+                    nkey = keymap[key]
+                    new_user[nkey] = user[key]
+                except KeyError:
+                    logger.debug("key not mapped: " + key)
+            return new_user
+        else:
+            return user
 
 
 class Machines():
