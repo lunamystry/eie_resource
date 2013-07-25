@@ -21,6 +21,7 @@ define([
     },
     render: function() {
       this.$el.html(this.template(this));
+      this.$('#username input').val($.cookie("username"));
       return this;
     },
     submit: function(event) {
