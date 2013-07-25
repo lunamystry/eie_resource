@@ -14,7 +14,7 @@ define([
     className: "profile row-fluid",
     template: template('profile'),
     initialize: function() {
-      this.user = new UserModel({'user_id': $.cookie('user_id')});
+      this.user = new UserModel({'username': $.cookie('username')});
       this.user.on('all', this.render, this);
       this.user.fetch();
     },
@@ -22,7 +22,7 @@ define([
       this.$el.html(this.template(this));
       return this;
     },
-    fullname: function() { return this.user.fullname(); },
+    name: function() { return this.user.name(); },
   });
 
   return UsersIndex;

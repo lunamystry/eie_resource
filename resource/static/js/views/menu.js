@@ -15,21 +15,21 @@ define([
     tagName: "li",
     template: template('nav-profile'),
     initialize: function(options) {
-      this.user_id = options.user_id;
+      this.username = options.username;
     },
     render: function() {
       this.$el.html(this.template(this));
       return this;
     },
     link_href: function() {
-      if (typeof this.user_id == 'undefined') {
+      if (typeof this.username == 'undefined') {
         return "login";
       } else {
         return "logout";
       }
     },
     link_name: function() {
-      if (typeof this.user_id == 'undefined') {
+      if (typeof this.username == 'undefined') {
         return "sign in";
       } else {
         return "sign out";
@@ -46,7 +46,7 @@ define([
     },
     render: function() {
       this.$el.html(this.template(this));
-      var profileView = new Profile({"user_id": $.cookie("user_id")});
+      var profileView = new Profile({"username": $.cookie("username")});
       this.$el.append(profileView.render().el);
       return this;
     },

@@ -4,18 +4,18 @@ define([
   'mustache',
   'backbone',
   'state',
-  'models/session',
+  'models/user',
   'jquery_cookie'
-], function($, _, Mustache, Backbone, AppState, SessionModel) {
+], function($, _, Mustache, Backbone, AppState, UserModel) {
 
   var template = function(name) {
     return Mustache.compile($('#'+name+'-template').html());
   };
 
-  var LoginForm = Backbone.View.extend({
+  var PasswordForm = Backbone.View.extend({
     tagName: "form",
     className: "form",
-    template: template('login-form'),
+    template: template('change-password-form'),
     events: {
       "submit": "submit"
     },
@@ -25,15 +25,14 @@ define([
     },
     submit: function(event) {
       event.preventDefault();
-      var session = new SessionModel();
-      session.save({
+      var user = new UserModel();
+      user.save({
         'username': this.$('#username input').val(),
         'password': this.$('#password input').val(),
       },{
-        success: function(session, response) {
+        success: function(user, response) {
           result = response.result;
-          AppState.newSession(response.result);
-          location.hash = "#index"
+          location.hash = "#home"
         },
         error: function(model, response) {
           errors = $.parseJSON(response.responseText);
@@ -55,5 +54,5 @@ define([
     }
   });
 
-  return LoginForm;
+  return PasswordForm;
 });

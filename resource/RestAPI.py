@@ -77,9 +77,9 @@ class Sessions(Resource):
         user = models.User().find_one({'username': data["username"]})
         if(self.authenticate(data["username"], data["password"])):
             session = client.resource.sessions.find_one({
-                "user_id": str(user["id"])})
+                "username": str(user["username"])})
             if not session:
-                session = {"user_id": str(user["id"])}
+                session = {"username": str(user["username"])}
             session["key"] = str(uuid.uuid4())
             session["timestamp"] = str(
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

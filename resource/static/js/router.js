@@ -12,8 +12,9 @@ define([
 ], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, ProfileView){
 
   function authorized() {
-    if (typeof $.cookie("user_id") != 'undefined') {
-      if (typeof $.cookie($.cookie("user_id")) != 'undefined') {
+
+    if (typeof $.cookie("username") != 'undefined') {
+      if (typeof $.cookie($.cookie("username")) != 'undefined') {
         return true;
       }
     }
@@ -67,13 +68,14 @@ define([
       this.el.html("This has information about the dlab and some useful links");
     },
     profile: function() {
-      if(!authorized()) {
+      if(authorized()) {
         document.title = "Profile - Resource";
         $("#title").html("About");
         var view = new ProfileView();
         this.el.empty();
         this.el.append(view.render().el);
       }
+
     },
     book: function() {
       document.title = "About - Resource";
@@ -88,6 +90,5 @@ define([
       this.el.html("Under construction");
     }
   });
-
   return  Router;
 });

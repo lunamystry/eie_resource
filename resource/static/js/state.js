@@ -11,21 +11,20 @@ define([
 
   var newSession = function(attributes) {
     window.AppState.session = new SessionModel(attributes);
-    $.cookie("user_id", attributes.user_id);
-    $.cookie(attributes.user_id, attributes.key);
-
+    $.cookie("username", attributes.username);
+    $.cookie(attributes.username, attributes.key);
   };
 
   var restoreSession = function() {
-    if (typeof $.cookie("user_id") != 'undefined') {
+    if (typeof $.cookie("username") != 'undefined') {
       var session = new SessionModel();
       session.fetch({
-        "key": $.cookie($.cookie("user_id"))
+        "key": $.cookie($.cookie("username"))
       },{
         success: function(session, response) {
           console.log("Restore a session");
           result = response.result;
-          $.cookie("user_id", result.user_id);
+          $.cookie("username", result.user_id);
           $.cookie(result.user_id, result.key);
           newSession(response.result);
         },
@@ -37,9 +36,9 @@ define([
   };
 
   function endSession() {
-    if (typeof $.cookie("user_id") != 'undefined') {
-      $.removeCookie($.cookie($.cookie("user_id")));
-      $.removeCookie("user_id");
+    if (typeof $.cookie("username") != 'undefined') {
+      $.removeCookie($.cookie($.cookie("username")));
+      $.removeCookie("username");
       if (typeof window.AppState.sessoin != 'undefined') {
         window.AppState.session.destroy();
       }
