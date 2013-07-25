@@ -17,7 +17,5 @@ setup(
         'Werkzeug>=0.8.3',
         'python-ldap>=2.4.10',
         'Flask-Login>=0.1.3',
-        'SQLAlchemy>=0.6',
-        'SQLAlchemy-Migrate>=0.6',
         'Fabric>=1.5.1']
     )
