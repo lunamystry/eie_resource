@@ -26,32 +26,47 @@ define([
     },
     submit: function(event) {
       event.preventDefault();
-      var user = new UserModel();
-      user.save({
-        'username': this.$('#username input').val(),
-        'password': this.$('#password input').val(),
-      },{
-        success: function(user, response) {
-          result = response.result;
-          location.hash = "#home"
-        },
-        error: function(model, response) {
-          errors = $.parseJSON(response.responseText);
-          for (var field in model.attributes) {
-            if (model.attributes.hasOwnProperty(field)) {
-              this.$('#' + field + " input").val(model.attributes[field]);
-              this.$('#' + field + " .help-inline").html("");
-              this.$('#' + field).removeClass('error');
+      var user = new UserModel({"username": $.cookie("username")});
+      var new_password = this.$('#new_password input').val();
+      var password2 = this.$('#password2 input').val();
+      if (new_password == password2) {
+        user.save({
+          'username': $.cookie("username"),
+          'new_password': new_password,
+        },{
+          success: function(user, response) {
+            result = response.result;
+            this.$("#new_password input").val("");
+            this.$("#password2 input").val("");
+            this.$("#new_password .help-inline").html("");
+            this.$("#password2 .help-inline").html("");
+            this.$("#new_password").removeClass('error');
+            this.$("#password2").removeClass('error');
+            console.log(user);
+          },
+          error: function(model, response) {
+            errors = $.parseJSON(response.responseText);
+            for (var field in model.attributes) {
+              if (model.attributes.hasOwnProperty(field)) {
+                this.$('#' + field + " input").val(model.attributes[field]);
+                this.$('#' + field + " .help-inline").html("");
+                this.$('#' + field).removeClass('error');
+              }
+            }
+            for (var field in errors) {
+              if (errors.hasOwnProperty(field)) {
+                this.$('#' + field).addClass('error');
+                this.$('#' + field + " .help-inline").html(errors[field]);
+              }
             }
           }
-          for (var field in errors) {
-            if (errors.hasOwnProperty(field)) {
-              this.$('#' + field).addClass('error');
-              this.$('#' + field + " .help-inline").html(errors[field]);
-            }
-          }
-        }
-      });
+        });
+      } else{
+        this.$("#new_password").addClass('error');
+        this.$("#password2").addClass('error');
+        this.$("#new_password .help-inline").html("Passwords must match");
+        this.$("#password2 .help-inline").html("Passwords must match");
+      }
     }
   });
 

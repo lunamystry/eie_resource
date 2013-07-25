@@ -22,12 +22,20 @@ class User(Resource):
         return "", 204
 
     def put(self, user_id):
-        user = client.resource.users.find_one({'id': ObjectId(user_id)})
-        args = request.values.to_dict()
-        data, errors = self.validate(args)
-        if errors:
-            return errors, 500
-        users.save(data)
+        user = models.User().find_one({"username": user_id})
+        args = request.json
+        # TODO: Validation!
+        # data, errors = Users().validate(args)
+        if user:
+            if 'new_password' in args.keys():
+                models.User().change_password(user_id,
+                                              None,
+                                              args['new_password'])
+            else:
+                logger.info(args)
+        # if errors:
+        #     return errors, 500
+        # users.save(data)
         return user, 201
 
 

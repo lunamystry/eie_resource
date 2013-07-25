@@ -70,11 +70,11 @@
     %script#change-password-form-template type="text/x-mustache-template"
       %div.control-group id='username'
         %div.controls
-          %input.input name='username_input' type='text' placeholder='Username'
+          %input.input name='username_input' type='text' placeholder='Username' readonly
           %span.help-inline
-      %div.control-group id='password'
+      %div.control-group id='new_password'
         %div.controls
-          %input.input name='password_input' type='password' placeholder='Password'
+          %input.input name='new_password_input' type='password' placeholder='New password'
           %span.help-inline
       %div.control-group id='password2'
         %div.controls
@@ -83,7 +83,6 @@
       %dl.control-group.controls
         %button.btn.btn-danger.btn-large. type="submit"
           Change
-
 
     %script#users-index-template type="text/x-mustache-template"
       %div.form.span3#users_form

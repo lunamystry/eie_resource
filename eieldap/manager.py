@@ -70,6 +70,7 @@ class Manager():
     def change_password(self, dn, oldpw, newpw):
         try:
             self.connection.passwd_s(dn, None, newpw)
+            return True
         except ldap.LDAPError as e:
             logger.debug(dn)
             logger.debug(e)
