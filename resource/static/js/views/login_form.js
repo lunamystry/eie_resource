@@ -33,7 +33,7 @@ define([
         success: function(session, response) {
           result = response.result;
           AppState.newSession(response.result);
-          location.hash = "#index"
+          location.hash = "#profile"
         },
         error: function(model, response) {
           errors = $.parseJSON(response.responseText);

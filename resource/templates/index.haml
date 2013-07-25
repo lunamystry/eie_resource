@@ -39,9 +39,12 @@
 
     %script#profile-template type="text/x-mustache-template"
       -raw
-        %span
-          {{ name }}
-
+        %div#user-details.span4
+          %h2
+            {{ name }}
+        %div#password-form.pull-right
+          %h3
+            change password
 
     %script#nav-profile-template type="text/x-mustache-template"
       -raw
@@ -63,6 +66,21 @@
       %dl.control-group.controls
         %button.btn.btn-success.btn-large. type="submit"
           Sign in
+
+    %script#change-password-form-template type="text/x-mustache-template"
+      {{ text_field("Username", "username") }}
+      %div.control-group id='password'
+        %div.controls
+          %input.input name='password_input' type='password' placeholder='Password'
+        %span.help-inline
+      %div.control-group id='password2'
+        %div.controls
+          %input.input name='password_input2' type='password' placeholder='Re-enter password'
+        %span.help-inline
+      %dl.control-group.controls
+        %button.btn.btn-danger.btn-large. type="submit"
+          Change
+
 
     %script#users-index-template type="text/x-mustache-template"
       %div.form.span3#users_form

@@ -4,7 +4,8 @@ define([
   'mustache',
   'backbone',
   'models/user',
-], function($, _, Mustache, Backbone, UserModel) {
+  'views/change_password_form'
+], function($, _, Mustache, Backbone, UserModel, PasswordForm) {
 
   var template = function(name) {
     return Mustache.compile($('#'+name+'-template').html());
@@ -20,6 +21,8 @@ define([
     },
     render: function() {
       this.$el.html(this.template(this));
+      form = new PasswordForm();
+      this.$("#password-form").append(form.render().el);
       return this;
     },
     name: function() { return this.user.name(); },
