@@ -47,6 +47,33 @@
       %h2
         Dlab Bookings
       %div#bookings-list.span7
+        %h2
+          Booking Procedure
+        %ol
+          %li
+            Download the dlab usage policy below
+          %li
+            email
+            %a href="mailto:supervisor@eie.wits.ac.za?Subject=Dlab%20booking"
+              supervisor@eie.wits.ac.za
+            with the details of the booking
+            Bookings will be confirmed by email.
+          %li
+            Confirm with the student lab administrators that:
+            %ol
+              %li
+                you will have the full complement of systems which you book
+              %li
+                the number of systems you will need
+              %li
+                your required software is installed
+          %li
+            an assistant administrator will be on standby for the booking.
+          %li
+            Inform the PG demis that the wheelchair access door must be closed unless
+            a demi is posted at the door – sounds unreasonable, but there are valid
+            reasons for insisting that the door be either closed or access be controlled by a
+            demi. Soneone may close the door if you leave the door open!
         %div
           %a.btn href="http://resource.eie.wits.ac.za/repository/NetworkAdmin/DLabBooking-SimpleFormat-2013-s2.pdf"
             Download
@@ -63,8 +90,13 @@
           New booking
 
     %script#bookings-form-template type="text/x-mustache-template"
-      {{ text_field("Date", "date") }}
-      {{ text_field("Date", "date") }}
+      {{ text_field("Contact person", "name") }}
+      {{ text_field("Dates", "dates") }}
+      {{ text_field("Number of PCs", "systems") }}
+      {{ text_field("Software", "software") }}
+      {{ text_field("Demis on the day", "demis") }}
+      %textarea
+        Comments
       %dl.control-group.controls
         %button.btn.btn-success.btn-large. type="submit"
           Book
