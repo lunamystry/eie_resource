@@ -18,7 +18,9 @@ class User():
                        "uidNumber": "uid_number",
                        "gidNumber": "gid_number",
                        "mail": "email"}
-        self.inv_keymap = {v:k for k, v in self.keymap.items()}
+        self.inv_keymap = {}
+        for k,v in self.keymap.items():
+            self.inv_keymap[v] = k
 
     def save(self, attr):
         """ if the user exists update, if not create"""
