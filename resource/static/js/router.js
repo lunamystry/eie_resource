@@ -8,8 +8,9 @@ define([
   'views/index',
   'views/login',
   'views/profile_index',
+  'views/bookings_index',
   'jquery_cookie'
-], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, ProfileView){
+], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, ProfileView, BookingsView){
 
   function authorized() {
 
@@ -63,14 +64,12 @@ define([
     },
     about: function() {
       document.title = "About - Resource";
-      $("#title").html("About");
       this.el.empty();
       this.el.html("This has information about the dlab and some useful links");
     },
     profile: function() {
       if(authorized()) {
         document.title = "Profile - Resource";
-        $("#title").html("About");
         var view = new ProfileView();
         this.el.empty();
         this.el.append(view.render().el);
@@ -79,15 +78,14 @@ define([
     },
     book: function() {
       document.title = "About - Resource";
-      $("#title").html("About");
       this.el.empty();
       this.el.html("Under construction");
     },
     bookings: function() {
-      document.title = "About - Resource";
-      $("#title").html("About");
+      document.title = "Bookings - Resource";
+      var view = new BookingsView();
       this.el.empty();
-      this.el.html("Under construction");
+      this.el.append(view.render().el);
     }
   });
   return  Router;

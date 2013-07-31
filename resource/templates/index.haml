@@ -37,6 +37,45 @@
         %a href="#profile"
           profile
 
+    %script#booking-template type="text/x-mustache-template"
+      %span.well.span3.user
+        %span
+          %strong
+           This is a single booking
+
+    %script#bookings-index-template type="text/x-mustache-template"
+      %h2
+        Dlab Bookings
+      %div#bookings-list.span7
+        %div
+          %a.btn href="http://resource.eie.wits.ac.za/repository/NetworkAdmin/DLabBooking-SimpleFormat-2013-s2.pdf"
+            Download
+          PDF list of bookings
+        %br
+        %div
+          %a.btn href="http://resource.eie.wits.ac.za/repository/NetworkAdmin/computer-lab-usage-policy.pdf"
+            Download
+          Dlab usage policy
+      %div#bookings-form.pull-right
+        %span style="color: red"
+          Note, this form does not work yet
+        %h2
+          New booking
+
+    %script#bookings-form-template type="text/x-mustache-template"
+      {{ text_field("Date", "date") }}
+      {{ text_field("Date", "date") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Book
+
+    %script#bookings-template type="text/x-mustache-template"
+      {{ text_field("Date", "date") }}
+      {{ text_field("Date", "date") }}
+      %dl.control-group.controls
+        %button.btn.btn-success.btn-large. type="submit"
+          Book
+
     %script#profile-template type="text/x-mustache-template"
       -raw
         %div#user-details.span4
