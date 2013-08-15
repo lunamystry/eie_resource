@@ -5,7 +5,7 @@ import ldap.modlist
 from eieldap import config
 from eieldap import logger
 
-class Manager():
+pclass Manager():
     """This a module to help with managing the eieldap using python"""
 
     def __init__(self,  config=config):
@@ -35,7 +35,7 @@ class Manager():
         return False
 
     def update(self, dn, new_attr):
-        """ Attr is a dictionary of values for a single thing"""
+        """ new_attr is a dictionary of values"""
         modlist = self.prepare_modlist(dn, new_attr)
         try:
             self.connection.modify_s(dn, modlist)

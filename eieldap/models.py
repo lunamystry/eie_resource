@@ -1,6 +1,7 @@
 from eieldap import config
 from eieldap.manager import Manager
 from eieldap import logger
+import subprocess
 
 
 class User():
@@ -71,10 +72,18 @@ class User():
         return users_list
 
     def change_password(self, uid, oldpw, newpw):
-        """ User the python ldap function to change the passord
+        """ User the python ldap function to change the password
         of the user with the supplied uid"""
         dn = "uid=" + uid + "," + self.basedn
-        return self.manager.change_password(dn, oldpw, newpw)
+        user = self.manager.find_by_dn(dn)
+        if user:
+            logger.info("updating user: " + str(user))
+            lm_password, nt_password = self.smb_encrypt(newpw)
+            user["sambaNTPassword"] = nt_password
+            user["sambaLMPassword"] = lm_password
+            if self.manager.update(dn, user):
+                return self.manager.change_password(dn, oldpw, newpw)
+        return False
 
     def authenticate(self, uid, password):
         dn = "uid=" + uid + "," + self.basedn
@@ -135,6 +144,6 @@ class Machines():
 
 
 if __name__ == "__main__":
-    user = Users()
+    user = User()
     print user.find()
     print user.find_one({"uid": "mandla"})
