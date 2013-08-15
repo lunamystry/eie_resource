@@ -5,7 +5,7 @@ import ldap.modlist
 from eieldap import config
 from eieldap import logger
 
-pclass Manager():
+class Manager():
     """This a module to help with managing the eieldap using python"""
 
     def __init__(self,  config=config):
