@@ -6,7 +6,7 @@ define([
 ], function($, _, Mustache, Backbone) {
 
   var Image = Backbone.Model.extend({
-    urlRoot: "/images/animals",
+    urlRoot: "/class_photos",
     idAttribute: "name",
     name: function() { return this.get("name");},
     url: function() { return this.get("url");},

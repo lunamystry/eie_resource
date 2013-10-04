@@ -8,7 +8,7 @@ define([
 ], function($, _, Mustache, Backbone, ImageModel) {
 
   var Images = Backbone.Collection.extend({
-    url: function() { return "/images/animals"},
+    url: function() { return "/class_photos"},
     sync: function(method, model, options) {
       keyHeader = {"key": $.cookie($.cookie("user_id"))};
       $.ajaxSetup({headers: keyHeader});

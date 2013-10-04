@@ -6,6 +6,8 @@ from resource import app
 from resource import RestAPI
 from resource import api
 
+api.add_resource(RestAPI.ClassPhotos, '/class_photos')
+api.add_resource(RestAPI.ClassPhoto, '/class_photos/<string:name>')
 api.add_resource(RestAPI.Sessions, '/sessions')
 api.add_resource(RestAPI.Session, '/sessions/<string:session_id>')
 

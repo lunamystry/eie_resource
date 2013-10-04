@@ -16,7 +16,8 @@ define([
      IndexView,
      LoginView,
      ProfileView,
-     BookingsView){
+     BookingsView,
+     ClassPhotosView){
 
   function authorized() {
 
@@ -49,6 +50,7 @@ define([
       "about": "about",
       "bookings": "bookings",
       "profile": "profile",
+      "class_photos": "class_photos",
       "login": "login",
       "logout": "logout"
     },
@@ -91,6 +93,12 @@ define([
       document.title = "Bookings - Resource";
       var view = new BookingsView();
       this.el.empty();
+      this.el.append(view.render().el);
+    },
+    class_photos: function() {
+      document.title = "Class Photos - Resource";
+      this.el.empty();
+      var view = new ClassPhotosView();
       this.el.append(view.render().el);
     }
   });
