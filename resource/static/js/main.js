@@ -8,13 +8,13 @@ require.config({
     underscore: 'lib/underscore',
     mustache: 'lib/mustache',
     backbone: 'lib/backbone',
-    jquery_cookie: 'lib/jquery.cookie'
+    jquery_cookie: 'lib/jquery.cookie',
+    prettyPhoto: 'lib/jquery.prettyPhoto',
   },
   shim: {
-    'backbone': { deps: ['jquery', 'underscore'],
-                  exports: 'Backbone'},
-    'jquery_cookie': { deps: ['jquery'],
-                     exports: '$.cookie'}
+    'backbone': { deps: ['jquery', 'underscore'], exports: 'Backbone'},
+    'jquery_cookie': { deps: ['jquery'], exports: '$.cookie'},
+    'prettyPhoto': { deps: ['jquery'], exports: 'prettyPhoto'}
   }
 });
 
