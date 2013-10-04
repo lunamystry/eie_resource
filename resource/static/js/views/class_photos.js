@@ -5,7 +5,6 @@ define([
   'backbone',
   'models/images',
   'views/image',
-  'bootstrap',
   'prettyPhoto'
 ], function($, _, Mustache, Backbone, ImagesModel, ImageView) {
 
@@ -13,9 +12,9 @@ define([
     return Mustache.compile($('#'+name+'-template').html());
   };
 
-  var Gallery = Backbone.View.extend({
-    className: "gallery row-fluid columned_section",
-    template: template('gallery'),
+  var ClassPhotos = Backbone.View.extend({
+    className: "class-photos",
+    template: template('class-photos'),
     initialize: function() {
       this.images = new ImagesModel();
       this.images.on('all', this.render, this);
@@ -37,6 +36,6 @@ define([
     count: function() { return this.images.length; },
   });
 
-  return Gallery;
+  return ClassPhotos;
 
 });

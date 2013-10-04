@@ -9,8 +9,14 @@ define([
   'views/login',
   'views/profile_index',
   'views/bookings_index',
+  'views/class_photos',
   'jquery_cookie'
-], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, ProfileView, BookingsView){
+], function($, _, Backbone, AppState,
+     MenuView,
+     IndexView,
+     LoginView,
+     ProfileView,
+     BookingsView){
 
   function authorized() {
 
