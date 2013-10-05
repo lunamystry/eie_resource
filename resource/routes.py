@@ -3,13 +3,17 @@ from flask import request
 from flask import send_from_directory
 import os
 from resource import app
-from resource import RestAPI
+from resource import rest
 from resource import api
 
-api.add_resource(RestAPI.ClassPhotos, '/class_photos')
-api.add_resource(RestAPI.ClassPhoto, '/class_photos/<string:name>')
-api.add_resource(RestAPI.Sessions, '/sessions')
-api.add_resource(RestAPI.Session, '/sessions/<string:session_id>')
+api.add_resource(rest.ClassPhotos, '/class_photos')
+api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
+# api.add_resource(RestAPI.Groups, '/groups')
+# api.add_resource(RestAPI.Group, '/groups/<string:name>')
+# api.add_resource(RestAPI.GroupMembers, '/groups/members')
+# api.add_resource(RestAPI.GroupMember, '/groups/members/<string:name>')
+api.add_resource(rest.Sessions, '/sessions')
+api.add_resource(rest.Session, '/sessions/<string:session_id>')
 
 @app.route('/')
 def index():
