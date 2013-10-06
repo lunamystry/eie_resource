@@ -115,17 +115,30 @@ class Groups():
             manager = Manager(config)
         self.manager = manager
         self.basedn = "ou=groups," + self.manager.base
+        self.keymap = {"dn": "id",
+                       "cn": "name"}
+        self.inv_keymap = {}
+        for k,v in self.keymap.items():
+            self.inv_keymap[v] = k
 
     def save(self, attr):
         """ if the machine exists update, if not create"""
-        machine = manager.find_one(attr["dn"])
-        if machine:
-            manager.update(attr)
-            return attr["dn"]
+        new_group = self.fix(attr, self.inv_keymap)
+        group = self.manager.find_one(new_group, filter_key="cn")
+        if group:
+            logger.info("updating group: " + str(new_group))
+            self.manager.update(new_group)
+            return True
         else:
-            manager.create(attr)
-            return attr["dn"]
-        return "error"
+            dn = "cn=" + new_group["cn"] + "," + self.basedn
+            new_group["objectClass"] = ["groupOfNames"]
+            new_group["cn"] = str(new_group["cn"])
+            new_group["member"] = "cn=road runner,ou=people,dc=example,dc=com"
+            logger.info("creating group(dn): " + str(dn))
+            logger.debug("creating group(attr): " + str(new_group))
+            self.manager.create(dn, new_group)
+            return True
+        return False
 
     def delete(self, uid):
         """ Deletes a machine """
@@ -135,11 +148,24 @@ class Groups():
 
     def find(self):
         """ Returns all the people in the directory (think ldap)"""
-        return self.manager.find(self.basedn)
+        return self.manager.find(self.basedn, filter_key="cn")
 
     def find_one(self, attr):
         """ Returns a single machine """
         return self.manager.find_one(attr, self.basedn)
+
+    def fix(self, group, keymap):
+        if group:
+            new_group = {}
+            for key in group.keys():
+                try:
+                    nkey = keymap[key]
+                    new_group[nkey] = group[key]
+                except KeyError:
+                    logger.debug("key not mapped: " + key)
+            return new_group
+        else:
+            return group
 
 
 class Machines():

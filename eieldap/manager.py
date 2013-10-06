@@ -27,6 +27,7 @@ class Manager():
 
     def create(self, dn, attr):
         modlist = ldap.modlist.addModlist(attr)
+        logger.info(modlist)
         try:
             self.connection.add_s(dn, modlist)
             return True
@@ -84,12 +85,12 @@ class Manager():
             logger.debug(e)
         return False
 
-    def find(self, base=None):
+    def find(self, base=None, filter_key="uid"):
         if base is None:
             base = self.base
         results = self.connection.search_s(base,
                                           ldap.SCOPE_SUBTREE,
-                                          "uid=*")
+                                          filter_key + "=*")
         if results:
             users = []
             for result in results:
@@ -108,10 +109,10 @@ class Manager():
             fields = self.de_list(result[0])
             return fields
 
-    def find_one(self, attr, base=None):
+    def find_one(self, attr, base=None, filter_key="uid"):
         if base is None:
             base = self.base
-        filterstr = "uid=" + attr["uid"]
+        filterstr = filter_key + "=" + attr[filter_key]
         result = self.connection.search_s(base,
                                           ldap.SCOPE_SUBTREE,
                                           filterstr)

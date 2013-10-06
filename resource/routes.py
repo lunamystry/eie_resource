@@ -8,10 +8,6 @@ from resource import api
 
 api.add_resource(rest.ClassPhotos, '/class_photos')
 api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
-# api.add_resource(RestAPI.Groups, '/groups')
-# api.add_resource(RestAPI.Group, '/groups/<string:name>')
-# api.add_resource(RestAPI.GroupMembers, '/groups/members')
-# api.add_resource(RestAPI.GroupMember, '/groups/members/<string:name>')
 api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
 

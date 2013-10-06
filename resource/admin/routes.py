@@ -9,6 +9,10 @@ import logging
 
 api.add_resource(rest.Users, '/users')
 api.add_resource(rest.User, '/users/<string:user_id>')
+api.add_resource(rest.Groups, '/groups')
+api.add_resource(rest.Group, '/groups/<string:name>')
+# api.add_resource(rest.GroupMembers, '/groups/members')
+# api.add_resource(rest.GroupMember, '/groups/members/<string:name>')
 
 @admin.before_request
 def restrict_bp_to_admins():
