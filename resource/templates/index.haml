@@ -115,12 +115,9 @@
 
     %script#profile-template type="text/x-mustache-template"
       -raw
-        %div#user-details.span4
-          %h2
-            {{ name }}
-        %div#password-form.pull-right
-          %h3
-            change password
+       Name: {{ name }}
+      %div
+        change password
 
     %script#nav-profile-template type="text/x-mustache-template"
       -raw
@@ -184,26 +181,6 @@
           %button.btn-delete.btn.btn-danger
             delete
 
-    %script#class-photos-template type="text/x-mustache-template"
-
-    %script#image-template type="text/x-mustache-template"
-        -raw
-          %a href="{{ url }}" rel='prettyPhoto[animals]'
-            %img src="{{ url }}"
-
-    %script#groups-group-template type="text/x-mustache-template"
-      %div.well.span3.group
-        %span
-          %strong
-            -raw
-              {{ name }}  {{ points }}
-        -raw
-          %br
-          Members {{ members }}
-        %div.control-group.controls
-          %button.btn.btn-danger
-            delete
-
     %script#user-form-template type="text/x-mustache-template"
       {{ text_field("Name", "first_name") }}
       {{ text_field("Surname", "last_name") }}
@@ -216,9 +193,40 @@
         %button.btn.btn-success.btn-large. type="submit"
           Create
 
+    %script#groups-index-template type="text/x-mustache-template"
+      %div.form.span3#groups_form
+      %div.list.span9#groups_list
+        %h2
+          There are:
+          -raw
+              {{ count }}
+          groups
+
+    %script#group-template type="text/x-mustache-template"
+      %span.well.span3.group
+        %span
+          %strong
+            -raw
+              {{ fullname }}  {{ points }}
+        -raw
+          %br
+          Name: {{ name }}
+        %div.control-group.controls
+          %button.btn-view.btn.btn-warning
+            view
+          %button.btn-delete.btn.btn-danger
+            delete
+
     %script#group-form-template type="text/x-mustache-template"
       {{ text_field("Name", "name") }}
       {{ text_field("Members", "members") }}
       %dl.control-group.controls
         %button.btn.btn-success.btn-large. type="submit"
           Create
+
+    %script#class-photos-template type="text/x-mustache-template"
+
+    %script#image-template type="text/x-mustache-template"
+        -raw
+          %a href="{{ url }}" rel='prettyPhoto[animals]'
+            %img src="{{ url }}"

@@ -3,12 +3,12 @@ from flask import request
 from flask import send_from_directory
 import os
 from resource.admin import admin
-from resource.admin import RestAPI
+from resource.admin import rest
 from resource import api
 import logging
 
-api.add_resource(RestAPI.Users, '/users')
-api.add_resource(RestAPI.User, '/users/<string:user_id>')
+api.add_resource(rest.Users, '/users')
+api.add_resource(rest.User, '/users/<string:user_id>')
 
 @admin.before_request
 def restrict_bp_to_admins():

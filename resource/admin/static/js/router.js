@@ -8,8 +8,15 @@ define([
   'views/index',
   'views/login',
   'views/users_index',
+  'views/groups_index',
   'jquery_cookie'
-], function($, _, Backbone, AppState, MenuView, IndexView, LoginView, UsersView){
+], function($, _, Backbone,
+     AppState,
+     MenuView,
+     IndexView,
+     LoginView,
+     UsersView,
+     GroupsView){
 
   function authorized() {
     if (typeof $.cookie("user_id") != 'undefined') {
@@ -39,6 +46,7 @@ define([
       "": "index",
       "index": "index",
       "users": "users",
+      "groups": "groups",
       "machines": "machines",
     },
     index: function() {
@@ -53,10 +61,17 @@ define([
       this.el.empty();
       this.el.append(view.render().el);
     },
+    groups: function() {
+      document.title = "Groups - Resource";
+      $("#title").html("Groups");
+      var view = new GroupsView();
+      this.el.empty();
+      this.el.append(view.render().el);
+    },
     machines: function() {
-      document.title = "Users - Resource";
-      $("#title").html("Users");
-      var view = new UsersView();
+      document.title = "Machines - Resource";
+      $("#title").html("Machines");
+      var view = new MachinesView();
       this.el.empty();
       this.el.append(view.render().el);
     }

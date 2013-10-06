@@ -13,7 +13,7 @@ define([
 
   var Profile = Backbone.View.extend({
     tagName: "li",
-    template: template('profile'),
+    template: template('nav-profile'),
     initialize: function(options) {
       this.user_id = options.user_id;
     },
