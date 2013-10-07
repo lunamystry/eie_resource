@@ -140,9 +140,9 @@ class Groups():
             return True
         return False
 
-    def delete(self, uid):
+    def delete(self, name):
         """ Deletes a machine """
-        dn = "uid=" + uid + "," + self.basedn
+        dn = "cn=" + name + "," + self.basedn
         #TODO: errors
         self.manager.delete(dn)
 

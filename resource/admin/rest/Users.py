@@ -18,7 +18,7 @@ class User(Resource):
         return user
 
     def delete(self, user_id):
-        logger.error("NOT IMPLEMENTED")
+        logger.error("DELETE NOT IMPLEMENTED FOR Users.py")
         return "", 500
 
     def put(self, user_id):

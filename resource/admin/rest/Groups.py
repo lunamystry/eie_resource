@@ -19,24 +19,12 @@ class Group(Resource):
         return group
 
     def delete(self, name):
+        models.Groups().delete(name);
         return "", 400
 
     def put(self, group_id):
-        group = models.Groups().find_one({"groupname": group_id})
-        args = request.json
-        # TODO: Validation!
-        # data, errors = Groups().validate(args)
-        if group:
-            if 'new_password' in args.keys():
-                models.Groups().change_password(group_id,
-                                              None,
-                                              args['new_password'])
-            else:
-                logger.info(args)
-        # if errors:
-        #     return errors, 500
-        # groups.save(data)
-        return group, 201
+        app.logger.error("PUT NOT IMPLEMENTED FOR Group.py")
+        return group_id, 500
 
 
 class Groups(Resource):
@@ -52,7 +40,7 @@ class Groups(Resource):
         if errors:
             return errors, 400
         if models.Groups().save(data):
-          return args, 201
+            return args, 201
         else:
             return "Group could not be created " + str(args), 500
 
