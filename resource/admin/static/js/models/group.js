@@ -7,7 +7,6 @@ define([
 
   var Group = Backbone.Model.extend({
     urlRoot: "/groups",
-    idAttribute: "name",
     name: function() { return this.get("name"); },
   });
 

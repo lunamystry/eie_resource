@@ -14,13 +14,14 @@ from eieldap import logger
 
 
 class Group(Resource):
-    def get(self, id):
-        group = models.Group().find_one({"id": id})
+    def get(self, group_id):
+        group = models.Groups().find_one({"id": group_id})
         return group
 
-    def delete(self, name):
-        models.Groups().delete(name);
-        return "", 400
+    def delete(self, group_id):
+        group = models.Groups().find_one({"id": group_id})
+        models.Groups().delete(group["name"]);
+        return "", 200
 
     def put(self, group_id):
         app.logger.error("PUT NOT IMPLEMENTED FOR Group.py")

@@ -122,7 +122,7 @@ class Groups():
             self.inv_keymap[v] = k
 
     def save(self, attr):
-        """ if the machine exists update, if not create"""
+        """ if the group exists update, if not create"""
         new_group = self.fix(attr, self.inv_keymap)
         group = self.manager.find_one(new_group, filter_key="cn")
         if group:
@@ -141,7 +141,7 @@ class Groups():
         return False
 
     def delete(self, name):
-        """ Deletes a machine """
+        """ Deletes a group """
         dn = "cn=" + name + "," + self.basedn
         #TODO: errors
         self.manager.delete(dn)
@@ -156,8 +156,13 @@ class Groups():
         return groups_list
 
     def find_one(self, attr):
-        """ Returns a single machine """
-        return self.manager.find_one(attr, self.basedn)
+        """ Returns a single group """
+        try:
+            group = self.manager.find_by_dn(attr["id"])
+            return self.fix(group, self.keymap)
+        except KeyError:
+            group = self.manager.find_one(attr, self.basedn, filter_key="cn")
+            return self.fix(group, self.keymap)
 
     def fix(self, group, keymap):
         if group:
