@@ -148,7 +148,12 @@ class Groups():
 
     def find(self):
         """ Returns all the people in the directory (think ldap)"""
-        return self.manager.find(self.basedn, filter_key="cn")
+        groups = self.manager.find(self.basedn, filter_key="cn")
+        groups_list = []
+        for group in groups:
+            new_group = self.fix(group, self.keymap)
+            groups_list.append(new_group)
+        return groups_list
 
     def find_one(self, attr):
         """ Returns a single machine """

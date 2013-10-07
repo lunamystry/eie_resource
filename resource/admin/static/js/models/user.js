@@ -7,7 +7,6 @@ define([
 
   var User = Backbone.Model.extend({
     urlRoot: "/users",
-    idAttribute: "_id",
     fullname: function() { return this.get("first_name") + " " + this.get("last_name") ; },
     username: function() { return this.get("username"); },
     gender: function() { return this.get("gender"); },

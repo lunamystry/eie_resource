@@ -18,8 +18,8 @@ class User(Resource):
         return user
 
     def delete(self, user_id):
-        client.resource.users.remove({'id': ObjectId(user_id)})
-        return "", 204
+        logger.error("NOT IMPLEMENTED")
+        return "", 500
 
     def put(self, user_id):
         user = models.User().find_one({"username": user_id})

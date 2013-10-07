@@ -26,7 +26,7 @@ define([
       this.model.destroy({wait: true});
     },
     view: function() {
-      location.hash = "#home/" + this.model.id;
+      location.hash = "#home/";
     }
   });
 

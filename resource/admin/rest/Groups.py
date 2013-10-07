@@ -14,13 +14,12 @@ from eieldap import logger
 
 
 class Group(Resource):
-    def get(self, group_id):
-        group = models.Groups().find_one({"groupname": group_id})
+    def get(self, id):
+        group = models.Group().find_one({"id": id})
         return group
 
-    def delete(self, group_id):
-        client.resource.groups.remove({'id': ObjectId(group_id)})
-        return "", 204
+    def delete(self, name):
+        return "", 400
 
     def put(self, group_id):
         group = models.Groups().find_one({"groupname": group_id})
