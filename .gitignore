@@ -28,3 +28,4 @@ pip-log.txt
 .mr.developer.cfg
 /config/
 resource/static/docs
+resource/static/images
