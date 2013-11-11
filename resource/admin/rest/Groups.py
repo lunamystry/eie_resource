@@ -24,10 +24,6 @@ class Group(Resource):
             models.Groups().delete(group["name"]);
         return group_id, 200
 
-    def put(self, group_id):
-        app.logger.error("PUT NOT IMPLEMENTED FOR Group.py")
-        return group_id, 500
-
 
 class Groups(Resource):
     def get(self):
