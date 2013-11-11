@@ -20,8 +20,9 @@ class Group(Resource):
 
     def delete(self, group_id):
         group = models.Groups().find_one({"id": group_id})
-        models.Groups().delete(group["name"]);
-        return "", 200
+        if group:
+            models.Groups().delete(group["name"]);
+        return group_id, 200
 
     def put(self, group_id):
         app.logger.error("PUT NOT IMPLEMENTED FOR Group.py")
@@ -34,6 +35,7 @@ class Groups(Resource):
         return jsonify({"result": groups})
 
     def post(self):
+        """ Create a new Group, must provide only Name """
         app.logger.info("Trying to create a group... joto mate")
         args = request.json
         all_groups = models.Groups().find()

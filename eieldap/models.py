@@ -124,19 +124,22 @@ class Groups():
     def save(self, attr):
         """ if the group exists update, if not create"""
         new_group = self.fix(attr, self.inv_keymap)
+        dn = "cn=" + new_group["cn"] + "," + self.basedn
         group = self.manager.find_one(new_group, filter_key="cn")
         if group:
-            logger.info("updating group: " + str(new_group))
-            self.manager.update(new_group)
+            logger.info("Updating group: " + str(new_group))
+            self.manager.update(dn, new_group)
             return True
         else:
-            dn = "cn=" + new_group["cn"] + "," + self.basedn
             new_group["objectClass"] = ["groupOfNames"]
             new_group["cn"] = str(new_group["cn"])
             new_group["member"] = "cn=road runner,ou=people,dc=example,dc=com"
             logger.info("creating group(dn): " + str(dn))
             logger.debug("creating group(attr): " + str(new_group))
+            if 'dn' in new_group:
+                del new_group['dn']
             self.manager.create(dn, new_group)
+            # This should return what it did, so a tuple
             return True
         return False
 
@@ -170,7 +173,7 @@ class Groups():
             for key in group.keys():
                 try:
                     nkey = keymap[key]
-                    new_group[nkey] = group[key]
+                    new_group[nkey] = str(group[key])
                 except KeyError:
                     logger.debug("key not mapped: " + key)
             return new_group
