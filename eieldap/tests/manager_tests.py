@@ -3,7 +3,7 @@ import unittest
 import tempfile
 
 
-class ManagerTestCase(unitttest.TestCase):
+class ManagerTestCase(unittest.TestCase):
     def test_create(self):
         """ Create a new general entry """
         pass

@@ -3,7 +3,7 @@ import unittest
 import tempfile
 
 
-class UsersTestCase(unitttest.TestCase):
+class UsersTestCase(unittest.TestCase):
     def test_create(self):
         """ Create a new user """
         pass
