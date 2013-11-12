@@ -158,12 +158,13 @@ class Groups():
             groups_list.append(new_group)
         return groups_list
 
-    def find_one(self, attr):
+    def find_one(self, name=None, attr=None):
         """ Returns a single group """
-        try:
-            group = self.manager.find_by_dn(attr["id"])
+        if name is not None:
+            dn = "cn=" + name + "," + self.basedn
+            group = self.manager.find_by_dn(dn)
             return self.fix(group, self.keymap)
-        except KeyError:
+        elif attr is not None:
             group = self.manager.find_one(attr, self.basedn, filter_key="cn")
             return self.fix(group, self.keymap)
 

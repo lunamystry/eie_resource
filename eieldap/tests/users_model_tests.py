@@ -1,4 +1,5 @@
-import eieldap
+from mock import patch, Mock
+from eieldap.manager import Manager
 import unittest
 import tempfile
 
@@ -8,7 +9,8 @@ class UsersTestCase(unittest.TestCase):
         """ Create a new user """
         pass
 
-    def test_update(self):
+    @patch.object(Manager, 'find_one')
+    def test_update(self, find_one):
         """ Can I update a user? I hope so"""
         pass
 
