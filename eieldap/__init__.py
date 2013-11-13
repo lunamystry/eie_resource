@@ -17,4 +17,10 @@ for location in os.curdir, "/etc/eieldap":
     except IOError:
         logging.debug(" * No logging configuration in: " + location)
 
+# I call these package variables, they're essential global variables
+# for the package
+
 logger = logging.getLogger(__name__)
+
+from eieldap.manager import Manager
+manager = Manager(config)

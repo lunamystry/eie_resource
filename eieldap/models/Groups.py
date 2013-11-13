@@ -1,78 +1,94 @@
-from eieldap import config
-from eieldap.manager import Manager
+from eieldap import manager
 from eieldap import logger
+from eieldap.models import Users
+import ldap
 
 
-class Groups():
-    def __init__(self, manager=None):
-        if manager is None:
-            manager = Manager(config)
-        self.manager = manager
-        self.basedn = "ou=groups," + self.manager.base
-        self.keymap = {"dn": "id",
-                       "cn": "name",
-                       "member":"members"}
-        self.inv_keymap = {}
-        for k,v in self.keymap.items():
-            self.inv_keymap[v] = k
+basedn = "ou=groups," + manager.base
+keymap = {"cn": "name",
+          "member": "members"}
+inv_keymap = {}
+for k, v in keymap.items():
+    inv_keymap[v] = k
 
-    def save(self, attr):
-        """ if the group exists update, if not create"""
-        new_group = self.fix(attr, self.inv_keymap)
-        dn = "cn=" + new_group["cn"] + "," + self.basedn
-        group = self.manager.find_one(new_group, filter_key="cn")
-        if group:
-            logger.info("Updating group: " + str(new_group))
-            self.manager.update(dn, new_group)
-            return True
-        else:
-            new_group["objectClass"] = ["groupOfNames"]
-            new_group["cn"] = str(new_group["cn"])
-            logger.info("creating group(dn): " + str(dn))
-            logger.debug("creating group(attr): " + str(new_group))
-            if 'dn' in new_group:
-                del new_group['dn']
-            self.manager.create(dn, new_group)
-            return True
-        return False
 
-    def delete(self, name):
-        """ Deletes a group """
-        dn = "cn=" + name + "," + self.basedn
-        #TODO: errors
-        self.manager.delete(dn)
+def find():
+    """ Returns all the groups in the directory (think ldap)"""
+    groups = manager.find(basedn, filter_key="cn")
+    groups_list = []
+    for group in groups:
+        new_group = fix(group, keymap)
+        groups_list.append(new_group)
+    return groups_list
 
-    def find(self):
-        """ Returns all the people in the directory (think ldap)"""
-        groups = self.manager.find(self.basedn, filter_key="cn")
-        groups_list = []
-        for group in groups:
-            new_group = self.fix(group, self.keymap)
-            groups_list.append(new_group)
-        return groups_list
 
-    def find_one(self, name=None, attr=None):
-        """ Returns a single group """
-        if name is not None:
-            dn = "cn=" + name + "," + self.basedn
-            group = self.manager.find_by_dn(dn)
-            return self.fix(group, self.keymap)
-        elif attr is not None:
-            group = self.manager.find_one(attr, self.basedn, filter_key="cn")
-            return self.fix(group, self.keymap)
+def find_one(name=None, attr=None):
+    """ Returns a single group """
+    group = None
+    if name is not None:
+        dn = "cn=" + name + "," + basedn
+        group = manager.find_by_dn(dn)
+    elif attr is not None:
+        fixed_group = fix(attr, inv_keymap)
+        group = manager.find_one(fixed_group, basedn, filter_key="cn")
 
-    def fix(self, group, keymap):
-        if group:
-            new_group = {}
-            for key in group.keys():
-                try:
-                    nkey = keymap[key]
-                    if type(group[key]) is list:
-                        new_group[nkey] = group[key]
-                    else:
-                        new_group[nkey] = str(group[key])
-                except KeyError:
-                    logger.debug("key not mapped: " + key)
-            return new_group
-        else:
-            return group
+    if group:
+        group['member'] = get_names(group['member'])
+        return fix(group, keymap)
+
+def get_names(dn_list):
+    for i, strdn in enumerate(dn_list):
+        dn = ldap.dn.str2dn(strdn)
+        _, name, _ =  dn[0][0]
+        dn_list[i] = name
+    return dn_list
+
+def save(group):
+    """ if the group exists update, if not create"""
+    logger.info(group)
+    if "members" not in group or type(group['members']) is not list:
+        raise TypeError("You must give atleast one group member")
+    for i, member_name in enumerate(group["members"]):
+        # TODO: member[i] = Users.find_one(member)["id"]
+        group['members'][i] = "uid=" + member_name + "," + Users().basedn
+
+    fixed_group = fix(group, inv_keymap)
+    dn = "cn=" + fixed_group["cn"] + "," + basedn
+    existing_group = manager.find_one(fixed_group, filter_key="cn")
+    if existing_group:
+        manager.update(dn, new_group)
+        logger.info("Updated group: " + str(dn))
+        return True
+    else:
+        fixed_group["objectClass"] = ["groupOfNames"]
+        fixed_group["cn"] = str(fixed_group["cn"])
+        if 'dn' in fixed_group:
+            del fixed_group['dn']
+        manager.create(dn, fixed_group)
+        logger.info("Created group: " + str(dn))
+        return True
+    return False
+
+
+def delete(name):
+    """ Deletes a group """
+    dn = "cn=" + name + "," + basedn
+    #TODO: errors
+    manager.delete(dn)
+
+
+def fix(group, keymap):
+    if group:
+        new_group = {}
+        for key in group.keys():
+            try:
+                nkey = keymap[key]
+                if type(group[key]) is list:
+                    new_group[nkey] = group[key]
+                else:
+                    new_group[nkey] = str(group[key])
+            except KeyError:
+                logger.debug("key not mapped: " + key)
+        return new_group
+    else:
+        return group
