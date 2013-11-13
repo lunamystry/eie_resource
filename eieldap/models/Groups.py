@@ -11,7 +11,7 @@ class Groups():
         self.basedn = "ou=groups," + self.manager.base
         self.keymap = {"dn": "id",
                        "cn": "name",
-                       "member":"member"}
+                       "member":"members"}
         self.inv_keymap = {}
         for k,v in self.keymap.items():
             self.inv_keymap[v] = k
@@ -28,7 +28,6 @@ class Groups():
         else:
             new_group["objectClass"] = ["groupOfNames"]
             new_group["cn"] = str(new_group["cn"])
-            new_group["member"] = "cn=road runner,ou=people,dc=example,dc=com"
             logger.info("creating group(dn): " + str(dn))
             logger.debug("creating group(attr): " + str(new_group))
             if 'dn' in new_group:
@@ -68,7 +67,10 @@ class Groups():
             for key in group.keys():
                 try:
                     nkey = keymap[key]
-                    new_group[nkey] = str(group[key])
+                    if type(group[key]) is list:
+                        new_group[nkey] = group[key]
+                    else:
+                        new_group[nkey] = str(group[key])
                 except KeyError:
                     logger.debug("key not mapped: " + key)
             return new_group

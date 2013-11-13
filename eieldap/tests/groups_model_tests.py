@@ -37,12 +37,13 @@ class GroupsTestCase(unittest.TestCase):
 
     def test_find_one(self, mock_Manager):
         """ Should be able to use the name of the group"""
-        test_attr = {"cn":"natsuki", "dn":"id"}
-        expected_attr = {"name":"natsuki", "id":"id"}
+        members = ['mandla', 'leny']
+        return_attr = {"cn":"natsuki", "dn":"id", "member": members}
+        expected_attr = {"name":"natsuki", "id":"id", "members": members}
 
         manager = mock_Manager.return_value
-        manager.find_one.return_value = test_attr
-        manager.find_by_dn.return_value = test_attr
+        manager.find_one.return_value = return_attr
+        manager.find_by_dn.return_value = return_attr
 
         # Can find one by just the name
         group = models.Groups(manager).find_one("natsuki")
@@ -53,7 +54,7 @@ class GroupsTestCase(unittest.TestCase):
         self.assertEquals(group, expected_attr)
 
         # what if both the name and attr are given
-        ignored_attr = {"name":"magrat", "id":"id"}
+        ignored_attr["name"] = "magrat"
         group = models.Groups(manager).find_one(name="natsuki",
                                                 attr=ignored_attr)
         self.assertEquals(group, expected_attr)
