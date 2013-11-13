@@ -21,6 +21,10 @@ class GroupsTestCase(unittest.TestCase):
         self.assertTrue(group.save({"name":"Testing"}))
         self.assertTrue(manager.create.assert_called())
 
+        # what if I pass in Group members for giggles
+        members = ['leny']
+        self.assertTrue(group.save({"name":"Testing"}))
+
     def test_delete(self, mock_Manager):
         """ Should check first if the thing exists before it deletes it"""
         manager = mock_Manager.return_value
@@ -57,6 +61,10 @@ class GroupsTestCase(unittest.TestCase):
         # what if both are None
         group = models.Groups(manager).find_one(name=None, attr=None)
         self.assertEquals(group, None)
+
+    def test_find(self, mock_Manager):
+        """ Give me back all the groups """
+        groups = models.Groups().find()
 
 if __name__ == "__main__":
     unittest.main()

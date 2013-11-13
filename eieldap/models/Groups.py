@@ -10,7 +10,8 @@ class Groups():
         self.manager = manager
         self.basedn = "ou=groups," + self.manager.base
         self.keymap = {"dn": "id",
-                       "cn": "name"}
+                       "cn": "name",
+                       "member":"member"}
         self.inv_keymap = {}
         for k,v in self.keymap.items():
             self.inv_keymap[v] = k
@@ -33,7 +34,6 @@ class Groups():
             if 'dn' in new_group:
                 del new_group['dn']
             self.manager.create(dn, new_group)
-            # This should return what it did, so a tuple
             return True
         return False
 

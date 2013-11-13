@@ -38,11 +38,11 @@ class GroupMembers(Resource):
 
     def post(self, group_name):
         """ Add a member to a group """
-        app.logger.info("Trying to create a group... joto mate")
+        app.logger.info("Trying to create a group... chotto matte kudasai")
         args = request.json
-        # all_groups = models.GroupMembers().find()
+        group = models.Groups().find_one(group_name)
         data, errors = self.validate(args)
-        return jsonify({"result":args})
+        return jsonify({"result":group})
         # if errors:
         #     return errors, 400
         # if models.GroupMembers().save(data):
