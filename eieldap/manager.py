@@ -85,12 +85,15 @@ class Manager():
             logger.debug(e)
         return False
 
-    def find(self, base=None, filter_key="uid"):
+    def find(self, base=None, filter_key="objectClass"):
         if base is None:
             base = self.base
+        if filter_key is not "":
+            filter_key = "("+ filter_key + "=*)"
+
         results = self.connection.search_s(base,
-                                          ldap.SCOPE_SUBTREE,
-                                          filter_key + "=*")
+                                           ldap.SCOPE_SUBTREE,
+                                           filter_key)
         if results:
             users = []
             for result in results:
@@ -122,7 +125,8 @@ class Manager():
 
     def de_list(self, user):
         fields = []
-        list_fields = ['objectClass', 'mail']
+        list_fields = ['objectClass', 'mail', 'member', 'memberUid']
+        logger.info("Keeping only: " + str(list_fields) + " as lists")
         dn, fields = user
         fields.update({"dn": [dn]})
         for key in fields:
