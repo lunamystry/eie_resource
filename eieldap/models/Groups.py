@@ -36,12 +36,14 @@ def find_one(name=None, attr=None):
         group['member'] = get_names(group['member'])
         return fix(group, keymap)
 
+
 def get_names(dn_list):
     for i, strdn in enumerate(dn_list):
         dn = ldap.dn.str2dn(strdn)
         _, name, _ =  dn[0][0]
         dn_list[i] = name
     return dn_list
+
 
 def save(group):
     """ if the group exists update, if not create"""
@@ -56,7 +58,7 @@ def save(group):
     dn = "cn=" + fixed_group["cn"] + "," + basedn
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
-        manager.update(dn, new_group)
+        manager.update(dn, fixed_group)
         logger.info("Updated group: " + str(dn))
         return True
     else:
@@ -70,11 +72,23 @@ def save(group):
     return False
 
 
-def delete(name):
+def delete(name=None, group=None):
     """ Deletes a group """
-    dn = "cn=" + name + "," + basedn
-    #TODO: errors
-    manager.delete(dn)
+    existing_group = None
+    if name is not None:
+        dn = "cn=" + name + "," + basedn
+        existing_group = manager.find_by_dn(dn)
+    elif group is not None:
+        fixed_group = fix(group, inv_keymap)
+        dn = "cn=" + fixed_group['cn'] + "," + basedn
+        existing_group = manager.find_one(fixed_group, basedn, filter_key="cn")
+    if existing_group:
+        manager.delete(dn)
+
+
+def add_member(group_name, member_name):
+    """ should check it the member is the ldap then add them"""
+    pass
 
 
 def fix(group, keymap):

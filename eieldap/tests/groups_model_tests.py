@@ -1,71 +1,118 @@
 from mock import patch, Mock
-from eieldap.manager import Manager
 from eieldap import models
 import unittest
-import tempfile
 
 
-@patch('eieldap.manager.Manager')
 class GroupsTestCase(unittest.TestCase):
-    def test_save(self, mock_Manager):
+    def test_save(self):
         """ Create a new group or update existing one """
-        manager = mock_Manager.return_value
+        group_to_save = {"name": "natsuki", "members": ['mandla', 'leny']}
+        expected_group = {"name": "natsuki", "members": ['mandla', 'leny']}
+        ignored_group = {"name": "natsuki", "members": ['mandla', 'leny']}
+        invalid_group = {"name": "navina"}
 
-        # exists
-        manager.find_one.return_value = {"name": "Testing"}
-        group = models.Groups(manager)
-        self.assertTrue(group.save({"name":"Testing"}))
+        # can't create without atleast one member
+        with self.assertRaises(TypeError):
+            models.Groups.save(invalid_group)
 
         # Does not exist
-        manager.find_one.return_value = None
-        self.assertTrue(group.save({"name":"Testing"}))
-        self.assertTrue(manager.create.assert_called())
+        self.assertTrue(models.Groups.save(group_to_save))
 
-        # what if I pass in Group members for giggles
-        members = ['leny']
-        self.assertTrue(group.save({"name":"Testing"}))
+        # exists
+        group_to_save = {"name": "natsuki", "members": ['mandla', 'leonard']}
+        expected_group = {"name": "natsuki", "members": ['mandla', 'leonard']}
+        self.assertTrue(models.Groups.save(group_to_save))
+        group = models.Groups.find_one("natsuki")
+        self.assertEquals(group, expected_group)
 
-    def test_delete(self, mock_Manager):
+    def test_delete(self):
         """ Should check first if the thing exists before it deletes it"""
-        manager = mock_Manager.return_value
-        manager.find_one.return_value = {"name": "Testing"}
-        group = models.Groups(manager)
-        group.delete("Testing")
+        group_to_save = {"name": "Testing", "members": ['mandla', 'leny']}
+        expected_group = {"name": "Testing", "members": ['mandla', 'leny']}
+        group = models.Groups.find_one("Testing")
+        if group:
+            models.Groups.delete(group['name'])
+        models.Groups.save(group_to_save)
+        group = models.Groups.find_one("Testing")
+        self.assertEquals(group, expected_group)
 
-        self.assertTrue(manager.find_one.assert_called())
-        self.assertTrue(manager.delete.assert_called())
-
-    def test_find_one(self, mock_Manager):
-        """ Should be able to use the name of the group"""
-        members = ['mandla', 'leny']
-        return_attr = {"cn":"natsuki", "dn":"id", "member": members}
-        expected_attr = {"name":"natsuki", "id":"id", "members": members}
-
-        manager = mock_Manager.return_value
-        manager.find_one.return_value = return_attr
-        manager.find_by_dn.return_value = return_attr
-
-        # Can find one by just the name
-        group = models.Groups(manager).find_one("natsuki")
-        self.assertEquals(group, expected_attr)
-
-        # Can find one by attributes
-        group = models.Groups(manager).find_one(attr=expected_attr)
-        self.assertEquals(group, expected_attr)
-
-        # what if both the name and attr are given
-        ignored_attr["name"] = "magrat"
-        group = models.Groups(manager).find_one(name="natsuki",
-                                                attr=ignored_attr)
-        self.assertEquals(group, expected_attr)
-
-        # what if both are None
-        group = models.Groups(manager).find_one(name=None, attr=None)
+        models.Groups.delete("Testing")
+        group = models.Groups.find_one("Testing")
         self.assertEquals(group, None)
 
-    def test_find(self, mock_Manager):
-        """ Give me back all the groups """
-        groups = models.Groups().find()
+        #  should be able to delete using a group
+        group_to_save = {"name": "Testing", "members": ['mandla', 'leny']}
+        models.Groups.save(group_to_save)
+        group = models.Groups.find_one("Testing")
+        self.assertEquals(group, expected_group)
+        models.Groups.delete(group=group_to_save)
+        group = models.Groups.find_one("Testing")
+        self.assertEquals(group, None)
+
+    def test_find_one(self):
+        """ Should be able to use the name of the group"""
+        group_to_save = {"name": "natsuki", "members": ['mandla', 'leny']}
+        expected_group = {"name": "natsuki", "members": ['mandla', 'leny']}
+        ignored_group = {"name": "natsuki", "members": ['mandla', 'leny']}
+        invalid_group = {"name": "navina"}
+
+        # None if group does not exist
+        group = models.Groups.find_one("qpoipwoqi")
+        self.assertEquals(group, None)
+
+        # Can find one by just the name
+        group = models.Groups.find_one("natsuki")
+        if group:
+            models.Groups.delete(group['name'])
+        models.Groups.save(group_to_save)
+        group = models.Groups.find_one("natsuki")
+        self.assertEquals(group, expected_group)
+
+        # Can find one by attributes
+        group = models.Groups.find_one(attr=expected_group)
+        self.assertEquals(group, expected_group)
+
+        group = models.Groups.find_one(attr=invalid_group)
+        self.assertNotEquals(group, expected_group)
+
+        # what if both the name and attr are given
+        ignored_group["name"] = "magrat"
+        group = models.Groups.find_one(name="natsuki",
+                                                attr=ignored_group)
+        self.assertEquals(group, expected_group)
+
+        # what if both are None
+        group = models.Groups.find_one(name=None, attr=None)
+        self.assertEquals(group, None)
+
+    def test_add_group_member(self):
+        """ Can I add a group member?"""
+        original_group = {"name": "natsuki", "members": ['mandla', 'leny']}
+        expected_group = {"name": "natsuki", "members": ['mandla', 'leny', 'leonard']}
+        already_member = "mandla"
+        existing_user = "leonard"
+        non_existing_user = "poiqaalkj"
+
+        # add to a group that exists
+        models.Groups.add_member("natsuki", existing_user)
+        group = models.Groups.find_one("natsuki")
+        self.assertEquals(group, expected_group)
+
+        models.Groups.add_member("natsuki", already_member)
+        group = models.Groups.find_one("natsuki")
+        self.assertEquals(group, expected_group)
+
+        with self.assertRaises(ValueError):
+            models.Groups.add_member("natsuki", non_existing_user)
+
+        # add to a group that does not exist
+        with self.assertRaises(ValueError):
+            models.Groups.add_member("aslkjalskj", existing_user)
+        with self.assertRaises(ValueError):
+            models.Groups.add_member("aslkjqoi", non_existing_user)
+        with self.assertRaises(ValueError):
+            models.Groups.add_member("alskjaslkj", non_existing_user)
+
 
 if __name__ == "__main__":
     unittest.main()
