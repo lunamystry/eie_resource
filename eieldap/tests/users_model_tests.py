@@ -6,7 +6,30 @@ import unittest
 class UsersTestCase(unittest.TestCase):
     def test_save(self):
         """ Create a new user """
-        user_to_save = {"name": "Leonard", "members": ['mandla', 'leny']}
+        user_to_save = {"username": "guneap",
+                        "first_name": "Gunea",
+                        "last_name": "Pig",
+                        "email": "guneap@students.wits.ac.za",
+                        "password": "secret",
+                        "yos": "1"}
+        expected_user = {"name": "natsuki", "members": ['mandla', 'leny']}
+        ignored_user = {"name": "natsuki", "members": ['mandla', 'leny']}
+        invalid_user = {"name": "navina"}
+
+        # with self.assertRaises(TypeError):
+        #     models.Users.save(invalid_user)
+
+        # Does not exist
+        # Users.delete(user=user_to_save)
+        self.assertTrue(Users.save(user_to_save))
+
+        # exists
+        # user_to_save = {"name": "natsuki", "members": ['mandla', 'leonard']}
+        # expected_user = {"name": "natsuki", "members": ['mandla', 'leonard']}
+        # self.assertTrue(models.Users.save(user_to_save))
+        # user = models.Users.find_one("natsuki")
+        # self.assertEquals(user, expected_user)
+
 
     def test_update(self):
         """ Can I update a user? I hope so"""

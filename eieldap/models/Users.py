@@ -54,12 +54,28 @@ def save(attr):
         logger.info("updating user: " + str(dn))
         return True
     else:
-        uid_number = next_uid(attr['yos'])
+        uid_number = next_uid_number(int(attr['yos']))
+        gid_number = user_gid_number(int(attr['yos']))
         lm_password, nt_password = smb_encrypt(attr["password"])
         smbRid = uid_number*4
-        fixed_user["objectClass"] = ["account", "posixAccount", "sambaSamAccount"]
-        fixed_user["uidNumber"] = uid_number
+        if int(attr['yos']) < 5:
+            home_base = "/home/ug"
+        elif int(attr['yos']) == 5:
+            home_base = "/home/pg"
+        elif int(attr['yos']) == 6:
+            home_base = "/home/staff"
+        elif int(attr['yos']) == 7:
+            home_base = "/dev/null"
+        else:
+            error_msg = "trying to save but Year of Study " + attr['yos'] + " is invalid"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        fixed_user["objectClass"] = ["inetOrgPerson", "posixAccount", "sambaSamAccount"]
+        fixed_user["uidNumber"] = str(uid_number)
+        fixed_user["gidNumber"] = str(gid_number)
         fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
+        fixed_user["loginShell"] = "/bin/bash"
+        fixed_user["displayName"] = fixed_user["cn"] + " " + fixed_user["sn"]
         fixed_user["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid)
         fixed_user["sambaAcctFlags"] = "[U         ]"
         fixed_user["sambaNTPassword"] = nt_password
@@ -72,7 +88,7 @@ def save(attr):
     return False
 
 
-def delete(username=None, attr=None):
+def delete(username=None, user=None):
     """ Deletes a user """
     existing_user = None
     if username is not None:
@@ -167,3 +183,8 @@ def next_uid_number(yos):
     error_msg = "All uid numbers have for " + str(yos) + " Year of Study have been depleted"
     logger.error(error_msg)
     raise RuntimeError(error_msg)
+
+
+def user_gid_number(yos):
+    """ There are 7 groups, depending on the year of study """
+    return yos*1000
