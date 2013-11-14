@@ -93,14 +93,14 @@ class GroupsTestCase(unittest.TestCase):
         existing_user = "leonard"
         non_existing_user = "poiqaalkj"
 
-        # add to a group that exists
-        models.Groups.add_member("natsuki", existing_user)
-        group = models.Groups.find_one("natsuki")
-        self.assertEquals(group, expected_group)
+        # # add to a group that exists
+        # models.Groups.add_member("natsuki", existing_user)
+        # group = models.Groups.find_one("natsuki")
+        # self.assertEquals(group, expected_group)
 
-        models.Groups.add_member("natsuki", already_member)
-        group = models.Groups.find_one("natsuki")
-        self.assertEquals(group, expected_group)
+        # # models.Groups.add_member("natsuki", already_member)
+        # group = models.Groups.find_one("natsuki")
+        # self.assertEquals(group, expected_group)
 
         with self.assertRaises(ValueError):
             models.Groups.add_member("natsuki", non_existing_user)

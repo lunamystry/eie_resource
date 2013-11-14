@@ -1,16 +1,14 @@
 from mock import patch, Mock
-from eieldap.manager import Manager
+from eieldap.models import Users
 import unittest
-import tempfile
 
 
 class UsersTestCase(unittest.TestCase):
-    def test_create(self):
+    def test_save(self):
         """ Create a new user """
-        pass
+        user_to_save = {"name": "Leonard", "members": ['mandla', 'leny']}
 
-    @patch.object(Manager, 'find_one')
-    def test_update(self, find_one):
+    def test_update(self):
         """ Can I update a user? I hope so"""
         pass
 

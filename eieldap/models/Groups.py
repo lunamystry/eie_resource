@@ -40,7 +40,7 @@ def find_one(name=None, attr=None):
 def get_names(dn_list):
     for i, strdn in enumerate(dn_list):
         dn = ldap.dn.str2dn(strdn)
-        _, name, _ =  dn[0][0]
+        _, name, _ = dn[0][0]
         dn_list[i] = name
     return dn_list
 
@@ -82,13 +82,19 @@ def delete(name=None, group=None):
         fixed_group = fix(group, inv_keymap)
         dn = "cn=" + fixed_group['cn'] + "," + basedn
         existing_group = manager.find_one(fixed_group, basedn, filter_key="cn")
+
     if existing_group:
         manager.delete(dn)
 
 
 def add_member(group_name, member_name):
     """ should check it the member is the ldap then add them"""
-    pass
+    group = find_one(group_name)
+    if not group:
+        raise ValueError(str(group_name) + "Does not exists")
+    user = Users().find_one(member_name)
+    if not user:
+        raise ValueError(str(user_name) + "Does not exists")
 
 
 def fix(group, keymap):
