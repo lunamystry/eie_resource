@@ -27,7 +27,7 @@ class Manager():
 
     def create(self, dn, attr):
         modlist = ldap.modlist.addModlist(attr)
-        logger.info(modlist)
+        logger.debug(modlist)
         try:
             self.connection.add_s(dn, modlist)
             return True
@@ -38,6 +38,7 @@ class Manager():
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
         modlist = self.prepare_modlist(dn, new_attr)
+        logger.debug(modlist)
         try:
             self.connection.modify_s(dn, modlist)
             return True
@@ -126,7 +127,7 @@ class Manager():
     def de_list(self, user):
         fields = []
         list_fields = ['objectClass', 'mail', 'member', 'memberUid']
-        logger.info("Keeping only: " + str(list_fields) + " as lists")
+        logger.debug("Keeping only: " + str(list_fields) + " as lists")
         dn, fields = user
         fields.update({"dn": [dn]})
         for key in fields:

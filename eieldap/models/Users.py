@@ -9,6 +9,7 @@ basedn = "ou=people," + manager.base
 keymap = {"uid": "username",
           "cn": "first_name",
           "sn": "last_name",
+          "yos": "yos",
           "homeDirectory": "home_directory",
           "loginShell": "login_shell",
           "uidNumber": "uid_number",
@@ -40,6 +41,7 @@ def find_one(name=None, attr=None):
         user = manager.find_one(fixed_user, basedn, filter_key="uid")
 
     if user:
+        user['yos'] = str(int(user['gidNumber'])/1000)
         return fix(user, keymap)
 
 
@@ -50,8 +52,12 @@ def save(attr):
     existing_user = manager.find_one(fixed_user, filter_key="uid")
 
     if existing_user:
+        gid_number = user_gid_number(int(attr['yos']))
+        if 'yos' in fixed_user:
+            del fixed_user['yos']
+        fixed_user["gidNumber"] = str(gid_number)
         manager.update(dn, fixed_user)
-        logger.info("updating user: " + str(dn))
+        logger.info("updated user: " + str(dn))
         return True
     else:
         uid_number = next_uid_number(int(attr['yos']))

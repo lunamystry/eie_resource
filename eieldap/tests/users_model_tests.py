@@ -24,10 +24,23 @@ class UsersTestCase(unittest.TestCase):
         self.assertTrue(Users.save(user_to_save))
 
         # exists
-        # user_to_save = {"name": "natsuki", "members": ['mandla', 'leonard']}
-        # expected_user = {"name": "natsuki", "members": ['mandla', 'leonard']}
-        # self.assertTrue(models.Users.save(user_to_save))
-        # user = models.Users.find_one("natsuki")
+        user_to_save = {"username": "guneap",
+                        "first_name": "Gunea",
+                        "last_name": "Pig",
+                        "email": "123@students.wits.ac.za",
+                        "password": "secret",
+                        "yos": "2"}
+        expected_user = {"username": "guneap",
+                         "gid_number": "1000",
+                         "login_shell": "/bin/bash",
+                         "first_name": "Gunea",
+                         "last_name": "Pig",
+                         "yos": "2",
+                         "home_directory": "/home/ug/guneap",
+                         "uid_number": "1000",
+                         "email": ["123@students.wits.ac.za"]}
+        self.assertTrue(Users.save(user_to_save))
+        # user = Users.find_one("guneap")
         # self.assertEquals(user, expected_user)
 
 
