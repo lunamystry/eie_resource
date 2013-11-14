@@ -52,7 +52,7 @@ def save(group):
         raise TypeError("You must give atleast one group member")
     for i, member_name in enumerate(group["members"]):
         # TODO: member[i] = Users.find_one(member)["id"]
-        group['members'][i] = "uid=" + member_name + "," + Users().basedn
+        group['members'][i] = "uid=" + member_name + "," + Users.basedn
 
     fixed_group = fix(group, inv_keymap)
     dn = "cn=" + fixed_group["cn"] + "," + basedn
@@ -91,10 +91,10 @@ def add_member(group_name, member_name):
     """ should check it the member is the ldap then add them"""
     group = find_one(group_name)
     if not group:
-        raise ValueError(str(group_name) + "Does not exists")
-    user = Users().find_one(member_name)
+        raise ValueError(str(group_name) + " does not exists")
+    user = Users.find_one(member_name)
     if not user:
-        raise ValueError(str(user_name) + "Does not exists")
+        raise ValueError(str(member_name) + " does not exists")
 
 
 def fix(group, keymap):
