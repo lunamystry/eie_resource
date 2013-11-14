@@ -148,6 +148,9 @@ def next_uid_number(yos):
 
     also means the number of students cannot exceed 999 in a year
     """
+    if yos not in range(1, 8):
+        logger.error("Tried to add out of range uid/yos")
+        raise ValueError("The Year of Study: " + str(yos) + " is out of range")
     all_users = find()
     uids = []
     start_uid = yos*1000
@@ -161,4 +164,6 @@ def next_uid_number(yos):
     for uid in range(start_uid, start_uid + 1000):
         if uid not in uids:
             return uid
-    raise RuntimeError("All UID have for " + str(yos) + " year of study have been depleted")
+    error_msg = "All uid numbers have for " + str(yos) + " Year of Study have been depleted"
+    logger.error(error_msg)
+    raise RuntimeError(error_msg)

@@ -14,10 +14,18 @@ class UsersTestCase(unittest.TestCase):
 
     def test_get_next_uid(self):
         """ Manual test, can I get the next uid """
-        next_uid = Users.next_uid_number(1)
-        # check that its withing 1000 - 1999
+        # check that its withing range
+        for yos in range(1, 8):
+            next_uid = Users.next_uid_number(yos)
+            start = yos*1000
+            end = start + 1000;
+            self.assertTrue(next_uid in range(start, end))
+
+        with self.assertRaises(ValueError):
+            next_uid = Users.next_uid_number(-1)
+        with self.assertRaises(ValueError):
+            next_uid = Users.next_uid_number(8)
 
         # raises an error if the number of valid uids has been reached
-
 if __name__ == "__main__":
     unittest.main()
