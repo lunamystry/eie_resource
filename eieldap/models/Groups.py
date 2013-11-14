@@ -112,3 +112,7 @@ def fix(group, keymap):
         return new_group
     else:
         return group
+
+
+def next_gid_number():
+    pass

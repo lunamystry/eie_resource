@@ -54,10 +54,12 @@ def save(attr):
         logger.info("updating user: " + str(dn))
         return True
     else:
-        fixed_user["objectClass"] = ["account", "posixAccount", "sambaSamAccount"]
-        fixed_user["uidNumber"] =
-        fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
+        uid_number = next_uid(attr['yos'])
         lm_password, nt_password = smb_encrypt(attr["password"])
+        smbRid = uid_number*4
+        fixed_user["objectClass"] = ["account", "posixAccount", "sambaSamAccount"]
+        fixed_user["uidNumber"] = uid_number
+        fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
         fixed_user["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid)
         fixed_user["sambaAcctFlags"] = "[U         ]"
         fixed_user["sambaNTPassword"] = nt_password
@@ -130,3 +132,33 @@ def change_password(uid, oldpw, newpw):
 def authenticate(uid, password):
     dn = "uid=" + uid + "," + basedn
     return manager.authenticate(dn, password)
+
+
+def next_uid_number(yos):
+    """ Checks if nextUid user exists and if they do, returns their
+    uid number increments it by one and saves that. Depends on the
+    year of study
+    1 - first
+    2 - second
+    3 - third
+    4 - fourth
+    5 - postgrad
+    6 - staff
+    7 - machine
+
+    also means the number of students cannot exceed 999 in a year
+    """
+    all_users = find()
+    uids = []
+    start_uid = yos*1000
+    for user in all_users:
+        try:
+            uid = int(user['uid_number'])
+            if uid in range(start_uid, start_uid + 1000):
+                uids.append(uid)
+        except KeyError:
+            logger.error(user['username'] + " does not have a uid number")
+    for uid in range(start_uid, start_uid + 1000):
+        if uid not in uids:
+            return uid
+    raise RuntimeError("All UID have for " + str(yos) + " year of study have been depleted")

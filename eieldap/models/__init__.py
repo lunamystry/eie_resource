@@ -1,2 +1,2 @@
-from Users import Users
+import Users
 import Groups
