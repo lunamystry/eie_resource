@@ -16,11 +16,12 @@ class UsersTestCase(unittest.TestCase):
         ignored_user = {"name": "natsuki", "members": ['mandla', 'leny']}
         invalid_user = {"name": "navina"}
 
-        # with self.assertRaises(TypeError):
-        #     models.Users.save(invalid_user)
+        with self.assertRaises(TypeError):
+            Users.save(invalid_user)
 
         # Does not exist
-        # Users.delete(user=user_to_save)
+        if Users.find_one(user_to_save['username']):
+            Users.delete(user=user_to_save)
         self.assertTrue(Users.save(user_to_save))
 
         # exists
@@ -31,7 +32,7 @@ class UsersTestCase(unittest.TestCase):
                         "password": "secret",
                         "yos": "2"}
         expected_user = {"username": "guneap",
-                         "gid_number": "1000",
+                         "gid_number": "2000",
                          "login_shell": "/bin/bash",
                          "first_name": "Gunea",
                          "last_name": "Pig",
@@ -40,9 +41,8 @@ class UsersTestCase(unittest.TestCase):
                          "uid_number": "1000",
                          "email": ["123@students.wits.ac.za"]}
         self.assertTrue(Users.save(user_to_save))
-        # user = Users.find_one("guneap")
-        # self.assertEquals(user, expected_user)
-
+        user = Users.find_one("guneap")
+        self.assertEquals(user, expected_user)
 
     def test_update(self):
         """ Can I update a user? I hope so"""
@@ -63,5 +63,7 @@ class UsersTestCase(unittest.TestCase):
             next_uid = Users.next_uid_number(8)
 
         # raises an error if the number of valid uids has been reached
+
+
 if __name__ == "__main__":
     unittest.main()

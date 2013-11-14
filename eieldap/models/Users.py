@@ -47,6 +47,11 @@ def find_one(name=None, attr=None):
 
 def save(attr):
     """ if the user exists update, if not create"""
+    required_attributes = ['first_name', 'last_name', 'yos', 'email', 'password', ]
+    for attribute in required_attributes:
+        if attribute not in attr:
+            raise TypeError("You have a missing attributes: " + attribute)
+
     fixed_user = fix(attr, inv_keymap)
     dn = "uid=" + fixed_user["uid"] + "," + basedn
     existing_user = manager.find_one(fixed_user, filter_key="uid")
@@ -88,6 +93,8 @@ def save(attr):
         fixed_user["sambaLMPassword"] = lm_password
         if 'dn' in fixed_user:
             del fixed_user['dn']
+        if 'yos' in fixed_user:
+            del fixed_user['yos']
         manager.create(dn, fixed_user)
         logger.info("Created user: " + str(dn))
         return True
