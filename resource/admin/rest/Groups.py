@@ -14,15 +14,15 @@ from eieldap import logger
 
 
 class Group(Resource):
-    def get(self, group_id):
-        group = models.groups.find_one({"id": group_id})
+    def get(self, group_name):
+        group = models.groups.find_one(group_name)
         return group
 
-    def delete(self, group_id):
-        group = models.groups.find_one({"id": group_id})
+    def delete(self, group_name):
+        group = models.groups.find_one(group_name)
         if group:
-            models.groups.delete(group["name"]);
-        return group_id, 200
+            models.groups.delete(group_name);
+        return group_name, 200
 
 
 class Groups(Resource):
@@ -34,7 +34,6 @@ class Groups(Resource):
         """ Create a new Group, must provide only Name """
         app.logger.info("Trying to create a group... joto mate")
         args = request.json
-        all_groups = models.groups.find()
         data, errors = self.validate(args)
         if errors:
             return errors, 400
@@ -45,7 +44,7 @@ class Groups(Resource):
 
     def validate(self, data):
         errors = {}
-        validators = {"name": [required]}
+        validators = {"name": [required], "members": [required]}
         # make sure all value keys are there
         for key in validators.keys():
             try:
