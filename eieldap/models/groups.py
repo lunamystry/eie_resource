@@ -1,6 +1,6 @@
 from eieldap import manager
 from eieldap import logger
-from eieldap.models import Users
+from eieldap.models import users
 import ldap
 
 
@@ -52,8 +52,8 @@ def save(group):
     if "members" not in group or type(group['members']) is not list:
         raise TypeError("You must give atleast one group member")
     for i, member_name in enumerate(group["members"]):
-        # TODO: member[i] = Users.find_one(member)["id"]
-        group['members'][i] = "uid=" + member_name + "," + Users.basedn
+        # TODO: member[i] = users.find_one(member)["id"]
+        group['members'][i] = "uid=" + member_name + "," + users.basedn
 
     fixed_group = fix(group, inv_keymap)
     dn = "cn=" + fixed_group["cn"] + "," + basedn
@@ -93,7 +93,7 @@ def add_member(group_name, member_username):
     group = find_one(group_name)
     if not group:
         raise ValueError(str(group_name) + " does not exists")
-    user = Users.find_one(member_username)
+    user = users.find_one(member_username)
     if not user:
         error_msg = "Trying to add : {0} to {1} but {0} is not in the directory".format(member_username, group_name)
         logger.error(error_msg)

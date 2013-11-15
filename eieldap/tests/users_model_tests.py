@@ -1,9 +1,9 @@
 from mock import patch, Mock
-from eieldap.models import Users
+from eieldap.models import users
 import unittest
 
 
-class UsersTestCase(unittest.TestCase):
+class usersTestCase(unittest.TestCase):
     def test_save(self):
         """ Create a new user """
         user_to_save = {"username": "guneap",
@@ -17,12 +17,12 @@ class UsersTestCase(unittest.TestCase):
         invalid_user = {"name": "navina"}
 
         with self.assertRaises(TypeError):
-            Users.save(invalid_user)
+            users.save(invalid_user)
 
         # Does not exist
-        if Users.find_one(user_to_save['username']):
-            Users.delete(user=user_to_save)
-        self.assertTrue(Users.save(user_to_save))
+        if users.find_one(user_to_save['username']):
+            users.delete(user=user_to_save)
+        self.assertTrue(users.save(user_to_save))
 
         # exists
         user_to_save = {"username": "guneap",
@@ -40,8 +40,8 @@ class UsersTestCase(unittest.TestCase):
                          "home_directory": "/home/ug/guneap",
                          "uid_number": "1000",
                          "email": ["123@students.wits.ac.za"]}
-        self.assertTrue(Users.save(user_to_save))
-        user = Users.find_one("guneap")
+        self.assertTrue(users.save(user_to_save))
+        user = users.find_one("guneap")
         self.assertEquals(user, expected_user)
 
     def test_update(self):
@@ -52,15 +52,15 @@ class UsersTestCase(unittest.TestCase):
         """ Manual test, can I get the next uid """
         # check that its withing range
         for yos in range(1, 8):
-            next_uid = Users.next_uid_number(yos)
+            next_uid = users.next_uid_number(yos)
             start = yos*1000
             end = start + 1000;
             self.assertTrue(next_uid in range(start, end))
 
         with self.assertRaises(ValueError):
-            next_uid = Users.next_uid_number(-1)
+            next_uid = users.next_uid_number(-1)
         with self.assertRaises(ValueError):
-            next_uid = Users.next_uid_number(8)
+            next_uid = users.next_uid_number(8)
 
         # raises an error if the number of valid uids has been reached
 
