@@ -17,6 +17,7 @@ def find():
     groups = manager.find(basedn, filter_key="cn")
     groups_list = []
     for group in groups:
+        group['member'] = get_names(group['member']) # NOT DRY
         new_group = fix(group, keymap)
         groups_list.append(new_group)
     return groups_list
@@ -33,7 +34,7 @@ def find_one(name=None, attr=None):
         group = manager.find_one(fixed_group, basedn, filter_key="cn")
 
     if group:
-        group['member'] = get_names(group['member'])
+        group['member'] = get_names(group['member']) # Repeated in find
         return fix(group, keymap)
 
 
@@ -94,13 +95,13 @@ def add_member(group_name, member_username):
         raise ValueError(str(group_name) + " does not exists")
     user = Users.find_one(member_username)
     if not user:
-        error_msg = "Trying to add : {0} to {1} but {0} is not in "\
-                    + "the directory".format(member_username, group_name)
+        error_msg = "Trying to add : {0} to {1} but {0} is not in the directory".format(member_username, group_name)
         logger.error(error_msg)
         raise ValueError(error_msg)
 
     if user['username'] not in group['members']:
         group['members'].append(user['username'])
+        save(group)
 
 
 def remove_member(group_name, member_username):
@@ -109,8 +110,14 @@ def remove_member(group_name, member_username):
     if not group:
         raise ValueError(str(group_name) + " does not exists")
 
-    if user['username'] in group['members']:
+    if member_username in group['members']:
+        if len(group['members']) == 1:
+            raise ReferenceError("You cannot remove the last member of a group")
         group['members'].remove(member_username)
+        save(group)
+        logger.info("Removed {0} from {1} group".format(member_username, group_name))
+    else:
+        logger.info("{0} not found in {1} group".format(member_username, group_name))
 
 
 def fix(group, keymap):
