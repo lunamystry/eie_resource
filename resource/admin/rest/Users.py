@@ -13,22 +13,18 @@ from eieldap import logger
 
 
 class User(Resource):
-    def get(self, user_id):
-        user = models.User().find_one({"username": user_id})
+    def get(self, username):
+        user = models.users.find_one(username)
         return user
 
-    def delete(self, user_id):
-        logger.error("DELETE NOT IMPLEMENTED FOR Users.py")
-        return "", 500
-
-    def put(self, user_id):
-        user = models.User().find_one({"username": user_id})
+    def put(self, username):
+        user = models.users.find_one(username)
         args = request.json
         # TODO: Validation!
-        # data, errors = Users().validate(args)
+        # data, errors = users.validate(args)
         if user:
             if 'new_password' in args.keys():
-                models.User().change_password(user_id,
+                models.users.change_password(user_id,
                                               None,
                                               args['new_password'])
             else:
@@ -41,17 +37,17 @@ class User(Resource):
 
 class Users(Resource):
     def get(self):
-        users = models.User().find()
+        users = models.users.find()
         return jsonify({"result": users})
 
     def post(self):
-        users = models.User().find()
+        users = models.users.find()
         args = request.json
         data, errors = self.validate(args)
         data["password"] = "passing"
         if errors:
             return errors, 500
-        if models.User().save(data):
+        if models.users.save(data):
             return args, 201
         else:
             return "User could not be created " + str(args), 500

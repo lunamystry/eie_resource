@@ -33,14 +33,14 @@ class GroupMember(Resource):
 class GroupMembers(Resource):
     def get(self, group_name):
         """ Lets see all the members in a group """
-        groups = models.Groups().find_one(group_name)
+        groups = models.groups.find_one(group_name)
         return jsonify({"result": groups})
 
     def post(self, group_name):
         """ Add a member to a group """
         app.logger.info("Trying to create a group... chotto matte kudasai")
         args = request.json
-        group = models.Groups().find_one(group_name)
+        group = models.groups.find_one(group_name)
         data, errors = self.validate(args)
         return jsonify({"result":group})
         # if errors:

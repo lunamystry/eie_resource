@@ -15,30 +15,30 @@ from eieldap import logger
 
 class Group(Resource):
     def get(self, group_id):
-        group = models.Groups().find_one({"id": group_id})
+        group = models.groups.find_one({"id": group_id})
         return group
 
     def delete(self, group_id):
-        group = models.Groups().find_one({"id": group_id})
+        group = models.groups.find_one({"id": group_id})
         if group:
-            models.Groups().delete(group["name"]);
+            models.groups.delete(group["name"]);
         return group_id, 200
 
 
 class Groups(Resource):
     def get(self):
-        groups = models.Groups().find()
+        groups = models.groups.find()
         return jsonify({"result": groups})
 
     def post(self):
         """ Create a new Group, must provide only Name """
         app.logger.info("Trying to create a group... joto mate")
         args = request.json
-        all_groups = models.Groups().find()
+        all_groups = models.groups.find()
         data, errors = self.validate(args)
         if errors:
             return errors, 400
-        if models.Groups().save(data):
+        if models.groups.save(data):
             return args, 201
         else:
             return "Group could not be created " + str(args), 500
