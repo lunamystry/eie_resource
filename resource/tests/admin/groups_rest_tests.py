@@ -15,19 +15,30 @@ class GroupsRestTestCase(unittest.TestCase):
     def test_get_groups(self):
         """ I want to be able to get all groups, assuming database works """
         rv = self.app.get("/groups")
-        # print rv.data
+        print rv.data
 
     def test_get_group_members(self):
         """ I should be able to get group members """
         rv = self.app.get("/groups/natsuki")
-        # print rv.data
+        print rv.data
 
     def test_create_group_members(self):
-        """ I should be able to get group members """
+        """ I should be able to add a member to a group """
         rv = self.app.post("/groups/natsuki",
                            content_type="application/json",
-                           data='{"name":"Natsuki"}')
+                           data='{"username":"guneap"}')
         print rv.data
+
+    def test_get_group_member(self):
+        """ I should be able to add a member to a group """
+        rv = self.app.get("/groups/natsuki/guneap")
+        print rv.data
+
+    def test_delete_group_member(self):
+        """ I should be able to add a member to a group """
+        rv = self.app.delete("/groups/natsuki/guneap")
+        print rv.data
+
 
 if __name__ == "__main__":
     unittest.main()
