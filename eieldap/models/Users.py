@@ -164,18 +164,19 @@ def authenticate(uid, password):
 
 
 def next_uid_number(yos):
-    """ Checks if nextUid user exists and if they do, returns their
-    uid number increments it by one and saves that. Depends on the
-    year of study
-    1 - first
-    2 - second
-    3 - third
-    4 - fourth
+    """ Goes through all the uid numbers in the chosen year of study and returns
+    an available one. In that year of study range. There are 1000 available
+    uid numbers in a range, if the number is reached, an exception is thrown
+    yos can take on the following values
+
+    1 - first year
+    2 - second year
+    3 - third year
+    4 - fourth year
     5 - postgrad
     6 - staff
     7 - machine
 
-    also means the number of students cannot exceed 999 in a year
     """
     if yos not in range(1, 8):
         logger.error("Tried to add out of range uid/yos")
@@ -200,4 +201,8 @@ def next_uid_number(yos):
 
 def user_gid_number(yos):
     """ There are 7 groups, depending on the year of study """
+    if yos not in range(1, 8):
+        logger.error("Tried to add out of range uid/yos")
+        raise ValueError("The Year of Study: " + str(yos) + " is out of range")
+
     return yos*1000

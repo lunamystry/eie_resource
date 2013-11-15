@@ -87,14 +87,30 @@ def delete(name=None, group=None):
         manager.delete(dn)
 
 
-def add_member(group_name, member_name):
+def add_member(group_name, member_username):
     """ should check it the member is the ldap then add them"""
     group = find_one(group_name)
     if not group:
         raise ValueError(str(group_name) + " does not exists")
-    user = Users.find_one(member_name)
+    user = Users.find_one(member_username)
     if not user:
-        raise ValueError(str(member_name) + " does not exists")
+        error_msg = "Trying to add : {0} to {1} but {0} is not in "\
+                    + "the directory".format(member_username, group_name)
+        logger.error(error_msg)
+        raise ValueError(error_msg)
+
+    if user['username'] not in group['members']:
+        group['members'].append(user['username'])
+
+
+def remove_member(group_name, member_username):
+    """ should check it the member is the ldap then add them"""
+    group = find_one(group_name)
+    if not group:
+        raise ValueError(str(group_name) + " does not exists")
+
+    if user['username'] in group['members']:
+        group['members'].remove(member_username)
 
 
 def fix(group, keymap):
@@ -114,5 +130,22 @@ def fix(group, keymap):
         return group
 
 
-def next_gid_number():
-    pass
+def next_gid_number(yos):
+    """returns the gid number based on the year of study given.
+    The following code applies:
+
+    yos - gid number - name
+     1  -    1000    - first year
+     2  -    2000    - second year
+     3  -    3000    - third year
+     4  -    4000    - fourth year
+     5  -    5000    - postgrad
+     6  -    6000    - staff
+     7  -    7000    - machine
+
+    """
+    if yos not in range(1, 8):
+        logger.error("Tried to add out of range uid/yos")
+        raise ValueError("The Year of Study: " + str(yos) + " is out of range")
+
+    return yos*1000

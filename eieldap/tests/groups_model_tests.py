@@ -98,7 +98,7 @@ class GroupsTestCase(unittest.TestCase):
         group = models.Groups.find_one("natsuki")
         self.assertEquals(group, expected_group)
 
-        # models.Groups.add_member("natsuki", already_member)
+        models.Groups.add_member("natsuki", already_member)
         group = models.Groups.find_one("natsuki")
         self.assertEquals(group, expected_group)
 
@@ -112,6 +112,34 @@ class GroupsTestCase(unittest.TestCase):
             models.Groups.add_member("aslkjqoi", non_existing_user)
         with self.assertRaises(ValueError):
             models.Groups.add_member("alskjaslkj", non_existing_user)
+
+    def test_remove_group_member(self):
+        """ Can I remove a group member?"""
+        original_group = {"name": "natsuki", "members": ['mandla', 'leny']}
+        expected_group = {"name": "natsuki", "members": ['mandla', 'leny', 'mindlos']}
+        already_member = "mandla"
+        existing_user = "mindlos"
+        non_existing_user = "poiqaalkj"
+
+        # remove to a group that exists
+        models.Groups.remove_member("natsuki", existing_user)
+        group = models.Groups.find_one("natsuki")
+        self.assertEquals(group, expected_group)
+
+        models.Groups.add_member("natsuki", already_member)
+        group = models.Groups.find_one("natsuki")
+        self.assertEquals(group, expected_group)
+
+        with self.assertRaises(ValueError):
+            models.Groups.remove_member("natsuki", non_existing_user)
+
+        # add to a group that does not exist
+        with self.assertRaises(ValueError):
+            models.Groups.remove_member("aslkjalskj", existing_user)
+        with self.assertRaises(ValueError):
+            models.Groups.remove_member("aslkjqoi", non_existing_user)
+        with self.assertRaises(ValueError):
+            models.Groups.remove_member("alskjaslkj", non_existing_user)
 
 
 if __name__ == "__main__":
