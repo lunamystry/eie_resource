@@ -1,8 +1,12 @@
+"""
+Until I figure out how to setup an tear down, these are manual tests.
+You much know what is in the database
+"""
 import unittest
 import resource
 
 
-class GroupMembersRestTestCase(unittest.TestCase):
+class GroupsRestTestCase(unittest.TestCase):
 
     def setUp(self):
         resource.app.config['TESTING'] = True
