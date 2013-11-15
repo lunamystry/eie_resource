@@ -65,6 +65,7 @@ class Manager():
     def delete(self, dn):
         try:
             self.connection.delete_s(dn)
+            return True
         except ldap.LDAPError as e:
             logger.debug(e)
         return False
