@@ -14,11 +14,13 @@ Clonezilla Server Edition.
 
 Clonezilla Server Edition (SE)
 ------------------------------
-  **Requirements :**
-    - Ubuntu 12.04 (LTS)
 
-      The server should have clonezilla installed, see below for
-      installation instructions
+**Requirements :**
+
+- Server with Ubuntu 12.04 (LTS)
+
+The server should have clonezilla installed, see below for
+installation instructions
 
 Clonezilla SE Installation
 --------------------------
@@ -29,14 +31,15 @@ Detailed instructions on how to go about this can be found on the
 the instructions for Dlab use. I assume knowledge of linux terminal
 commands.
 
-  **Requirements :**
-    - Ubuntu 12.04 (LTS)
+**Requirements :**
+
+- Ubuntu 12.04 (LTS)
 
 #. Get the key::
 
      sudo wget -q http://drbl.org/GPG-KEY-DRBL -O- | sudo apt-key add -
 
-The output from this should be `OK`.
+     The output from this should be `OK`.
 
 #. Enable universe, mutliverse and restricted from Software Center
    sources. Open the Software Center. Then `Edit >> Software
@@ -44,10 +47,10 @@ The output from this should be `OK`.
    checked (you will have to enter the support password). I think
    there will be a screenshot below.
 
-.. image:: screenshots/enabling_universe_multiverse_restricted.png
-   :width: 500 px
-   :alt: enabling universe, multiverse and restricted
-   :align: center
+   .. image:: screenshots/enabling_universe_multiverse_restricted.png
+              :width: 500 px
+              :alt: enabling universe, multiverse and restricted
+              :align: center
 
 
 #. Add the repository for downloading DRBL. This requires editing the
@@ -107,14 +110,22 @@ To configure the DRBL server you run::
   sudo drblsrv -i
 
 #. Do you want to install the network installation boot image....
-ANSWER: N
+
+   ANSWER: N
+
 #. Do you want to use the serial console...
-ANSWER: N
+
+   ANSWER: N
+
 #. Do you want to upgrade the operating systems?
-ANSWER: N
+
+   ANSWER: N
+
 #. There are 2 kernels available for clients, which on do you prefere?
-ANSWER: 1
-the one "from this DRBL server"
+
+   ANSWER: 1
+
+   the one "from this DRBL server"
 
 Thats not all, you now need to run drblpush, to actually, uhm... I
 guess configure. This will ask you a whole lot of questions and one of
@@ -123,50 +134,86 @@ them is the one that needs the MAC addresses::
 
   sudo drblpush -i
 
+
 #. Please enter DNS domain
-ANSWER: ug.eie.wits.ac.za
+
+   ANSWER: ug.eie.wits.ac.za
+
 #. Please enter NIS/YP domain name
-ANSWER: hotseat2
+
+   ANSWER: hotseat2
+
 #. Please enter the client hostname prefix
-ANSWER: hotseat2
+
+   ANSWER: hotseat2
+
 #. ... Do you want to collect them?
-ANSWER: N
+
+   ANSWER: N
+
 #. Do you want to let the DHCP service ... interface eth0 ?
-ANSWER: Y
+
+   ANSWER: Y
+
 #. Please tell me the file name which contains MAC addresses...
-ANSWER: /home/support/Imaging/macadr-eth0.txt
+
+   ANSWER: /home/support/Imaging/macadr-eth0.txt
+
 #. What initial number to use in the last set of digits...
-ANSWER 1
+
+   ANSWER 1
+
 #. Do you want to let the DHCP service ... interface eth1 ?
-ANSWER: /home/support/Imaging/macadr-eth1.txt
+
+   ANSWER: /home/support/Imaging/macadr-eth1.txt
+
 #. What initial number to use in the last set of digits...
-ANSWER 43
+
+   ANSWER 43
+
 #. In the system, there are 3 modes for diskless linux services...
-ANSWER: 2
+
+   ANSWER: 2
+
 #. In the system, there are 4 modes available for clonezilla...
-ANSWER: 1
+
+   ANSWER: 1
+
 #. When using clonezilla, which directory ... save the image
-ANSWER: /home/partimag
+
+   ANSWER: /home/partimag
+
 #. Do you want to set the pxelinux password for clients...
-ANSWER: N
+
+   ANSWER: N
+
 #. Do you want to set boot prompt for clients?
-ANSWER: N
+
+   ANSWER: N
+
 #. Do you want to use graphic background for PXE menu when clients
    boot?
-ANSWER: Y
+
+   ANSWER: Y
+
 #. Do you want to let DRBL server as a NAT server...
-ANSWER: N
+
+   ANSWER: N
+
 #. Warning! If you go on, your firewall rules will be overwritten...
-ANSWER: Y
+
+   ANSWER: Y
 
 
 Clonezilla Live
 ---------------
 These instructions were taken from the "Complete Guide to Cloning" by
 *Tebogo Mohotlhoane*
-  **Requirements :**
-    - Clonezilla live disc
-    - external hard disc.
+
+**Requirements :**
+
+- Clonezilla live disc
+- external hard disc.
 
 .. note::
 
@@ -204,6 +251,7 @@ These instructions were taken from the "Complete Guide to Cloning" by
    afterwards)
 
 #. To continue
+
   - Press 'Enter' to continue.
   - Beginner (simplest mode – sets best options as default on subsequent menus)
   - Note: can either
@@ -211,20 +259,28 @@ These instructions were taken from the "Complete Guide to Cloning" by
     For a disc:
 
      * select 'savedisk'
+
      * name the image being created. Use the convention shown as it will make
        identifying the image simpler.
+
      * select the disc to be cloned. Remember from point (vii) that our OSes are
        on sda. Press 'Enter' to proceed
+
   - confirm the procedure with 'y' followed by 'Enter'
   - once complete, press '0' (to shut the system down) or '1' (to reboot)
     followed by 'Enter'
     For partition imaging:
-    * select 'saveparts'
-    * name the image being created. Use the convention shown as it will
-      make identifying the image simpler.
+
+      * select 'saveparts'
+
+      * name the image being created. Use the convention shown as it will
+        make identifying the image simpler.
+
   - mark the partitions to be imaged using the spacebar to check the
     boxes. Press 'Enter' twice to continue
+
     * confirm the procedure with 'y' followed by 'Enter'
+
     * once complete, press '0' (to shut the system down) or '1' (to reboot)
       followed by 'Enter'
       remove the disc, close the tray and press 'Enter'
