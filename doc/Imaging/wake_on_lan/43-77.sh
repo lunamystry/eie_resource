@@ -1,0 +1,37 @@
+#! /bin/bash
+echo "Waking dlab 43 - 77 using lan"
+sudo etherwake 00:25:64:98:42:5F # 43
+sudo etherwake 00:25:64:98:70:51 # 44
+sudo etherwake 00:25:64:98:42:8B # 45
+sudo etherwake 00:25:64:96:EB:BF # 46
+sudo etherwake 00:25:64:98:3F:03 # 47
+sudo etherwake 00:25:64:96:F5:F7 # 48
+sudo etherwake 00:25:64:96:F6:37 # 49
+sudo etherwake 00:25:64:98:47:4C # 50
+sudo etherwake 00:25:64:98:42:59 # 51
+sudo etherwake 00:25:64:98:3F:7B # 52
+sudo etherwake 00:25:64:96:F6:90 # 53
+sudo etherwake 00:25:64:98:42:EB # 54
+sudo etherwake 00:25:64:98:42:06 # 55
+sudo etherwake 00:25:64:96:EB:32 # 56
+sudo etherwake 00:25:64:98:41:B8 # 57
+sudo etherwake 00:25:64:96:F5:DE # 58
+sudo etherwake 00:25:64:96:F7:3B # 59
+sudo etherwake 00:25:64:94:9D:6D # 60
+sudo etherwake 00:25:64:98:7B:CC # 61
+sudo etherwake 00:25:64:98:44:09 # 62
+sudo etherwake 00:25:64:98:0D:35 # 63
+sudo etherwake 00:25:64:98:42:90 # 64
+sudo etherwake 00:25:64:98:42:01 # 65
+sudo etherwake 00:25:64:98:70:E7 # 66
+sudo etherwake 00:25:64:96:F6:30 # 67
+sudo etherwake 00:25:64:98:42:35 # 68
+sudo etherwake 00:25:64:98:43:A7 # 69
+sudo etherwake 00:25:64:98:42:F9 # 70
+sudo etherwake 00:25:64:98:40:84 # 71
+sudo etherwake 00:25:64:95:DD:31 # 72
+sudo etherwake 00:25:64:98:42:6B # 73
+sudo etherwake 00:25:64:96:F1:CF # 74
+sudo etherwake 00:25:64:98:40:52 # 75
+sudo etherwake 00:25:64:96:F2:13 # 76
+sudo etherwake 00:25:64:98:42:09 # 77
