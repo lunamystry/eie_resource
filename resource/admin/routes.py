@@ -20,10 +20,11 @@ def restrict_bp_to_admins():
     pass
 
 
-@admin.route('/', defaults={'page': 'index'})
-@admin.route('/<page>')
-def index(page):
-    return render_template('index.haml')
+@admin.route('/<path:filename>')
+def documentation(filename):
+    cwd = os.path.dirname(__file__)
+    logging.info("CWD: " + cwd)
+    return send_from_directory(cwd + '/static/frontend', filename)
 
 
 @admin.route('/docs/<path:filename>')
@@ -31,9 +32,3 @@ def documentation(filename):
     cwd = os.path.dirname(__file__)
     logging.info("CWD: " + cwd)
     return send_from_directory(cwd + '/static/docs', filename)
-
-
-@admin.route('/js/<path:filename>')
-def js(filename):
-    cwd = os.path.dirname(__file__)
-    return send_from_directory(cwd + '/static/js', filename)

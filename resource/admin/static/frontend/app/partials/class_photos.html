@@ -1,0 +1,9 @@
+<h3>Class Photos</h3>
+<p> Here you will find class photos from years past</p>
+<ul class="class_photos">
+  <li ng-repeat="photo in class_photos | filter:query | orderBy:orderProp">
+    {{photo.name}}
+    <p>{{photo.snippet}}</p>
+    <img ng-src="{{photo.thumbUrl}}"/>
+  </li>
+</ul>

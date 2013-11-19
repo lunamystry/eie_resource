@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" ng-app="ehlane">
+  <head>
+    <meta charset="utf-8">
+    <title ng-controller="titleCtrl">Resource : {{ title() }}</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/png"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.css"/>
+    <link rel="stylesheet/less" type="text/css" href="css/app.less"/>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#home">
+            <img src="img/eielogo.png">
+          </a>
+          <div id="menu" ng-controller="navCtrl">
+            <ul class="nav-menu pull-right">
+              <li> <a  ng-class="navClass('home')" href="#/home">home</a> </li>
+              <li> <a href="http://resource.eie.wits.ac.za/repository">repository</a></li>
+              <li> <a  ng-class="navClass('class_photos')" href="#/class_photos"> class photos </a> </li>
+              <li> <a  ng-class="navClass('bookings')" href="#/bookings"> bookings </a> </li>
+              <li> <a  ng-class="navClass('about')" href="#/about"> about </a> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="content" class="container">
+      <div class="row-fluid">
+        <div ng-view></div>
+      </div>
+    </div>
+    <div id="footer">
+      <div class="inner">
+        <div class="container">
+          <span id="copyright">
+            (c) 2013 University Of The Witwatersrand, Johannesburg
+          </span>
+          <div id="credit">
+            <a href="http://flask.pocoo.org/">
+              <img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" alt="made with Flask" border="0">
+            </a>
+            by Mandla Mbuli
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+    <script src="lib/less.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+  </body>
+</html>
