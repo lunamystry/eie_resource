@@ -9,6 +9,7 @@ from flask.ext.login import (LoginManager, current_user, login_required,
                              confirm_login, fresh_login_required)
 import os
 from resource import app
+from resource import login_manager
 from resource import rest
 from resource import admin
 from resource import api
@@ -49,9 +50,6 @@ def internal_error(error):
 
 
 # LOGIN -----------------------------------------------
-login_manager = LoginManager()
-login_manager.setup_app(app)
-
 
 class User(UserMixin):
     def __init__(self, username):

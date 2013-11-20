@@ -1,7 +1,9 @@
 from flask import Flask
 from flask.ext.restful import Api
+from flask.ext.login import LoginManager
 from werkzeug import ImmutableDict
 from hamlish_jinja import HamlishExtension
+
 
 class FlaskWithHamlish(Flask):
     jinja_options = ImmutableDict(
@@ -16,9 +18,14 @@ app.config.from_envvar('RESOURCE_SETTINGS')
 app.jinja_env.hamlish_mode = 'indented'
 api = Api(app)
 
+login_manager = LoginManager()
+login_manager.setup_app(app)
+
+
 from resource import routes
 import admin
 app.register_blueprint(admin.admin, url_prefix='/admin')
+
 
 
 if __name__ == '__main__':
