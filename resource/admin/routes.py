@@ -11,7 +11,9 @@ api.add_resource(rest.Users, '/users')
 api.add_resource(rest.User, '/users/<string:user_id>')
 api.add_resource(rest.Groups, '/groups')
 api.add_resource(rest.GroupMembers, '/groups/<string:group_name>')
-api.add_resource(rest.GroupMember, '/groups/<string:group_name>/<string:username>')
+api.add_resource(rest.GroupMember,
+                 '/groups/<string:group_name>/<string:username>')
+
 
 @admin.before_request
 def restrict_bp_to_admins():
@@ -20,15 +22,15 @@ def restrict_bp_to_admins():
     pass
 
 
-@admin.route('/<path:filename>')
-def documentation(filename):
-    cwd = os.path.dirname(__file__)
-    logging.info("CWD: " + cwd)
-    return send_from_directory(cwd + '/static/frontend', filename)
-
-
 @admin.route('/docs/<path:filename>')
 def documentation(filename):
     cwd = os.path.dirname(__file__)
     logging.info("CWD: " + cwd)
     return send_from_directory(cwd + '/static/docs', filename)
+
+
+@admin.route('/<path:filename>')
+def documentation(filename):
+    cwd = os.path.dirname(__file__)
+    logging.info("CWD: " + cwd)
+    return send_from_directory(cwd + '/static/frontend', filename)

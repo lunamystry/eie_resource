@@ -130,3 +130,20 @@ And you're done!
    .. image:: screenshots/cloning/14.png
               :width: 500 px
               :align: center
+
+Now you go to the machine you want to clone, switch it, press F12 as
+it starts and made the computer boot from the network.
+Select the option shown below in the screenshot (thank you Kennedy):
+
+   .. image:: screenshots/boot_from_network.jpg
+              :width: 500 px
+              :align: center
+
+This will start cloning, it takes about 15 min to clone. Afterward you
+follow the above steps again. The differences are:
+
+#. Select the machine(s) you want to clone to instead of the one you
+   want to clone
+#. select restore-disk instead of save-disk.
+
+This will give an extra
