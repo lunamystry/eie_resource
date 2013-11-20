@@ -10,7 +10,7 @@ class usersTestCase(unittest.TestCase):
                         "first_name": "Gunea",
                         "last_name": "Pig",
                         "email": "guneap@students.wits.ac.za",
-                        "password": "secret",
+                        "password": "passing",
                         "yos": "1"}
         expected_user = {"name": "natsuki", "members": ['mandla', 'leny']}
         ignored_user = {"name": "natsuki", "members": ['mandla', 'leny']}
@@ -29,7 +29,7 @@ class usersTestCase(unittest.TestCase):
                         "first_name": "Gunea",
                         "last_name": "Pig",
                         "email": "123@students.wits.ac.za",
-                        "password": "secret",
+                        "password": "passing",
                         "yos": "2"}
         expected_user = {"username": "guneap",
                          "gid_number": "2000",
@@ -43,10 +43,6 @@ class usersTestCase(unittest.TestCase):
         self.assertTrue(users.save(user_to_save))
         user = users.find_one("guneap")
         self.assertEquals(user, expected_user)
-
-    def test_update(self):
-        """ Can I update a user? I hope so"""
-        pass
 
     def test_get_next_uid(self):
         """ Manual test, can I get the next uid """

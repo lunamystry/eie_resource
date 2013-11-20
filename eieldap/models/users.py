@@ -95,9 +95,10 @@ def save(attr):
             del fixed_user['dn']
         if 'yos' in fixed_user:
             del fixed_user['yos']
-        manager.create(dn, fixed_user)
-        logger.info("Created user: " + str(dn))
-        return True
+        if manager.create(dn, fixed_user):
+            change_password(fixed_user['uid'], None, attr['password'])
+            logger.info("Created user: " + str(dn))
+            return True
     return False
 
 
@@ -158,8 +159,8 @@ def change_password(uid, oldpw, newpw):
     return False
 
 
-def authenticate(uid, password):
-    dn = "uid=" + uid + "," + basedn
+def authenticate(username, password):
+    dn = "uid=" + username + "," + basedn
     return manager.authenticate(dn, password)
 
 

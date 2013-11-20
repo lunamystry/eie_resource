@@ -146,4 +146,5 @@ follow the above steps again. The differences are:
    want to clone
 #. select restore-disk instead of save-disk.
 
-This will give an extra
+There is an extra step, see below. You have to choose the image you
+want to use.

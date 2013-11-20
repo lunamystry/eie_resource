@@ -33,7 +33,8 @@ class Manager():
             self.connection.add_s(dn, modlist)
             return True
         except ldap.LDAPError as e:
-            logger.debug(e)
+            logger.error(attr)
+            logger.error(e)
         return False
 
     def update(self, dn, new_attr):
