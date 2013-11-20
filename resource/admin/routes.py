@@ -17,10 +17,9 @@ api.add_resource(rest.GroupMember,
 
 @admin.before_request
 def restrict_bp_to_admins():
-    #if not users.is_current_user_admin():
+    # if not users.is_current_user_admin():
     #    return redirect(users.create_login_url(request.url))
     pass
-
 
 @admin.route('/docs/<path:filename>')
 def documentation(filename):
@@ -30,7 +29,7 @@ def documentation(filename):
 
 
 @admin.route('/<path:filename>')
-def documentation(filename):
+def index(filename):
     cwd = os.path.dirname(__file__)
     logging.info("CWD: " + cwd)
     return send_from_directory(cwd + '/static/frontend', filename)

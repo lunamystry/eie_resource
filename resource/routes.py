@@ -1,24 +1,29 @@
 from flask import render_template
 from flask import request
 from flask import send_from_directory
+from flask import redirect
+from flask import url_for
+from flask import flash
+from flask.ext.login import (LoginManager, current_user, login_required,
+                             login_user, logout_user, UserMixin, AnonymousUser,
+                             confirm_login, fresh_login_required)
 import os
 from resource import app
 from resource import rest
+from resource import admin
 from resource import api
+from eieldap.models import users
+
 
 api.add_resource(rest.ClassPhotos, '/class_photos')
 api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
 api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
 
+
 @app.route('/')
 def index():
     return render_template('index.haml')
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('page_not_found.haml'), 404
 
 
 @app.route('/js/<path:filename>')
@@ -33,6 +38,74 @@ def css(filename):
     return send_from_directory(cwd + '/static/css', filename)
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.haml'), 404
+
+
 @app.errorhandler(500)
 def internal_error(error):
     return render_template('500.haml'), 500
+
+
+# LOGIN -----------------------------------------------
+login_manager = LoginManager()
+login_manager.setup_app(app)
+
+
+class User(UserMixin):
+    def __init__(self, username):
+        self.attributes = users.find_one(username)
+        self.username = username
+        self.id = username
+
+    def is_active(self):
+        return True
+
+
+class Anonymous(AnonymousUser):
+    name = u"Anonymous"
+
+
+@login_manager.user_loader
+def load_user(username):
+    return User(username)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    app.logger.info("username" in request.form)
+    error = None
+    if request.method == "POST":
+        username = request.form["username_input"]
+        password = request.form["password_input"]
+        if users.authenticate(username, password):
+            remember = request.form.get("remember", "no") == "yes"
+            remember = "no"
+            if login_user(User(username), remember=remember):
+                error = "Logged in"
+                return redirect(request.args.get("next") or
+                                url_for("admin.index",
+                                        filename="app/index.html"))
+            else:
+                error = "Sorry, but you could not log in."
+        error = "Incorrect password of username."
+    return render_template("login.haml", error=error)
+
+
+@app.route("/reauth", methods=["GET", "POST"])
+@login_required
+def reauth():
+    if request.method == "POST":
+        confirm_login()
+        flash(u"Reauthenticated.")
+        return redirect(request.args.get("next") or url_for("index"))
+    return render_template("reauth.html")
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Logged out.")
+    return redirect(url_for("index"))

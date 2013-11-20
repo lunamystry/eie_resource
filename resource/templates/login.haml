@@ -1,0 +1,22 @@
+-extends "base.haml"
+-macro text_field(label, id)
+  %div.control-group id='{{ id }}'
+    %div.controls
+      %input.input name='{{ id }}_input' type='text' placeholder='{{ label }}'
+      %span.help-inline
+
+-block body
+  -if error:
+    %p class="alert-danger"
+      %strong
+        ERROR:
+      {{ error }}
+  %form action="{{ url_for('login') }}" method="post"
+    {{ text_field("Username", "username") }}
+    %div.control-group id='password'
+      %div.controls
+        %input.input name='password_input' type='password' placeholder='Password'
+        %span.help-inline
+    %dl.control-group.controls
+      %button.btn.btn-success.btn-large. type="submit"
+        Sign in
