@@ -38,7 +38,7 @@ class User(Resource):
 class Users(Resource):
     def get(self):
         users = models.users.find()
-        return jsonify({"result": users})
+        return users, 200
 
     def post(self):
         users = models.users.find()
