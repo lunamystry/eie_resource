@@ -42,10 +42,11 @@ class Manager():
         modlist = self.prepare_modlist(dn, new_attr)
         logger.debug(modlist)
         try:
+            logger.error(dn)
             self.connection.modify_s(dn, modlist)
             return True
         except ldap.LDAPError as e:
-            logger.debug(e)
+            logger.error(e)
         return False
 
     def prepare_modlist(self, dn, new_attr):
@@ -79,6 +80,7 @@ class Manager():
         except ldap.LDAPError as e:
             logger.debug(dn)
             logger.debug(e)
+            return False
 
     def authenticate(self, dn, password):
         try:

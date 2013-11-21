@@ -72,7 +72,7 @@ def add(attr):
         logger.error(error_msg)
         raise RuntimeError(error_msg)
     fixed_user["objectClass"] = ["inetOrgPerson", "posixAccount", "sambaSamAccount", "hostObject"]
-    fixed_user["uidNumber"] = str(uid_number)
+    gfixed_user["uidNumber"] = str(uid_number)
     fixed_user["gidNumber"] = str(gid_number)
     fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
     fixed_user["loginShell"] = "/bin/bash"
@@ -133,7 +133,10 @@ def delete(username=None, user=None):
         existing_user = manager.find_one(fixed_user, basedn, filter_key="uid")
 
     if existing_user:
-        manager.delete(dn)
+        if manager.delete(existing_user['dn']):
+            logger.info("deleted: " + existing_user['dn'])
+            return True
+    return False
 
 
 def smb_encrypt(password):
@@ -169,10 +172,11 @@ def change_password(uid, oldpw, newpw):
     dn = "uid=" + uid + "," + basedn
     user = manager.find_by_dn(dn)
     if user:
-        logger.info("updating user: " + str(user))
         lm_password, nt_password = smb_encrypt(newpw)
         user["sambaNTPassword"] = nt_password
         user["sambaLMPassword"] = lm_password
+        logger.debug("Updating password for user: " + str(user['dn']))
+        dn = user['dn']
         if manager.update(dn, user):
             return manager.change_password(dn, oldpw, newpw)
     return False

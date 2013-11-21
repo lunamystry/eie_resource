@@ -17,9 +17,13 @@ def find():
     groups = manager.find(basedn, filter_key="cn")
     groups_list = []
     for group in groups:
-        group['member'] = get_names(group['member']) # NOT DRY
-        new_group = fix(group, keymap)
-        groups_list.append(new_group)
+        try:
+            group['member'] = get_names(group['member']) # NOT DRY
+            new_group = fix(group, keymap)
+            groups_list.append(new_group)
+        except KeyError:
+            logger.error("Problem with Group: " + str(group))
+
     return groups_list
 
 
