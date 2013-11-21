@@ -117,7 +117,7 @@ def remove_member(group_name, member_username):
         save(group)
         logger.info("Removed {0} from {1} group".format(member_username, group_name))
     else:
-        logger.info("{0} not found in {1} group".format(member_username, group_name))
+        logger.debug("{0} not found in {1} group".format(member_username, group_name))
 
 
 def fix(group, keymap):

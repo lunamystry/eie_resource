@@ -14,6 +14,7 @@ keymap = {"uid": "username",
           "loginShell": "login_shell",
           "uidNumber": "uid_number",
           "gidNumber": "gid_number",
+          "host": "hosts",
           "mail": "email"}
 inv_keymap = {}
 for k,v in keymap.items():
@@ -45,60 +46,78 @@ def find_one(name=None, attr=None):
         return fix(user, keymap)
 
 
-def save(attr):
-    """ if the user exists update, if not create"""
-    required_attributes = ['first_name', 'last_name', 'yos', 'email', 'password', ]
+def add(attr):
+    """ adds a new user """
+    required_attributes = ['first_name', 'last_name', 'yos', 'email', 'password']
     for attribute in required_attributes:
         if attribute not in attr:
             raise TypeError("You have a missing attributes: " + attribute)
+    fixed_user = fix(attr, inv_keymap)
+    dn = "uid=" + fixed_user["uid"] + "," + basedn
+
+    uid_number = next_uid_number(int(attr['yos']))
+    gid_number = user_gid_number(int(attr['yos']))
+    lm_password, nt_password = smb_encrypt(attr["password"])
+    smbRid = uid_number*4
+    if int(attr['yos']) < 5:
+        home_base = "/home/ug"
+    elif int(attr['yos']) == 5:
+        home_base = "/home/pg"
+    elif int(attr['yos']) == 6:
+        home_base = "/home/staff"
+    elif int(attr['yos']) == 7:
+        home_base = "/dev/null"
+    else:
+        error_msg = "trying to save but Year of Study " + attr['yos'] + " is invalid"
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
+    fixed_user["objectClass"] = ["inetOrgPerson", "posixAccount", "sambaSamAccount", "hostObject"]
+    fixed_user["uidNumber"] = str(uid_number)
+    fixed_user["gidNumber"] = str(gid_number)
+    fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
+    fixed_user["loginShell"] = "/bin/bash"
+    fixed_user["displayName"] = fixed_user["cn"] + " " + fixed_user["sn"]
+    fixed_user["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid)
+    fixed_user["sambaAcctFlags"] = "[U         ]"
+    fixed_user["sambaNTPassword"] = nt_password
+    fixed_user["sambaLMPassword"] = lm_password
+    if 'dn' in fixed_user:
+        del fixed_user['dn']
+    if 'yos' in fixed_user:
+        del fixed_user['yos']
+    if manager.create(dn, fixed_user):
+        change_password(fixed_user['uid'], None, attr['password'])
+        logger.info("Created user: " + str(dn))
+        return True
+
+
+def update(attr):
+    """ updates a new user"""
+    fixed_user = fix(attr, inv_keymap)
+    dn = "uid=" + fixed_user["uid"] + "," + basedn
+    existing_user = manager.find_one(fixed_user, filter_key="uid")
+
+    gid_number = user_gid_number(int(attr['yos']))
+    if 'yos' in fixed_user:
+        del fixed_user['yos']
+    fixed_user["gidNumber"] = str(gid_number)
+    manager.update(dn, fixed_user)
+    logger.info("updated user: " + str(dn))
+    return True
+
+def save(attr):
+    """ if the user exists update, if not create"""
+    if 'username' not in attr:
+        raise TypeError("You have a missing attributes: username")
 
     fixed_user = fix(attr, inv_keymap)
     dn = "uid=" + fixed_user["uid"] + "," + basedn
     existing_user = manager.find_one(fixed_user, filter_key="uid")
 
     if existing_user:
-        gid_number = user_gid_number(int(attr['yos']))
-        if 'yos' in fixed_user:
-            del fixed_user['yos']
-        fixed_user["gidNumber"] = str(gid_number)
-        manager.update(dn, fixed_user)
-        logger.info("updated user: " + str(dn))
-        return True
+        return update(attr)
     else:
-        uid_number = next_uid_number(int(attr['yos']))
-        gid_number = user_gid_number(int(attr['yos']))
-        lm_password, nt_password = smb_encrypt(attr["password"])
-        smbRid = uid_number*4
-        if int(attr['yos']) < 5:
-            home_base = "/home/ug"
-        elif int(attr['yos']) == 5:
-            home_base = "/home/pg"
-        elif int(attr['yos']) == 6:
-            home_base = "/home/staff"
-        elif int(attr['yos']) == 7:
-            home_base = "/dev/null"
-        else:
-            error_msg = "trying to save but Year of Study " + attr['yos'] + " is invalid"
-            logger.error(error_msg)
-            raise RuntimeError(error_msg)
-        fixed_user["objectClass"] = ["inetOrgPerson", "posixAccount", "sambaSamAccount"]
-        fixed_user["uidNumber"] = str(uid_number)
-        fixed_user["gidNumber"] = str(gid_number)
-        fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
-        fixed_user["loginShell"] = "/bin/bash"
-        fixed_user["displayName"] = fixed_user["cn"] + " " + fixed_user["sn"]
-        fixed_user["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid)
-        fixed_user["sambaAcctFlags"] = "[U         ]"
-        fixed_user["sambaNTPassword"] = nt_password
-        fixed_user["sambaLMPassword"] = lm_password
-        if 'dn' in fixed_user:
-            del fixed_user['dn']
-        if 'yos' in fixed_user:
-            del fixed_user['yos']
-        if manager.create(dn, fixed_user):
-            change_password(fixed_user['uid'], None, attr['password'])
-            logger.info("Created user: " + str(dn))
-            return True
+        return add(attr)
     return False
 
 
@@ -157,6 +176,36 @@ def change_password(uid, oldpw, newpw):
         if manager.update(dn, user):
             return manager.change_password(dn, oldpw, newpw)
     return False
+
+
+def add_host(username, host_domain):
+    """ Allow the user with username to login to host with host_domain.
+    this assumes the host has been configured to use the host property"""
+    user = find_one(username)
+    if not user:
+        raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
+
+    try:
+        if host_domain not in user['hosts']:
+            user['hosts'].append(host_domain)
+            save(user)
+    except KeyError:
+        user['hosts'] = [host_domain]
+        save(user)
+
+
+def remove_host(username, host_domain):
+    """ Disallow a user with username to login into a host with host_domain.
+    this assumes the host has been configured to use the host property"""
+    user = find_one(username)
+    if not user:
+        raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
+
+    if host_domain in user['hosts']:
+        user['hosts'].remove(host_domain)
+        save(user)
+    else:
+        logger.debug("host: {0} not found in {1} user".format(host_domain, username))
 
 
 def authenticate(username, password):

@@ -129,7 +129,7 @@ class Manager():
 
     def de_list(self, user):
         fields = []
-        list_fields = ['objectClass', 'mail', 'member', 'memberUid']
+        list_fields = ['objectClass', 'mail', 'member', 'memberUid', 'host']
         logger.debug("Keeping only: " + str(list_fields) + " as lists")
         dn, fields = user
         fields.update({"dn": [dn]})
