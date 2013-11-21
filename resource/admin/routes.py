@@ -23,7 +23,9 @@ def restrict_bp_to_admins():
     #    return redirect(users.create_login_url(request.url))
     pass
 
+
 @admin.route('/docs/<path:filename>')
+@login_required
 def documentation(filename):
     cwd = os.path.dirname(__file__)
     logging.info("CWD: " + cwd)

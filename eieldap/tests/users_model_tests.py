@@ -99,7 +99,7 @@ class usersTestCase(unittest.TestCase):
                            "yos": "4",
                            "hosts": ['babbage.ug.eie.wits.ac.za'],
                            "home_directory": "/home/ug/johnd",
-                           "uid_number": "4000",
+                           "uid_number": "4063",
                            "email": ["john.doe@students.wits.ac.za"]}
         already_member = johnd['username']
         existing_user = guneap['username']

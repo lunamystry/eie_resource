@@ -13,7 +13,7 @@ from resource import login_manager
 from resource import rest
 from resource import admin
 from resource import api
-from eieldap.models import users
+from eieldap.models import users, groups
 
 
 api.add_resource(rest.ClassPhotos, '/class_photos')
@@ -82,9 +82,14 @@ def login():
             remember = "no"
             if login_user(User(username), remember=remember):
                 error = "Logged in"
-                return redirect(request.args.get("next") or
-                                url_for("admin.index",
-                                        filename="app/index.html"))
+                IT_group = groups.find_one('IT')
+                if username in IT_group['members']:
+                    return redirect(request.args.get("next") or
+                                    url_for("admin.index",
+                                            filename="app/index.html"))
+                else:
+                    return redirect(request.args.get("next") or
+                                    url_for("index"))
             else:
                 error = "Sorry, but you could not log in."
         error = "Incorrect password of username."
