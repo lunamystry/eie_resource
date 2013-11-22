@@ -10,7 +10,7 @@ from flask.ext.login import login_required
 import logging
 
 api.add_resource(rest.Users, '/users')
-api.add_resource(rest.User, '/users/<string:user_id>')
+api.add_resource(rest.User, '/users/<string:username>')
 api.add_resource(rest.Groups, '/groups')
 api.add_resource(rest.GroupMembers, '/groups/<string:group_name>')
 api.add_resource(rest.GroupMember,
