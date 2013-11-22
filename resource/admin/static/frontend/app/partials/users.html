@@ -3,29 +3,16 @@
     There are {{users.length}} users.
     <br/>
     <input type="search" ng-model="q" placeholder="filter users..." />
-    <div class="example-animate-container">
-      <div class="animate-repeat" ng-repeat="user in users | filter:q">
-        <div class='well span6'>
-          <b>{{user.first_name}} {{ user.last_name }} </b>
-          <br/>
-          Username: <i>{{ user.username }}</i>
-          <br/>
-          email: {{ user.email }}
-          <br/>
-          Year of Study: {{ user.yos }}
-          <br/>
-          Hosts: {{ user.hosts }}
-          <br/>
-          Home Directory: {{ user.home_directory }}
-          <br/>
-          Login Shell: {{ user.login_shell }}
-          <br/>
-          UID number: {{ user.uid_number }}
-          <br/>
-          GID number: {{ user.gid_number }}
+
+    <div ng-repeat="user in users | filter:q">
+      <div>
+        <div class="animate-switch" ng-show="selection == ($index + '-view')">
+          <div ng-include=" 'partials/user_form.html' "></div>
+        </div>
+        <div class="animate-switch" ng-hide="selection == ($index + '-view')">
+          <div ng-include=" 'partials/user_view.html' "></div>
         </div>
       </div>
-      <div class='clear'></div>
     </div>
   </div>
 </div>

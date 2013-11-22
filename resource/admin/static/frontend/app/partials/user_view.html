@@ -1,0 +1,24 @@
+<div class='well span6'>
+  <button ng-click="switchToEdit('{{$index}}')" class='btn-primary btn pull-right'>
+    <i class='icon-pencil icon-white'></i>
+    edit
+  </button>
+  <br/>
+  <b>{{user.first_name}} {{ user.last_name }} </b>
+  <br/>
+  <span class='title'>Username:</span> <i class='value' ng-dblclick="wrapWithInput">{{ user.username }}</i>
+  <br/>
+  email: {{ user.email }}
+  <br/>
+  Year of Study: {{ user.yos }}
+  <br/>
+  Hosts: {{ user.hosts }}
+  <br/>
+  Home Directory: {{ user.home_directory }}
+  <br/>
+  Login Shell: {{ user.login_shell }}
+  <br/>
+  UID number: {{ user.uid_number }}
+  <br/>
+  GID number: {{ user.gid_number }}
+</div>
