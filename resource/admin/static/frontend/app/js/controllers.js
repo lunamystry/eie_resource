@@ -10,7 +10,6 @@ angular.module('app.controllers', []).
 
     $http({method: 'GET', url: '/users'}).success(function(data) {
       $scope.users = data; // response data
-      console.log(data);
     });
 
     $scope.selection = 'view';
@@ -21,6 +20,12 @@ angular.module('app.controllers', []).
       $scope.selection = 'view';
     }
 
+  }])
+  .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+    var username = $routeParams.username;
+    $http({method: 'GET', url: '/users/' + username}).success(function(data) {
+      $scope.users = data; // response data
+    });
   }])
   .controller('bookingsCtrl', [function() {
 

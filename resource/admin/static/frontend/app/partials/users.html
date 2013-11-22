@@ -1,18 +1,29 @@
-<div>
-  <div>
-    There are {{users.length}} users.
+There are {{users.length}} users.
+<br/>
+<input type="search" ng-model="q" placeholder="filter users..." />
+<div ng-repeat="user in users | filter:q">
+  <div class='well span6'>
+    <a href='#/users/{{user.username}}' class='btn-primary btn pull-right'>
+      <i class='icon-pencil icon-white'></i>
+      edit
+    </a>
     <br/>
-    <input type="search" ng-model="q" placeholder="filter users..." />
-
-    <div ng-repeat="user in users | filter:q">
-      <div>
-        <div class="animate-switch" ng-show="selection == ($index + '-view')">
-          <div ng-include=" 'partials/user_form.html' "></div>
-        </div>
-        <div class="animate-switch" ng-hide="selection == ($index + '-view')">
-          <div ng-include=" 'partials/user_view.html' "></div>
-        </div>
-      </div>
-    </div>
+    <b>{{user.first_name}} {{ user.last_name }} </b>
+    <br/>
+    <span class='title'>Username:</span> <i class='value' ng-dblclick="wrapWithInput">{{ user.username }}</i>
+    <br/>
+    email: {{ user.email }}
+    <br/>
+    Year of Study: {{ user.yos }}
+    <br/>
+    Hosts: {{ user.hosts }}
+    <br/>
+    Home Directory: {{ user.home_directory }}
+    <br/>
+    Login Shell: {{ user.login_shell }}
+    <br/>
+    UID number: {{ user.uid_number }}
+    <br/>
+    GID number: {{ user.gid_number }}
   </div>
 </div>
