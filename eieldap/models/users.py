@@ -72,7 +72,7 @@ def add(attr):
         logger.error(error_msg)
         raise RuntimeError(error_msg)
     fixed_user["objectClass"] = ["inetOrgPerson", "posixAccount", "sambaSamAccount", "hostObject"]
-    gfixed_user["uidNumber"] = str(uid_number)
+    fixed_user["uidNumber"] = str(uid_number)
     fixed_user["gidNumber"] = str(gid_number)
     fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
     fixed_user["loginShell"] = "/bin/bash"

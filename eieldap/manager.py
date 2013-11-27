@@ -100,12 +100,13 @@ class Manager():
         results = self.connection.search_s(base,
                                            ldap.SCOPE_SUBTREE,
                                            filter_key)
+        users = []
         if results:
-            users = []
             for result in results:
                 result = self.de_list(result)
                 users.append(result)
-            return users
+        return users
+
 
     def find_by_dn(self, strdn):
         dn = ldap.dn.str2dn(strdn)
