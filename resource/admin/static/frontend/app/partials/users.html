@@ -1,29 +1,137 @@
-There are {{users.length}} users.
-<br/>
-<input type="search" ng-model="q" placeholder="filter users..." />
-<div ng-repeat="user in users | filter:q">
-  <div class='well span6'>
-    <a href='#/users/{{user.username}}' class='btn-primary btn pull-right'>
-      <i class='icon-pencil icon-white'></i>
-      edit
-    </a>
-    <br/>
-    <b>{{user.first_name}} {{ user.last_name }} </b>
-    <br/>
-    <span class='title'>Username:</span> <i class='value' ng-dblclick="wrapWithInput">{{ user.username }}</i>
-    <br/>
-    email: {{ user.email }}
-    <br/>
-    Year of Study: {{ user.yos }}
-    <br/>
-    Hosts: {{ user.hosts }}
-    <br/>
-    Home Directory: {{ user.home_directory }}
-    <br/>
-    Login Shell: {{ user.login_shell }}
-    <br/>
-    UID number: {{ user.uid_number }}
-    <br/>
-    GID number: {{ user.gid_number }}
+<h3>Users</h3>
+<div class="span3">
+  <div class="control-group">
+    <div class="controls">
+      <input id='user_first_name'
+             type="text"
+             ng-model="user.first_name"
+             ng-change="updateUsername()"
+             ng-change="updateEmail()"
+             placeholder="First Name"
+             required/>
+    </div>
+    <div class="controls">
+      <input id='user_last_name'
+             type="text"
+             ng-model="user.last_name"
+             ng-change="updateUsername()"
+             ng-change="updateEmail()"
+             placeholder="Last Name"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_username'
+             type="text"
+             ng-model="user.username"
+             ng-readonly="true" placeholder="Username"
+             tooltip="Generated from First and Last name"
+             tooltip-placement="right"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_yos'
+             type="number"
+             ng-model="user.yos"
+             ng-change="updateEmail()"
+             placeholder="Year Of Study"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_student_number'
+             type="text"
+             ng-model="user.student_number"
+             ng-change="updateEmail()"
+             placeholder="Student Number"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_email'
+             type="email"
+             ng-model="user.email"
+             ng-readonly="true" placeholder="Email"
+             tooltip="Generated from student number"
+             tooltip-placement="right"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_hosts' type="text" ng-model="user.hosts"
+             placeholder="First Host"
+             tooltip="You can add more after saving"
+             tooltip-trigger="focus"
+             tooltip-placement="right"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_login_shell'
+             type="text"
+             ng-model="user.login_shell"
+             placeholder="Login Shell"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_home_directory'
+             type="text"
+             ng-model="user.home_directory"
+             placeholder="Home Directory"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_uid_number'
+             type="text"
+             ng-model="user.uid_number"
+             ng-readonly="true" placeholder="UID Number"
+             tooltip="Generated from the server"
+             tooltip-placement="right"
+             required/>
+    </div>
+    <div class='controls'>
+      <input id='user_gid_number'
+             type="text"
+             ng-model="user.gid_number"
+             ng-readonly="true" placeholder="GID Number"
+             tooltip="Generated from the server"
+             tooltip-placement="right"
+             required/>
+    </div>
+    <div class='control-group'>
+      <div class='controls'>
+        <a ng-click="saveUser()" class='btn-success btn'>
+          <i class='icon-thumbs-up icon-white'></i>
+          add
+        </a>
+      </div>
+    </div>
   </div>
+</div>
+
+<div class="span8">
+  There are {{users.length}} users.
+  <hr/>
+  <input type="search" ng-model="q" placeholder="filter users..." />
+  <div class="clearfix"></div>
+  <accordion close-others="true">
+    <accordion-group ng-repeat="user in users | filter:q"
+                     heading="{{user.first_name}} {{user.last_name}}">
+      <a href='#/users/{{user.username}}' class='btn-primary btn pull-right'>
+        <i class='icon-pencil icon-white'></i>
+        edit
+      </a>
+      <br/>
+      Username: {{ user.username }}
+      <br/>
+      email: {{ user.email }}
+      <br/>
+      Year of Study: {{ user.yos }}
+      <br/>
+      Hosts: {{ user.hosts}}
+      <br/>
+      Home Directory: {{ user.home_directory }}
+      <br/>
+      Login Shell: {{ user.login_shell }}
+      <br/>
+      UID number: {{ user.uid_number }}
+      <br/>
+      GID number: {{ user.gid_number }}
+    </accordion-group>
+  </accordion>
 </div>

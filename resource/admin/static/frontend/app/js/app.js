@@ -3,6 +3,7 @@
 // Declare app level module which depends on filters, and services
 angular.module('resource', [
   'ngRoute',
+  'ui.bootstrap',
   'app.filters',
   'app.services',
   'app.directives',

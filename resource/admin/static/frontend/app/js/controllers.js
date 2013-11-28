@@ -7,24 +7,52 @@ angular.module('app.controllers', []).
 
   }])
   .controller('usersCtrl', ['$scope', '$http', function($scope, $http) {
-
     $http({method: 'GET', url: '/users'}).success(function(data) {
       $scope.users = data; // response data
     });
 
-    $scope.selection = 'view';
-    $scope.switchToEdit = function(username) {
-      $scope.selection = username + '-view';
-    }
-    $scope.switchToView = function(username) {
-      $scope.selection = 'view';
-    }
+    var user = $scope.user = {'last_name':"",
+                              "first_name": "",
+                              "student_number":"",
+                              "yos":3}; // for the form
+    $scope.updateUsername = function() {
+      if (typeof user.last_name !== 'undefined' && typeof user.first_name !== 'undefined'){
+        $scope.user.username = user.last_name.toLowerCase()+user.first_name.toLowerCase().charAt(0);
+      } else {
+        $scope.user.username = "";
+      }
 
+    }
+    var studentSuffix = "@students.ug.eie.wits.ac.za";
+    var staffSuffix = "@wits.ac.za"
+    var emailSuffixes = {1: studentSuffix,
+                         2: studentSuffix,
+                         3: studentSuffix,
+                         4: studentSuffix,
+                         5: studentSuffix,
+                         6: staffSuffix,
+                         7: staffSuffix}
+    $scope.updateEmail = function() {
+      if(user.yos < 6) {
+        $scope.user.email = user.student_number.toLowerCase()+emailSuffixes[user.yos];
+      } else {
+        $scope.user.email = user.first_name.toLowerCase()+"."+user.last_name.toLowerCase()+staffSuffix;
+      }
+    }
+    user.login_shell = "/bin/bash";
+    user.home_directory = "/home/ug/";
+    $scope.saveUser = function  () {
+      console.log("saving user...");
+      $http.post('/users', user);
+      // .success(function (user) {
+      //   $scope.users.push(user);
+      // });
+    };
   }])
   .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     var username = $routeParams.username;
     $http({method: 'GET', url: '/users/' + username}).success(function(data) {
-      $scope.users = data; // response data
+      $scope.users = data;
     });
   }])
   .controller('bookingsCtrl', [function() {
