@@ -34,6 +34,10 @@ class User(Resource):
         # users.save(data)
         return user, 201
 
+    def delete(self, username):
+        if models.users.delete(username):
+            return username, 200
+
 
 class Users(Resource):
     def get(self):
@@ -41,9 +45,10 @@ class Users(Resource):
         return users, 200
 
     def post(self):
-        users = models.users.find()
+        # users = models.users.find()
         args = request.json
         data, errors = self.validate(args)
+        logger.error(data)
         data["password"] = "passing"
         if errors:
             return errors, 500
@@ -58,7 +63,7 @@ class Users(Resource):
                       "last_name": [required],
                       "username": [required,
                                    functools.partial(length, min=3)],
-                      "student_no": [],
+                      "student_number": [],
                       "home_directory": [],
                       "login_shell": [],
                       "yos": [],

@@ -4,6 +4,11 @@ from eieldap import logger
 import subprocess
 import ldap
 
+# get email template with a lot of very useful information on it
+# lecturer - 6000 -> 6099
+# admin - 6100 -> 6199
+# technical - 6200 -> 6299
+# separate home directories for staff
 
 basedn = "ou=people," + manager.base
 keymap = {"uid": "username",
@@ -89,6 +94,8 @@ def add(attr):
         change_password(fixed_user['uid'], None, attr['password'])
         logger.info("Created user: " + str(dn))
         return True
+    logger.info("user could not be created: " + str(fixed_user))
+    return False
 
 
 def update(attr):

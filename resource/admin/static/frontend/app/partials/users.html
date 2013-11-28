@@ -110,12 +110,23 @@
   <input type="search" ng-model="q" placeholder="filter users..." />
   <div class="clearfix"></div>
   <accordion close-others="true">
-    <accordion-group ng-repeat="user in users | filter:q"
-                     heading="{{user.first_name}} {{user.last_name}}">
-      <a href='#/users/{{user.username}}' class='btn-primary btn pull-right'>
-        <i class='icon-pencil icon-white'></i>
-        edit
-      </a>
+    <accordion-group ng-repeat="user in users | filter:q">
+      <accordion-heading>
+        {{user.first_name}} {{ user.last_name }}
+        <div class="btn-group pull-right">
+          <a href='#/users/{{user.username}}'
+             class='btn btn-info btn-mini'>
+            <i class='icon-pencil icon-white'></i>
+            edit
+          </a>
+          <button ng-click="deleteUser(user.username)"
+                  class='btn btn-danger btn-mini'>
+            <i class='icon-remove icon-white'></i>
+            delete
+          </button>
+        </div>
+        <div class="clearfix"></div>
+      </accordion-heading>
       <br/>
       Username: {{ user.username }}
       <br/>

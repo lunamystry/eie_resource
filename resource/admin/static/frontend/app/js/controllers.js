@@ -42,12 +42,14 @@ angular.module('app.controllers', []).
     user.login_shell = "/bin/bash";
     user.home_directory = "/home/ug/";
     $scope.saveUser = function  () {
-      console.log("saving user...");
-      $http.post('/users', user);
-      // .success(function (user) {
-      //   $scope.users.push(user);
-      // });
+      $http.post('/users', user)
+        .success(function (user) {
+          $scope.users.push(user);
+        });
     };
+    $scope.deleteUser = function(username) {
+      $http({method: 'DELETE', url: '/users/'+ username});
+    }
   }])
   .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     var username = $routeParams.username;
