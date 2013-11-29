@@ -58,7 +58,21 @@ angular.module('app.controllers', []).
         });
     }
 
+    $scope.alerts = [];
+    $scope.addAlert = function(type, msg) {
+      $scope.alerts.push({type: type, msg: msg});
+    };
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    }
+
     $scope.userViewCtrl = function($scope) {
+      $scope.resetPassword = function() {
+        $http({method: 'GET', url: '/users/' + $scope.user.username})
+          .success(function(data) {
+            $scope.user = data;
+          });
+      }
       $scope.showEditForm = function() {
         $scope.editing = true;
       }
@@ -66,6 +80,16 @@ angular.module('app.controllers', []).
         $scope.editing = false;
       }
       $scope.editing = false;
+      $scope.updateUser = function() {
+        $http({method: 'PUT', url: '/users/'+ $scope.user.username, data: $scope.user})
+          .success(function(data) {
+            for ( var key in $scope.users) {
+              if ($scope.users.hasOwnProperty(key)){
+                $scope.users.splice(key + 1, 1);
+              }
+            }
+          });
+      }
     }
   }])
   .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {

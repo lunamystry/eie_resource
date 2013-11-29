@@ -21,7 +21,7 @@ class User(Resource):
         user = models.users.find_one(username)
         args = request.json
         # TODO: Validation!
-        # data, errors = users.validate(args)
+        data, errors = users.validate(args)
         if user:
             if 'new_password' in args.keys():
                 models.users.change_password(user_id,
@@ -29,10 +29,11 @@ class User(Resource):
                                               args['new_password'])
             else:
                 logger.info(args)
-        # if errors:
-        #     return errors, 500
-        # users.save(data)
-        return user, 201
+        if errors:
+            return errors, 500
+        if users.save(data):
+            return user, 201
+        return False, 500
 
     def delete(self, username):
         if models.users.delete(username):

@@ -77,7 +77,8 @@
     <input id='user_uid_number'
            type="text"
            ng-model="user.uid_number"
-           ng-readonly="true" placeholder="UID Number"
+           ng-readonly="true"
+           placeholder="UID Number"
            tooltip="Generated from the server"
            tooltip-placement="right"
            required/>
@@ -86,17 +87,10 @@
     <input id='user_gid_number'
            type="text"
            ng-model="user.gid_number"
-           ng-readonly="true" placeholder="GID Number"
+           ng-readonly="true"
+           placeholder="GID Number"
            tooltip="Generated from the server"
            tooltip-placement="right"
            required/>
-  </div>
-  <div class='control-group'>
-    <div class='controls'>
-      <a ng-click="saveUser()" class='btn-success btn'>
-        <i class='icon-ok icon-white'></i>
-        save
-      </a>
-    </div>
   </div>
 </div>
