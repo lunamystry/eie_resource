@@ -57,6 +57,16 @@ angular.module('app.controllers', []).
           }
         });
     }
+
+    $scope.userViewCtrl = function($scope) {
+      $scope.showEditForm = function() {
+        $scope.editing = true;
+      }
+      $scope.showView = function() {
+        $scope.editing = false;
+      }
+      $scope.editing = false;
+    }
   }])
   .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     var username = $routeParams.username;
