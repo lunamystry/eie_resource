@@ -8,7 +8,7 @@ angular.module('app.controllers', []).
   }])
   .controller('usersCtrl', ['$scope', '$http', function($scope, $http) {
     $http({method: 'GET', url: '/users'}).success(function(data) {
-      $scope.users = data; // response data
+      $scope.users = data;
     });
 
     var user = $scope.user = {'last_name':"",
@@ -48,14 +48,22 @@ angular.module('app.controllers', []).
         });
     };
     $scope.deleteUser = function(username) {
-      $http({method: 'DELETE', url: '/users/'+ username});
+      $http({method: 'DELETE', url: '/users/'+ username})
+        .success(function(data) {
+          for ( var key in $scope.users) {
+            if ($scope.users.hasOwnProperty(key)){
+              $scope.users.splice(key + 1, 1);
+            }
+          }
+        });
     }
   }])
   .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     var username = $routeParams.username;
-    $http({method: 'GET', url: '/users/' + username}).success(function(data) {
-      $scope.users = data;
-    });
+    $http({method: 'GET', url: '/users/' + username})
+      .success(function(data) {
+        $scope.users = data;
+      });
   }])
   .controller('bookingsCtrl', [function() {
 
