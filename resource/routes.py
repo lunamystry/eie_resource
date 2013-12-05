@@ -23,7 +23,7 @@ api.add_resource(rest.Session, '/sessions/<string:session_id>')
 
 @app.route('/')
 def index():
-    return render_template('index.haml')
+    return render_template('login.html')
 
 
 @app.errorhandler(404)
