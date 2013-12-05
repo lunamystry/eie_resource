@@ -66,6 +66,20 @@ angular.module('app.controllers', []).
       $scope.alerts.splice(index, 1);
     }
 
+    $scope.availableHosts = ["babbage.ug.eie.wits.ac.za",
+                             "hotseat1.ug.eie.wits.ac.za",
+                             "hotseat2.ug.eie.wits.ac.za",
+                             "testing.ug.eie.wits.ac.za",
+                             "resource.eie.wits.ac.za",
+                             "eieldap.eie.wits.ac.za",
+                             "volt.eie.wits.ac.za"];
+    $scope.form = {};
+    $scope.form.host = $scope.availableHosts[0];
+    $scope.user.hosts = [];
+    $scope.addHost = function() {
+      $scope.user.hosts.push($scope.form.host)
+    }
+
     $scope.userViewCtrl = function($scope) {
       $scope.resetPassword = function() {
         $http({method: 'GET', url: '/users/' + $scope.user.username})
@@ -79,7 +93,7 @@ angular.module('app.controllers', []).
       $scope.showView = function() {
         $scope.editing = false;
       }
-      $scope.editing = false;
+      $scope.editing = true;
       $scope.updateUser = function() {
         $http({method: 'PUT', url: '/users/'+ $scope.user.username, data: $scope.user})
           .success(function(data) {
@@ -90,7 +104,11 @@ angular.module('app.controllers', []).
             }
           });
       }
+      $scope.addHost = function() {
+        $scope.user.hosts.push($scope.form.host)
+      }
     }
+
   }])
   .controller('userEditCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     var username = $routeParams.username;

@@ -31,7 +31,7 @@ class User(Resource):
                 logger.info(args)
         if errors:
             return errors, 500
-        if users.save(data):
+        if models.users.save(data):
             return user, 201
         return False, 500
 

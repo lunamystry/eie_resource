@@ -52,12 +52,32 @@
            required/>
   </div>
   <div class='controls'>
-    <input id='user_hosts' type="text" ng-model="user.hosts"
-           placeholder="First Host"
-           tooltip="You can add more after saving"
-           tooltip-trigger="focus"
-           tooltip-placement="right"
-           required/>
+    <div class="input-append">
+      <select class="span9"
+              type="text"
+              ng-model="form.host"
+              placeholder="First Host"
+              required>
+        <option value="{{host}}" ng-repeat="host in availableHosts">
+          {{host}}
+        </option>
+      </select>
+      <button class="btn btn-primary"
+              ng-click="addHost()">
+        add
+      </button>
+    </div>
+    <ol>
+      <li ng-repeat="host in user.hosts" >
+        <button class="btn btn-danger btn-mini pull-right"
+                ng-click="removeHost($index)">
+          <i class="icon-remove icon-white"></i>
+          remove
+        </button>
+        {{host}}
+        <span class="clearfix"></span>
+      </li>
+    </ol>
   </div>
   <div class='controls'>
     <input id='user_login_shell'
