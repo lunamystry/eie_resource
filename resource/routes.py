@@ -1,9 +1,8 @@
 from flask import render_template
 from flask import request
-from flask import send_from_directory
 from flask import redirect
+from flask import abort
 from flask import url_for
-from flask import flash
 from flask.ext.login import (LoginManager, current_user, login_required,
                              login_user, logout_user, UserMixin, AnonymousUser,
                              confirm_login, fresh_login_required)
@@ -27,26 +26,14 @@ def index():
     return render_template('index.haml')
 
 
-@app.route('/js/<path:filename>')
-def js(filename):
-    cwd = os.path.dirname(__file__)
-    return send_from_directory(cwd + '/static/js', filename)
-
-
-@app.route('/css/<path:filename>')
-def css(filename):
-    cwd = os.path.dirname(__file__)
-    return send_from_directory(cwd + '/static/css', filename)
-
-
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('page_not_found.haml'), 404
+    return render_template('404.html'), 404
 
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('500.haml'), 500
+    return render_template('500.html'), 500
 
 
 # LOGIN -----------------------------------------------
@@ -83,6 +70,9 @@ def login():
             if login_user(User(username), remember=remember):
                 error = "Logged in"
                 IT_group = groups.find_one('IT')
+                if not IT_group:
+                    app.logger.error("Trying to login but server does not have IT group");
+                    abort(500)
                 if username in IT_group['members']:
                     return redirect(request.args.get("next") or
                                     url_for("admin.index",
@@ -93,7 +83,7 @@ def login():
             else:
                 error = "Sorry, but you could not log in."
         error = "Incorrect password of username."
-    return render_template("login.haml", error=error)
+    return render_template("login.html", error=error)
 
 
 @app.route("/reauth", methods=["GET", "POST"])
@@ -101,7 +91,6 @@ def login():
 def reauth():
     if request.method == "POST":
         confirm_login()
-        flash(u"Reauthenticated.")
         return redirect(request.args.get("next") or url_for("index"))
     return render_template("reauth.html")
 
@@ -110,5 +99,4 @@ def reauth():
 @login_required
 def logout():
     logout_user()
-    flash("Logged out.")
     return redirect(url_for("index"))

@@ -1,9 +1,9 @@
 from flask import Blueprint
-from flask import redirect, request
 
 admin = Blueprint('admin',
-               __name__,
-               template_folder='templates',
-               static_folder='static')
+                  __name__,
+                  template_folder='frontend/app',
+                  static_url_path='',
+                  static_folder='frontend/app')
 
 import resource.admin.routes

@@ -1,21 +1,28 @@
 from flask import Flask
+from werkzeug.contrib.fixers import ProxyFix
 from flask.ext.restful import Api
 from flask.ext.login import LoginManager
-from werkzeug import ImmutableDict
-from hamlish_jinja import HamlishExtension
+import os
 
 
-class FlaskWithHamlish(Flask):
-    jinja_options = ImmutableDict(
-        extensions=['jinja2.ext.autoescape',
-                    'jinja2.ext.with_',
-                    'hamlish_jinja.HamlishExtension'])
+app = Flask(__name__, static_url_path='')
 
-app = FlaskWithHamlish(__name__)
-app.config.from_object('resource.default_settings')
-app.config.from_envvar('RESOURCE_SETTINGS')
-# mandatory config
-app.jinja_env.hamlish_mode = 'indented'
+
+for location in ["/etc/eieldap"]:
+    try:
+        filename = os.path.join(location, "resource.cfg")
+        with open(filename) as source:
+            app.config.from_pyfile(filename)
+    except IOError:
+        app.logger.error(" * No application configuration in: " + location)
+
+
+if os.environ.get('RESOURCE_SETTINGS') is not None:
+    app.logger.info("using configuration in from RESOURCE_SETTINGS ")
+    app.config.from_envvar('RESOURCE_SETTINGS')
+
+
+app.wsgi_app = ProxyFix(app.wsgi_app)
 api = Api(app)
 
 login_manager = LoginManager()
@@ -25,8 +32,3 @@ login_manager.setup_app(app)
 from resource import routes
 import admin
 app.register_blueprint(admin.admin, url_prefix='/admin')
-
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')

@@ -24,6 +24,12 @@ def restrict_bp_to_admins():
     pass
 
 
+@admin.route('/')
+@admin.route('/index.html')
+def index():
+    return admin.send_static_file('index.html')
+
+
 @admin.route('/docs/<path:filename>')
 @login_required
 def documentation(filename):
@@ -32,9 +38,9 @@ def documentation(filename):
     return send_from_directory(cwd + '/static/docs', filename)
 
 
-@admin.route('/<path:filename>')
-@login_required
-def index(filename):
-    cwd = os.path.dirname(__file__)
-    logging.info("CWD: " + cwd)
-    return send_from_directory(cwd + '/static/frontend', filename)
+# @admin.route('/<path:filename>')
+# @login_required
+# def index(filename):
+#     cwd = os.path.dirname(__file__)
+#     logging.info("CWD: " + cwd)
+#     return send_from_directory(cwd + '/static/frontend', filename)

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+  <div class="notfound offset3">
+    <img src="{{ url_for('static', filename='img/404.gif') }}" />
+    <p>
+      It seems the page you tried to find is not here.
+    </p>
+    <a href="{{ url_for('index')}}">
+      Try this one
+    </a>
+    <br/>
+    or you could tell me about it.
+    <a href="mailto:dlabadmin@eie.wits.ac.za?Subject=Resource%20it%20is%20break">
+      my email: dlabadmin@eie.wits.ac.za
+    </a>
+{% endblock %}

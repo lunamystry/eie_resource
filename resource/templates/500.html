@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+  <div class="notfound offset3 hero-unit">
+    <h1>ERROR 500</h1>
+    <img src="{{ url_for('static', filename='img/500.png') }}" />
+    <p>
+      The Server, it go BOOOM BOOoM!<br/>
+      you could tell me about it, the email:
+      <a href="mailto:dlabadmin@eie.wits.ac.za?Subject=Resource%20it%20is%20break">
+       dlabadmin@eie.wits.ac.za
+      </a>
+    </p>
+    OR you could go
+    <a href="{{ url_for('index')}}">
+       Home <i class="icon-home"></i>
+    </a>
+    <br/>
+{% endblock %}
