@@ -99,7 +99,7 @@ class usersTestCase(unittest.TestCase):
                            "yos": "4",
                            "hosts": ['babbage.ug.eie.wits.ac.za'],
                            "home_directory": "/home/ug/johnd",
-                           "uid_number": "4063",
+                           "uid_number": "4000",
                            "email": ["john.doe@students.wits.ac.za"]}
         already_member = johnd['username']
         existing_user = guneap['username']
@@ -179,8 +179,17 @@ class usersTestCase(unittest.TestCase):
 
     def test_change_password(self):
         """ I can change password """
-        mandla = users.find_one('mandla')
-        self.assertTrue(users.change_password('mandla', None, 'passing'))
+        guneap = users.find_one('guneap')
+        if not guneap:
+            guneap = {"username": "guneap",
+                      "first_name": "Gunea",
+                      "last_name": "Pig",
+                      "email": ["123@students.wits.ac.za"],
+                      "password": "passing",
+                      "hosts": ['babbage.ug.eie.wits.ac.za', 'testing.ug.eie.wits.ac.za'],
+                      "yos": "2"}
+            users.save(guneap)
+        self.assertTrue(users.change_password('guneap', None, 'passing'))
 
 if __name__ == "__main__":
     unittest.main()
