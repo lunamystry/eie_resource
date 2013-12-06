@@ -69,11 +69,12 @@
     </div>
     <ol>
       <li ng-repeat="host in user.hosts" >
-        <button class="btn btn-danger btn-mini pull-right"
-                ng-click="removeHost($index)">
-          <i class="icon-remove icon-white"></i>
-          remove
-        </button>
+        <span class="pull-right"
+              ng-click="removeHost($index)"
+              tooltip="remove"
+              tooltip-placement="right">
+          <i class="icon-remove"></i>
+        </span>
         {{host}}
         <span class="clearfix"></span>
       </li>
