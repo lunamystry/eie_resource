@@ -111,6 +111,23 @@ angular.module('app.controllers', []).
             }
           });
       }
+
+      var studentSuffix = "@students.ug.eie.wits.ac.za";
+      var staffSuffix = "@wits.ac.za"
+      var emailSuffixes = {1: studentSuffix,
+                           2: studentSuffix,
+                           3: studentSuffix,
+                           4: studentSuffix,
+                           5: studentSuffix,
+                           6: staffSuffix,
+                           7: staffSuffix}
+      $scope.updateEmail = function() {
+        if($scope.user.yos < 6) {
+          $scope.user.email = $scope.user.student_number.toLowerCase()+emailSuffixes[user.yos];
+        } else {
+          $scope.user.email = $scope.user.first_name.toLowerCase()+"."+$scope.user.last_name.toLowerCase()+staffSuffix;
+        }
+      }
       $scope.addHost = function() {
         if ($scope.user.hosts.indexOf($scope.form.host) == -1) {
           $scope.user.hosts.push($scope.form.host);
