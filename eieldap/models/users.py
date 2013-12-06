@@ -90,6 +90,10 @@ def add(attr):
         del fixed_user['dn']
     if 'yos' in fixed_user:
         del fixed_user['yos']
+
+    if fixed_user["host"]:
+        for index, host in enumerate(fixed_user["host"]):
+            fixed_user["host"][index] = str(host)
     if manager.create(dn, fixed_user):
         change_password(fixed_user['uid'], None, attr['password'])
         logger.info("Created user: " + str(dn))

@@ -45,6 +45,9 @@ angular.module('app.controllers', []).
       $http.post('/users', user)
         .success(function (user) {
           $scope.users.push(user);
+          user = {};
+          user.login_shell = "/bin/bash";
+          user.home_directory = "/home/ug/";
         });
     };
     $scope.deleteUser = function(username) {
@@ -77,9 +80,13 @@ angular.module('app.controllers', []).
     $scope.form.host = $scope.availableHosts[0];
     $scope.user.hosts = [];
     $scope.addHost = function() {
-      $scope.user.hosts.push($scope.form.host)
+      if ($scope.user.hosts.indexOf($scope.form.host) == -1) {
+        $scope.user.hosts.push($scope.form.host);
+      }
     }
-
+    $scope.removeHost = function(id) {
+      $scope.user.hosts.splice(id, 1);
+    }
     $scope.userViewCtrl = function($scope) {
       $scope.resetPassword = function() {
         $http({method: 'GET', url: '/users/' + $scope.user.username})
@@ -105,7 +112,12 @@ angular.module('app.controllers', []).
           });
       }
       $scope.addHost = function() {
-        $scope.user.hosts.push($scope.form.host)
+        if ($scope.user.hosts.indexOf($scope.form.host) == -1) {
+          $scope.user.hosts.push($scope.form.host);
+        }
+      }
+      $scope.removeHost = function(id) {
+        $scope.user.hosts.splice(id, 1);
       }
     }
 
