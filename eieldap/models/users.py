@@ -32,6 +32,10 @@ def find():
     users_list = []
     for user in users:
         new_user = fix(user, keymap)
+        new_user['yos'] = int(new_user['gid_number'])/1000
+        if new_user['email']:
+            email = new_user['email'][0]
+            new_user['student_number'] = email[:email.find('@')]
         users_list.append(new_user)
     return users_list
 
@@ -90,10 +94,11 @@ def add(attr):
         del fixed_user['dn']
     if 'yos' in fixed_user:
         del fixed_user['yos']
-
-    if fixed_user["host"]:
+    try:
         for index, host in enumerate(fixed_user["host"]):
             fixed_user["host"][index] = str(host)
+    except KeyError:
+        pass
     if manager.create(dn, fixed_user):
         change_password(fixed_user['uid'], None, attr['password'])
         logger.info("Created user: " + str(dn))
@@ -112,9 +117,15 @@ def update(attr):
     if 'yos' in fixed_user:
         del fixed_user['yos']
     fixed_user["gidNumber"] = str(gid_number)
-    manager.update(dn, fixed_user)
-    logger.info("updated user: " + str(dn))
-    return True
+    try:
+        for index, host in enumerate(fixed_user["host"]):
+            fixed_user["host"][index] = str(host)
+    except KeyError:
+        pass
+    if manager.update(dn, fixed_user):
+        logger.info("updated user: " + str(dn))
+        return True
+    return False
 
 def save(attr):
     """ if the user exists update, if not create"""

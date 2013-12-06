@@ -40,9 +40,10 @@ class Manager():
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
         modlist = self.prepare_modlist(dn, new_attr)
+        logger.debug(new_attr)
         logger.debug(modlist)
         try:
-            logger.error(dn)
+            logger.debug(dn)
             self.connection.modify_s(dn, modlist)
             return True
         except ldap.LDAPError as e:

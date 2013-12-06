@@ -77,7 +77,7 @@ angular.module('app.controllers', []).
                              "eieldap.eie.wits.ac.za",
                              "volt.eie.wits.ac.za"];
     $scope.form = {};
-    $scope.form.host = $scope.availableHosts[0];
+    $scope.form.host = "";
     $scope.user.hosts = [];
     $scope.addHost = function() {
       if ($scope.user.hosts.indexOf($scope.form.host) == -1) {

@@ -28,7 +28,7 @@
   </div>
   <div class='controls'>
     <input id='user_yos'
-           type="number"
+           type="text"
            ng-model="user.yos"
            ng-change="updateEmail()"
            placeholder="Year Of Study"
@@ -56,8 +56,8 @@
       <select class="span9"
               type="text"
               ng-model="form.host"
-              placeholder="First Host"
-              required>
+              placeholder="First Host">
+        <option value="" selected>[Select hosts]</option>
         <option value="{{host}}" ng-repeat="host in availableHosts">
           {{host}}
         </option>
