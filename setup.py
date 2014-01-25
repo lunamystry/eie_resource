@@ -17,5 +17,5 @@ setup(
         'Werkzeug>=0.8.3',
         'python-ldap>=2.4.10',
         'Flask-Login>=0.1.3',
-        'Fabric>=1.5.1']
+        'Fabric>=1.8.1']
     )
