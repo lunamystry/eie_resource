@@ -1,33 +1,24 @@
-from fabric.api import *
+from fabric.api import local, run, env, put, cd, sudo, settings
 
 # the user to use for the remote commands
 env.user = 'admin2'
 # the servers where the commands are executed
-env.hosts = ['babbage.ug.eie.wits.ac.za']
+env.hosts = ['resource.eie.wits.ac.za']
 
 def pack():
     # create a new source distribution as tarball
+    local("find . -name '*.pyc' -exec rm -f {} \;", capture=False)
     local('python setup.py sdist --formats=gztar', capture=False)
 
 def deploy():
-    # figure out the release name and version
     dist = local('python setup.py --fullname', capture=True).strip()
-    # upload the source tarball to the temporary folder on the server
-    put('dist/%s.tar.gz' % dist, '/tmp/resource.tar.gz')
-    # create a place where we can unzip the tarball, then enter
-    # that directory and unzip it
-    run('mkdir /tmp/resource')
-    with cd('/tmp/resource'):
-        run('tar xzf /tmp/resource.tar.gz')
-        # now setup the package with our virtual environment's
-        # python interpreter
-        run('/srv/htdocs/www/resource/env/bin/python setup.py install')
-    # now that all is set up, delete the folder again
-    run('rm -rf /tmp/resource /tmp/resource.tar.gz')
-    # and finally touch the .wsgi file so that mod_wsgi triggers
-    # a reload of the application
-    run('touch /var/www/resource.wsgi')
-
-def set-env():
-    "Intended to add convinience aliases to the bashrc file."
-    pass
+    pack()
+    put('dist/%s.tar.gz' % dist, '/tmp')
+    with settings(warn_only=True):
+        result = run('mkdir /tmp/%s' % dist)
+        with cd('/tmp/%s' % dist):
+            run('tar xzf /tmp/%s.tar.gz' % dist)
+            sudo('mv /tmp/{0}/{0} /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
+            sudo('chown -R wwwrun:wwwrun /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
+        run('rm -rf /tmp/{0} /tmp/{0}.tar.gz'.format(dist))
+        sudo('touch /srv/www/wsgi-scripts/resource.wsgi')
