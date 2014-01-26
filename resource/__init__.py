@@ -29,7 +29,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 api = Api(app)
 
 login_manager = LoginManager()
-login_manager.setup_app(app)
+login_manager.init_app(app)
 
 
 from resource import routes

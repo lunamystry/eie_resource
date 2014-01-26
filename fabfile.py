@@ -18,6 +18,7 @@ def deploy():
         result = run('mkdir /tmp/%s' % dist)
         with cd('/tmp/%s' % dist):
             run('tar xzf /tmp/%s.tar.gz' % dist)
+            sudo('rm -rf /srv/www/htdocs/vhosts/resource.eie.wits.ac.za')
             sudo('mv /tmp/{0}/{0} /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
             sudo('chown -R wwwrun:wwwrun /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
         run('rm -rf /tmp/{0} /tmp/{0}.tar.gz'.format(dist))
