@@ -1,0 +1,117 @@
+<div class="control-group">
+  <div class="controls">
+    <input id='user_first_name'
+           type="text"
+           ng-model="user.first_name"
+           ng-change="updateUsername()"
+           ng-change="updateEmail()"
+           placeholder="First Name"
+           required/>
+  </div>
+  <div class="controls">
+    <input id='user_last_name'
+           type="text"
+           ng-model="user.last_name"
+           ng-change="updateUsername()"
+           ng-change="updateEmail()"
+           placeholder="Last Name"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_username'
+           type="text"
+           ng-model="user.username"
+           ng-readonly="true" placeholder="Username"
+           tooltip="Generated from First and Last name"
+           tooltip-placement="right"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_yos'
+           type="text"
+           ng-model="user.yos"
+           ng-change="updateEmail()"
+           placeholder="Year Of Study"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_student_number'
+           type="text"
+           ng-model="user.student_number"
+           ng-change="updateEmail()"
+           placeholder="Student Number"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_email'
+           type="email"
+           ng-model="user.email"
+           ng-readonly="true" placeholder="Email"
+           tooltip="Generated from student number"
+           tooltip-placement="right"
+           required/>
+  </div>
+  <div class='controls'>
+    <div class="input-append">
+      <select class="span9"
+              type="text"
+              ng-model="form.host"
+              placeholder="First Host">
+        <option value="" selected>[Select hosts]</option>
+        <option value="{{host}}" ng-repeat="host in availableHosts">
+          {{host}}
+        </option>
+      </select>
+      <button class="btn btn-primary"
+              ng-click="addHost()">
+        add
+      </button>
+    </div>
+    <ol>
+      <li ng-repeat="host in user.hosts" >
+        <span class="pull-right"
+              ng-click="removeHost($index)"
+              tooltip="remove"
+              tooltip-placement="right">
+          <i class="icon-remove"></i>
+        </span>
+        {{host}}
+        <span class="clearfix"></span>
+      </li>
+    </ol>
+  </div>
+  <div class='controls'>
+    <input id='user_login_shell'
+           type="text"
+           ng-model="user.login_shell"
+           placeholder="Login Shell"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_home_directory'
+           type="text"
+           ng-model="user.home_directory"
+           placeholder="Home Directory"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_uid_number'
+           type="text"
+           ng-model="user.uid_number"
+           ng-readonly="true"
+           placeholder="UID Number"
+           tooltip="Generated from the server"
+           tooltip-placement="right"
+           required/>
+  </div>
+  <div class='controls'>
+    <input id='user_gid_number'
+           type="text"
+           ng-model="user.gid_number"
+           ng-readonly="true"
+           placeholder="GID Number"
+           tooltip="Generated from the server"
+           tooltip-placement="right"
+           required/>
+  </div>
+</div>
