@@ -5,7 +5,10 @@ from flask.ext.login import LoginManager
 import os
 
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__,
+            template_folder='frontend/app',
+            static_url_path='',
+            static_folder='frontend/app')
 
 
 for location in ["/etc/eieldap"]:
