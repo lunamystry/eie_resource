@@ -59,6 +59,7 @@ angular.module('app.controllers', []).
             }
           }
         });
+      location.reload(true);
     }
 
     $scope.alerts = [];
