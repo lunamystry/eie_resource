@@ -45,9 +45,9 @@ angular.module('app.controllers', []).
       $http.post('/users', user)
         .success(function (user) {
           $scope.users.push(user);
-          user = {};
-          user.login_shell = "/bin/bash";
-          user.home_directory = "/home/ug/";
+          $scope.user = {};
+          $scope.user.login_shell = "/bin/bash";
+          $scope.user.home_directory = "/home/ug/";
         });
     };
     $scope.deleteUser = function(username) {
