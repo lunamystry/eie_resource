@@ -23,3 +23,4 @@ def deploy():
             sudo('chown -R wwwrun:wwwrun /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
         run('rm -rf /tmp/{0} /tmp/{0}.tar.gz'.format(dist))
         sudo('touch /srv/www/wsgi-scripts/resource.wsgi')
+        sudo('rcapache2 restart')
