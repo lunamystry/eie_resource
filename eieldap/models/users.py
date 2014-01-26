@@ -174,7 +174,13 @@ def smb_encrypt(password):
 def fix(user, keymap):
     new_user = {}
     for key in keymap:
-        new_user[keymap[key]] = None
+        if keymap[key] == 'uid_number' or keymap[key] == 'gid_number':
+            new_user[keymap[key]] = 0
+        elif keymap[key] == 'hosts' or keymap[key] == 'email' or keymap[key] == 'host':
+            new_user[keymap[key]] = []
+        else:
+            new_user[keymap[key]] = None
+
     if user:
         for key in user.keys():
             try:
