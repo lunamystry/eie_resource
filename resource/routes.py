@@ -30,6 +30,7 @@ api.add_resource(rest.Session, '/sessions/<string:session_id>')
 def index():
     return app.send_static_file('index.html')
 
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('templates/404.html'), 404

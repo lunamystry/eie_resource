@@ -1,5 +1,6 @@
 from flask import render_template
 from flask import request
+from flask import redirect
 from flask import send_from_directory
 import os
 from resource.admin import admin
@@ -27,6 +28,12 @@ def restrict_bp_to_admins():
 @admin.route('/index.html')
 def index():
     return admin.send_static_file('index.html')
+
+
+@admin.route('/docs/')
+@login_required
+def index_documentation():
+    return redirect("/admin/docs/index.html")
 
 
 @admin.route('/docs/<path:filename>')
