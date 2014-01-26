@@ -172,8 +172,16 @@ def smb_encrypt(password):
 
 
 def fix(user, keymap):
+    new_user = {}
+    for key in keymap:
+        if keymap[key] == 'uid_number' or keymap[key] == 'gid_number':
+            new_user[keymap[key]] = 0
+        elif keymap[key] == 'hosts' or keymap[key] == 'email' or keymap[key] == 'host':
+            new_user[keymap[key]] = []
+        else:
+            new_user[keymap[key]] = None
+
     if user:
-        new_user = {}
         for key in user.keys():
             try:
                 nkey = keymap[key]
@@ -183,9 +191,7 @@ def fix(user, keymap):
                     new_user[nkey] = str(user[key])
             except KeyError:
                 logger.debug("key not mapped: " + key)
-        return new_user
-    else:
-        return user
+    return new_user
 
 
 def change_password(uid, oldpw, newpw):
