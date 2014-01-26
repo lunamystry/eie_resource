@@ -191,5 +191,16 @@ class usersTestCase(unittest.TestCase):
             users.save(guneap)
         self.assertTrue(users.change_password('guneap', None, 'passing'))
 
+    def test_find_with_missing_attributes(self):
+        """ I should be able to find even if some attributes are not there in
+        the directory"""
+        pass
+
+    def test_fix_gives_valid_user(self):
+        user = {"uidNumber": 123}
+        user = users.fix(user, users.keymap)
+        print user
+
+
 if __name__ == "__main__":
     unittest.main()
