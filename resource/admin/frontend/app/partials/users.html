@@ -1,5 +1,5 @@
 <h3>Users</h3>
-<div class="span3">
+<div class="col-md-3">
   <div ng-include="'partials/user_form.html'"></div>
   <div class='control-group'>
     <div class='controls'>
@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="span8">
+<div class="col-md-8">
   There are {{users.length}} users.
   <hr/>
   <input type="search" ng-model="q" placeholder="filter users..." />
@@ -23,7 +23,7 @@
         {{user.first_name}} {{ user.last_name }}
         <div class="btn-group pull-right">
           <button ng-click="deleteUser(user.username)"
-                  class='btn btn-danger btn-mini'>
+                  class='btn btn-danger btn-xs'>
             <i class='icon-remove icon-white'></i>
             delete
           </button>
@@ -40,12 +40,12 @@
         <div ng-hide="editing">
           <div class="btn-group pull-right">
             <button ng-click="showEditForm()"
-                    class='btn btn-info btn-small'>
+                    class='btn btn-info btn-sm'>
               <i class='icon-pencil icon-white'></i>
               edit
             </button>
             <button ng-click="resetPassword()"
-                    class='btn btn-danger btn-small'>
+                    class='btn btn-danger btn-sm'>
               <i class='icon-refresh icon-white'></i>
               reset password
             </button>
@@ -69,12 +69,12 @@
         <div ng-show="editing">
           <div class="btn-group pull-right">
             <button ng-click="showView()"
-                    class='btn btn-info btn-small'>
+                    class='btn btn-info btn-sm'>
               <i class='icon-list-alt icon-white'></i>
               view
             </button>
             <button ng-click="resetPassword()"
-                    class='btn btn-danger btn-small'>
+                    class='btn btn-danger btn-sm'>
               <i class='icon-refresh icon-white'></i>
               reset password
             </button>
