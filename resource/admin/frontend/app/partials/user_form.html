@@ -1,7 +1,7 @@
 <form role="form">
   <div class="form-group">
     <input id='user_first_name'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.first_name"
            ng-change="updateUsername()"
@@ -11,7 +11,7 @@
   </div>
   <div class="form-group">
     <input id='user_last_name'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.last_name"
            ng-change="updateUsername()"
@@ -21,7 +21,7 @@
   </div>
   <div class="form-group">
     <input id='user_username'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.username"
            ng-readonly="true" placeholder="Username"
@@ -31,7 +31,7 @@
   </div>
   <div class="form-group">
     <input id='user_yos'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.yos"
            ng-change="updateEmail()"
@@ -40,7 +40,7 @@
   </div>
   <div class="form-group">
     <input id='user_student_number'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.student_number"
            ng-change="updateEmail()"
@@ -49,7 +49,7 @@
   </div>
   <div class="form-group">
     <input id='user_email'
-           class="form-control"
+           class="form-control input-sm"
            type="email"
            ng-model="user.email"
            ng-readonly="true" placeholder="Email"
@@ -59,7 +59,7 @@
   </div>
   <div class="form-group">
     <div class="input-group">
-      <select class="form-control"
+      <select class="form-control input-sm"
               type="text"
               ng-model="form.host"
               placeholder="First Host">
@@ -69,7 +69,7 @@
         </option>
       </select>
       <span class="input-group-btn">
-        <button class="btn btn-default"
+        <button class="btn btn-default btn-sm"
                 ng-click="addHost()">
           <span class="glyphicon glyphicon-plus"></span>
         </button>
@@ -91,7 +91,7 @@
   </div>
   <div class="form-group">
     <input id='user_login_shell'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.login_shell"
            placeholder="Login Shell"
@@ -99,7 +99,7 @@
   </div>
   <div class="form-group">
     <input id='user_home_directory'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.home_directory"
            placeholder="Home Directory"
@@ -107,7 +107,7 @@
   </div>
   <div class="form-group">
     <input id='user_uid_number'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.uid_number"
            ng-readonly="true"
@@ -118,7 +118,7 @@
   </div>
   <div class="form-group">
     <input id='user_gid_number'
-           class="form-control"
+           class="form-control input-sm"
            type="text"
            ng-model="user.gid_number"
            ng-readonly="true"
