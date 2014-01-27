@@ -17,27 +17,81 @@
            ng-model="q"
            placeholder="filter users..." />
   </div>
-  <ul class="list-group">
-    <li class="list-group-item" ng-repeat="user in users | filter:q">
-      {{user.first_name}} {{ user.last_name }}
-      <div class="btn-group pull-right">
-        <button ng-click="viewUser(user.username)"
-                class='btn btn-info btn-xs'>
-          <span class="glyphicon glyphicon-eye-open"></span>
-          view
-        </button>
-        <button ng-click="resetPasswordUser(user.username)"
-                class='btn btn-warning btn-xs'>
-          <span class="glyphicon glyphicon-registration-mark"></span>
-          pw-reset
-        </button>
-        <button ng-click="deleteUser(user.username)"
-                class='btn btn-danger btn-xs'>
-          <span class="glyphicon glyphicon-remove"></span>
-          delete
-        </button>
+
+  <accordion close-others="true">
+    <accordion-group ng-repeat="user in users | filter:q">
+      <accordion-heading>
+        {{user.first_name}} {{ user.last_name }}
+        <div class="btn-group pull-right">
+          <button ng-click="deleteUser(user.username)"
+                  class='btn btn-danger btn-xs'>
+            <i class='icon-remove icon-white'></i>
+            delete
+          </button>
+
+        </div>
+        <div class="clearfix"></div>
+      </accordion-heading>
+      <alert ng-repeat="alert in alerts"
+             type="alert.type"
+             close="closeAlert($index)">
+        {{alert.msg}}
+      </alert>
+      <div ng-controller="userViewCtrl">
+        <div ng-hide="editing">
+          <div class="btn-group pull-right">
+            <button ng-click="showEditForm()"
+                    class='btn btn-info btn-sm'>
+              <i class='icon-pencil icon-white'></i>
+              edit
+            </button>
+            <button ng-click="resetPassword()"
+                    class='btn btn-danger btn-sm'>
+              <i class='icon-refresh icon-white'></i>
+              reset password
+            </button>
+          </div>
+          Username: {{ user.username }}
+          <br/>
+          email: {{ user.email }}
+          <br/>
+          Year of Study: {{ user.yos }}
+          <br/>
+          Hosts: {{ user.hosts}}
+          <br/>
+          Home Directory: {{ user.home_directory }}
+          <br/>
+          Login Shell: {{ user.login_shell }}
+          <br/>
+          UID number: {{ user.uid_number }}
+          <br/>
+          GID number: {{ user.gid_number }}
+        </div>
+        <div ng-show="editing">
+          <div class="btn-group pull-right">
+            <button ng-click="showView()"
+                    class='btn btn-info btn-sm'>
+              <i class='icon-list-alt icon-white'></i>
+              view
+            </button>
+            <button ng-click="resetPassword()"
+                    class='btn btn-danger btn-sm'>
+              <i class='icon-refresh icon-white'></i>
+              reset password
+            </button>
+          </div>
+          <div ng-include="'partials/user_form.html'"></div>
+          <div class='control-group'>
+            <div class='controls'>
+              <button ng-click="updateUser()"
+                      class='btn-success btn'>
+                <i class='icon-ok icon-white'></i>
+                update
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <span class="clearfix"></span>
-    </li>
-  </ul>
+    </accordion-group>
+  </accordion>
 </div>
