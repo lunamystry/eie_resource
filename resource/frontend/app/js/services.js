@@ -2,8 +2,8 @@
 
 /* Services */
 
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
 angular.module('app.services', []).
+  factory('Sessions', ['$resource', function($resource) {
+    return $resource('/sessions/:_id', {_id: '@id'})
+  }]).
   value('version', '0.1');
