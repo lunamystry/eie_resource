@@ -88,7 +88,7 @@ def login():
             else:
                 error = "Sorry, but you could not log in."
         error = "Incorrect password of username."
-    return render_template("login.html", error=error)
+    return app.send_static_file('index.html')
 
 
 @app.route("/reauth", methods=["GET", "POST"])
