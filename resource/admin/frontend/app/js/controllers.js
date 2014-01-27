@@ -6,10 +6,8 @@ angular.module('app.controllers', []).
   controller('homeCtrl', ['$scope', function($scope) {
 
   }])
-  .controller('usersCtrl', ['$scope', '$http', function($scope, $http) {
-    $http({method: 'GET', url: '/users'}).success(function(data) {
-      $scope.users = data;
-    });
+  .controller('usersCtrl', ['$scope', '$http', 'Users', function($scope, $http, Users) {
+    $scope.users = Users.query();
 
     var user = $scope.user = {'last_name':"",
                               "first_name": "",
@@ -59,7 +57,6 @@ angular.module('app.controllers', []).
             }
           }
         });
-      location.reload(false);
     }
 
     $scope.alerts = [];

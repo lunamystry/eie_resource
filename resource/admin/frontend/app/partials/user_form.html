@@ -58,7 +58,7 @@
            required/>
   </div>
   <div class="form-group">
-    <span class="">
+    <div>
       <select class="form-control"
               type="text"
               ng-model="form.host"
@@ -68,12 +68,12 @@
           {{host}}
         </option>
       </select>
-    </span>
-    <button class="btn btn-primary"
-            ng-click="addHost()">
-      <i class="glyphicon glyphicon-plus"></i>
-      add
-    </button>
+      <button class="btn btn-primary pull-right"
+              ng-click="addHost()">
+        <i class="glyphicon glyphicon-plus"></i>
+        add
+      </button>
+    </div>
     <ol class="form-group">
       <li ng-repeat="host in user.hosts" >
         <span class="pull-right"
