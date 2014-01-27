@@ -5,16 +5,23 @@
   </span>
   <span class="clearfix"></span>
 </h2>
-<div class="col-md-3">
-  <div ng-include="'partials/user_form.html'"></div>
-  <button ng-click="saveUser()"
-          class="btn-success btn">
-    <span class="glyphicon glyphicon-plus"></span>
-    add
-  </button>
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      add a new users
+    </div>
+    <div class="panel-body">
+      <div ng-include="'partials/user_form.html'"></div>
+      <button ng-click="saveUser()"
+              class="btn-success btn">
+        <span class="glyphicon glyphicon-plus"></span>
+        add
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="col-md-9">
+<div class="col-md-8">
   There are {{users.length}} users.
   <hr/>
   <div class="form-group">
