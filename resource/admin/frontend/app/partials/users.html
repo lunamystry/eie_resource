@@ -1,4 +1,10 @@
-<h3>Users</h3>
+<h2 class="page-header">
+  <span class="pull-right">
+    <span class="glyphicon glyphicon-user"></span>
+    Users
+  </span>
+  <span class="clearfix"></span>
+</h2>
 <div class="col-md-3">
   <div ng-include="'partials/user_form.html'"></div>
   <button ng-click="saveUser()"
@@ -24,7 +30,7 @@
         <div class="btn-group pull-right">
           <button ng-click="deleteUser(user.username)"
                   class='btn btn-danger btn-xs'>
-            <i class='icon-remove icon-white'></i>
+            <span class="glyphicon glyphicon-remove"></span>
             delete
           </button>
 
@@ -41,12 +47,12 @@
           <div class="btn-group pull-right">
             <button ng-click="showEditForm()"
                     class='btn btn-info btn-sm'>
-              <i class='icon-pencil icon-white'></i>
+              <span class="glyphicon glyphicon-pencil"></span>
               edit
             </button>
             <button ng-click="resetPassword()"
                     class='btn btn-danger btn-sm'>
-              <i class='icon-refresh icon-white'></i>
+              <span class="glyphicon glyphicon-backward"></span>
               reset password
             </button>
           </div>
@@ -70,12 +76,12 @@
           <div class="btn-group pull-right">
             <button ng-click="showView()"
                     class='btn btn-info btn-sm'>
-              <i class='icon-list-alt icon-white'></i>
+              <span class="glyphicon glyphicon-eye-open"></span>
               view
             </button>
             <button ng-click="resetPassword()"
                     class='btn btn-danger btn-sm'>
-              <i class='icon-refresh icon-white'></i>
+              <span class="glyphicon glyphicon-backward"></span>
               reset password
             </button>
           </div>
