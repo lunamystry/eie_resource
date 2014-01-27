@@ -15,5 +15,5 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/class_photos', {templateUrl: 'partials/class_photos.html', controller: 'classPhotosCtrl'});
   $routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'aboutCtrl'});
   $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'loginCtrl'});
-  $routeProvider.otherwise({redirectTo: '/home'});
+  $routeProvider.otherwise({redirectTo: '/login'});
 }]);
