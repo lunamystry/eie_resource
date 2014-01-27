@@ -1,9 +1,25 @@
-<h3>Class Photos</h3>
-<p> Here you will find class photos from years past</p>
-<ul class="class_photos">
-  <li ng-repeat="photo in class_photos | filter:query | orderBy:orderProp">
-    {{photo.name}}
-    <p>{{photo.snippet}}</p>
-    <img ng-src="{{photo.thumbUrl}}"/>
-  </li>
-</ul>
+<h2 class="page-header">
+  <span class="pull-right">
+    <span class="glyphicon glyphicon-user"></span>
+    Class Photos
+    <small> Here you will find class photos from years past</small>
+  </span>
+  <span class="clearfix"></span>
+</h2>
+
+<input ng-model="query"
+       class="form-control"
+       type="search"
+       placeholder="filter..."/>
+
+<div class="row">
+  <div class="col-sm-6 col-md-6">
+    <div class="thumbnail" ng-repeat="photo in class_photos | filter:query | orderBy:orderProp">
+      <div class="caption">
+        <h3>{{photo.name}}</h3>
+        <p>{{photo.snippet}}</p>
+      </div>
+      <img ng-src="{{photo.thumbUrl}}"/>
+    </div>
+  </div>
+</div>
