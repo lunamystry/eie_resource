@@ -1,6 +1,7 @@
-<div class="control-group">
-  <div class="controls">
+<div class="row">
+  <div class="form-group">
     <input id='user_first_name'
+           class="form-control"
            type="text"
            ng-model="user.first_name"
            ng-change="updateUsername()"
@@ -8,8 +9,9 @@
            placeholder="First Name"
            required/>
   </div>
-  <div class="controls">
+  <div class="form-group">
     <input id='user_last_name'
+           class="form-control"
            type="text"
            ng-model="user.last_name"
            ng-change="updateUsername()"
@@ -17,8 +19,9 @@
            placeholder="Last Name"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_username'
+           class="form-control"
            type="text"
            ng-model="user.username"
            ng-readonly="true" placeholder="Username"
@@ -26,24 +29,27 @@
            tooltip-placement="right"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_yos'
+           class="form-control"
            type="text"
            ng-model="user.yos"
            ng-change="updateEmail()"
            placeholder="Year Of Study"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_student_number'
+           class="form-control"
            type="text"
            ng-model="user.student_number"
            ng-change="updateEmail()"
            placeholder="Student Number"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_email'
+           class="form-control"
            type="email"
            ng-model="user.email"
            ng-readonly="true" placeholder="Email"
@@ -51,22 +57,21 @@
            tooltip-placement="right"
            required/>
   </div>
-  <div class='controls'>
-    <div class="input-append">
-      <select class="span9"
-              type="text"
-              ng-model="form.host"
-              placeholder="First Host">
-        <option value="" selected>[Select hosts]</option>
-        <option value="{{host}}" ng-repeat="host in availableHosts">
-          {{host}}
-        </option>
-      </select>
-      <button class="btn btn-primary"
-              ng-click="addHost()">
-        add
-      </button>
-    </div>
+  <div class="form-group">
+    <select class="form-control"
+            type="text"
+            ng-model="form.host"
+            placeholder="First Host">
+      <option value="" selected>[Select hosts]</option>
+      <option value="{{host}}" ng-repeat="host in availableHosts">
+        {{host}}
+      </option>
+    </select>
+    <button class="btn btn-primary pull-right"
+            ng-click="addHost()">
+      <i class="glyphicon glyphicon-plus"></i>
+      add
+    </button>
     <ol>
       <li ng-repeat="host in user.hosts" >
         <span class="pull-right"
@@ -80,22 +85,25 @@
       </li>
     </ol>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_login_shell'
+           class="form-control"
            type="text"
            ng-model="user.login_shell"
            placeholder="Login Shell"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_home_directory'
+           class="form-control"
            type="text"
            ng-model="user.home_directory"
            placeholder="Home Directory"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_uid_number'
+           class="form-control"
            type="text"
            ng-model="user.uid_number"
            ng-readonly="true"
@@ -104,8 +112,9 @@
            tooltip-placement="right"
            required/>
   </div>
-  <div class='controls'>
+  <div class="form-group">
     <input id='user_gid_number'
+           class="form-control"
            type="text"
            ng-model="user.gid_number"
            ng-readonly="true"
