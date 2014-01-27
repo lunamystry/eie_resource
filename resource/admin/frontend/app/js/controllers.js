@@ -145,20 +145,6 @@ angular.module('app.controllers', []).
         $scope.users = data;
       });
   }])
-  .controller('bookingsCtrl', [function() {
-
-  }])
-  .controller('classPhotosCtrl', ['$scope', '$http', function($scope, $http) {
-    $http.get('class_photos.json').success(function(data) {
-      $scope.class_photos = data;
-    });
-  }])
-  .controller('aboutCtrl', [function() {
-
-  }])
-  .controller('loginCtrl', [function() {
-
-  }])
   .controller('navCtrl', ['$scope','$location', function($scope, $location) {
     $scope.navClass = function (page) {
       var currentRoute = $location.path().substring(1) || 'home';
