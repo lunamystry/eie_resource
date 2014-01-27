@@ -31,13 +31,13 @@ def index():
 
 
 @admin.route('/docs/')
-@login_required
+# @login_required
 def index_documentation():
     return redirect("/admin/docs/index.html")
 
 
 @admin.route('/docs/<path:filename>')
-@login_required
+# @login_required
 def documentation(filename):
     cwd = os.path.dirname(__file__)
     logging.info("CWD: " + cwd)

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Resource</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/png"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet/less" type="text/css" href="css/app.less"/>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#home">
+            <img src="img/eielogo.png">
+          </a>
+          <div id="menu" ng-controller="navCtrl">
+            <ul class="nav-menu pull-right">
+              <li> <a href="#/home">home</a> </li>
+              <li> <a href="http://resource.eie.wits.ac.za/repository">repository</a></li>
+              <li> <a href="#/class_photos"> class photos </a> </li>
+              <li> <a href="#/bookings"> bookings </a> </li>
+              <li> <a href="#/about"> about </a> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="content" class="container">
+      <div class="row-fluid">
+        <div id="resource">
+          <div class="hero-unit">
+            <section class="span8">
+              <h1> Resource </h1>
+              <p>
+                Welcome to resource. A resource repository for Information and Electrical Engineering students
+                at Wits.
+                You need to sign in for a locker, DHCP and DNS and to make dlab bookings
+              </p>
+            </section>
+            <section class="span3">
+              <h2>Sign in</h2>
+              <form action="/login" method="post">
+                <div class="control-group" id="username">
+                  <div class="controls">
+                    <input type="text"
+                           name="username_input"
+                           placeholder="username"/>
+                    <input type="password"
+                           name="password_input"
+                           placeholder="password"/>
+                    <div class="control-group controls">
+                      <button class="btn btn-success" type="submit">
+                        Sign in
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </section>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
