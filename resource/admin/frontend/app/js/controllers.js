@@ -7,7 +7,9 @@ angular.module('app.controllers', []).
 
   }])
   .controller('usersCtrl', ['$scope', '$http', 'Users', function($scope, $http, Users) {
-    $scope.users = Users.query();
+    Users.query(function(response) {
+      $scope.users = response;
+    });
 
     var user = $scope.user = {'last_name':"",
                               "first_name": "",
@@ -49,14 +51,13 @@ angular.module('app.controllers', []).
         });
     };
     $scope.deleteUser = function(username) {
-      $http({method: 'DELETE', url: '/users/'+ username})
-        .success(function(data) {
-          for ( var key in $scope.users) {
-            if ($scope.users.hasOwnProperty(key)){
-              $scope.users.splice(key + 1, 1);
-            }
-          }
-        });
+      Users.delete({'username': username});
+      for (var i = 0; i < $scope.users.length; ++i) {
+        var entry = $scope.users[i];
+        if (entry.username == username){
+          $scope.users.splice(i, 1);
+        }
+      }
     }
 
     $scope.alerts = [];
