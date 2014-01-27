@@ -21,10 +21,30 @@
         </div>
         <div id="menu" class="collapse navbar-collapse" ng-controller="navCtrl">
           <ul class="nav navbar-nav navbar-right">
-            <li ng-class="navClass('home')"><a href="#/home">home</a> </li>
-            <li ng-class="navClass('users')"><a href="#/users"> users </a></li>
-            <li ng-class="navClass('docs')"><a href="/admin/docs"> docs </a> </li>
-            <li ng-class="navClass('papercut')"><a href="http://babbage.ug.eie.wits.ac.za:9191"> papercut </a> </li>
+            <li ng-class="navClass('home')" >
+              <a href="#/home">
+                <span class="glyphicon glyphicon-home"></span>
+                home
+              </a>
+            </li>
+            <li ng-class="navClass('users')">
+              <a href="#/users">
+                <span class="glyphicon glyphicon-user"></span>
+                users
+              </a>
+            </li>
+            <li ng-class="navClass('docs')">
+              <a href="/admin/docs">
+                <span class="glyphicon glyphicon-book"></span>
+                docs
+              </a>
+            </li>
+            <li ng-class="navClass('papercut')">
+              <a href="http://babbage.ug.eie.wits.ac.za:9191">
+                <span class="glyphicon glyphicon-print"></span>
+                papercut
+              </a>
+            </li>
           </ul>
         </div>
       </div>
