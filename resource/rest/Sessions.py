@@ -29,18 +29,8 @@ class Session(Resource):
             return "{'session': 'Session not found'}", 401
 
     def delete(self, session_id):
-        client.resource.sessions.remove({'id': ObjectId(session_id)})
-        return "", 205
-
-    def put(self, session_id):
-        session = client.resource.sessions.find_one({
-            'id': ObjectId(session_id)})
-        args = request.json
-        for key in args.keys():
-            session[key] = args[key]
-        client.resource.sessions.save(session)
-        session["id"] = str(session["id"])
-        return session, 201
+        client.resource.sessions.remove({'_id': ObjectId(session_id)})
+        return "{'result': 'Deleted session'}", 205
 
     def is_active(self, session):
         now = datetime.now()
