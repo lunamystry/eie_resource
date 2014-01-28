@@ -21,10 +21,6 @@ api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
 
 
-# @app.route('/')
-# def index():
-#     return render_template('login.html')
-
 @app.route('/')
 @app.route('/index.html')
 def index():
