@@ -12,10 +12,11 @@ from resource.validators import required
 from resource.validators import length
 from resource.validators import ValidationError
 from resource import app
-from eieldap import models
+from eieldap.models import users
 from eieldap import logger
 
 client = MongoClient()
+
 
 class Session(Resource):
     def get(self, session_id):
@@ -25,11 +26,11 @@ class Session(Resource):
             session["id"] = str(session["id"])
             return session
         else:
-            return "{'session': 'Session not found'}", 404
+            return "{'session': 'Session not found'}", 401
 
     def delete(self, session_id):
         client.resource.sessions.remove({'id': ObjectId(session_id)})
-        return "", 204
+        return "", 205
 
     def put(self, session_id):
         session = client.resource.sessions.find_one({
@@ -71,8 +72,9 @@ class Sessions(Resource):
         args = request.json
         data, errors = self.validate(args)
         if errors:
-            return errors, 500
-        user = models.User().find_one({'username': data["username"]})
+            return errors, 401
+        user = users.find_one(data["username"])
+
         if(self.authenticate(data["username"], data["password"])):
             session = client.resource.sessions.find_one({
                 "username": str(user["username"])})
@@ -84,7 +86,7 @@ class Sessions(Resource):
             client.resource.sessions.save(session)
             session['_id'] = str(session['_id'])
             return jsonify({"result": session})
-        return {"username": "Username or Password error"}, 500
+        return {"username": "Username or Password error", "password": "Username or Password error"}, 401
 
     def validate(self, args):
         errors = {}
@@ -100,7 +102,7 @@ class Sessions(Resource):
         return args, errors
 
     def authenticate(self, username, password):
-        return models.User().authenticate(username, password)
+        return users.authenticate(username, password)
 
     def hashed(self, password, salt):
         return hashlib.sha512(password + salt).hexdigest()
