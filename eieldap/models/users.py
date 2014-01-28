@@ -40,11 +40,11 @@ def find():
     return users_list
 
 
-def find_one(name=None, attr=None):
+def find_one(username=None, attr=None):
     """ Returns a single user """
     user = None
-    if name is not None:
-        dn = "uid=" + name + "," + basedn
+    if username is not None:
+        dn = "uid=" + username + "," + basedn
         user = manager.find_by_dn(dn)
     elif attr is not None:
         fixed_user = fix(attr, inv_keymap)
