@@ -22,7 +22,7 @@ angular.module('app.controllers', []).
       $scope.sessions = response;
     });
 
-    $scope.login = function () {
+    $scope.sign_in = function () {
       Sessions.save({"username": $scope.username, "password": $scope.password}, function(response) {
         Session.data = response.result;
         Session.isLogged = true;
@@ -30,14 +30,16 @@ angular.module('app.controllers', []).
       });
     }
   }])
-  .controller('navCtrl', ['$scope','$location', 'Session', function($scope, $location, Session) {
+  .controller('navCtrl', ['$scope','$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
     $scope.navClass = function (page) {
       var currentRoute = $location.path().substring(1) || 'home';
       return page === currentRoute ? 'active' : '';
     };
-    $scope.sign_out = function() {
-      console.log("loggin out");
-    };
+    $scope.sign_out = function () {
+      Sessions.delete({"_id": Session.data._id}, function(response) {
+        $location.path("/login");
+      });
+    }
     $scope.isLogged = function() {
       return Session.isLogged;
     }
