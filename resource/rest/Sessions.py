@@ -21,12 +21,14 @@ client = MongoClient()
 class Session(Resource):
     def get(self, session_id):
         session = client.resource.sessions.find_one({
-            'id': ObjectId(session_id)})
-        if self.is_active(session):
-            session["id"] = str(session["id"])
-            return session
-        else:
-            return "{'session': 'Session not found'}", 401
+            '_id': ObjectId(session_id)})
+        if session:
+            if self.is_active(session):
+                session["_id"] = str(session["_id"])
+                return session
+            else:
+                client.resource.sessions.remove({'_id': ObjectId(session_id)})
+        return "{'session': 'Session not found'}", 401
 
     def delete(self, session_id):
         client.resource.sessions.remove({'_id': ObjectId(session_id)})
