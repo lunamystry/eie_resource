@@ -51,10 +51,17 @@
                 about
               </a>
             </li>
-            <li ng-class="navClass('login')">
-              <a href="#/login">
+            <li ng-class="navClass('login')"
+                ng-controller="loginCtrl">
+              <a ng-show="isLogged()"
+                 ng-click="sign_out()">
                 <span class="glyphicon glyphicon-user"></span>
-                {{signed_in()}}
+                sign out
+              </a>
+              <a ng-hide="isLogged()"
+                 href="#/login">
+                <span class="glyphicon glyphicon-user"></span>
+                sign in
               </a>
             </li>
           </ul>

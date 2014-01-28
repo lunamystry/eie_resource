@@ -17,7 +17,7 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', ['$scope', 'Sessions', 'Session', function($scope, Sessions, Session) {
+  .controller('loginCtrl', ['$scope', '$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
     Sessions.query(function(response) {
       $scope.sessions = response;
     });
@@ -26,6 +26,7 @@ angular.module('app.controllers', []).
       Sessions.save({"username": $scope.username, "password": $scope.password}, function(response) {
         Session.data = response.result;
         Session.isLogged = true;
+        $location.path("/home");
       });
     }
   }])
@@ -34,12 +35,11 @@ angular.module('app.controllers', []).
       var currentRoute = $location.path().substring(1) || 'home';
       return page === currentRoute ? 'active' : '';
     };
-    $scope.signed_in = function() {
-      if (Session.isLogged) {
-        return Session.data.username;
-      } else {
-        return "sign in"
-      }
+    $scope.sign_out = function() {
+      console.log("loggin out");
+    };
+    $scope.isLogged = function() {
+      return Session.isLogged;
     }
   }])
   .controller('titleCtrl', ['$scope','$location', function($scope, $location) {
