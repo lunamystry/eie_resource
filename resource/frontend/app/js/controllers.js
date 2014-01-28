@@ -17,20 +17,30 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', ['$scope', 'Sessions', function($scope, Sessions) {
+  .controller('loginCtrl', ['$scope', 'Sessions', 'Session', function($scope, Sessions, Session) {
     Sessions.query(function(response) {
       $scope.sessions = response;
     });
 
     $scope.login = function () {
-      console.log($scope.username + " " + $scope.password);
+      Sessions.save({"username": $scope.username, "password": $scope.password}, function(response) {
+        Session.data = response.result;
+        Session.isLogged = true;
+      });
     }
   }])
-  .controller('navCtrl', ['$scope','$location', function($scope, $location) {
+  .controller('navCtrl', ['$scope','$location', 'Session', function($scope, $location, Session) {
     $scope.navClass = function (page) {
       var currentRoute = $location.path().substring(1) || 'home';
       return page === currentRoute ? 'active' : '';
     };
+    $scope.signed_in = function() {
+      if (Session.isLogged) {
+        return Session.data.username;
+      } else {
+        return "sign in"
+      }
+    }
   }])
   .controller('titleCtrl', ['$scope','$location', function($scope, $location) {
     $scope.title = function () {
