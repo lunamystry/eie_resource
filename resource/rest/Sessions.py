@@ -55,7 +55,7 @@ class Sessions(Resource):
             session["timestamp"] = str(session["timestamp"])
             if not Session().is_active(session):
                 sessions.remove(session)
-        return jsonify({"result": session_list})
+        return session_list
 
     def post(self):
         """ Login means POSTing to this, this checks the credentials

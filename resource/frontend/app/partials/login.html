@@ -9,23 +9,32 @@
   </div>
   <div class="col-md-3">
     <h2>Sign in</h2>
-    <form action="/login" method="post" role="form">
-      <div class="form-group">
-        <input type="text"
-               class="form-control input-lg"
-               name="username_input"
-               placeholder="username"/>
-      </div>
-      <div class="form-group">
-        <input type="password"
-               class="form-control input-lg"
-               name="password_input"
-               placeholder="password"/>
-      </div>
-      <button ng-click="login()"
-              class="btn btn-success">
-        Sign in
-      </button>
+    <form role="form" name="login_form">
+      <fieldset>
+        <div class="form-group"
+             ng-class="{login_form.username.$error: 'has-error'}">
+          <input type="text"
+                 ng-model="username"
+                 class="form-control input-lg"
+                 name="username_input"
+                 placeholder="username"
+                 required/>
+        </div>
+        <div class="form-group"
+             ng-class="{login_form.password.$error: 'has-error'}">
+          <input type="password"
+                 ng-model="password"
+                 class="form-control input-lg"
+                 name="password_input"
+                 placeholder="password"
+                 required/>
+        </div>
+        <button ng-disabled="!login_form.$valid"
+                ng-click="login()"
+                class="btn btn-success">
+          Sign in
+        </button>
+      </fieldset>
     </form>
   </div>
   <div class="clearfix"></div>

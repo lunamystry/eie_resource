@@ -17,8 +17,14 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', [function() {
+  .controller('loginCtrl', ['$scope', 'Sessions', function($scope, Sessions) {
+    Sessions.query(function(response) {
+      $scope.sessions = response;
+    });
 
+    $scope.login = function () {
+      console.log($scope.username + " " + $scope.password);
+    }
   }])
   .controller('navCtrl', ['$scope','$location', function($scope, $location) {
     $scope.navClass = function (page) {
