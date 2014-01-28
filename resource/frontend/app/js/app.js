@@ -18,4 +18,12 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'aboutCtrl'});
   $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'loginCtrl'});
   $routeProvider.otherwise({redirectTo: '/login'});
+}]).
+run(['$rootScope', '$location', 'Sessions', function($rootScope, $location, Sessions) {
+  var noAuth = ['login', 'about', 'home'];
+
+  $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    console.log('Changing the views');
+  });
+
 }]);
