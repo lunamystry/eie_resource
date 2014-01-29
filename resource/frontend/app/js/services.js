@@ -9,7 +9,10 @@ angular.module('app.services', []).
   factory('Session', [function() {
     var sdo = {
       isLogged: false,
-      data: {}
+      data: {},
+      isLoggedIn: function() {
+        return IsLogged;
+      }
     };
     return sdo;
   }]).
