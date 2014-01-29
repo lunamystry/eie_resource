@@ -18,10 +18,6 @@ angular.module('app.controllers', []).
 
   }])
   .controller('loginCtrl', ['$scope', '$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
-    Sessions.query(function(response) {
-      $scope.sessions = response;
-    });
-
     $scope.sign_in = function () {
       Sessions.save({"username": $scope.username, "password": $scope.password}, function(response) {
         Session.data = response.result;
@@ -37,6 +33,8 @@ angular.module('app.controllers', []).
     };
     $scope.sign_out = function () {
       Sessions.delete({"_id": Session.data._id}, function(response) {
+        Session.data = {};
+        Session.isLogged = false;
         $location.path("/login");
       });
     }

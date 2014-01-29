@@ -19,18 +19,18 @@ angular.module('resource', [
     $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'loginCtrl'});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]).
-  run(['$rootScope', '$location', 'Sessions', function($rootScope, $location, Sessions) {
+  run(['$rootScope', '$location', 'Session', function($rootScope, $location, Session) {
     var noAuthRoutes = ['/login', '/about', '/home', '/class_photos'];
 
     var routeClean = function (route) {
       return _.find(noAuthRoutes, function (noAuthRoute) {
-        console.log(route);
         return route.startsWith(noAuthRoute);
       });
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-      if (!routeClean($location.url()) && !Sessions.isLogged) {
+      console.log(Session.isLogged);
+      if (!routeClean($location.url()) && !Session.isLogged) {
         $location.path("/login");
       }
     });
