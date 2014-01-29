@@ -25,6 +25,9 @@ angular.module('app.controllers', []).
         $location.path("/home");
       });
     }
+    $scope.signed_in_user = function() {
+      return Session.data.username;
+    }
   }])
   .controller('navCtrl', ['$scope','$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
     $scope.navClass = function (page) {
