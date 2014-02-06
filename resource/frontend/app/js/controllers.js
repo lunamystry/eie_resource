@@ -28,8 +28,13 @@ angular.module('app.controllers', []).
                         Session.isLogged = true;
                         $location.path("/home");
                       }, function (response) {
-                        $scope.has_error = true;
-                        $scope.login_form.error_message = response.data["username"];
+                        if (response.status == 401) {
+                          $scope.has_error = true;
+                          $scope.login_form.error_message = response.data["username"];
+                        }
+                        if (response.status == 500) {
+                          $scope.server_error = true;
+                        }
                       });
       }
     }
