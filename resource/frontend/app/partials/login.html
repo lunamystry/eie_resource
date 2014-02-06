@@ -9,10 +9,15 @@
   </div>
   <div class="col-md-3">
     <h2>Sign in</h2>
-    <form role="form" name="login_form">
+    <form role="form" name="login_form" ng-submit="sign_in()" novalidate>
       <fieldset>
+        <div class="alert alert-danger alert-dismissable"
+             ng-show="has_error">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <strong>ERROR!</strong> {{login_form.error_message}}
+        </div>
         <div class="form-group"
-             ng-class="{login_form.username.$error: 'has-error'}">
+             ng-class="{ 'has-error' : has_error || login_form.username.$error }">
           <input type="text"
                  ng-model="username"
                  class="form-control input-lg"
@@ -21,7 +26,7 @@
                  required/>
         </div>
         <div class="form-group"
-             ng-class="{login_form.password.$error: 'has-error'}">
+             ng-class="{ 'has-error' : has_error || login_form.password.$error}">
           <input type="password"
                  ng-model="password"
                  class="form-control input-lg"
@@ -30,7 +35,7 @@
                  required/>
         </div>
         <button ng-disabled="!login_form.$valid"
-                ng-click="sign_in()"
+                type="submit"
                 class="btn btn-success">
           Sign in
         </button>

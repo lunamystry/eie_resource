@@ -18,12 +18,20 @@ angular.module('app.controllers', []).
 
   }])
   .controller('loginCtrl', ['$scope', '$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
+    $scope.user = {}
+
     $scope.sign_in = function () {
-      Sessions.save({"username": $scope.username, "password": $scope.password}, function(response) {
-        Session.data = response.result;
-        Session.isLogged = true;
-        $location.path("/home");
-      });
+      if ($scope.login_form.$valid) {
+        Sessions.save({"username": $scope.username, "password": $scope.password},
+                      function(response) {
+                        Session.data = response.result;
+                        Session.isLogged = true;
+                        $location.path("/home");
+                      }, function (response) {
+                        $scope.has_error = true;
+                        $scope.login_form.error_message = response.data["username"];
+                      });
+      }
     }
     $scope.signed_in_user = function() {
       return Session.data.username;
