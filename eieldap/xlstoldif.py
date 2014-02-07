@@ -104,7 +104,7 @@ def add_passwords(rows):
     new_rows.append(headers)
     for row in rows[find_headers_row(rows) + 1:]:
         student_number = row[headers.index("Student Number")]
-        lm_password, nt_password = smb_encrypt(student_number)
+        lm_password, nt_password = smb_encrypt("dlab2014")
         row.append(nt_password)
         row.append(lm_password)
         row.append(student_number)
@@ -140,12 +140,12 @@ def make_ldif(rows,  ldif_filename):
         gidNumber = gidNumbers[int(yos) - 1]
         smbRid = uidNumber*4
         entry = ""
-        entry += "dn: uid=" + username + ",ou=ug,dc=eie,dc=wits,dc=ac,dc=za \n"
-        entry += "objectClass: inetOrgPerson \n"
-        entry += "objectClass: organisationalPerson \n"
-        entry += "objectClass: posixAccount \n"
-        entry += "objectClass: sambaSamAccount \n"
-        entry += "objectClass: hostObject \n"
+        entry += "dn: uid=" + username + ",ou=people,dc=eie,dc=wits,dc=ac,dc=za\n"
+        entry += "objectClass: inetOrgPerson\n"
+        entry += "objectClass: organizationalPerson\n"
+        entry += "objectClass: posixAccount\n"
+        entry += "objectClass: sambaSamAccount\n"
+        entry += "objectClass: hostObject\n"
         entry += "cn: " + first_name + "\n"
         entry += "sn: " + last_name + "\n"
         entry += "uid: " + username + "\n"
