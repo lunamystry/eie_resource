@@ -2,6 +2,7 @@
 import argparse
 import subprocess
 import xlrd
+import re
 
 VALID_TITLES = ["Year Of Study", "Student Number", "First Name", "Last Name"]
 
@@ -15,12 +16,12 @@ def main(workbook_name, ldif_name):
 
     rows = add_usernames(rows)
     rows = add_passwords(rows)
+    rows = make_yos_int(rows)
 
     if ldif_name is None:
         ldif_name = workbook_name[:-3] + "ldif"
 
     make_ldif(rows, ldif_name)
-    #print rows
 
 
 def extract(xl_file):
@@ -53,6 +54,15 @@ def strip_unused_cols(rows):
             new_row.append(row[col_num])
         new_rows.append(new_row)
     return new_rows
+
+
+def make_yos_int(rows):
+    pattern = re.compile('[^0-9]+')
+    headers = rows[find_headers_row(rows)]
+    i = headers.index('Year Of Study')
+    for row in rows[1:]:
+        row[i] = pattern.sub('', row[i])
+    return rows
 
 
 def find_valid_col_numbers(rows):
@@ -131,10 +141,13 @@ def make_ldif(rows,  ldif_filename):
         smbRid = uidNumber*4
         entry = ""
         entry += "dn: uid=" + username + ",ou=ug,dc=eie,dc=wits,dc=ac,dc=za \n"
-        entry += "objectClass: account \n"
+        entry += "objectClass: inetOrgPerson \n"
+        entry += "objectClass: organisationalPerson \n"
         entry += "objectClass: posixAccount \n"
         entry += "objectClass: sambaSamAccount \n"
-        entry += "cn: " + first_name + " " + last_name + "\n"
+        entry += "objectClass: hostObject \n"
+        entry += "cn: " + first_name + "\n"
+        entry += "sn: " + last_name + "\n"
         entry += "uid: " + username + "\n"
         entry += "displayName: " + first_name + " " + last_name + "\n"
         entry += "uidNumber: " + str(uidNumber) + "\n"
@@ -147,7 +160,7 @@ def make_ldif(rows,  ldif_filename):
         entry += "sambaNTPassword: " + nt_password + "\n"
         entry += "sambaLMPassword: " + lm_password + "\n"
         entry += "\n"
-        if int(yos) > 2:
+        if int(yos) > 1 and int(yos) < 4:
             ldif_file.write(entry.encode('utf-8'))
     ldif_file.close()
 
