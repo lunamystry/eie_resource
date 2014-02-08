@@ -32,7 +32,7 @@ def index():
 
 @admin.route('/docs/')
 # @login_required
-def index_documentation():
+def documentation_index():
     return redirect("/admin/docs/index.html")
 
 
