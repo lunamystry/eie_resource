@@ -26,7 +26,7 @@ angular.module('app.controllers', []).
                       function(response) {
                         Session.data = response.result;
                         Session.isLogged = true;
-                        $location.path("/home");
+                        $location.path("/profile");
                       }, function (response) {
                         if (response.status == 401) {
                           $scope.has_error = true;
