@@ -80,7 +80,7 @@ def add(attr):
         error_msg = "trying to save but Year of Study " + attr['yos'] + " is invalid"
         logger.error(error_msg)
         raise RuntimeError(error_msg)
-    fixed_user["objectClass"] = ["inetOrgPerson", "organisationalPerson", "posixAccount", "sambaSamAccount", "hostObject"]
+    fixed_user["objectClass"] = ["inetOrgPerson", "organizationalPerson", "posixAccount", "sambaSamAccount", "hostObject"]
     fixed_user["uidNumber"] = str(uid_number)
     fixed_user["gidNumber"] = str(gid_number)
     fixed_user["homeDirectory"] = "/home/ug/" + fixed_user["uid"]
