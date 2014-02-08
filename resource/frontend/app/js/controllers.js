@@ -58,6 +58,9 @@ angular.module('app.controllers', []).
       return Session.isLogged;
     }
   }])
+  .controller('profileCtrl', ['$scope', 'Session', function($scope, Session) {
+
+  }])
   .controller('titleCtrl', ['$scope','$location', function($scope, $location) {
     $scope.title = function () {
       var currentRoute = $location.path().substring(1) || 'home';

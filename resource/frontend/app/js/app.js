@@ -16,11 +16,12 @@ angular.module('resource', [
     $routeProvider.when('/bookings', {templateUrl: 'partials/bookings.html', controller: 'bookingsCtrl'});
     $routeProvider.when('/class_photos', {templateUrl: 'partials/class_photos.html', controller: 'classPhotosCtrl'});
     $routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'aboutCtrl'});
+    $routeProvider.when('/profile', {templateUrl: 'partials/profile.html', controller: 'profileCtrl'});
     $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'loginCtrl'});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]).
   run(['$rootScope', '$location', 'Session', function($rootScope, $location, Session) {
-    var noAuthRoutes = ['/login', '/about', '/home', '/class_photos'];
+    var noAuthRoutes = ['/login', '/about', '/home', '/class_photos', '/profile'];
 
     var routeClean = function (route) {
       return _.find(noAuthRoutes, function (noAuthRoute) {

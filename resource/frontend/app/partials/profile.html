@@ -1,0 +1,60 @@
+<h2 class="page-header">
+  <span class="pull-right">
+    <span class="glyphicon glyphicon-user"></span>
+    Profile
+  </span>
+  <span class="clearfix"></span>
+</h2>
+<div class="col-md-9">
+  <h2>User information</h2>
+</div>
+
+<div class="col-md-3">
+  <h2>Change password</h2>
+  <form role="form" name="password_form" ng-submit="change_password()" novalidate>
+    <fieldset>
+      <div class="alert alert-danger"
+           ng-show="has_error">
+        <strong>ERROR!</strong> {{password_form.error_message}}
+      </div>
+      <div class="alert alert-danger"
+           ng-show="server_error">
+        <strong>ERROR!</strong> An error has occured, it probably
+        not your fault, try logging in again and if it still does
+        not let you in, send an email to the dlab administrator.
+      </div>
+      <div class="form-group"
+           ng-class="{ 'has-error' : has_error || password_form.password.$error}">
+        <input type="password"
+               ng-model="password"
+               class="form-control input-lg"
+               name="password_input"
+               placeholder="current password"
+               required/>
+      </div>
+      <div class="form-group"
+           ng-class="{ 'has-error' : has_error || password_form.new_password.$error}">
+        <input type="password"
+               ng-model="new_password"
+               class="form-control input-lg"
+               name="new_password_input"
+               placeholder="new password"
+               required/>
+      </div>
+      <div class="form-group"
+           ng-class="{ 'has-error' : has_error || password_form.new_password2.$error}">
+        <input type="password"
+               ng-model="new_password2"
+               class="form-control input-lg"
+               name="new_password_input2"
+               placeholder="retype new password"
+               required/>
+      </div>
+      <button ng-disabled="!password_form.$valid"
+              type="submit"
+              class="btn btn-success">
+        change password
+      </button>
+    </fieldset>
+  </form>
+</div>
