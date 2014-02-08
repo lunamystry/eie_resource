@@ -58,8 +58,19 @@ angular.module('app.controllers', []).
       return Session.isLogged;
     }
   }])
-  .controller('profileCtrl', ['$scope', 'Session', function($scope, Session) {
-
+  .controller('profileCtrl', ['$scope', 'Session', 'Users', function($scope, Session, Users) {
+    $scope.change_password = function() {
+      if ( Users.authenticate()) {
+        console.log("Changed password");
+        if ( $scope.password_form.new_password == $scope.password_form.new_password2) {
+          Users.change_password($scope.password, $scope.new_password);
+        } else {
+          $scope.password_form.error_message = "Passwords don't match";
+        }
+      } else {
+          $scope.password_form.error_message = "Password is wrong bud!";
+      }
+    }
   }])
   .controller('titleCtrl', ['$scope','$location', function($scope, $location) {
     $scope.title = function () {
