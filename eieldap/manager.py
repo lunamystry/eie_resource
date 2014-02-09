@@ -22,9 +22,11 @@ class Manager():
         self.base = config.get("ldap", "base")
         self.connection = ldap.initialize('ldap://'+self.server)
         self.connection.simple_bind_s(self.dn, self.pw)
+        logger.info("Connected to {}".format(config.get("ldap", "server")))
 
     def disconnect(self):
         self.connection.unbind()
+        logger.info("disonnected to {}".format(config.get("ldap", "server")))
 
     def create(self, dn, attr):
         modlist = ldap.modlist.addModlist(attr)
@@ -40,14 +42,18 @@ class Manager():
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
         modlist = self.prepare_modlist(dn, new_attr)
-        logger.debug(new_attr)
-        logger.debug(modlist)
-        try:
-            logger.debug(dn)
-            self.connection.modify_s(dn, modlist)
+        logger.debug("New attributes: {}".format(new_attr))
+        logger.debug("Modlist: {}".format(modlist))
+        if modlist:
+            try:
+                self.connection.modify_s(dn, modlist)
+                logger.info("Updated user with dn: {}".format(dn))
+                return True
+            except ldap.LDAPError as e:
+                logger.error("\n\tCould not update user with dn: {0} \n\tbecause: {1}".format(dn, e))
+        else:
+            logger.error("Nothing to update for: {0}".format(dn))
             return True
-        except ldap.LDAPError as e:
-            logger.error(e)
         return False
 
     def prepare_modlist(self, dn, new_attr):
@@ -60,6 +66,7 @@ class Manager():
             del(new_attr["dn"])
         except KeyError:
             pass
+        logger.debug("New New NEWWWW!"+ str(new_attr))
         for key in attr.keys():
             if key not in new_attr.keys():
                 new_attr[key] = attr[key]
@@ -79,17 +86,15 @@ class Manager():
             self.connection.passwd_s(dn, None, newpw)
             return True
         except ldap.LDAPError as e:
-            logger.debug(dn)
-            logger.debug(e)
-            return False
+            logger.debug("Could not change password for {0}, because: {1}".format(dn, e))
+        return False
 
     def authenticate(self, dn, password):
         try:
             self.connection.bind_s(dn, password)
             return True
         except ldap.LDAPError as e:
-            logger.debug(dn)
-            logger.debug(e)
+            logger.debug("Password and Username {0}, because: {1}".format(dn, e))
         return False
 
     def find(self, base=None, filter_key="objectClass"):
