@@ -19,6 +19,7 @@ api.add_resource(rest.ClassPhotos, '/class_photos')
 api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
 api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
+api.add_resource(rest.Password, '/passwords/<string:username>/<string:session_key>')
 
 
 @app.route('/')
@@ -26,9 +27,6 @@ api.add_resource(rest.Session, '/sessions/<string:session_id>')
 def index():
     return app.send_static_file('index.html')
 
-@app.route('/change_password/<string: username>/<string: session_key>')
-def change_password(username, session_key):
-    pass
 
 @app.errorhandler(404)
 def page_not_found(error):
