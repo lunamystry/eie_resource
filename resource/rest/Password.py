@@ -3,11 +3,6 @@ from flask import jsonify
 from flask.views import MethodView
 from flask.ext.restful import Resource
 from flask.ext.restful import abort
-import uuid
-import hashlib
-from datetime import datetime
-from pymongo import MongoClient
-from bson.objectid import ObjectId
 from resource.validators import required
 from resource.validators import length
 from resource.validators import ValidationError
@@ -27,20 +22,32 @@ class Password(Resource):
         return "{'result': 'NOT IMPLEMETED'}", 500
 
     def put(self, username, session_key):
-        pass
+        args = request.json
+        data, errors = self.validate(args)
+        if errors:
+            return errors, 401
+        password = data["password"]
+        new_password = data["new_password"]
+        if self.authenticate(username, password):
+            if users.change_password(username, password, new_password):
+                return "Done", 201
+            else:
+                return "There was a server problem", 500
+        else:
+            return "Username and password don't match", 401
 
     def authenticate(self, username, password):
         return users.authenticate(username, password)
 
     def validate(self, args):
         errors = {}
-        error = "Username or Password error"
-        try:
-            required(args["username"])
-        except ValidationError as e:
-            errors["username"] = error
+        error = "You need to provide both current password and new password"
         try:
             required(args["password"])
         except ValidationError as e:
             errors["password"] = error
+        try:
+            required(args["new_password"])
+        except ValidationError as e:
+            errors["new_password"] = error
         return args, errors

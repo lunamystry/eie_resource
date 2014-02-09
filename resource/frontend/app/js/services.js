@@ -16,14 +16,14 @@ angular.module('app.services', []).
     };
     return sdo;
   }])
-  .factory('Users', ['$http', function($http) {
+  .factory('Users', ['$http', 'Session',function($http, Session) {
     var user = {
       authenticate: function() {
         return true;
       },
       change_password: function(oldpw, newpw) {
         // Need this to be synchronous
-        $http.get('').success(
+        $http.put('/password/').success(
           // inform the user
         ).error(
           // inform the user
