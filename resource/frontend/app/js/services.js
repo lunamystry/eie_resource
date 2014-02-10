@@ -21,13 +21,15 @@ angular.module('app.services', []).
       authenticate: function() {
         return true;
       },
-      change_password: function(oldpw, newpw) {
+      change_password: function(password, new_password) {
         // Need this to be synchronous
-        $http.put('/password/').success(
-          // inform the user
-        ).error(
-          // inform the user
-        );
+        console.log(Session.data.username);
+        $http.put('/passwords/' + Session.data.username + '/' + Session.data.key,
+                  {"password": password, "new_password": new_password}).success(
+                    // inform the user
+                  ).error(
+                    // inform the user
+                  );
       }
     }
     return user;
