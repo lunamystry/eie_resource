@@ -21,7 +21,7 @@ angular.module('resource', [
     $routeProvider.otherwise({redirectTo: '/login'});
   }]).
   run(['$rootScope', '$location', 'Session', function($rootScope, $location, Session) {
-    var noAuthRoutes = ['/login', '/about', '/home', '/class_photos', '/profile'];
+    var noAuthRoutes = ['/login', '/about', '/home', '/class_photos'];
 
     var routeClean = function (route) {
       return _.find(noAuthRoutes, function (noAuthRoute) {
