@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Resource',
-    version='0.5',
+    version='0.6',
     long_description=__doc__,
     packages=['resource'],
     include_package_data=True,
