@@ -194,16 +194,16 @@ def fix(user, keymap):
     return new_user
 
 
-def change_password(uid, oldpw, newpw):
+def change_password(username, oldpw, newpw):
     """ User the python ldap function to change the password
     of the user with the supplied uid"""
-    dn = "uid=" + uid + "," + basedn
+    dn = "uid=" + username + "," + basedn
     user = manager.find_by_dn(dn)
     if user:
         lm_password, nt_password = smb_encrypt(newpw)
         user["sambaNTPassword"] = nt_password
         user["sambaLMPassword"] = lm_password
-        logger.debug("Updating password for user: " + str(user['dn']))
+        logger.debug("Changing password for user with dn: " + str(user['dn']))
         dn = user['dn']
         if manager.update(dn, user):
             return manager.change_password(dn, oldpw, newpw)
