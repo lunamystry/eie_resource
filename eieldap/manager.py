@@ -21,13 +21,16 @@ class Manager():
         self.pw = config.get("ldap", "pw")
         self.base = config.get("ldap", "base")
         self.connection = ldap.initialize('ldap://'+self.server)
-        self.connection.simple_bind_s(self.dn, self.pw)
+        # self.connection.simple_bind_s(self.dn, self.pw)
         logger.info("Connected to {}".format(config.get("ldap", "server")))
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
         self.pw = config.get("ldap", "pw")
         self.connection.simple_bind_s(self.dn, self.pw)
+
+    def admin_unbind(self):
+        self.connection.unbind()
 
     def disconnect(self):
         self.connection.unbind()
@@ -51,9 +54,11 @@ class Manager():
             try:
                 self.admin_bind()
                 self.connection.modify_s(dn, modlist)
+                self.admin_unbind()
                 logger.info("Updated user with dn: {}".format(dn))
                 return True
             except ldap.LDAPError as e:
+                self.admin_unbind()
                 logger.error("\n\tCould not update user with dn: {0} \n\tbecause: {1} \n\tmodlist: {2}".format(dn, e, str(modlist)))
         else:
             logger.error("Nothing to update for: {0}".format(dn))
@@ -86,9 +91,12 @@ class Manager():
 
     def change_password(self, dn, oldpw, newpw):
         try:
+            self.admin_bind()
             self.connection.passwd_s(dn, None, newpw)
+            self.admin_unbind()
             return True
         except ldap.LDAPError as e:
+            self.admin_unbind()
             logger.debug("Could not change password for {0}, because: {1}".format(dn, e))
         return False
 
