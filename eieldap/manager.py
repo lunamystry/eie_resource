@@ -24,6 +24,11 @@ class Manager():
         self.connection.simple_bind_s(self.dn, self.pw)
         logger.info("Connected to {}".format(config.get("ldap", "server")))
 
+    def admin_bind(self):
+        self.dn = config.get("ldap", "dn")
+        self.pw = config.get("ldap", "pw")
+        self.connection.simple_bind_s(self.dn, self.pw)
+
     def disconnect(self):
         self.connection.unbind()
         logger.info("disonnected to {}".format(config.get("ldap", "server")))
@@ -44,6 +49,7 @@ class Manager():
         modlist = self.prepare_modlist(dn, new_attr)
         if modlist:
             try:
+                self.admin_bind()
                 self.connection.modify_s(dn, modlist)
                 logger.info("Updated user with dn: {}".format(dn))
                 return True
