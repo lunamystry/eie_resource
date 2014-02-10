@@ -42,15 +42,13 @@ class Manager():
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
         modlist = self.prepare_modlist(dn, new_attr)
-        logger.debug("New attributes: {}".format(new_attr))
-        logger.debug("Modlist: {}".format(modlist))
         if modlist:
             try:
                 self.connection.modify_s(dn, modlist)
                 logger.info("Updated user with dn: {}".format(dn))
                 return True
             except ldap.LDAPError as e:
-                logger.error("\n\tCould not update user with dn: {0} \n\tbecause: {1}".format(dn, e))
+                logger.error("\n\tCould not update user with dn: {0} \n\tbecause: {1} \n\tmodlist: {2}".format(dn, e, str(modlist)))
         else:
             logger.error("Nothing to update for: {0}".format(dn))
             return True
@@ -66,7 +64,6 @@ class Manager():
             del(new_attr["dn"])
         except KeyError:
             pass
-        logger.debug("New New NEWWWW!"+ str(new_attr))
         for key in attr.keys():
             if key not in new_attr.keys():
                 new_attr[key] = attr[key]
