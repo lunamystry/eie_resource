@@ -22,7 +22,7 @@ class Manager():
         self.base = config.get("ldap", "base")
         self.connection = ldap.initialize('ldap://'+self.server)
         self.admin_bind()
-        logger.info("Connected to {}".format(config.get("ldap", "server")))
+        logger.info("Connected to {0}".format(config.get("ldap", "server")))
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
