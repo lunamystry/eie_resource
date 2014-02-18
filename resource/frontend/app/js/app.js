@@ -12,12 +12,12 @@ angular.module('resource', [
   'app.controllers'
 ]).
   config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: 'homeCtrl'});
-    $routeProvider.when('/bookings', {templateUrl: 'partials/bookings.html', controller: 'bookingsCtrl'});
-    $routeProvider.when('/class_photos', {templateUrl: 'partials/class_photos.html', controller: 'classPhotosCtrl'});
-    $routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'aboutCtrl'});
-    $routeProvider.when('/profile', {templateUrl: 'partials/profile.html', controller: 'profileCtrl'});
-    $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'loginCtrl'});
+    $routeProvider.when('/home', {templateUrl: 'views/home.html', controller: 'homeCtrl'});
+    $routeProvider.when('/bookings', {templateUrl: 'views/bookings.html', controller: 'bookingsCtrl'});
+    $routeProvider.when('/class_photos', {templateUrl: 'views/class_photos.html', controller: 'classPhotosCtrl'});
+    $routeProvider.when('/about', {templateUrl: 'views/about.html', controller: 'aboutCtrl'});
+    $routeProvider.when('/profile', {templateUrl: 'views/profile.html', controller: 'profileCtrl'});
+    $routeProvider.when('/login', {templateUrl: 'views/login.html', controller: 'loginCtrl'});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]).
   run(['$rootScope', '$location', 'Session', function($rootScope, $location, Session) {
