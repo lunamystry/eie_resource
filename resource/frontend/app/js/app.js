@@ -18,7 +18,7 @@ angular.module('resource', [
     $routeProvider.when('/about', {templateUrl: 'views/about.html', controller: 'aboutCtrl'});
     $routeProvider.when('/profile', {templateUrl: 'views/profile.html', controller: 'profileCtrl'});
     $routeProvider.when('/login', {templateUrl: 'views/login.html', controller: 'loginCtrl'});
-    $routeProvider.otherwise({redirectTo: '/about'});
+    $routeProvider.otherwise({redirectTo: '/home'});
   }]).
   run(['$rootScope', '$location', 'Session', function($rootScope, $location, Session) {
     var noAuthRoutes = ['/login', '/about', '/home', '/class_photos'];
