@@ -4,7 +4,7 @@ from flask import redirect
 from flask import abort
 from flask import url_for
 from flask.ext.login import (LoginManager, current_user, login_required,
-                             login_user, logout_user, UserMixin, AnonymousUser,
+                             login_user, logout_user, UserMixin,
                              confirm_login, fresh_login_required)
 import os
 from resource import app
@@ -48,10 +48,6 @@ class User(UserMixin):
 
     def is_active(self):
         return True
-
-
-class Anonymous(AnonymousUser):
-    name = u"Anonymous"
 
 
 @login_manager.user_loader
