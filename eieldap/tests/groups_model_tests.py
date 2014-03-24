@@ -201,7 +201,7 @@ class groupsTestCase(unittest.TestCase):
     def test_find(self):
         "should return usernames"
         for group in models.groups.find():
-            print group
+            print(group)
 
 
 if __name__ == "__main__":

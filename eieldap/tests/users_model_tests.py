@@ -199,7 +199,7 @@ class usersTestCase(unittest.TestCase):
     def test_fix_gives_valid_user(self):
         user = {"uidNumber": 123}
         user = users.fix(user, users.keymap)
-        print user
+        print(user)
 
 
 if __name__ == "__main__":
