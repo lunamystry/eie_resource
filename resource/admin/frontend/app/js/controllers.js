@@ -88,9 +88,10 @@ angular.module('app.controllers', []).
     }
     $scope.userViewCtrl = function($scope) {
       $scope.resetPassword = function() {
-        $http({method: 'GET', url: '/users/' + $scope.user.username})
+        $http({method: 'PUT', url: '/users/' + $scope.user.username})
           .success(function(data) {
             $scope.user = data;
+            console.log(data);
           });
       }
       $scope.showEditForm = function() {
