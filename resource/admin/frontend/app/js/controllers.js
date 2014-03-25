@@ -7,9 +7,10 @@ angular.module('app.controllers', []).
 
   }])
   .controller('usersCtrl', ['$scope', '$http', 'Users', function($scope, $http, Users) {
-    Users.query(function(response) {
-      $scope.users = response;
-    });
+    // Users.query(function(response) {
+    //   $scope.users = response;
+    // });
+    $scope.users = Users.query();
 
     var user = $scope.user = {'last_name':"",
                               "first_name": "",
