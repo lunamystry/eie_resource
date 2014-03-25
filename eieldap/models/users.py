@@ -1,9 +1,10 @@
 from eieldap import manager
 from eieldap import config
-from eieldap import logger
 import subprocess
 import ldap
+import logging
 
+logger = logging.getLogger("eieldap.manager")
 # get email template with a lot of very useful information on it
 # lecturer - 6000 -> 6099
 # admin - 6100 -> 6199
