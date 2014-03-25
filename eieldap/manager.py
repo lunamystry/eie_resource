@@ -2,9 +2,11 @@
 #  ldapsearch -xLLL -H <host> -b <base> <search>
 import ldap
 import ldap.modlist
+import logging
 from eieldap import config
-from eieldap import logger
 
+
+logger = logging.getLogger("eieldap.manager")
 
 class Manager():
     """This a module to help with managing the eieldap using python"""
@@ -12,8 +14,8 @@ class Manager():
     def __init__(self,  config=config):
         self.connect(config)
 
-    def __del__(self):
-        self.disconnect()
+    # def __del__(self):
+    #     self.disconnect()
 
     def connect(self, config):
         self.server = config.get("ldap", "server")
@@ -59,7 +61,7 @@ class Manager():
             except ldap.LDAPError as e:
                 logger.error("\n\tCould not update user with dn: {0} \n\tbecause: {1} \n\tmodlist: {2}".format(dn, e, str(modlist)))
         else:
-            logger.error("Nothing to update for: {0}".format(dn))
+            logger.warning("Nothing to update for: {0}".format(dn))
             return True
         return False
 

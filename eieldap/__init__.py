@@ -19,7 +19,7 @@ for location in os.curdir, "/etc/eieldap":
     except IOError:
         logging.debug(" * No logging configuration in: " + location)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("eieldap")
 
 from eieldap.manager import Manager
 manager = Manager(config)
