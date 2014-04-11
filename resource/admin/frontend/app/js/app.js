@@ -6,15 +6,15 @@ angular.module('resource', [
   'ngResource',
   'ngAnimate',
   'ui.bootstrap',
-  'app.filters',
-  'app.directives',
+  'service.version',
+  'service.users',
   'controller.home',
   'controller.users',
   'controller.nav',
   'controller.title',
   'controller.userEdit',
-  'service.version',
-  'service.users',
+  'filters.version',
+  'directives.appVersion',
 ]).
   config(['$routeProvider', function($routeProvider) {
       $routeProvider.when('/home', {
