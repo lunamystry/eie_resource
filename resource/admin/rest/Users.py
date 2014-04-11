@@ -12,6 +12,19 @@ from eieldap.models import users
 from eieldap import logger
 
 
+class ChangePassword(Resource):
+    def put(self, username):
+        user = users.find_one(username)
+        args = request.json
+        # Talk about weak security!
+        if users.change_password(username,
+                None,
+                args['new_password']):
+            return True, 201
+        else: 
+            return errors, 500
+
+
 class User(Resource):
     def get(self, username):
         user = users.find_one(username)
