@@ -110,7 +110,7 @@ def add(attr):
 
 
 def update(attr):
-    """ updates a new user"""
+    """ updates a user"""
     fixed_user = fix(attr, inv_keymap)
     dn = "uid=" + fixed_user["uid"] + "," + basedn
     existing_user = manager.find_one(fixed_user, filter_key="uid")

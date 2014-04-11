@@ -43,19 +43,14 @@ class User(Resource):
         user = users.find_one(username)
         args = request.json
         # TODO: Validation!
-        data, errors = validate(args)
         if user:
-            # TODO:  Move this line to the model
-            if 'new_password' in args.keys():
-                users.change_password(user_id,
-                                      None,
-                                      args['new_password'])
+            for key, val in args.iteritems():
+                user[key] = val
+            if users.save(user):
+                return user, 201
+            logger.info(user)
         else:
-            logger.info(args)
-        if errors:
-            return errors, 500
-        if users.save(data):
-            return user, 201
+            logger.warning("user "+username+" not found")
         return False, 500
 
     def delete(self, username):
