@@ -7,4 +7,4 @@ angular.module('app.services', []).
       return $resource('/users/:username', {username: '@username'})
     }
   ]).
-  value('version', '0.1');
+  value('version', 'v0.7.1');
