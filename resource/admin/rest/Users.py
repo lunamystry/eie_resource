@@ -21,7 +21,7 @@ class ChangePassword(Resource):
                 None,
                 args['new_password']):
             return True, 201
-        else: 
+        else:
             return {}, 500
 
 
@@ -30,7 +30,7 @@ class ResetPassword(Resource):
         user = users.find_one(username)
         if users.reset_password(username):
             return True, 201
-        else: 
+        else:
             return {}, 500
 
 
@@ -65,7 +65,14 @@ class User(Resource):
 
 class Users(Resource):
     def get(self):
-        user_list = users.find()
+        parser = reqparse.RequestParser()
+        parser.add_argument('start', type=int, help='start must be a number')
+        parser.add_argument('limit', type=int, help='limit must be a number')
+        args = parser.parse_args()
+        start = args["start"]
+        limit = args["limit"]
+        user_list = users.find()[start:][:limit]
+        logger.info(len(user_list))
         return user_list, 200
 
     def post(self):
