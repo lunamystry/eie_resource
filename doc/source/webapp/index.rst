@@ -35,5 +35,39 @@ Python-ldap has this doc site:
 RESTful API
 -----------
 
+Users
++++++
+
+GET /users?start=5&limit=14
+
+    Returns not more than 14 users starting with the fifth one, this depends on
+    the users, if there aren't enough users, the ones who are found are
+    returned. If the start point is after the number of users then zero is
+    returned.
+
+POST /users
+
+    This takes a list which contains one to many users. If the list is empty, a
+    400 status code is returned. The current value in the database is replaced
+    with the value given.
+
+PUT /users/johnd
+
+    Modify a user which has username username johnd, password cannot be changed
+    like this. To change password see below. The password field is simply
+    removed from the json object.
+
+PUT /users/johnd/resetpassword
+
+    Reset the password for an individual user with username  johnd
+
+PUT /users/johnd/change_password
+
+    Change the password for an individual user with username  johnd
+
+DELETE /users/johnd
+
+    Delete a user with username johnd
+
 .. toctree::
    :maxdepth: 2
