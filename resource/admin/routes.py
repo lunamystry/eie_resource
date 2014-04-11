@@ -13,6 +13,7 @@ import logging
 api.add_resource(rest.Users, '/users')
 api.add_resource(rest.User, '/users/<string:username>')
 api.add_resource(rest.ChangePassword, '/users/<string:username>/change_password')
+api.add_resource(rest.ResetPassword, '/users/<string:username>/reset_password')
 api.add_resource(rest.Groups, '/groups')
 api.add_resource(rest.GroupMembers, '/groups/<string:group_name>')
 api.add_resource(rest.GroupMember, '/groups/<string:group_name>/<string:username>')

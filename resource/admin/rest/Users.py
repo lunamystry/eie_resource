@@ -22,7 +22,16 @@ class ChangePassword(Resource):
                 args['new_password']):
             return True, 201
         else: 
-            return errors, 500
+            return {}, 500
+
+
+class ResetPassword(Resource):
+    def put(self, username):
+        user = users.find_one(username)
+        if users.reset_password(username):
+            return True, 201
+        else: 
+            return {}, 500
 
 
 class User(Resource):

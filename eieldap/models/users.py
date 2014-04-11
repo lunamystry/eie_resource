@@ -3,6 +3,7 @@ from eieldap import config
 import subprocess
 import ldap
 import logging
+import time
 
 logger = logging.getLogger("eieldap.manager")
 # get email template with a lot of very useful information on it
@@ -197,7 +198,7 @@ def fix(user, keymap):
 
 def change_password(username, oldpw, newpw):
     """ User the python ldap function to change the password
-    of the user with the supplied uid"""
+    of the user with the supplied username"""
     dn = "uid=" + username + "," + basedn
     user = manager.find_by_dn(dn)
     if user:
@@ -208,6 +209,23 @@ def change_password(username, oldpw, newpw):
         dn = user['dn']
         if manager.update(dn, user):
             return manager.change_password(dn, oldpw, newpw)
+    return False
+
+
+def reset_password(username):
+    """ User the python ldap function to reset the password
+    of the user with the supplied username"""
+    newpw = "dlab"+str(time.strftime("%Y"))
+    dn = "uid=" + username + "," + basedn
+    user = manager.find_by_dn(dn)
+    if user:
+        lm_password, nt_password = smb_encrypt(newpw)
+        user["sambaNTPassword"] = nt_password
+        user["sambaLMPassword"] = lm_password
+        logger.debug("Changing password for user with dn: " + str(user['dn']))
+        dn = user['dn']
+        if manager.update(dn, user):
+            return manager.change_password(dn, None, newpw)
     return False
 
 
