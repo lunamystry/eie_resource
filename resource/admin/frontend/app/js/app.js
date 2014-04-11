@@ -7,13 +7,14 @@ angular.module('resource', [
   'ngAnimate',
   'ui.bootstrap',
   'app.filters',
-  'app.services',
   'app.directives',
   'controller.home',
   'controller.users',
   'controller.nav',
   'controller.title',
   'controller.userEdit',
+  'service.version',
+  'service.users',
 ]).
   config(['$routeProvider', function($routeProvider) {
       $routeProvider.when('/home', {
