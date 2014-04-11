@@ -9,8 +9,11 @@ angular.module('resource', [
   'app.filters',
   'app.services',
   'app.directives',
-  'app.controllers',
+  'controller.home',
   'controller.users',
+  'controller.nav',
+  'controller.title',
+  'controller.userEdit',
 ]).
   config(['$routeProvider', function($routeProvider) {
       $routeProvider.when('/home', {
