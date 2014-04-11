@@ -45,11 +45,9 @@ GET /users?start=5&limit=14
     returned. If the start point is after the number of users then zero is
     returned.
 
-POST /users
+GET /user/johnd
 
-    This takes a list which contains one to many users. If the list is empty, a
-    400 status code is returned. The current value in the database is replaced
-    with the value given.
+    Get the user with username johnd
 
 PUT /users/johnd
 
@@ -68,6 +66,12 @@ PUT /users/johnd/change_password
 DELETE /users/johnd
 
     Delete a user with username johnd
+
+POST /users
+
+    This takes a list which contains one to many users. If the list is empty, a
+    400 status code is returned. The current value in the database is replaced
+    with the value given.
 
 .. toctree::
    :maxdepth: 2
