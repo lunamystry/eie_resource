@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 var controller = angular.module('controller.users', []);
 
-controller.controller('usersCtrl', ["$scope", "Users", function ($scope, Users) {
+controller.controller('usersCtrl', ["$scope", "$http", "Users", function ($scope, $http, Users) {
     $scope.users = Users.query();
 
     var user = $scope.user = {'last_name':"", "first_name": ""
