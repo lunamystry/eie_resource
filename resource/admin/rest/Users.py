@@ -5,12 +5,13 @@ from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
 from flask.ext.restful import abort
 import functools
+import logging
 from resource.validators import required
 from resource.validators import length
 from resource.validators import ValidationError
 from eieldap.models import users
-from eieldap import logger
 
+logger = logging.getLogger("resource.admin.rest.Users")
 
 class ChangePassword(Resource):
     def put(self, username):
@@ -74,7 +75,6 @@ class Users(Resource):
         # users = users.find()
         args = request.json
         data, errors = validate(args)
-        logger.error(data)
         data["password"] = "passing"
         if errors:
             return errors, 500
