@@ -202,9 +202,9 @@ if __name__ == '__main__':
     # manager.create(dn, user)
     # manager.delete(dn)
     # print manager.authenticate('uid=moilwam,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "0201672w")
-    print manager.authenticate('uid=mbulil,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "pass")
+    # print manager.authenticate('uid=mbulil,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "pass")
     # print manager.authenticate('uid=raduser,ou=people,dc=eie,dc=wits,dc=ac,dc=za', "pass")
-    print manager.change_password('uid=mbulil,ou=people,dc=eie,dc=wits,dc=ac,dc=za',
-                                  'passing',
-                                  "pass")
+    # print manager.change_password('uid=mbulil,ou=people,dc=eie,dc=wits,dc=ac,dc=za',
+    #                               'passing',
+    #                               "pass")
     # manager.change_password('uid=leny,ou=ug,'+manager.base,'pass', 'passing')

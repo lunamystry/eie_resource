@@ -124,6 +124,7 @@ def update(attr):
             fixed_user["host"][index] = str(host)
     except KeyError:
         pass
+
     if manager.update(dn, fixed_user):
         logger.info("updated user: " + str(dn))
         return True
