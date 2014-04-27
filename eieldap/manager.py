@@ -81,6 +81,9 @@ class Manager():
         modlist = ldap.modlist.modifyModlist(attr, new_attr)
         return modlist
 
+    def dict_as_str(self, attr):
+        return "\n".join(['%s\t: %s' % (k, v) for k,v in attr.items()])
+
     def delete(self, dn):
         try:
             self.connection.delete_s(dn)
