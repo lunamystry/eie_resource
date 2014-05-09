@@ -6,9 +6,9 @@ import os
 
 
 app = Flask(__name__,
-            template_folder='frontend/app',
+            template_folder='../frontend/guest',
             static_url_path='',
-            static_folder='frontend/app')
+            static_folder='../frontend/guest')
 
 
 for location in ["/etc/eieldap"]:
