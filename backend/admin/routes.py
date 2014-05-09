@@ -44,4 +44,4 @@ def documentation_index():
 def documentation(filename):
     cwd = os.path.dirname(__file__)
     logging.info("CWD: " + cwd)
-    return send_from_directory(cwd + '/static/docs', filename)
+    return send_from_directory(cwd + '/../../docs/build/html/', filename)
