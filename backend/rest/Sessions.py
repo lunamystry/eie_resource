@@ -8,10 +8,10 @@ import hashlib
 from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from resource.validators import required
-from resource.validators import length
-from resource.validators import ValidationError
-from resource import app
+from backend.validators import required
+from backend.validators import length
+from backend.validators import ValidationError
+from backend import app
 from eieldap.models import users
 from eieldap import logger
 

@@ -3,10 +3,10 @@ from flask import jsonify
 from flask.views import MethodView
 from flask.ext.restful import Resource
 from flask.ext.restful import abort
-from resource.validators import required
-from resource.validators import length
-from resource.validators import ValidationError
-from resource import app
+from backend.validators import required
+from backend.validators import length
+from backend.validators import ValidationError
+from backend import app
 from eieldap.models import users
 from eieldap import logger
 

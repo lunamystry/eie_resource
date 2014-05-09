@@ -5,10 +5,10 @@ from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
 from flask.ext.restful import abort
 import functools
-from resource import app
-from resource.validators import required
-from resource.validators import length
-from resource.validators import ValidationError
+from backend import app
+from backend.validators import required
+from backend.validators import length
+from backend.validators import ValidationError
 from eieldap import models
 from eieldap import logger
 

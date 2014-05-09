@@ -32,6 +32,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-from resource import routes
+from backend import routes
 import admin
 app.register_blueprint(admin.admin, url_prefix='/admin')

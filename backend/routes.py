@@ -7,11 +7,11 @@ from flask.ext.login import (LoginManager, current_user, login_required,
                              login_user, logout_user, UserMixin,
                              confirm_login, fresh_login_required)
 import os
-from resource import app
-from resource import login_manager
-from resource import rest
-from resource import admin
-from resource import api
+from backend import app
+from backend import login_manager
+from backend import rest
+from backend import admin
+from backend import api
 from eieldap.models import users, groups
 
 

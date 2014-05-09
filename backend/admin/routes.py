@@ -3,10 +3,10 @@ from flask import request
 from flask import redirect
 from flask import send_from_directory
 import os
-from resource.admin import admin
-from resource.admin import rest
-from resource import api
-from resource import login_manager
+from backend.admin import admin
+from backend.admin import rest
+from backend import api
+from backend import login_manager
 from flask.ext.login import login_required
 import logging
 

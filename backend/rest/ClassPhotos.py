@@ -4,7 +4,7 @@ from flask.ext.restful import Resource
 from flask.ext.restful import abort
 import os
 import glob
-from resource import app
+from backend import app
 
 
 class ClassPhoto(Resource):

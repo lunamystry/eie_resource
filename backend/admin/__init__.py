@@ -6,4 +6,4 @@ admin = Blueprint('admin',
                   static_url_path='',
                   static_folder='../../frontend/admin')
 
-import resource.admin.routes
+import backend.admin.routes

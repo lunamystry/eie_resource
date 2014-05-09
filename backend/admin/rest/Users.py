@@ -6,12 +6,12 @@ from flask.ext.restful import reqparse
 from flask.ext.restful import abort
 import functools
 import logging
-from resource.validators import required
-from resource.validators import length
-from resource.validators import ValidationError
+from backend.validators import required
+from backend.validators import length
+from backend.validators import ValidationError
 from eieldap.models import users
 
-logger = logging.getLogger("resource.admin.rest.Users")
+logger = logging.getLogger("backend.admin.rest.Users")
 
 class ChangePassword(Resource):
     def put(self, username):
