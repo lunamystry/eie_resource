@@ -1,6 +1,6 @@
 include runserver.py 
 include backend/resource.cfg
-recursive-include backend/frontend *
+recursive-include frontend *
 recursive-include backend/scripts *
 recursive-include backend/rest *
 recursive-include backend/admin *

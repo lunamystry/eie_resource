@@ -4,7 +4,7 @@ setup(
     name='Resource',
     version='0.8',
     long_description=__doc__,
-    packages=['resource'],
+    packages=['backend'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
