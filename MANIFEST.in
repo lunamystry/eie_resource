@@ -1,9 +1,9 @@
 include runserver.py 
-include resource/resource.cfg
-recursive-include resource/frontend *
-recursive-include resource/scripts *
-recursive-include resource/rest *
-recursive-include resource/admin *
+include backend/resource.cfg
+recursive-include backend/frontend *
+recursive-include backend/scripts *
+recursive-include backend/rest *
+recursive-include backend/admin *
 recursive-include eieldap *
-recursive-include doc *
+recursive-include docs *
 recursive-include config *
