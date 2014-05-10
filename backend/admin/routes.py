@@ -7,7 +7,10 @@ from backend.admin import admin
 from backend.admin import rest
 from backend import api
 from backend import login_manager
+from backend.rest import Sessions
 from flask.ext.login import login_required
+from eieldap.models import users
+from eieldap.models import groups
 import logging
 
 api.add_resource(rest.Users, '/users')
@@ -20,10 +23,15 @@ api.add_resource(rest.GroupMember, '/groups/<string:group_name>/<string:username
 
 
 @admin.before_request
-def restrict_bp_to_admins():
-    # if not users.is_current_user_admin():
-    #    return redirect(users.create_login_url(request.url))
-    pass
+def restrict_to_admins():
+    session_key = request.session_id
+    username = Session().get(session_key).username
+    IT_group = groups.find_one('IT')
+    if not IT_group:
+        app.logger.error("Trying to authenticate but server does not have IT group");
+        abort(500)
+    if username not in IT_group['members']:
+        abort(403)
 
 
 @admin.route('/')
