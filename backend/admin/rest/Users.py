@@ -13,6 +13,13 @@ from eieldap.models import users
 
 logger = logging.getLogger("backend.admin.rest.Users")
 
+def dec_check(f):
+    @functools.wraps(f)
+    def deco(*args, **kwargs):
+        print("In deco")
+        return f(*args, **kwargs)
+    return deco
+
 class ChangePassword(Resource):
     def put(self, username):
         user = users.find_one(username)
@@ -60,6 +67,7 @@ class User(Resource):
 
 
 class Users(Resource):
+    @dec_check
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('start', type=int, help='start must be a number')
