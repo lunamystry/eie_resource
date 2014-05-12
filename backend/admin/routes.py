@@ -26,7 +26,7 @@ api.add_resource(rest.GroupMember, '/groups/<string:group_name>/<string:username
 
 @admin.before_request
 def restrict_to_admins():
-    pass
+    logger.info(request.headers)
     # session_key = request.session_id
     # username = Session().get(session_key).username
     # IT_group = groups.find_one('IT')
