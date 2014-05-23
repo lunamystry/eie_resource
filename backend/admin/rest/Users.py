@@ -16,9 +16,10 @@ logger = logging.getLogger("backend.admin.rest.Users")
 def dec_check(f):
     @functools.wraps(f)
     def deco(*args, **kwargs):
-        print("In deco")
+        logger.info(request.headers)
         return f(*args, **kwargs)
     return deco
+
 
 class ChangePassword(Resource):
     def put(self, username):

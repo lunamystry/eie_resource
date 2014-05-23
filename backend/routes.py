@@ -13,7 +13,9 @@ from backend import rest
 from backend import admin
 from backend import api
 from eieldap.models import users, groups
+import logging
 
+logger = logging.getLogger("backend.routes")
 
 api.add_resource(rest.ClassPhotos, '/class_photos')
 api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
