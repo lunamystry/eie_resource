@@ -8,6 +8,7 @@ angular.module('resource', [
   'ui.bootstrap',
   'service.version',
   'service.users',
+  'controller.login',
   'controller.home',
   'controller.users',
   'controller.nav',
