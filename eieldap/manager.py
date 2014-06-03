@@ -20,6 +20,7 @@ class Manager():
     #     self.disconnect()
 
     def connect(self, config):
+        error_msg = ""
         for trycount in range(3):
             try:
                 self.server = config.get("ldap", "server")
@@ -28,13 +29,18 @@ class Manager():
                 self.base = config.get("ldap", "base")
                 self.connection = ldap.initialize('ldap://'+self.server)
                 self.admin_bind()
-                logger.info("Connected to {0}".format(config.get("ldap", "server")))
             except ldap.SERVER_DOWN:
-                logger.error("LDAP Server is down bra")
+                error_msg = "{0} seems to be down".format(self.server)
+                logger.error("{0}, 2 sec wait...".format(error_msg))
                 time.sleep(2)
             except ldap.LDAPError:
-                logger.error("LDAP Error")
+                error_msg = "Unable to connect to {0}".format(self.server)
+                logger.error("{0}, 2 sec wait...".format(error_msg))
                 time.sleep(2)
+            else:
+                logger.info("Connected to {0}".format(self.server))
+                return
+        raise EnvironmentError
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
