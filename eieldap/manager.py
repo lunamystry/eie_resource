@@ -52,17 +52,20 @@ class Manager():
 
     def disconnect(self):
         self.admin_unbind()
-        logger.info("disonnected to {}".format(config.get("ldap", "server")))
+        logger.info("disonnected to {}".format(self.server))
 
-    def create(self, dn, attr):
-        modlist = ldap.modlist.addModlist(attr)
-        logger.debug(modlist)
+    def create(self, dn, fields):
         try:
+            modlist = ldap.modlist.addModlist(fields)
+            logger.debug("Trying to add modelist: " + str(modlist))
             self.connection.add_s(dn, modlist)
             return True
+        except ldap.ALREADY_EXISTS:
+            logger.warning("{0} already exists".format(dn))
+            return False  # Should I rather raise ldap.ALREADY_EXISTS maybe
         except ldap.LDAPError as e:
-            logger.error(attr)
-            logger.error(e)
+            logger.error("An error occured while adding: {0}, {1}".format(
+                str(fields), str(e)))
         return False
 
     def update(self, dn, new_attr):
@@ -75,7 +78,9 @@ class Manager():
                 logger.info("Updated user with dn: {}".format(dn))
                 return True
             except ldap.LDAPError as e:
-                logger.error("\n\tCould not update user with dn: {0} \n\tbecause: {1} \n\tmodlist: {2}".format(dn, e, str(modlist)))
+                logger.error("""\n\tCould not update user with dn: {0}
+                                \tbecause: {1} \n\tmodlist: {2}""".format(
+                    dn, e, str(modlist)))
         else:
             logger.warning("Nothing to update for: {0}".format(dn))
             return True
@@ -98,12 +103,14 @@ class Manager():
         return modlist
 
     def dict_as_str(self, attr):
-        return "\n".join(['%s\t: %s' % (k, v) for k,v in attr.items()])
+        return "\n".join(['%s\t: %s' % (k, v) for k, v in attr.items()])
 
     def delete(self, dn):
         try:
             self.connection.delete_s(dn)
             return True
+        except ldap.NO_SUCH_OBJECT:
+            logger.info("The dn: {0} was not there!".format(dn))
         except ldap.LDAPError as e:
             logger.debug(e)
         return False
@@ -114,7 +121,7 @@ class Manager():
             self.connection.passwd_s(dn, None, newpw)
             return True
         except ldap.LDAPError as e:
-            logger.debug("Could not change password for {0}, because: {1}".format(dn, e))
+            logger.debug("Password for {0} not changed - {1}".format(dn, e))
         return False
 
     def authenticate(self, dn, password):
@@ -122,14 +129,14 @@ class Manager():
             self.connection.bind_s(dn, password)
             return True
         except ldap.LDAPError as e:
-            logger.debug("Password and Username {0}, because: {1}".format(dn, e))
+            logger.debug("Couldn't authenticate {0} - {1}".format(dn, e))
         return False
 
     def find(self, base=None, filter_key="objectClass"):
         if base is None:
             base = self.base
         if filter_key is not "":
-            filter_key = "("+ filter_key + "=*)"
+            filter_key = "(" + filter_key + "=*)"
 
         results = self.connection.search_s(base,
                                            ldap.SCOPE_SUBTREE,
@@ -140,7 +147,6 @@ class Manager():
                 result = self.de_list(result)
                 users.append(result)
         return users
-
 
     def find_by_dn(self, strdn):
         dn = ldap.dn.str2dn(strdn)
