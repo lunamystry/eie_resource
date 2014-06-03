@@ -40,7 +40,7 @@ class Manager():
             else:
                 logger.info("Connected to {0}".format(self.server))
                 return
-        raise EnvironmentError
+        raise EnvironmentError(error_msg)
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
