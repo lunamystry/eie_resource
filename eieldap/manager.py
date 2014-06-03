@@ -2,11 +2,13 @@
 #  ldapsearch -xLLL -H <host> -b <base> <search>
 import ldap
 import ldap.modlist
+import time
 import logging
 from eieldap import config
 
 
 logger = logging.getLogger("eieldap.manager")
+
 
 class Manager():
     """This a module to help with managing the eieldap using python"""
@@ -18,13 +20,21 @@ class Manager():
     #     self.disconnect()
 
     def connect(self, config):
-        self.server = config.get("ldap", "server")
-        self.dn = config.get("ldap", "dn")
-        self.pw = config.get("ldap", "pw")
-        self.base = config.get("ldap", "base")
-        self.connection = ldap.initialize('ldap://'+self.server)
-        self.admin_bind()
-        logger.info("Connected to {0}".format(config.get("ldap", "server")))
+        for trycount in range(3):
+            try:
+                self.server = config.get("ldap", "server")
+                self.dn = config.get("ldap", "dn")
+                self.pw = config.get("ldap", "pw")
+                self.base = config.get("ldap", "base")
+                self.connection = ldap.initialize('ldap://'+self.server)
+                self.admin_bind()
+                logger.info("Connected to {0}".format(config.get("ldap", "server")))
+            except ldap.SERVER_DOWN:
+                logger.error("LDAP Server is down bra")
+                time.sleep(2)
+            except ldap.LDAPError:
+                logger.error("LDAP Error")
+                time.sleep(2)
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
