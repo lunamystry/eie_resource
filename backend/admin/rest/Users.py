@@ -1,4 +1,5 @@
 from flask import request
+from flask.ext.restful import abort
 from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
 import functools
@@ -7,16 +8,24 @@ from backend.validators import required
 from backend.validators import length
 from backend.validators import ValidationError
 from eieldap.models import users
+from pymongo import MongoClient
 
+client = MongoClient()
 logger = logging.getLogger("backend.admin.rest.Users")
 
 
-def dec_check(f):
+def admin_only(f):
     @functools.wraps(f)
-    def deco(*args, **kwargs):
-        logger.info(request.headers)
+    def decorated(*args, **kwargs):
+        # Check if the authentication header is set
+        if "x-auth-key" not in request.headers:
+            abort(401)
+        session = client.resource.sessions.find_one({
+            'key': request.headers['x-auth-key']})
+        # Check if the person who the key belongs to is admin
+        logger.info(session)
         return f(*args, **kwargs)
-    return deco
+    return decorated
 
 
 class ChangePassword(Resource):
@@ -64,7 +73,7 @@ class User(Resource):
 
 
 class Users(Resource):
-    @dec_check
+    @admin_only
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('start', type=int, help='start must be a number')
@@ -73,7 +82,6 @@ class Users(Resource):
         start = args["start"]
         limit = args["limit"]
         user_list = users.find()[start:][:limit]
-        logger.info(len(user_list))
         return user_list, 200
 
     def post(self):

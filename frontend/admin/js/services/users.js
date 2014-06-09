@@ -10,7 +10,7 @@ service.factory('Users', ['$resource', function($resource) {
             query: {
                 method: 'GET',
                 isArray: true,
-                headers: { 'Session-Key': "session_key" }
+                headers: { 'x-auth-key': "session_key" }
             }
         }
         )
