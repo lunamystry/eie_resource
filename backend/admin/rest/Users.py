@@ -1,9 +1,6 @@
 from flask import request
-from flask import jsonify
-from flask.views import MethodView
 from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
-from flask.ext.restful import abort
 import functools
 import logging
 from backend.validators import required
@@ -12,6 +9,7 @@ from backend.validators import ValidationError
 from eieldap.models import users
 
 logger = logging.getLogger("backend.admin.rest.Users")
+
 
 def dec_check(f):
     @functools.wraps(f)
@@ -23,12 +21,11 @@ def dec_check(f):
 
 class ChangePassword(Resource):
     def put(self, username):
-        user = users.find_one(username)
         args = request.json
         # Talk about weak security!
         if users.change_password(username,
-                None,
-                args['new_password']):
+                                 None,
+                                 args['new_password']):
             return True, 201
         else:
             return {}, 500
@@ -36,7 +33,6 @@ class ChangePassword(Resource):
 
 class ResetPassword(Resource):
     def put(self, username):
-        user = users.find_one(username)
         if users.reset_password(username):
             return True, 201
         else:
