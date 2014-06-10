@@ -42,17 +42,19 @@ class Session(Resource):
 
 
 class Sessions(Resource):
-    def get(self):
-        """ Get session by like ObjectId or something, if error
-        person is not logged in"""
-        sessions = client.resource.sessions
-        session_list = [session for session in sessions.find()]
-        for session in session_list:
-            session["_id"] = str(session["_id"])
-            session["timestamp"] = str(session["timestamp"])
-            if not Session().is_active(session):
-                sessions.remove(session)
-        return session_list
+
+    # This is not meant for production, I know security is low but come on!
+    # def get(self):
+    #     """ Get session by like ObjectId or something, if error
+    #     person is not logged in"""
+    #     sessions = client.resource.sessions
+    #     session_list = [session for session in sessions.find()]
+    #     for session in session_list:
+    #         session["_id"] = str(session["_id"])
+    #         session["timestamp"] = str(session["timestamp"])
+    #         if not Session().is_active(session):
+    #             sessions.remove(session)
+    #     return session_list
 
     def post(self):
         """ Login means POSTing to this, this checks the credentials
