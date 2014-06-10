@@ -17,27 +17,33 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', ['$scope', '$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
-    $scope.user = {}
-
-    $scope.sign_in = function () {
-      if ($scope.login_form.$valid) {
-        Sessions.save({"username": $scope.username, "password": $scope.password},
-                      function(response) {
-                        Session.data = response.result;
-                        Session.isLogged = true;
-                        $location.path("/profile");
-                      }, function (response) {
-                        if (response.status == 401) {
-                          $scope.has_error = true;
-                          $scope.login_form.error_message = response.data["username"];
-                        }
-                        if (response.status == 500) {
-                          $scope.server_error = true;
-                        }
-                      });
-      }
+  .controller('loginCtrl', ['$scope', '$location', function($scope, $location, Sessions, Session) {
+    $scope.sign_in = function() {
+        SessionUser.sign_out(); // one user at a time, per client
+        if ($scope.login_form.$valid) {
+            if(SessionUser.sign_in($scope.username, $scope.password)) {
+                $location.path(SessionUser.nextPage);
+            } else {
+                $scope.has_error = true;
+                $scope.login_form.error_message = "could not log you in, you can try again if you want"; 
+            }
+        }
     }
+
+    //     Sessions.save({"username": $scope.username, "password": $scope.password},
+    //                   function(response) {
+    //                     Session.data = response.result;
+    //                     Session.isLogged = true;
+    //                     $location.path("/profile");
+    //                   }, function (response) {
+    //                     if (response.status == 401) {
+    //                       $scope.has_error = true;
+    //                       $scope.login_form.error_message = response.data["username"];
+    //                     }
+    //                     if (response.status == 500) {
+    //                       $scope.server_error = true;
+    //                     }
+    //                   });
     $scope.signed_in_user = function() {
       return Session.data.username;
     }

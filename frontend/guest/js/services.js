@@ -6,15 +6,29 @@ angular.module('app.services', []).
   factory('Sessions', ['$resource', function($resource) {
     return $resource('/sessions/:_id', {_id: '@id'})
   }])
-  .factory('Session', [function() {
-    var sdo = {
-      isLogged: false,
+  .factory('SessionUser', [function() {
+    var sessionUser = {
+      isLoggedIn: false,
       data: {},
-      isLoggedIn: function() {
-        return IsLogged;
+      nextPage: "/profile",
+      sign_in: function(username, password) {
+          Sessions.save({"username": username, "password": password},
+              function(response) {
+                  data = response.result;
+                  isLoggedIn = true;
+              }, function (response) {
+                  isLoggedIn = false;
+              });
+          // Maybe somehow return the error message aswell?
+          return isLoggedIn;
+      },
+      sign_out: function() {
+          Sessions.delete(data.session_id);
+          data = {};
+          return true;
       }
     };
-    return sdo;
+    return sessionUser;
   }])
   .factory('Users', ['$http', 'Session',function($http, Session) {
     var user = {
