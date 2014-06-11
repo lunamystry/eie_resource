@@ -6,7 +6,7 @@ angular.module('app.services', []).
   factory('Sessions', ['$resource', function($resource) {
     return $resource('/sessions/:_id', {_id: '@id'})
   }])
-  .factory('SessionUser', [function() {
+  .factory('SessionUser', ['Sessions', function(Sessions) {
     var sessionUser = {
       isLoggedIn: false,
       data: {},
@@ -14,7 +14,7 @@ angular.module('app.services', []).
       sign_in: function(username, password) {
           Sessions.save({"username": username, "password": password},
               function(response) {
-                  data = response.result;
+                  this.data = response.result;
                   isLoggedIn = true;
               }, function (response) {
                   isLoggedIn = false;
@@ -23,9 +23,11 @@ angular.module('app.services', []).
           return isLoggedIn;
       },
       sign_out: function() {
-          Sessions.delete(data.session_id);
-          data = {};
-          return true;
+          if (typeof(this.data.session_id) != "undefined") {
+              Sessions.delete(this.data.session_id);
+              this.data = {};
+              return true;
+          }
       }
     };
     return sessionUser;

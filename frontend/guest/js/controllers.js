@@ -4,7 +4,6 @@
 
 angular.module('app.controllers', []).
   controller('homeCtrl', ['$scope', function($scope) {
-
   }])
   .controller('bookingsCtrl', [function() {
 
@@ -18,21 +17,21 @@ angular.module('app.controllers', []).
 
   }])
   .controller('loginCtrl', ['$scope', '$location', 'SessionUser', function($scope, $location, SessionUser) {
-    $scope.sign_in = function() {
-        SessionUser.sign_out(); // one user at a time, per client
-        if ($scope.login_form.$valid) {
-            if(SessionUser.sign_in($scope.username, $scope.password)) {
-                $location.path(SessionUser.nextPage);
-            } else {
-                $scope.has_error = true;
-                $scope.login_form.error_message = "could not log you in, you can try again if you want"; 
-            }
-        }
-    }
+      $scope.sign_in = function() {
+          SessionUser.sign_out(); // one user at a time, per client
+          // if ($scope.login_form.$valid) {
+          //     if(SessionUser.sign_in($scope.username, $scope.password)) {
+          //         $location.path(SessionUser.nextPage);
+          //     } else {
+          //         $scope.has_error = true;
+          //         $scope.login_form.error_message = "could not log you in, you can try again if you want"; 
+          //     }
+          // }
+      }
 
-    $scope.signed_in_user = function() {
-      return SessionUser.data.username;
-    }
+      $scope.signed_in_user = function() {
+          return SessionUser.data.username;
+      }
   }])
   .controller('navCtrl', ['$scope','$location', 'SessionUser', function($scope, $location, SessionUser) {
     $scope.navClass = function (page) {
@@ -60,9 +59,9 @@ angular.module('app.controllers', []).
       }
     }
   }])
-  .controller('titleCtrl', ['$scope','$location', function($scope, $location) {
+  .controller('titleCtrl', ['$scope','$location', '$log', function($scope, $location) {
     $scope.title = function () {
-      var currentRoute = $location.path().substring(1) || 'home';
+      var currentRoute = $location.path().substring(1) || 'ekhaya';
       return currentRoute;
     };
   }]);
