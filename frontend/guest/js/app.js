@@ -20,7 +20,7 @@ angular.module('resource', [
     $routeProvider.when('/login', {templateUrl: 'views/login.html', controller: 'loginCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
   }]).
-  run(['$rootScope', '$location', 'Session', function($rootScope, $location, Session) {
+  run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
     var noAuthRoutes = ['/login', '/about', '/home', '/class_photos'];
 
     var routeClean = function (route) {
@@ -30,8 +30,8 @@ angular.module('resource', [
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-      console.log(Session.isLogged);
-      if (!routeClean($location.url()) && !Session.isLogged) {
+      console.log(SessionUser.isLoggedIn);
+      if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
         $location.path("/login");
       }
     });

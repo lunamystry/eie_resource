@@ -30,15 +30,15 @@ angular.module('app.services', []).
     };
     return sessionUser;
   }])
-  .factory('Users', ['$http', 'Session',function($http, Session) {
+  .factory('Users', ['$http', 'SessionUser',function($http, SessionUser) {
     var user = {
       authenticate: function() {
         return true;
       },
       change_password: function(password, new_password) {
         // Need this to be synchronous
-        console.log(Session.data.username);
-        $http.put('/passwords/' + Session.data.username + '/' + Session.data.key,
+        console.log(SessionUser.data.username);
+        $http.put('/passwords/' + SessionUser.data.username + '/' + SessionUser.data.key,
                   {"password": password, "new_password": new_password}).success(
                     // inform the user
                   ).error(
