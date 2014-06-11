@@ -17,7 +17,7 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', ['$scope', '$location', function($scope, $location, Sessions, Session) {
+  .controller('loginCtrl', ['$scope', '$location', 'SessionUser', function($scope, $location, SessionUser) {
     $scope.sign_in = function() {
         SessionUser.sign_out(); // one user at a time, per client
         if ($scope.login_form.$valid) {
@@ -30,41 +30,23 @@ angular.module('app.controllers', []).
         }
     }
 
-    //     Sessions.save({"username": $scope.username, "password": $scope.password},
-    //                   function(response) {
-    //                     Session.data = response.result;
-    //                     Session.isLogged = true;
-    //                     $location.path("/profile");
-    //                   }, function (response) {
-    //                     if (response.status == 401) {
-    //                       $scope.has_error = true;
-    //                       $scope.login_form.error_message = response.data["username"];
-    //                     }
-    //                     if (response.status == 500) {
-    //                       $scope.server_error = true;
-    //                     }
-    //                   });
     $scope.signed_in_user = function() {
-      return Session.data.username;
+      return SessionUser.data.username;
     }
   }])
-  .controller('navCtrl', ['$scope','$location', 'Sessions', 'Session', function($scope, $location, Sessions, Session) {
+  .controller('navCtrl', ['$scope','$location', 'SessionUser', function($scope, $location, SessionUser) {
     $scope.navClass = function (page) {
       var currentRoute = $location.path().substring(1) || 'home';
       return page === currentRoute ? 'active' : '';
     };
     $scope.sign_out = function () {
-      Sessions.delete({"_id": Session.data._id}, function(response) {
-        Session.data = {};
-        Session.isLogged = false;
-        $location.path("/login");
-      });
+        SessionUser.sign_out();
     }
-    $scope.isLogged = function() {
-      return Session.isLogged;
+    $scope.isLoggedIn = function() {
+      return SessionUser.isLoggedIn;
     }
   }])
-  .controller('profileCtrl', ['$scope', 'Session', 'Users', function($scope, Session, Users) {
+  .controller('profileCtrl', ['$scope', 'SessionUser', 'Users', function($scope, SessionUser, Users) {
     $scope.change_password = function() {
       if ( Users.authenticate()) {
         console.log("Changed password");

@@ -53,7 +53,7 @@
             </li>
             <li ng-class="navClass('login')"
                 ng-controller="loginCtrl">
-              <a ng-show="isLogged()"
+              <a ng-show="isLoggedIn()"
                  ng-click="sign_out()">
                 <span class="glyphicon glyphicon-user"></span>
                 {{ signed_in_user() }} (sign out)
@@ -89,7 +89,6 @@
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
-    <script type="text/javascript" src="js/controllers/usersCtrl.js"></script>
     <script type="text/javascript" src="js/filters.js"></script>
     <script type="text/javascript" src="js/directives.js"></script>
   </body>
