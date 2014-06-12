@@ -32,11 +32,14 @@ angular.module('app.services', [])
           sign_in: function(username, password, successFn, errorFn) {
               this.session = new Session({"username": username, "password": password});
               this.session.$save(function(value, headers) {
+                  if (sessionUser.session.group == 'IT') {
+                      sessionUser.homePage = "//admin";
+                  }
                   sessionUser.isLoggedIn = true;
-                  $cookieStore.put('session_id', sessionUser.session._id);
                   if ("function" == typeof successFn) {
                       successFn(value, headers);
                   }
+                  $cookieStore.put('session_id', sessionUser.session._id);
                   $log.info("logged in: " + username);
               }, function(response) {
                   sessionUser.session = {};

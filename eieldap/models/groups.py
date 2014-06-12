@@ -18,7 +18,7 @@ def find():
     groups_list = []
     for group in groups:
         try:
-            group['member'] = get_names(group['member']) # NOT DRY
+            group['member'] = get_names(group['member'])  # NOT DRY
             new_group = fix(group, keymap)
             groups_list.append(new_group)
         except KeyError:
@@ -38,7 +38,7 @@ def find_one(name=None, attr=None):
         group = manager.find_one(fixed_group, basedn, filter_key="cn")
 
     if group:
-        group['member'] = get_names(group['member']) # Repeated in find
+        group['member'] = get_names(group['member'])  # Repeated in find
         return fix(group, keymap)
 
 
