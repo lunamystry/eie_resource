@@ -48,12 +48,15 @@ angular.module('app.services', [])
                   $log.error("could not login: " + username);
               });
           },
-          sign_out: function() {
+          sign_out: function(callbackFn) {
               if (typeof(sessionUser.session._id) != "undefined") {
                   sessionUser.session.$delete();
                   sessionUser.session = {};
                   $cookieStore.remove('session_id');
                   sessionUser.isLoggedIn = false;
+                  if ("function" == typeof callbackFn) {
+                      callbackFn();
+                  }
               }
           }
       };

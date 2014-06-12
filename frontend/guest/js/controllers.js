@@ -50,7 +50,9 @@ angular.module('app.controllers', []).
       return page === currentRoute ? 'active' : '';
     };
     $scope.sign_out = function () {
-        SessionUser.sign_out();
+        SessionUser.sign_out(function() {
+            $location.path("/home");
+        });
     }
     $scope.isLoggedIn = function() {
       return SessionUser.isLoggedIn;
