@@ -37,6 +37,10 @@ angular.module('app.controllers', []).
           }
       }
 
+      $scope.session = function() {
+          return SessionUser.session;
+      }
+
   }])
   .controller('navCtrl', ['$scope','$location', 'SessionUser', function($scope, $location, SessionUser) {
     $scope.navClass = function (page) {
