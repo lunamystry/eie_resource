@@ -21,7 +21,6 @@ angular.module('app.controllers', []).
           if ($scope.login_form.$valid) {
               SessionUser.sign_in($scope.username, $scope.password,
                   function(value, headers) { 
-                      $log.log('succeeded');
                       $scope.has_error = false;
                       $location.path(SessionUser.homePage);
                   },

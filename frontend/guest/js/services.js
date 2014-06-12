@@ -13,30 +13,35 @@ angular.module('app.services', [])
           homePage: "/profile",
           errors: {},
           sign_in: function(username, password, successFn, errorFn) {
-              $log.log($cookieStore.get('key'));
-              this.session = new Session({"username": username, "password": password});
-              this.session.$save(function(value, headers) {
-                  sessionUser.isLoggedIn = true;
-                  $cookieStore.put('key',sessionUser.session.key);
-                  if ("function" == typeof successFn) {
-                      successFn(value, headers);
-                  }
-                  $log.info("logged in: " + username);
-              }, function(response) {
-                  sessionUser.session = {};
-                  sessionUser.isLoggedIn = false;
-                  sessionUser.errors = response.data;
-                  if ("function" == typeof errorFn) {
-                      errorFn(response);
-                  }
-                  $log.error("could not login: " + username);
+              $http.get('/sessions/'+$cookieStore.get('session_id')).success(
+                  function(data, status, headers, config) {
+                    $log.log(data);
+                  })
+              .error(function(data, status, headers, config) {
+                  this.session = new Session({"username": username, "password": password});
+                  this.session.$save(function(value, headers) {
+                      sessionUser.isLoggedIn = true;
+                      $cookieStore.put('session_id',sessionUser.session._id);
+                      if ("function" == typeof successFn) {
+                          successFn(value, headers);
+                      }
+                      $log.info("logged in: " + username);
+                  }, function(response) {
+                      sessionUser.session = {};
+                      sessionUser.isLoggedIn = false;
+                      sessionUser.errors = response.data;
+                      if ("function" == typeof errorFn) {
+                          errorFn(response);
+                      }
+                      $log.error("could not login: " + username);
+                  });
               });
       },
       sign_out: function() {
           if (typeof(sessionUser.session._id) != "undefined") {
               sessionUser.session.$delete();
               sessionUser.session = {};
-              $cookieStore.remove('key');
+              $cookieStore.remove('session_id');
               sessionUser.isLoggedIn = false;
           }
       }
