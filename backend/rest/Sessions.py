@@ -76,7 +76,7 @@ class Sessions(Resource):
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             client.resource.sessions.save(session)
             session['_id'] = str(session['_id'])
-            return jsonify({"result": session})
+            return jsonify(session)
         return {"username": "Username or Password error", "password": "Username or Password error"}, 401
 
     def validate(self, args):

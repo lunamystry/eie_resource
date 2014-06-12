@@ -16,11 +16,20 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', ['$scope', '$location', 'SessionUser', function($scope, $location, SessionUser) {
+  .controller('loginCtrl', ['$scope', '$log', '$location', 'Sessions', function($scope, $log, $location, Session) {
       $scope.sign_in = function() {
-          SessionUser.sign_out(); // one user at a time, per client
+          $log.log('Signing in...');
+          $scope.session = new Session({"username": $scope.username, "password": $scope.password});
+          $scope.session.$save(
+              function success(value, headers) {
+                  $log.log($scope.session);
+              }, function error(response) {
+                  $log.log(response);
+              });
+          // Session.sign_out(); // one user at a time, per client
           // if ($scope.login_form.$valid) {
           //     if(SessionUser.sign_in($scope.username, $scope.password)) {
+          //         $scope.has_error = false;
           //         $location.path(SessionUser.nextPage);
           //     } else {
           //         $scope.has_error = true;

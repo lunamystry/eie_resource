@@ -2,8 +2,8 @@
 
 /* Services */
 
-angular.module('app.services', []).
-  factory('Sessions', ['$resource', function($resource) {
+angular.module('app.services', [])
+  .factory('Sessions', ['$resource', function($resource) {
     return $resource('/sessions/:_id', {_id: '@id'})
   }])
   .factory('SessionUser', ['Sessions', function(Sessions) {
@@ -14,13 +14,11 @@ angular.module('app.services', []).
       sign_in: function(username, password) {
           Sessions.save({"username": username, "password": password},
               function(response) {
-                  this.data = response.result;
+                  data = response.result;
                   isLoggedIn = true;
               }, function (response) {
-                  isLoggedIn = false;
-              });
-          // Maybe somehow return the error message aswell?
-          return isLoggedIn;
+                 this. isLoggedIn = false;
+              }); // Maybe somehow return the error message aswell?
       },
       sign_out: function() {
           if (typeof(this.data.session_id) != "undefined") {
