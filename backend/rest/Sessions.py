@@ -84,11 +84,11 @@ class Sessions(Resource):
         error = "Username or Password error"
         try:
             required(args["username"])
-        except ValidationError as e:
+        except ValidationError:
             errors["username"] = error
         try:
             required(args["password"])
-        except ValidationError as e:
+        except ValidationError:
             errors["password"] = error
         return args, errors
 
