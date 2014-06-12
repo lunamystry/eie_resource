@@ -30,7 +30,6 @@ angular.module('resource', [
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-      console.log(SessionUser.isLoggedIn);
       if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
         $location.path("/login");
       }

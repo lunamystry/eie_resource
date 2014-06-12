@@ -7,33 +7,37 @@ angular.module('app.services', [])
     return $resource('/sessions/:_id', {_id: '@id'})
   }])
   .factory('SessionUser', ['$log', 'Session', function($log, Session) {
-    var sessionUser = {
-      session: {},
-      homePage: "/profile",
-      errors: {},
-      sign_in: function(username, password, successFn, errorFn) {
-          this.session = new Session({"username": username, "password": password});
-          this.session.$save(function(value, headers) {
-              $log.info("Logged in: " + sessionUser.session._id);
-              if ("function" == typeof successFn) {
-                  successFn(value, headers);
-              }
-          }, function(response) {
-              sessionUser.session = {};
-              sessionUser.errors = response.data;
-              $log.error("could not login: " + username);
-              if ("function" == typeof errorFn) {
-                  errorFn(response);
-              }
-          });
+      var sessionUser = {
+          isLoggedIn: false,
+          session: {},
+          homePage: "/profile",
+          errors: {},
+          sign_in: function(username, password, successFn, errorFn) {
+              this.session = new Session({"username": username, "password": password});
+              this.session.$save(function(value, headers) {
+                  sessionUser.isLoggedIn = true;
+                  if ("function" == typeof successFn) {
+                      successFn(value, headers);
+                  }
+                  $log.info("Logged in: " + sessionUser.session._id);
+              }, function(response) {
+                  sessionUser.session = {};
+                  sessionUser.isLoggedIn = false;
+                  sessionUser.errors = response.data;
+                  if ("function" == typeof errorFn) {
+                      errorFn(response);
+                  }
+                  $log.error("could not login: " + username);
+              });
       },
       sign_out: function() {
           if (typeof(sessionUser.session._id) != "undefined") {
               sessionUser.session.delete();
               sessionUser.session = {};
+              sessionUser.isLoggedIn = false;
           }
       }
-    };
+      };
     return sessionUser;
   }])
   .factory('Users', ['$http', 'SessionUser',function($http, SessionUser) {
