@@ -22,9 +22,16 @@ angular.module('app.controllers', []).
               SessionUser.sign_in($scope.username, $scope.password,
                   function(value, headers) { 
                       $log.log('succeeded');
+                      $scope.has_error = false;
                   },
                   function(response) {
-                      $log.log('failed');
+                      $scope.password = "";
+                      if (response.status == 500) {
+                          $scope.login_form.error_message = "So the server is acting up, tell the webmaster please :-)"; 
+                      } else {
+                          $scope.login_form.error_message = "username of password error"; 
+                      }
+                      $scope.has_error = true;
                   });
           }
       }
