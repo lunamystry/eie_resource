@@ -9,7 +9,7 @@ angular.module('app.services', [])
   .factory('SessionUser', ['$log', 'Session', function($log, Session) {
     var sessionUser = {
       session: {},
-      nextPage: "/profile",
+      homePage: "/profile",
       errors: {},
       sign_in: function(username, password, successFn, errorFn) {
           this.session = new Session({"username": username, "password": password});

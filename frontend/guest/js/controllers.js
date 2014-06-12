@@ -23,6 +23,7 @@ angular.module('app.controllers', []).
                   function(value, headers) { 
                       $log.log('succeeded');
                       $scope.has_error = false;
+                      $location.path(SessionUser.homePage);
                   },
                   function(response) {
                       $scope.password = "";
