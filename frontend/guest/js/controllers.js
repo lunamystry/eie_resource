@@ -16,31 +16,19 @@ angular.module('app.controllers', []).
   .controller('aboutCtrl', [function() {
 
   }])
-  .controller('loginCtrl', ['$scope', '$log', '$location', 'Sessions', function($scope, $log, $location, Session) {
+  .controller('loginCtrl', ['$scope', '$log', '$location', 'SessionUser', function($scope, $log, $location, SessionUser) {
       $scope.sign_in = function() {
-          $log.log('Signing in...');
-          $scope.session = new Session({"username": $scope.username, "password": $scope.password});
-          $scope.session.$save(
-              function success(value, headers) {
-                  $log.log($scope.session);
-              }, function error(response) {
-                  $log.log(response);
-              });
-          // Session.sign_out(); // one user at a time, per client
-          // if ($scope.login_form.$valid) {
-          //     if(SessionUser.sign_in($scope.username, $scope.password)) {
-          //         $scope.has_error = false;
-          //         $location.path(SessionUser.nextPage);
-          //     } else {
-          //         $scope.has_error = true;
-          //         $scope.login_form.error_message = "could not log you in, you can try again if you want";
-          //     }
-          // }
+          if ($scope.login_form.$valid) {
+              SessionUser.sign_in($scope.username, $scope.password,
+                  function(value, headers) { 
+                      $log.log('succeeded');
+                  },
+                  function(response) {
+                      $log.log('failed');
+                  });
+          }
       }
 
-      $scope.signed_in_user = function() {
-          return SessionUser.data.username;
-      }
   }])
   .controller('navCtrl', ['$scope','$location', 'SessionUser', function($scope, $location, SessionUser) {
     $scope.navClass = function (page) {

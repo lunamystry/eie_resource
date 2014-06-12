@@ -3,28 +3,34 @@
 /* Services */
 
 angular.module('app.services', [])
-  .factory('Sessions', ['$resource', function($resource) {
+  .factory('Session', ['$resource', function($resource) {
     return $resource('/sessions/:_id', {_id: '@id'})
   }])
-  .factory('SessionUser', ['Sessions', function(Sessions) {
+  .factory('SessionUser', ['$log', 'Session', function($log, Session) {
     var sessionUser = {
-      isLoggedIn: false,
-      data: {},
+      session: {},
       nextPage: "/profile",
-      sign_in: function(username, password) {
-          Sessions.save({"username": username, "password": password},
-              function(response) {
-                  data = response.result;
-                  isLoggedIn = true;
-              }, function (response) {
-                 this. isLoggedIn = false;
-              }); // Maybe somehow return the error message aswell?
+      errors: {},
+      sign_in: function(username, password, successFn, errorFn) {
+          this.session = new Session({"username": username, "password": password});
+          this.session.$save(function(value, headers) {
+              $log.info("Logged in: " + sessionUser.session._id);
+              if ("function" == typeof successFn) {
+                  successFn(value, headers);
+              }
+          }, function(response) {
+              sessionUser.session = {};
+              sessionUser.errors = response.data;
+              $log.error("could not login: " + username);
+              if ("function" == typeof errorFn) {
+                  errorFn(response);
+              }
+          });
       },
       sign_out: function() {
-          if (typeof(this.data.session_id) != "undefined") {
-              Sessions.delete(this.data.session_id);
-              this.data = {};
-              return true;
+          if (typeof(sessionUser.session._id) != "undefined") {
+              sessionUser.session.delete();
+              sessionUser.session = {};
           }
       }
     };
