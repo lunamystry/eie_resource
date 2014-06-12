@@ -13,6 +13,10 @@ angular.module('app.services', [])
           homePage: "/profile",
           errors: {},
           restore_session: function() {
+              if ('undefined' == typeof $cookieStore.get('session_id')) {
+                  sessionUser.sign_out();
+                  return;
+              }
               $http.get('/sessions/'+$cookieStore.get('session_id')).success(
                   function(data, status, headers, config) {
                     sessionUser.session = new Session(data);

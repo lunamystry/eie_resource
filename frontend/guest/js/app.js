@@ -30,6 +30,7 @@ angular.module('resource', [
       });
     };
 
+    SessionUser.restore_session();
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
       if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
         $location.path("/login");
