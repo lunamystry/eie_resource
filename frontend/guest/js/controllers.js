@@ -33,7 +33,7 @@ angular.module('app.controllers', []).
           //         $location.path(SessionUser.nextPage);
           //     } else {
           //         $scope.has_error = true;
-          //         $scope.login_form.error_message = "could not log you in, you can try again if you want"; 
+          //         $scope.login_form.error_message = "could not log you in, you can try again if you want";
           //     }
           // }
       }
