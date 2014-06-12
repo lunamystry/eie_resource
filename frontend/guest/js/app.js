@@ -4,6 +4,7 @@
 angular.module('resource', [
   'ngRoute',
   'ngResource',
+  'ngCookies',
   'ngAnimate',
   'ui.bootstrap',
   'app.filters',

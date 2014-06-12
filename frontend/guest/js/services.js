@@ -6,16 +6,18 @@ angular.module('app.services', [])
   .factory('Session', ['$resource', function($resource) {
     return $resource('/sessions/:_id', {_id: '@id'})
   }])
-  .factory('SessionUser', ['$log', 'Session', function($log, Session) {
+  .factory('SessionUser', ['$log', '$http', '$cookieStore', 'Session', function($log, $http, $cookieStore, Session) {
       var sessionUser = {
           isLoggedIn: false,
           session: {},
           homePage: "/profile",
           errors: {},
           sign_in: function(username, password, successFn, errorFn) {
+              $log.log($cookieStore.get('key'));
               this.session = new Session({"username": username, "password": password});
               this.session.$save(function(value, headers) {
                   sessionUser.isLoggedIn = true;
+                  $cookieStore.put('key',sessionUser.session.key);
                   if ("function" == typeof successFn) {
                       successFn(value, headers);
                   }
@@ -32,8 +34,9 @@ angular.module('app.services', [])
       },
       sign_out: function() {
           if (typeof(sessionUser.session._id) != "undefined") {
-              sessionUser.session.delete();
+              sessionUser.session.$delete();
               sessionUser.session = {};
+              $cookieStore.remove('key');
               sessionUser.isLoggedIn = false;
           }
       }
