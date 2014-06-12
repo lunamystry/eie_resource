@@ -19,7 +19,7 @@ angular.module('app.services', [])
                   if ("function" == typeof successFn) {
                       successFn(value, headers);
                   }
-                  $log.info("Logged in: " + sessionUser.session._id);
+                  $log.info("logged in: " + username);
               }, function(response) {
                   sessionUser.session = {};
                   sessionUser.isLoggedIn = false;
