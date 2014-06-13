@@ -57,14 +57,17 @@ def get_names(dn_list):
 
 def save(group):
     """ if the group exists update, if not create"""
-    logger.info(group)
-    if "members" not in group or type(group['members']) is not list:
+    if ("members" not in group
+            or type(group['members']) is not list
+            or len(group['members']) == 0):
         raise TypeError("You must give atleast one group member")
-    for i, member_name in enumerate(group["members"]):
+    unfixed_group = dict(group)
+    unfixed_group['members'] = list(group['members'])
+    for i, member_name in enumerate(unfixed_group["members"]):
         # TODO: member[i] = users.find_one(member)["id"]
-        group['members'][i] = "uid=" + member_name + "," + users.basedn
+        unfixed_group['members'][i] = "uid=" + member_name + "," + users.basedn
 
-    fixed_group = fix(group, inv_keymap)
+    fixed_group = fix(unfixed_group, inv_keymap)
     dn = "cn=" + fixed_group["cn"] + "," + basedn
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
