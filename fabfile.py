@@ -5,10 +5,17 @@ env.user = 'admin2'
 # the servers where the commands are executed
 env.hosts = ['resource.eie.wits.ac.za']
 
+
+def clean():
+    local("find . -name '*.pyc' -exec rm -f {} \;", capture=False)
+    local("find . -name '__pycache__' -exec rm -rf {} \;", capture=False)
+
+
 def pack():
     # create a new source distribution as tarball
-    local("find . -name '*.pyc' -exec rm -f {} \;", capture=False)
+    clean()
     local('python setup.py sdist --formats=gztar', capture=False)
+
 
 def deploy():
     dist = local('python setup.py --fullname', capture=True).strip()
