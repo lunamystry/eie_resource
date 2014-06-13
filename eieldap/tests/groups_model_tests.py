@@ -9,15 +9,12 @@ class groupsTestCase(unittest.TestCase):
         self.valid = {"name": "natsuki", "members": ['john', 'gary']}
         self.expected = {"name": "natsuki", "members": ['john', 'gary']}
         self.updated_valid = {"name": "natsuki", "members": ['gary', 'vicky']}
-        self.expected_updated = {"name": "natsuki",
-                                 "members": ['gary', 'vicky']}
         self.invalid = {"name": "navina"}
 
     def tearDown(self):
         models.groups.delete(self.valid['name'])
         models.groups.delete(self.expected['name'])
         models.groups.delete(self.updated_valid['name'])
-        models.groups.delete(self.expected_updated['name'])
 
     def test_save_and_find_known_group(self):
         '''can save a group which does not exist and is valid'''
@@ -30,7 +27,9 @@ class groupsTestCase(unittest.TestCase):
         self.assertTrue(models.groups.save(self.valid))
         group = models.groups.find_one(self.valid['name'])
         self.assertEquals(group, self.expected)
+
         self.assertTrue(models.groups.save(self.updated_valid))
+        group = models.groups.find_one(self.valid['name'])
         self.assertEquals(group, self.updated_valid)
 
     def test_cant_save_invalid_group(self):

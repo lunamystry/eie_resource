@@ -71,9 +71,10 @@ def save(group):
     dn = "cn=" + fixed_group["cn"] + "," + basedn
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
-        manager.update(dn, fixed_group)
-        logger.info("Updated group: " + str(dn))
-        return True
+        if manager.update(dn, fixed_group):
+            logger.info("Updated group: " + str(fixed_group))
+            return True
+        return False
     else:
         fixed_group["objectClass"] = ["groupOfNames"]
         fixed_group["cn"] = str(fixed_group["cn"])
