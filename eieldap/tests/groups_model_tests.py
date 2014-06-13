@@ -13,8 +13,9 @@ class groupsTestCase(unittest.TestCase):
                                  "members": ['gary', 'vicky']}
         self.invalid = {"name": "navina"}
 
-        self.valid_attr = self.valid
+        self.valid_attr = {'members': self.valid['members']}
         self.invalid_attr = self.invalid
+        self.one_invalid_attr = self.valid
 
     def tearDown(self):
         models.groups.delete(self.valid['name'])
@@ -22,57 +23,50 @@ class groupsTestCase(unittest.TestCase):
         models.groups.delete(self.updated_valid['name'])
         models.groups.delete(self.expected_updated['name'])
 
-    def test_save_known_group(self):
+    def test_save_and_find_known_group(self):
         '''can save a group which does not exist and is valid'''
         self.assertTrue(models.groups.save(self.valid))
-        group = models.groups.find_one("natsuki")
-        self.assertEquals(group, self.expected)
+        group = models.groups.find_one(self.valid['name'])
+        self.assertEquals(group, self.valid)
 
     def test_save_a_group_that_exists(self):
         '''saving a group that exists, will update its members'''
         self.assertTrue(models.groups.save(self.valid))
-        group = models.groups.find_one("natsuki")
+        group = models.groups.find_one(self.valid['name'])
         self.assertEquals(group, self.expected)
         self.assertTrue(models.groups.save(self.updated_valid))
-        self.assertEquals(group, self.expected_updated)
+        self.assertEquals(group, self.updated_valid)
 
     def test_cant_save_invalid_group(self):
         ''' Because LDAP does not allow creating a group without members, I
         don't allow it either'''
         with self.assertRaises(TypeError):
-            models.groups.save(self.invalid_group)
+            models.groups.save(self.invalid)
 
     def test_delete_an_existing_group(self):
         ''' If a group exists, I should be able to delete it and not get it
         back '''
         self.assertTrue(models.groups.save(self.valid))
-        self.assertTrue(models.groups.delete(self.valid['name']))
+        models.groups.delete(self.valid['name'])
         group = models.groups.find_one(self.valid['name'])
         self.assertEquals(group, None)
 
     def test_delete_a_non_existing_group(self):
         ''' If a group does not exist, it does not matter, just pretend it was
         deleted'''
-        self.assertTrue(models.groups.delete(self.valid['name']))
+        models.groups.delete(self.valid['name'])
         group = models.groups.find_one(self.valid['name'])
         self.assertEquals(group, None)
 
-    def test_find_by_name(self):
-        '''Trying to find an exisiting group returns that group, does not
-        change the original'''
-        self.assertTrue(models.groups.save(self.valid))
-        group = models.groups.find_one(self.valid['name'])
-        self.assertEquals(group, self.valid)
-
     def test_find_using_valid_attribute(self):
         self.assertTrue(models.groups.save(self.valid))
-        group = models.groups.find(attr=self.valid_attr)
+        group = models.groups.find_one(attr=self.valid_attr)
         self.assertEquals(group, self.valid)
 
     def test_find_using_one_invalid_attribute(self):
         '''I should still get back a group that matches the other attributes'''
         self.assertTrue(models.groups.save(self.valid))
-        group = models.groups.find(attr=self.one_invalid_attr)
+        group = models.groups.find_one(attr=self.one_invalid_attr)
         self.assertEquals(group, self.valid)
 
     def test_find_a_non_existing_group(self):
@@ -82,12 +76,14 @@ class groupsTestCase(unittest.TestCase):
 
     def test_find_can_specify_both_name_and_attr_name_valid(self):
         '''will return one group if name is valid'''
+        self.assertTrue(models.groups.save(self.valid))
         group = models.groups.find_one(name=self.valid['name'],
-                                       attr=self.invalid_attr)
+                                       group=self.invalid_attr)
         self.assertEquals(group, self.expected)
 
     def test_find_can_specify_both_name_and_attr_attributes_valid(self):
         '''will return one group if attributes are valid'''
+        self.assertTrue(models.groups.save(self.valid))
         group = models.groups.find_one(name='aslkajsa',
                                        attr=self.valid_attr)
         self.assertEquals(group, self.valid)
@@ -98,10 +94,10 @@ class groupsTestCase(unittest.TestCase):
         self.assertEquals(group, None)
 
 
-class groupMembersTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.original_group = {"name": "testgroup", "members": ['guneap']}
+# class groupMembersTestCase(unittest.TestCase):
+# 
+#     def setUp(self):
+#         self.original_group = {"name": "testgroup", "members": ['guneap']}
 
     # def test_add_group_member(self):
     #     """ Can I add a group member?"""
