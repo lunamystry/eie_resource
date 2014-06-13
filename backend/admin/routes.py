@@ -1,16 +1,9 @@
-from flask import render_template
-from flask import request
 from flask import redirect
 from flask import send_from_directory
 import os
 from backend.admin import admin
 from backend.admin import rest
 from backend import api
-from backend import login_manager
-from backend.rest import Sessions
-from flask.ext.login import login_required
-from eieldap.models import users
-from eieldap.models import groups
 import logging
 
 logger = logging.getLogger("backend.admin.routes")

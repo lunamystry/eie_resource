@@ -1,7 +1,6 @@
 from flask import Flask
 from werkzeug.contrib.fixers import ProxyFix
 from flask.ext.restful import Api
-from flask.ext.login import LoginManager
 import os
 
 
@@ -27,9 +26,6 @@ if os.environ.get('RESOURCE_SETTINGS') is not None:
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 api = Api(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 
 from backend import routes
