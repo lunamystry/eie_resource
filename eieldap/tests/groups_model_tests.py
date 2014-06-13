@@ -9,7 +9,8 @@ class groupsTestCase(unittest.TestCase):
         self.valid = {"name": "natsuki", "members": ['john', 'gary']}
         self.expected = {"name": "natsuki", "members": ['john', 'gary']}
         self.updated_valid = {"name": "natsuki", "members": ['gary', 'vicky']}
-        self.invalid = {"name": "navina"}
+        self.no_members = {"name": "navina"}
+        self.empty_members = {"name": "navina", "members": []}
 
     def tearDown(self):
         models.groups.delete(self.valid['name'])
@@ -32,11 +33,17 @@ class groupsTestCase(unittest.TestCase):
         group = models.groups.find_one(self.valid['name'])
         self.assertEquals(group, self.updated_valid)
 
-    def test_cant_save_invalid_group(self):
+    def test_cant_save_group_with_no_members(self):
         ''' Because LDAP does not allow creating a group without members, I
         don't allow it either'''
         with self.assertRaises(TypeError):
-            models.groups.save(self.invalid)
+            models.groups.save(self.no_members)
+
+    def test_cant_save_group_with_empty_members(self):
+        ''' Because LDAP does not allow creating a group without members, I
+        don't allow it either'''
+        with self.assertRaises(TypeError):
+            models.groups.save(self.empty_members)
 
     def test_delete_an_existing_group(self):
         ''' If a group exists, I should be able to delete it and not get it
@@ -67,7 +74,7 @@ class groupsTestCase(unittest.TestCase):
         '''should use names if both name and group are given'''
         self.assertTrue(models.groups.save(self.valid))
         group = models.groups.find_one(name=self.valid['name'],
-                                       group=self.invalid)
+                                       group=self.no_members)
         self.assertEquals(group, self.expected)
 
     def test_find_can_specify_wrong_name_and_correct_group(self):
@@ -83,10 +90,10 @@ class groupsTestCase(unittest.TestCase):
         self.assertEquals(group, None)
 
 
-# class groupMembersTestCase(unittest.TestCase):
-#
-#     def setUp(self):
-#         self.original_group = {"name": "testgroup", "members": ['guneap']}
+class groupMembersTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.original_group = {"name": "testgroup", "members": ['guneap']}
 
     # def test_add_group_member(self):
     #     """ Can I add a group member?"""
