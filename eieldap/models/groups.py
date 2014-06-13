@@ -27,14 +27,19 @@ def find():
     return groups_list
 
 
-def find_one(name=None, attr=None):
+def find_one(name=None, group=None):
     """ Returns a single group """
     group = None
     if name is not None:
         dn = "cn=" + name + "," + basedn
         group = manager.find_by_dn(dn)
-    elif attr is not None:
-        fixed_group = fix(attr, inv_keymap)
+
+    if group:
+        group['member'] = get_names(group['member'])  # Repeated in find
+        return fix(group, keymap)
+
+    if group is not None:
+        fixed_group = fix(group, inv_keymap)
         group = manager.find_one(fixed_group, basedn, filter_key="cn")
 
     if group:
