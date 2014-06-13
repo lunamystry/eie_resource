@@ -29,22 +29,22 @@ def find():
 
 def find_one(name=None, group=None):
     """ Returns a single group """
-    group = None
+    found_group = None
     if name is not None:
         dn = "cn=" + name + "," + basedn
-        group = manager.find_by_dn(dn)
+        found_group = manager.find_by_dn(dn)
 
-    if group:
-        group['member'] = get_names(group['member'])  # Repeated in find
-        return fix(group, keymap)
+    if found_group:
+        found_group['member'] = get_names(found_group['member'])  # Repeated in find
+        return fix(found_group, keymap)
 
     if group is not None:
         fixed_group = fix(group, inv_keymap)
-        group = manager.find_one(fixed_group, basedn, filter_key="cn")
+        found_group = manager.find_one(fixed_group, basedn, filter_key="cn")
 
-    if group:
-        group['member'] = get_names(group['member'])  # Repeated in find
-        return fix(group, keymap)
+    if found_group:
+        found_group['member'] = get_names(found_group['member'])  # Repeated in find
+        return fix(found_group, keymap)
 
 
 def get_names(dn_list):
