@@ -61,7 +61,7 @@ class Manager():
             self.connection.add_s(dn, modlist)
             return True
         except ldap.ALREADY_EXISTS:
-            logger.warning("{0} already exists".format(dn))
+            logger.error("{0} already exists".format(dn))
             return False  # Should I rather raise ldap.ALREADY_EXISTS maybe
         except ldap.LDAPError as e:
             logger.error("An error occured while adding: {0}, {1}".format(

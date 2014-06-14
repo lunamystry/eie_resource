@@ -152,6 +152,11 @@ class UsersTestCase(unittest.TestCase):
                                    "password": "passing",
                                    "hosts": ['dummy'],
                                    "yos": "4"}
+        users.add(self.existing_user)
+
+    def tearDown(self):
+        users.delete(self.valid['username'])
+        users.delete(self.existing_user['username'])
 
     def test_init_user(self):
         valid = {"username": "guneap",
@@ -169,68 +174,45 @@ class UsersTestCase(unittest.TestCase):
                                          'hostObject'],
                          'loginShell': '/bin/bash',
                          'sambaLMPassword': 'F1213CB1AFD3589BAAD3B435B51404EE',
-                         'uidNumber': '1001',
+                         'uidNumber': '1000',
                          'sambaAcctFlags': '[U         ]',
                          'gidNumber': '1000',
                          'sambaNTPassword': '6D14A6C43C5C6A2A4B5B45BD97C2F09F',
                          'uid': 'guneap',
                          'displayName': 'Gunea Pig',
                          'host': ['dummy'],
-                         'sambaSID': 'S-1-5-21-3949128619-541665055-2325163404-1001100110011001',
+                         'sambaSID': 'S-1-5-21-3949128619-541665055-2325163404-4000',
                          'sn': 'Pig',
                          'homeDirectory': '/home/ug/guneap',
                          'mail': ['guneap@students.wits.ac.za']}
+        self.maxDiff = None
         self.assertEquals(users.User(valid).attributes, expected_attr)
 
     def test_add(self):
         '''simply add a new valid user'''
         self.assertTrue(users.add(self.valid))
 
-    # def test_add_existing(self):
-    #     '''adding existing user should update it'''
-    #     self.assertTrue(users.add(self.existing_user))
+    def test_add_existing(self):
+        '''raises an error if the user already exists'''
+        with self.assertRaises(ValueError):
+            self.assertTrue(users.add(self.existing_user))
 
-    # def test_add_missing_required_attributes(self):
-    #     '''adding existing user should update it'''
-    #     with self.assertRaises(TypeError):
-    #         users.add(self.missing_attributes)
+    def test_add_missing_required_attributes(self):
+        '''adding existing user should update it'''
+        with self.assertRaises(TypeError):
+            users.add(self.missing_attributes)
 
-    # def test_save(self):
-    #     """ Create a new user """
-    #     pass
-        # with self.assertRaises(TypeError):
-        #     users.save(invalid_user)
+    def test_delete(self):
+        '''simply delete a user, try to find it and see if its really gone'''
+        self.assertTrue(users.delete(self.existing_user['username']))
 
-        # Does not exist
-        # if users.find_one(user_to_save['username']):
-        #     users.delete(user=user_to_save)
+    def test_delete_no_username_given(self):
+        '''as long as this call does not fail'''
+        self.assertTrue(users.delete(user=self.existing_user))
 
-        # # exists
-        # user_to_save = {"username": "guneap",
-        #                 "first_name": "Gunea",
-        #                 "last_name": "Pig",
-        #                 "email": "123@students.wits.ac.za",
-        #                 "password": "passing",
-        #                 "hosts": ['babbage.ug.eie.wits.ac.za', 'testing.ug.eie.wits.ac.za'],
-        #                 "yos": "2"}
-        # expected_user = {"username": "guneap",
-        #                  "gid_number": "2000",
-        #                  "login_shell": "/bin/bash",
-        #                  "first_name": "Gunea",
-        #                  "last_name": "Pig",
-        #                  "yos": "2",
-        #                  "hosts": ['babbage.ug.eie.wits.ac.za', 'testing.ug.eie.wits.ac.za'],
-        #                  "home_directory": "/home/ug/guneap",
-        #                  "uid_number": "2000",
-        #                  "email": ["123@students.wits.ac.za"]}
-        # if users.find_one(user_to_save['username']):
-        #     users.delete(user=user_to_save)
-        # self.assertTrue(users.save(user_to_save))
-        # user = users.find_one("guneap")
-        # self.assertEquals(user, expected_user)
-
-
-    #     # raises an error if the number of valid uids has been reached
+    def test_delete_nothing_given(self):
+        '''as long as this call does not fail'''
+        self.assertFalse(users.delete())
 
     # def test_add_host(self):
     #     """ Can I add a host?"""

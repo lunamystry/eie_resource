@@ -66,7 +66,7 @@ class User():
         lm_password, nt_password = smb_encrypt(attr["password"])
         self.attributes['sambaNTPassword'] = nt_password
         self.attributes['sambaLMPassword'] = lm_password
-        smbRid = self.attributes['uidNumber']*4
+        smbRid = str(int(self.attributes['uidNumber'])*4)
         self.attributes["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-{}".format(str(smbRid))
         self.attributes["homeDirectory"] = "{0}/{1}".format(home_base,
                                                             attr["username"])
@@ -84,6 +84,7 @@ class User():
             # TODO: What username already exists?
             self.attributes['uid'] = attr['last_name'] + attr['first_name'][0]
 
+
 def add(attr):
     """ adds a new user """
     user = User(attr)
@@ -91,6 +92,28 @@ def add(attr):
         change_password(user.attributes['uid'], None, attr['password'])
         logger.info("created user: {}".format(user.dn))
         return True
+    else:
+        # Assume the only reason for failure is no existance
+        raise ValueError("user {} already exists".format(attr['username']))
+    return False
+
+
+def delete(username=None, user=None):
+    """ Deletes a user """
+    existing_user = None
+    if username is None or not isinstance(username, str):
+        if user is not None:
+            username = user['username']
+        else:
+            return False
+
+    dn = "uid=" + username + "," + BASEDN
+    existing_user = manager.find_by_dn(dn)
+
+    if existing_user:
+        if manager.delete(existing_user['dn']):
+            logger.info("deleted: " + existing_user['dn'])
+            return True
     return False
 
 
@@ -161,22 +184,6 @@ def find():
 #     return False
 #
 #
-# def delete(username=None, user=None):
-#     """ Deletes a user """
-#     existing_user = None
-#     if username is not None:
-#         dn = "uid=" + username + "," + BASEDN
-#         existing_user = manager.find_by_dn(dn)
-#     elif user is not None:
-#         fixed_user = fix(user, inv_keymap)
-#         dn = "uid=" + fixed_user['uid'] + "," + BASEDN
-#         existing_user = manager.find_one(fixed_user, BASEDN, filter_key="uid")
-#
-#     if existing_user:
-#         if manager.delete(existing_user['dn']):
-#             logger.info("deleted: " + existing_user['dn'])
-#             return True
-#     return False
 
 def validate(attr):
     '''Make sure that attributes are all there in the correct form'''
