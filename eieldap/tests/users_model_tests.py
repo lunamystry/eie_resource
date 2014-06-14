@@ -233,11 +233,9 @@ class UsersTestCase(unittest.TestCase):
         del self.existing_user['password']
         self.assertEquals(user, self.existing_user)
 
-    def test_find_one_only_attr(self):
-        pass
-
-    def test_find_one_neither_given(self):
-        pass
+    def test_find_one_username_not_given(self):
+        user = users.find_one()
+        self.assertEquals(user, None)
 
     # def test_add_host(self):
     #     """ Can I add a host?"""

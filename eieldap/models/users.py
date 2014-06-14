@@ -114,7 +114,7 @@ def add(attr):
 def delete(username=None, user=None):
     """ Deletes a user """
     existing_user = None
-    if username is None or not isinstance(username, str):
+    if not isinstance(username, str):
         if user is not None:
             username = user['username']
         else:
@@ -144,7 +144,7 @@ def find():
     return users_list
 
 
-def find_one(username=None, attr=None):
+def find_one(username=None):
     """ Returns a single user """
     found_user = None
     if username is not None:
@@ -155,10 +155,6 @@ def find_one(username=None, attr=None):
         found_user = convert(found_user, FROM_LDAP_MAP)
         found_user['yos'] = str(int(found_user['gid_number'])/1000)
         return found_user 
-
-    if attr is not None:
-        fixed_user = convert(attr, FROM_LDAP_MAP)
-        found_user = manager.find_one(fixed_user, BASEDN, filter_key="uid")
 
 # def update(attr):
 #     """ updates a user"""
