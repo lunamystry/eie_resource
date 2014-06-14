@@ -62,7 +62,11 @@ class UserServicesTests(unittest.TestCase):
         ldap_attr = {'dn': 'uid=monkeyl,ou=people,dc=eie,dc=wits,dc=ac,dc=za',
                      'displayName': 'Luffy Monkey',
                      'uid': 'monkeyl',
-                     'objectClass': ['inetOrgPerson', 'organizationalPerson', 'posixAccount', 'sambaSamAccount', 'hostObject'],
+                     'objectClass': ['inetOrgPerson',
+                                     'organizationalPerson',
+                                     'posixAccount',
+                                     'sambaSamAccount',
+                                     'hostObject'],
                      'loginShell': '/bin/bash',
                      'userPassword': '{SSHA}qGfneJ66q1r+29LF9AO8jaGnOOi1yz+N',
                      'sambaLMPassword': 'B267DF22CB945E3EAAD3B435B51404EE',
@@ -144,9 +148,13 @@ class UsersTestCase(unittest.TestCase):
         self.existing_user = {"username": "johnd",
                               "first_name": "John",
                               "last_name": "Doe",
-                              "email": "mandla.niigata@students.wits.ac.za",
+                              "email": ["john.doe@students.wits.ac.za"],
                               "password": "passing",
                               "hosts": ['dummy'],
+                              "gid_number": "4000",
+                              "uid_number": "4001",
+                              "login_shell": "/bin/bash",
+                              "home_directory": "/home/ug/johnd",
                               "yos": "4"}
         self.missing_attributes = {"username": "johnd",
                                    "password": "passing",
@@ -162,7 +170,7 @@ class UsersTestCase(unittest.TestCase):
         valid = {"username": "guneap",
                  "first_name": "Gunea",
                  "last_name": "Pig",
-                 "email": "guneap@students.wits.ac.za",
+                 "email": "gunea.pig@students.wits.ac.za",
                  "password": "passing",
                  "hosts": ['dummy'],
                  "yos": "1"}
@@ -184,9 +192,10 @@ class UsersTestCase(unittest.TestCase):
                          'sambaSID': 'S-1-5-21-3949128619-541665055-2325163404-4000',
                          'sn': 'Pig',
                          'homeDirectory': '/home/ug/guneap',
-                         'mail': ['guneap@students.wits.ac.za']}
+                         'mail': ['gunea.pig@students.wits.ac.za']}
         self.maxDiff = None
-        self.assertEquals(users.User(valid).attributes, expected_attr)
+        user = users.User(valid)
+        self.assertEquals(user.attributes, expected_attr)
 
     def test_add(self):
         '''simply add a new valid user'''
@@ -213,6 +222,22 @@ class UsersTestCase(unittest.TestCase):
     def test_delete_nothing_given(self):
         '''as long as this call does not fail'''
         self.assertFalse(users.delete())
+
+    def test_find(self):
+        '''as long as it can be called'''
+        for user in users.find():
+            print(user)
+
+    def test_find_one(self):
+        user = users.find_one(self.existing_user['username'])
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
+
+    def test_find_one_only_attr(self):
+        pass
+
+    def test_find_one_neither_given(self):
+        pass
 
     # def test_add_host(self):
     #     """ Can I add a host?"""

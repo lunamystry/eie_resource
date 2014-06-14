@@ -68,16 +68,29 @@ class User():
         self.attributes['sambaLMPassword'] = lm_password
         smbRid = str(int(self.attributes['uidNumber'])*4)
         self.attributes["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-{}".format(str(smbRid))
-        self.attributes["homeDirectory"] = "{0}/{1}".format(home_base,
-                                                            attr["username"])
-        self.attributes["loginShell"] = "/bin/bash"
         self.attributes["displayName"] = "{0} {1}".format(attr["first_name"],
                                                           attr["last_name"])
         try:
-            self.attributes["host"] = attr['hosts']
-            self.attributes["mail"] = [attr['email']]
+            if not isinstance(attr['email'], list):
+                self.attributes["mail"] = [attr['email']]
+            else:
+                self.attributes["mail"] = attr['email']
         except KeyError:
             pass
+        try:
+            self.attributes["host"] = attr['hosts']
+        except KeyError:
+            pass
+        try:
+            self.attributes["loginShell"] = attr['login_shell']
+        except KeyError:
+            pass
+        try:
+            self.attributes['homeDirectory'] = attr['home_directory']
+        except KeyError:
+            self.attributes["homeDirectory"] = "{0}/{1}".format(
+                home_base,
+                attr["username"])
         try:
             self.attributes['uid'] = attr['username']
         except KeyError:
@@ -131,21 +144,22 @@ def find():
     return users_list
 
 
-# def find_one(username=None, attr=None):
-#     """ Returns a single user """
-#     user = None
-#     if username is not None:
-#         dn = "uid=" + username + "," + BASEDN
-#         user = manager.find_by_dn(dn)
-#     elif attr is not None:
-#         fixed_user = fix(attr, inv_keymap)
-#         user = manager.find_one(fixed_user, BASEDN, filter_key="uid")
-#
-#     if user:
-#         user['yos'] = str(int(user['gidNumber'])/1000)
-#         return fix(user, keymap)
-#
-#
+def find_one(username=None, attr=None):
+    """ Returns a single user """
+    found_user = None
+    if username is not None:
+        dn = "uid=" + username + "," + BASEDN
+        found_user = manager.find_by_dn(dn)
+
+    if found_user:
+        found_user = convert(found_user, FROM_LDAP_MAP)
+        found_user['yos'] = str(int(found_user['gid_number'])/1000)
+        return found_user 
+
+    if attr is not None:
+        fixed_user = convert(attr, FROM_LDAP_MAP)
+        found_user = manager.find_one(fixed_user, BASEDN, filter_key="uid")
+
 # def update(attr):
 #     """ updates a user"""
 #     fixed_user = fix(attr, inv_keymap)
@@ -196,7 +210,7 @@ def validate(attr):
 
 
 def convert(user, keymap):
-    '''DESTRUCTIVE: Converts a user either from LDAP form or to depending on 
+    '''DESTRUCTIVE: Converts a user either from LDAP form or to depending on
     keymap. If converting keys are not in the keymap passed, they will be
     removed from the result'''
     if user is None:
