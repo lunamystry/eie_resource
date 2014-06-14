@@ -196,6 +196,7 @@ class UsersTestCase(unittest.TestCase):
                          'mail': ['gunea.pig@students.wits.ac.za']}
         self.maxDiff = None
         user = users.User(valid)
+        del user.attributes['userPassword']
         self.assertEquals(user.attributes, expected_attr)
 
     def test_add(self):
@@ -260,7 +261,6 @@ class UsersTestCase(unittest.TestCase):
         new_host = "testing.ug.eie.wits.ac.za"
         users.add_host(self.existing_user['username'], new_host)
         user = users.find_one(self.existing_user['username'])
-        print(user)
         # self.existing_user['username']['hosts'].append(new_host)
         # self.assertEquals(user, self.existing_user)
 

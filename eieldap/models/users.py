@@ -283,7 +283,6 @@ def add_host(username, host_domain):
     if not user:
         raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
 
-    logger.error("ADD USER: {}".format(user))
     try:
         if host_domain not in user['hosts']:
             user['hosts'].append(host_domain)
