@@ -122,6 +122,14 @@ class UserServicesTests(unittest.TestCase):
         '''this just passes things to the manager'''
         users.change_password('user', 'old_password', 'new_password')
 
+    def test_reset_password(self):
+        '''this just passes things to the manager'''
+        users.reset_password('user')
+
+    def test_authenticate(self):
+        '''this just passes things to the manager'''
+        users.authenticate('user', 'password')
+
 
 class UsersTestCase(unittest.TestCase):
 

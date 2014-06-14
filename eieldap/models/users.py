@@ -240,23 +240,23 @@ def change_password(username, oldpw, newpw):
     return False
 
 
-# def reset_password(username):
-#     """ User the python ldap function to reset the password
-#     of the user with the supplied username"""
-#     newpw = "dlab"+str(time.strftime("%Y"))
-#     dn = "uid=" + username + "," + BASEDN
-#     user = manager.find_by_dn(dn)
-#     if user:
-#         lm_password, nt_password = smb_encrypt(newpw)
-#         user["sambaNTPassword"] = nt_password
-#         user["sambaLMPassword"] = lm_password
-#         logger.debug("Changing password for user with dn: " + str(user['dn']))
-#         dn = user['dn']
-#         if manager.update(dn, user):
-#             return manager.change_password(dn, None, newpw)
-#     return False
-#
-#
+def reset_password(username):
+    """ User the python ldap function to reset the password
+    of the user with the supplied username"""
+    newpw = "dlab"+str(time.strftime("%Y"))
+    dn = "uid=" + username + "," + BASEDN
+    user = manager.find_by_dn(dn)
+    if user:
+        lm_password, nt_password = smb_encrypt(newpw)
+        user["sambaNTPassword"] = nt_password
+        user["sambaLMPassword"] = lm_password
+        logger.debug("Changing password for user with dn: " + str(user['dn']))
+        dn = user['dn']
+        if manager.update(dn, user):
+            return manager.change_password(dn, None, newpw)
+    return False
+
+
 # def add_host(username, host_domain):
 #     """ Allow the user with username to login to host with host_domain.
 #     this assumes the host has been configured to use the host property"""
@@ -286,11 +286,11 @@ def change_password(username, oldpw, newpw):
 #     else:
 #         logger.debug("host: {0} not found in {1} user".format(
 #             host_domain, username))
-#
-#
-# def authenticate(username, password):
-#     dn = "uid=" + username + "," + BASEDN
-#     return manager.authenticate(dn, password)
+
+
+def authenticate(username, password):
+    dn = "uid=" + username + "," + BASEDN
+    return manager.authenticate(dn, password)
 
 
 def next_uid_number(yos):
