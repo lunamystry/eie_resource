@@ -181,22 +181,6 @@ def find_one(username=None):
         return found_user
 
 
-# def save(attr):
-#     """ if the user exists update, if not create"""
-#     if 'username' not in attr:
-#         raise TypeError("You have a missing attributes: username")
-#
-#     fixed_user = fix(attr, inv_keymap)
-#     dn = "uid=" + fixed_user["uid"] + "," + BASEDN
-#     existing_user = manager.find_one(fixed_user, filter_key="uid")
-#
-#     if existing_user:
-#         return update(attr)
-#     else:
-#         return add(attr)
-#     return False
-
-
 def validate(attr):
     '''Make sure that attributes are all there in the correct form'''
     required_attributes = ['first_name', 'last_name', 'yos', 'email']
