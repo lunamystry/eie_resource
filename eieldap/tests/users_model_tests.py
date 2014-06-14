@@ -369,11 +369,6 @@ class UsersTestCase(unittest.TestCase):
     #     with self.assertRaises(ValueError):
     #         users.remove_host(non_existing_user, babbage) # has no hosts
 
-    # def test_find_with_missing_attributes(self):
-    #     """ I should be able to find even if some attributes are not there in
-    #     the directory"""
-    #     pass
-
 
 if __name__ == "__main__":
     unittest.main()
