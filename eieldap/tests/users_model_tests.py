@@ -160,11 +160,12 @@ class UsersTestCase(unittest.TestCase):
                                    "password": "passing",
                                    "hosts": ['dummy'],
                                    "yos": "4"}
+        users.delete(self.existing_user['username'])
         users.add(self.existing_user)
 
     def tearDown(self):
-        users.delete(self.valid['username'])
         users.delete(self.existing_user['username'])
+        users.delete(self.valid['username'])
 
     def test_init_user(self):
         valid = {"username": "guneap",
@@ -210,6 +211,24 @@ class UsersTestCase(unittest.TestCase):
         '''adding existing user should update it'''
         with self.assertRaises(TypeError):
             users.add(self.missing_attributes)
+
+    def test_update(self):
+        self.existing_user['first_name'] = 'Jane'
+        self.assertTrue(users.update(self.existing_user))
+        user = users.find_one(self.existing_user['username'])
+        self.existing_user['uid_number'] = '4002'  # This is a problem
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
+
+    def test_update_username(self):
+        '''you should are not allowed to change username'''
+        username = self.existing_user['username']
+        self.existing_user['username'] = 'janed'
+        self.assertTrue(users.update(self.existing_user))
+        self.existing_user['username'] = username
+        user = users.find_one(username)
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
 
     def test_delete(self):
         '''simply delete a user, try to find it and see if its really gone'''

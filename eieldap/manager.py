@@ -88,6 +88,8 @@ class Manager():
 
     def prepare_modlist(self, dn, new_attr):
         attr = self.find_by_dn(dn)
+        if attr is None:
+            return None
         try:
             del(attr["dn"])
         except KeyError:

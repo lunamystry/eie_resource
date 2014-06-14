@@ -111,10 +111,23 @@ def add(attr):
     return False
 
 
+def update(attr):
+    """ updates a user"""
+    user = User(attr)
+    if manager.update(user.dn, user.attributes):
+        change_password(user.attributes['uid'], None, attr['password'])
+        logger.info("updated user: " + str(user.dn))
+        return True
+    else:
+        # Assume the only reason for failure is no existance
+        raise ValueError("{} could not be updated".format(attr['username']))
+    return False
+
+
 def delete(username=None, user=None):
     """ Deletes a user """
     existing_user = None
-    if not isinstance(username, str):
+    if username is None or not isinstance(username, str):
         if user is not None:
             username = user['username']
         else:
@@ -156,28 +169,7 @@ def find_one(username=None):
         found_user['yos'] = str(int(found_user['gid_number'])/1000)
         return found_user 
 
-# def update(attr):
-#     """ updates a user"""
-#     fixed_user = fix(attr, inv_keymap)
-#     dn = "uid=" + fixed_user["uid"] + "," + BASEDN
-#     existing_user = manager.find_one(fixed_user, filter_key="uid")
-#
-#     gid_number = user_gid_number(int(attr['yos']))
-#     if 'yos' in fixed_user:
-#         del fixed_user['yos']
-#     fixed_user["gidNumber"] = str(gid_number)
-#     try:
-#         for index, host in enumerate(fixed_user["host"]):
-#             fixed_user["host"][index] = str(host)
-#     except KeyError:
-#         pass
-#
-#     if manager.update(dn, fixed_user):
-#         logger.info("updated user: " + str(dn))
-#         return True
-#     return False
-#
-#
+
 # def save(attr):
 #     """ if the user exists update, if not create"""
 #     if 'username' not in attr:
