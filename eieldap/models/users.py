@@ -59,8 +59,10 @@ class User():
             error_msg = "Invalid Year of Study {}".format(attr['yos'])
             logger.error(error_msg)
             raise TypeError(error_msg)
-        self.attributes['uidNumber'] = next_uid_number(int(attr['yos']))
-        self.attributes['gidNumber'] = user_gid_number(int(attr['yos']))
+        self.attributes['cn'] = attr['first_name']
+        self.attributes['sn'] = attr['last_name']
+        self.attributes['uidNumber'] = str(next_uid_number(int(attr['yos'])))
+        self.attributes['gidNumber'] = str(user_gid_number(int(attr['yos'])))
         lm_password, nt_password = smb_encrypt(attr["password"])
         self.attributes['sambaNTPassword'] = nt_password
         self.attributes['sambaLMPassword'] = lm_password

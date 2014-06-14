@@ -55,6 +55,7 @@ class Manager():
         logger.info("disonnected to {}".format(self.server))
 
     def create(self, dn, fields):
+        self.admin_bind()
         try:
             modlist = ldap.modlist.addModlist(fields)
             self.connection.add_s(dn, modlist)
