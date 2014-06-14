@@ -309,9 +309,9 @@ def next_uid_number(yos):
 
     """
     if yos not in range(1, 8):
-        logger.error("{} is out of uid/yos range".format(str(yos)))
-        raise ValueError("The Year of Study: {} is out of range".format(
-            str(yos)))
+        error_msg = "{} is out of uid/yos range".format(str(yos))
+        logger.error(error_msg)
+        raise ValueError(error_msg)
     all_users = manager.find(BASEDN, filter_key="uid")
     uids = []
     start_uid = yos*1000
@@ -335,7 +335,8 @@ def next_uid_number(yos):
 def user_gid_number(yos):
     """ There are 7 groups, depending on the year of study """
     if yos not in range(1, 8):
-        logger.error("Tried to add out of range uid/yos")
-        raise ValueError("The Year of Study: " + str(yos) + " is out of range")
+        error_msg = "{} is out of uid/yos range".format(str(yos))
+        logger.error(error_msg)
+        raise ValueError(error_msg)
 
     return yos*1000

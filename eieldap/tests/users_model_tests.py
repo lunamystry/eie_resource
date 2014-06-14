@@ -36,6 +36,21 @@ class UserServicesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             users.next_uid_number(8)
 
+    def test_user_gid_number_in_range(self):
+        '''just cause I like more tests'''
+        for yos in range(1, 8):
+            gid = users.user_gid_number(yos)
+            start = yos*1000
+            end = start + 1000
+            self.assertTrue(gid in range(start, end))
+
+    def test_user_gid_number_out_of_range(self):
+        '''look the doc string for test_next_uid_number'''
+        with self.assertRaises(ValueError):
+            users.user_gid_number(-1)
+        with self.assertRaises(ValueError):
+            users.user_gid_number(8)
+
     def test_validate_valid(self):
         users.validate(self.valid)
 
@@ -293,29 +308,10 @@ class UsersTestCase(unittest.TestCase):
     #     with self.assertRaises(ValueError):
     #         users.remove_host(non_existing_user, babbage) # has no hosts
 
-    # def test_change_password(self):
-    #     """ I can change password """
-    #     guneap = users.find_one('guneap')
-    #     if not guneap:
-    #         guneap = {"username": "guneap",
-    #                   "first_name": "Gunea",
-    #                   "last_name": "Pig",
-    #                   "email": ["123@students.wits.ac.za"],
-    #                   "password": "passing",
-    #                   "hosts": ['babbage.ug.eie.wits.ac.za', 'testing.ug.eie.wits.ac.za'],
-    #                   "yos": "2"}
-    #         users.save(guneap)
-    #     self.assertTrue(users.change_password('guneap', None, 'passing'))
-
     # def test_find_with_missing_attributes(self):
     #     """ I should be able to find even if some attributes are not there in
     #     the directory"""
     #     pass
-
-    # def test_fix_gives_valid_user(self):
-    #     user = {"uidNumber": 123}
-    #     user = users.fix(user, users.keymap)
-    #     print(user)
 
 
 if __name__ == "__main__":
