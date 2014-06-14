@@ -196,7 +196,10 @@ class UsersTestCase(unittest.TestCase):
                          'mail': ['gunea.pig@students.wits.ac.za']}
         self.maxDiff = None
         user = users.User(valid)
-        del user.attributes['userPassword']
+        del user.attributes['uidNumber']
+        del user.attributes['sambaSID']
+        del expected_attr['uidNumber']
+        del expected_attr['sambaSID']
         self.assertEquals(user.attributes, expected_attr)
 
     def test_add(self):
@@ -271,9 +274,38 @@ class UsersTestCase(unittest.TestCase):
             babbage = "babbage.ug.eie.wits.ac.za"
             users.add_host('aslkjaslaksj', babbage)  # has no hosts
 
-    #     users.add_host(guneap['username'], babbage) # already there
-    #     users.add_host(guneap['username'], testing)# new host for guneap
-    #     g = users.find_one(guneap['username'])
+    def test_add_host_already_added(self):
+        dummy = self.existing_user['hosts'][0]
+        users.add_host(self.existing_user['username'], dummy)
+        user = users.find_one(self.existing_user['username'])
+        self.existing_user['uid_number'] = "4001"
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
+
+    def test_add_host_user_has_no_hosts(self):
+        new_host = "testing.ug.eie.wits.ac.za"
+        host_less = {"username": "hostless",
+                     "first_name": "Host",
+                     "last_name": "Less",
+                     "email": "host.less@students.wits.ac.za",
+                     "password": "nohost",
+                     "yos": "1"}
+        expected = {'username': 'hostless',
+                    'gid_number': '1000',
+                    'login_shell': '/bin/bash',
+                    'first_name': 'Host',
+                    'last_name': 'Less',
+                    'hosts': ['testing.ug.eie.wits.ac.za'],
+                    'home_directory': '/home/ug/hostless',
+                    'uid_number': '1000',
+                    'yos': '1',
+                    'email': ['host.less@students.wits.ac.za']}
+        users.delete(host_less['username'])
+        users.add(host_less)
+        users.add_host(host_less['username'], new_host)
+        user = users.find_one(host_less['username'])
+        self.assertEquals(user, expected)
+
     #     self.assertEquals(g, expected_guneap)
     #     users.add_host(johnd['username'], babbage) # has no hosts
     #     j = users.find_one(johnd['username'])

@@ -27,20 +27,22 @@ for k, v in FROM_LDAP_MAP.items():
 
 class User():
     """This encapsulates converting and validating the user"""
-    dn = None
-    attributes = {"objectClass": ["inetOrgPerson", "organizationalPerson",
-                  "posixAccount", "sambaSamAccount", "hostObject"],
-                  "uidNumber": None,
-                  "gidNumber": None,
-                  "homeDirectory": None,
-                  "loginShell": "/bin/bash",
-                  "displayName": None,
-                  "sambaSID": None,
-                  "sambaAcctFlags": "[U         ]",
-                  "sambaNTPassword": None,
-                  "sambaLMPassword": None}
 
     def __init__(self, attr):
+        self.dn = None
+        self.attributes = {"objectClass": ["inetOrgPerson",
+                                           "organizationalPerson",
+                                           "posixAccount",
+                                           "sambaSamAccount", "hostObject"],
+                           "uidNumber": "",
+                           "gidNumber": "",
+                           "homeDirectory": "",
+                           "loginShell": "/bin/bash",
+                           "displayName": "",
+                           "sambaSID": "",
+                           "sambaAcctFlags": "[U         ]",
+                           "sambaNTPassword": "",
+                           "sambaLMPassword": ""}
         validate(attr)
         self.set_attributes(attr)
 
