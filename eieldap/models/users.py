@@ -276,35 +276,36 @@ def reset_password(username):
     return False
 
 
-# def add_host(username, host_domain):
-#     """ Allow the user with username to login to host with host_domain.
-#     this assumes the host has been configured to use the host property"""
-#     user = find_one(username)
-#     if not user:
-#         raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
-#
-#     try:
-#         if host_domain not in user['hosts']:
-#             user['hosts'].append(host_domain)
-#             save(user)
-#     except KeyError:
-#         user['hosts'] = [host_domain]
-#         save(user)
-#
-#
-# def remove_host(username, host_domain):
-#     """ Disallow a user with username to login into a host with host_domain.
-#     this assumes the host has been configured to use the host property"""
-#     user = find_one(username)
-#     if not user:
-#         raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
-#
-#     if host_domain in user['hosts']:
-#         user['hosts'].remove(host_domain)
-#         save(user)
-#     else:
-#         logger.debug("host: {0} not found in {1} user".format(
-#             host_domain, username))
+def add_host(username, host_domain):
+    """ Allow the user with username to login to host with host_domain.
+    this assumes the host has been configured to use the host property"""
+    user = find_one(username)
+    if not user:
+        raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
+
+    logger.error("ADD USER: {}".format(user))
+    try:
+        if host_domain not in user['hosts']:
+            user['hosts'].append(host_domain)
+            update(user)
+    except KeyError:
+        user['hosts'] = [host_domain]
+        update(user)
+
+
+def remove_host(username, host_domain):
+    """ Disallow a user with username to login into a host with host_domain.
+    this assumes the host has been configured to use the host property"""
+    user = find_one(username)
+    if not user:
+        raise ValueError("trying to add host {1} to {0}, but {0} does not exist in the ldap".format(username, host_domain))
+
+    if host_domain in user['hosts']:
+        user['hosts'].remove(host_domain)
+        update(user)
+    else:
+        logger.debug("host: {0} not found in {1} user".format(
+            host_domain, username))
 
 
 def authenticate(username, password):

@@ -256,59 +256,18 @@ class UsersTestCase(unittest.TestCase):
         user = users.find_one()
         self.assertEquals(user, None)
 
-    # def test_add_host(self):
-    #     """ Can I add a host?"""
-    #     original_group = {"name": "natsuki", "members": ['mandla']}
+    def test_add_host(self):
+        new_host = "testing.ug.eie.wits.ac.za"
+        users.add_host(self.existing_user['username'], new_host)
+        user = users.find_one(self.existing_user['username'])
+        print(user)
+        # self.existing_user['username']['hosts'].append(new_host)
+        # self.assertEquals(user, self.existing_user)
 
-    #     guneap = {"username": "guneap",
-    #               "first_name": "Gunea",
-    #               "last_name": "Pig",
-    #               "email": ["123@students.wits.ac.za"],
-    #               "password": "passing",
-    #               "hosts": ['babbage.ug.eie.wits.ac.za'],
-    #               "yos": "2"}
-    #     expected_guneap = {"username": "guneap",
-    #                        "gid_number": "2000",
-    #                        "login_shell": "/bin/bash",
-    #                        "first_name": "Gunea",
-    #                        "last_name": "Pig",
-    #                        "yos": "2",
-    #                        "hosts": ['babbage.ug.eie.wits.ac.za', 'testing.ug.eie.wits.ac.za'],
-    #                        "home_directory": "/home/ug/guneap",
-    #                        "uid_number": "2000",
-    #                        "email": ["123@students.wits.ac.za"]}
-    #     johnd = {"username": "johnd",
-    #               "first_name": "John",
-    #               "last_name": "Doe",
-    #               "email": ["john.doe@students.wits.ac.za"],
-    #               "password": "passing",
-    #               "yos": "4"}
-    #     expected_johnd = {"username": "johnd",
-    #                        "gid_number": "4000",
-    #                        "login_shell": "/bin/bash",
-    #                        "first_name": "John",
-    #                        "last_name": "Doe",
-    #                        "yos": "4",
-    #                        "hosts": ['babbage.ug.eie.wits.ac.za'],
-    #                        "home_directory": "/home/ug/johnd",
-    #                        "uid_number": "4000",
-    #                        "email": ["john.doe@students.wits.ac.za"]}
-    #     already_member = johnd['username']
-    #     existing_user = guneap['username']
-    #     new_member = guneap['username']
-    #     non_existing_user = "poiqaalkj"
-    #     babbage = "babbage.ug.eie.wits.ac.za"
-    #     testing = "testing.ug.eie.wits.ac.za"
-
-    #     # remove from a group that exists
-    #     user = users.find_one("guneap")
-    #     if user:
-    #         users.delete("guneap")
-    #     self.assertTrue(users.save(guneap)) # save with one host
-    #     user = users.find_one("mandla")
-    #     if user:
-    #         users.delete("johnd")
-    #     self.assertTrue(users.save(johnd)) # no groups
+    def test_add_host_non_existant_username(self):
+        with self.assertRaises(ValueError):
+            babbage = "babbage.ug.eie.wits.ac.za"
+            users.add_host('aslkjaslaksj', babbage)  # has no hosts
 
     #     users.add_host(guneap['username'], babbage) # already there
     #     users.add_host(guneap['username'], testing)# new host for guneap
@@ -319,8 +278,6 @@ class UsersTestCase(unittest.TestCase):
     #     self.assertEquals(j, expected_johnd)
 
     #     # what if user does not exist
-    #     with self.assertRaises(ValueError):
-    #         users.add_host(non_existing_user, babbage) # has no hosts
 
     # def test_remove_host(self):
     #     guneap = {"username": "guneap",
