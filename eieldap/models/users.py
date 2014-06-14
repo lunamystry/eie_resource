@@ -78,7 +78,11 @@ class User():
             self.attributes["mail"] = [attr['email']]
         except KeyError:
             pass
-
+        try:
+            self.attributes['uid'] = attr['username']
+        except KeyError:
+            # TODO: What username already exists?
+            self.attributes['uid'] = attr['last_name'] + attr['first_name'][0]
 
 def add(attr):
     """ adds a new user """

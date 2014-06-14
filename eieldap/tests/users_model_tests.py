@@ -161,22 +161,25 @@ class UsersTestCase(unittest.TestCase):
                  "password": "passing",
                  "hosts": ['dummy'],
                  "yos": "1"}
-        expected_attr = {'gidNumber': 1000,
-                         'displayName': 'Gunea Pig',
-                         'homeDirectory': '/home/ug/guneap',
+        expected_attr = {'cn': 'Gunea',
                          'objectClass': ['inetOrgPerson',
                                          'organizationalPerson',
                                          'posixAccount',
                                          'sambaSamAccount',
                                          'hostObject'],
                          'loginShell': '/bin/bash',
-                         'sambaNTPassword': '6D14A6C43C5C6A2A4B5B45BD97C2F09F',
                          'sambaLMPassword': 'F1213CB1AFD3589BAAD3B435B51404EE',
-                         'uidNumber': 1000,
+                         'uidNumber': '1001',
+                         'sambaAcctFlags': '[U         ]',
+                         'gidNumber': '1000',
+                         'sambaNTPassword': '6D14A6C43C5C6A2A4B5B45BD97C2F09F',
+                         'uid': 'guneap',
+                         'displayName': 'Gunea Pig',
                          'host': ['dummy'],
-                         'mail': ['guneap@students.wits.ac.za'],
-                         'sambaSID': 'S-1-5-21-3949128619-541665055-2325163404-4000',
-                         'sambaAcctFlags': '[U         ]'}
+                         'sambaSID': 'S-1-5-21-3949128619-541665055-2325163404-1001100110011001',
+                         'sn': 'Pig',
+                         'homeDirectory': '/home/ug/guneap',
+                         'mail': ['guneap@students.wits.ac.za']}
         self.assertEquals(users.User(valid).attributes, expected_attr)
 
     def test_add(self):
