@@ -153,9 +153,35 @@ class UsersTestCase(unittest.TestCase):
                                    "hosts": ['dummy'],
                                    "yos": "4"}
 
-    # def test_add(self):
-    #     '''simply add a new valid user'''
-    #     self.assertTrue(users.add(self.valid))
+    def test_init_user(self):
+        valid = {"username": "guneap",
+                 "first_name": "Gunea",
+                 "last_name": "Pig",
+                 "email": "guneap@students.wits.ac.za",
+                 "password": "passing",
+                 "hosts": ['dummy'],
+                 "yos": "1"}
+        expected_attr = {'gidNumber': 1000,
+                         'displayName': 'Gunea Pig',
+                         'homeDirectory': '/home/ug/guneap',
+                         'objectClass': ['inetOrgPerson',
+                                         'organizationalPerson',
+                                         'posixAccount',
+                                         'sambaSamAccount',
+                                         'hostObject'],
+                         'loginShell': '/bin/bash',
+                         'sambaNTPassword': '6D14A6C43C5C6A2A4B5B45BD97C2F09F',
+                         'sambaLMPassword': 'F1213CB1AFD3589BAAD3B435B51404EE',
+                         'uidNumber': 1000,
+                         'host': ['dummy'],
+                         'mail': ['guneap@students.wits.ac.za'],
+                         'sambaSID': 'S-1-5-21-3949128619-541665055-2325163404-4000',
+                         'sambaAcctFlags': '[U         ]'}
+        self.assertEquals(users.User(valid).attributes, expected_attr)
+
+    def test_add(self):
+        '''simply add a new valid user'''
+        self.assertTrue(users.add(self.valid))
 
     # def test_add_existing(self):
     #     '''adding existing user should update it'''

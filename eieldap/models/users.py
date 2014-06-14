@@ -72,21 +72,18 @@ class User():
         self.attributes["displayName"] = "{0} {1}".format(attr["first_name"],
                                                           attr["last_name"])
         try:
-            for index, host in enumerate(attr["host"]):
-                self.attributes["hosts"][index] = str(host)
+            self.attributes["host"] = attr['hosts']
+            self.attributes["mail"] = [attr['email']]
         except KeyError:
             pass
-
-    def to_dict(self):
-        convert(self.attributes, FROM_LDAP_MAP)
 
 
 def add(attr):
     """ adds a new user """
     user = User(attr)
-    if manager.create(user.attributes['dn'], user.to_dict()):
+    if manager.create(user.dn, user.attributes):
         change_password(user.attributes['uid'], None, attr['password'])
-        logger.info("Created user: {}".format(user.attributes['dn']))
+        logger.info("created user: {}".format(user.dn))
         return True
     return False
 
