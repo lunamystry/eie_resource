@@ -306,59 +306,36 @@ class UsersTestCase(unittest.TestCase):
         user = users.find_one(host_less['username'])
         self.assertEquals(user, expected)
 
-    #     self.assertEquals(g, expected_guneap)
-    #     users.add_host(johnd['username'], babbage) # has no hosts
-    #     j = users.find_one(johnd['username'])
-    #     self.assertEquals(j, expected_johnd)
+    def test_remove_host(self):
+        new_host = "testing.ug.eie.wits.ac.za"
+        users.add_host(self.existing_user['username'], new_host)
+        users.remove_host(self.existing_user['username'], new_host)
+        user = users.find_one(self.existing_user['username'])
+        self.existing_user['uid_number'] = "4001"
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
 
-    #     # what if user does not exist
+    def test_remove_host_last_one(self):
+        only_host = self.existing_user['hosts'][0]
+        users.remove_host(self.existing_user['username'], only_host)
+        user = users.find_one(self.existing_user['username'])
+        self.existing_user['hosts'].remove(only_host)
+        self.existing_user['uid_number'] = "4002"
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
 
-    # def test_remove_host(self):
-    #     guneap = {"username": "guneap",
-    #               "first_name": "Gunea",
-    #               "last_name": "Pig",
-    #               "email": ["123@students.wits.ac.za"],
-    #               "password": "passing",
-    #               "hosts": ['babbage.ug.eie.wits.ac.za', 'testing.ug.eie.wits.ac.za'],
-    #               "yos": "2"}
-    #     expected_guneap = {"username": "guneap",
-    #                        "gid_number": "2000",
-    #                        "login_shell": "/bin/bash",
-    #                        "first_name": "Gunea",
-    #                        "last_name": "Pig",
-    #                        "yos": "2",
-    #                        "hosts": ['babbage.ug.eie.wits.ac.za'],
-    #                        "home_directory": "/home/ug/guneap",
-    #                        "uid_number": "2000",
-    #                        "email": ["123@students.wits.ac.za"]}
-    #     non_existing_user = "poiqaalkj"
-    #     babbage = "babbage.ug.eie.wits.ac.za"
-    #     testing = "testing.ug.eie.wits.ac.za"
+    def test_remove_host_not_there(self):
+        fake_host = 'aslkajs'
+        users.remove_host(self.existing_user['username'], fake_host)
+        user = users.find_one(self.existing_user['username'])
+        self.existing_user['uid_number'] = "4001"
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
 
-    #     # prepare
-    #     user = users.find_one("guneap")
-    #     if user:
-    #         users.delete("guneap")
-    #     self.assertTrue(users.save(guneap)) # save with one host
-
-    #     # remove a host
-    #     users.remove_host(guneap['username'], testing)
-    #     g = users.find_one(guneap['username'])
-    #     self.assertEquals(g, expected_guneap)
-
-    #     # remove a host thats not there
-    #     users.remove_host(guneap['username'], testing)
-    #     self.assertEquals(g, expected_guneap)
-
-    #     # remove the last host
-    #     users.remove_host(guneap['username'], babbage)
-    #     g = users.find_one(guneap['username'])
-    #     del(expected_guneap['hosts'])
-    #     self.assertEquals(g, expected_guneap)
-
-    #     # remove from a user that does not exists
-    #     with self.assertRaises(ValueError):
-    #         users.remove_host(non_existing_user, babbage) # has no hosts
+    def test_remove_host_non_existant_user(self):
+        non_existant_user = 'aslkajs121'
+        with self.assertRaises(ValueError):
+            users.remove_host(non_existant_user, 'dummy')
 
 
 if __name__ == "__main__":
