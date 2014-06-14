@@ -261,8 +261,10 @@ class UsersTestCase(unittest.TestCase):
         new_host = "testing.ug.eie.wits.ac.za"
         users.add_host(self.existing_user['username'], new_host)
         user = users.find_one(self.existing_user['username'])
-        # self.existing_user['username']['hosts'].append(new_host)
-        # self.assertEquals(user, self.existing_user)
+        self.existing_user['hosts'].append(new_host)
+        self.existing_user['uid_number'] = "4002"
+        del self.existing_user['password']
+        self.assertEquals(user, self.existing_user)
 
     def test_add_host_non_existant_username(self):
         with self.assertRaises(ValueError):
