@@ -63,13 +63,16 @@ class User():
         self.attributes['sn'] = attr['last_name']
         self.attributes['uidNumber'] = str(next_uid_number(int(attr['yos'])))
         self.attributes['gidNumber'] = str(user_gid_number(int(attr['yos'])))
-        lm_password, nt_password = smb_encrypt(attr["password"])
-        self.attributes['sambaNTPassword'] = nt_password
-        self.attributes['sambaLMPassword'] = lm_password
         smbRid = str(int(self.attributes['uidNumber'])*4)
         self.attributes["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-{}".format(str(smbRid))
         self.attributes["displayName"] = "{0} {1}".format(attr["first_name"],
                                                           attr["last_name"])
+        try:
+            lm_password, nt_password = smb_encrypt(attr["password"])
+            self.attributes['sambaNTPassword'] = nt_password
+            self.attributes['sambaLMPassword'] = lm_password
+        except KeyError:
+            pass
         try:
             if not isinstance(attr['email'], list):
                 self.attributes["mail"] = [attr['email']]
@@ -102,7 +105,10 @@ def add(attr):
     """ adds a new user """
     user = User(attr)
     if manager.create(user.dn, user.attributes):
-        change_password(user.attributes['uid'], None, attr['password'])
+        try:
+            change_password(user.attributes['uid'], None, attr['password'])
+        except KeyError:
+            pass
         logger.info("created user: {}".format(user.dn))
         return True
     else:
@@ -115,7 +121,10 @@ def update(attr):
     """ updates a user"""
     user = User(attr)
     if manager.update(user.dn, user.attributes):
-        change_password(user.attributes['uid'], None, attr['password'])
+        try:
+            change_password(user.attributes['uid'], None, attr['password'])
+        except KeyError:
+            pass
         logger.info("updated user: " + str(user.dn))
         return True
     else:
@@ -167,7 +176,7 @@ def find_one(username=None):
     if found_user:
         found_user = convert(found_user, FROM_LDAP_MAP)
         found_user['yos'] = str(int(found_user['gid_number'])/1000)
-        return found_user 
+        return found_user
 
 
 # def save(attr):
@@ -184,13 +193,11 @@ def find_one(username=None):
 #     else:
 #         return add(attr)
 #     return False
-#
-#
+
 
 def validate(attr):
     '''Make sure that attributes are all there in the correct form'''
-    required_attributes = ['first_name', 'last_name', 'yos', 'email',
-                           'password']
+    required_attributes = ['first_name', 'last_name', 'yos', 'email']
     for attribute in required_attributes:
         if attribute not in attr:
             raise TypeError("missing attributes: {}".format(
