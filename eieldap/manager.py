@@ -57,7 +57,6 @@ class Manager():
     def create(self, dn, fields):
         try:
             modlist = ldap.modlist.addModlist(fields)
-            logger.debug("Trying to add modelist: " + str(modlist))
             self.connection.add_s(dn, modlist)
             return True
         except ldap.ALREADY_EXISTS:
@@ -173,7 +172,6 @@ class Manager():
     def de_list(self, user):
         fields = []
         list_fields = ['objectClass', 'mail', 'member', 'memberUid', 'host']
-        logger.debug("Keeping only: " + str(list_fields) + " as lists")
         dn, fields = user
         fields.update({"dn": [dn]})
         for key in fields:
