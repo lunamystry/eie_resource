@@ -172,6 +172,16 @@ class groupMembersTestCase(unittest.TestCase):
         groups.add_member(self.existing_group['name'],
                           self.existing_user['username'])
 
+    def test_add_member_non_existant_group(self):
+        '''cannot add a username of a group who is not in the directory'''
+        with self.assertRaises(ValueError):
+            groups.add_member('not_there', 'not_there')
+
+    def test_add_member_non_existant_user(self):
+        '''cannot add a username of a user who is not in the directory'''
+        with self.assertRaises(ValueError):
+            groups.add_member(self.existing_group['name'], 'not_there')
+
     # def test_save_group_member(self):
     #     """ Can I save a group member?"""
 

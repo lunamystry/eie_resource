@@ -112,10 +112,10 @@ def remove_member(group_name, member_username):
 
     if member_username in group['members']:
         if len(group['members']) == 1:
-            raise ReferenceError("You cannot remove the last member of a group")
+            raise ReferenceError("you cannot remove the last member of a group")
         group['members'].remove(member_username)
         save(group)
-        logger.info("Removed {0} from {1} group".format(member_username, group_name))
+        logger.info("removed {0} from {1} group".format(member_username, group_name))
     else:
         logger.debug("{0} not found in {1} group".format(member_username, group_name))
 
