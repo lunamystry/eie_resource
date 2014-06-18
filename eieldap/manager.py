@@ -72,16 +72,12 @@ class Manager():
             try:
                 self.admin_bind()
                 self.connection.modify_s(dn, modlist)
-                logger.info("Updated user with dn: {}".format(dn))
-                return True
             except ldap.LDAPError as e:
                 logger.error("""\n\tCould not update user with dn: {0}
                                 \tbecause: {1} \n\tmodlist: {2}""".format(
                     dn, e, str(modlist)))
-        else:
-            logger.warning("Nothing to update for: {0}".format(dn))
-            return True
-        return False
+                raise ValueError(str(e))
+        raise RuntimeError("{} not updated for reasons unknown".format(dn))
 
     def prepare_modlist(self, dn, new_attr):
         attr = self.find_by_dn(dn)
