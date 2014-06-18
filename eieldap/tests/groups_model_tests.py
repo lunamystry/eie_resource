@@ -146,8 +146,21 @@ class groupMembersTestCase(unittest.TestCase):
                               "password": "secret",
                               "hosts": ['babbage.ug.eie.wits.ac.za'],
                               "yos": "3"}
+        self.existing_user2 = {"username": "johnd",
+                               "first_name": "John",
+                               "last_name": "Doe",
+                               "email": ["john.doe@students.wits.ac.za"],
+                               "password": "passing",
+                               "hosts": ['dummy'],
+                               "gid_number": "4000",
+                               "uid_number": "4001",
+                               "login_shell": "/bin/bash",
+                               "home_directory": "/home/ug/johnd",
+                               "yos": "4"}
         users.delete(self.existing_user['username'])
+        users.delete(self.existing_user2['username'])
         users.add(self.existing_user)
+        users.add(self.existing_user2)
         self.existing_group = {"name": "natsuki",
                                "gid_number": "1000",
                                "description": "Natsuki, like the summer",
@@ -165,6 +178,7 @@ class groupMembersTestCase(unittest.TestCase):
 
     def tearDown(self):
         users.delete(self.existing_user['username'])
+        users.delete(self.existing_user2['username'])
         groups.delete(self.existing_group['name'])
 
     def test_add_member_new_member(self):
@@ -189,100 +203,27 @@ class groupMembersTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             groups.add_member(self.existing_group['name'], 'not_there')
 
-    # def test_save_group_member(self):
-    #     """ Can I save a group member?"""
+    def test_remove_member(self):
+        '''should be able to simply remove a member'''
+        groups.add_member(self.existing_group['name'],
+                          self.existing_user2['username'])
+        groups.remove_member(self.existing_group['name'],
+                             self.existing_user['username'])
 
-    #     # remove from a group that exists
-    #     user = users.find_one("guneap")
-    #     if user:
-    #         users.delete("guneap")
-    #     users.save(guneap)
-    #     user = users.find_one("mandla")
-    #     if user:
-    #         users.delete("mandla")
-    #     users.save(mandla)
+    def test_remove_member_last_member(self):
+        '''cannot remove the last member of a group'''
+        with self.assertRaises(ReferenceError):
+            groups.remove_member(self.existing_group['name'],
+                                 self.existing_user['username'])
 
-    #     group = groups.find_one("natsuki")
-    #     if group:
-    #         groups.delete("natsuki")
-    #     groups.save(original_group)
+    def test_remove_member_non_existant_group(self):
+        '''cannot remove a username of a group who is not in the directory'''
+        with self.assertRaises(ValueError):
+            groups.remove_member('not_there', 'not_there')
 
-    #     # save to a group that exists
-    #     groups.save_member("natsuki", new_member)
-    #     group = groups.find_one("natsuki")
-    #     expected = {"name": "natsuki", "members": ['mandla', 'guneap']}
-    #     self.assertEquals(group, expected)
-    #     groups.remove_member("natsuki", new_member)
-
-    #     groups.save_member("natsuki", already_member)
-    #     group = groups.find_one("natsuki")
-    #     original_group = {"name": "natsuki", "members": ['mandla']}
-    #     self.assertEquals(group, original_group)
-
-    #     with self.assertRaises(ValueError):
-    #         groups.save_member("natsuki", non_existing_user)
-
-    #     # save to a group that does not exist
-    #     with self.assertRaises(ValueError):
-    #         groups.save_member("aslkjalskj", existing_user)
-    #     with self.assertRaises(ValueError):
-    #         groups.save_member("aslkjqoi", non_existing_user)
-    #     with self.assertRaises(ValueError):
-    #         groups.save_member("alskjaslkj", non_existing_user)
-
-    # def test_remove_group_member(self):
-    #     """ Can I remove a group member?"""
-    #     original_group = {"name": "natsuki", "members": ['mandla']}
-    #     expected = {"name": "natsuki", "members": ['mandla', 'guneap']}
-    #     guneap = {"username": "guneap",
-    #               "first_name": "Gunea",
-    #               "last_name": "Pig",
-    #               "email": "123@students.wits.ac.za",
-    #               "password": "secret",
-    #               "yos": "3"}
-    #     already_member = "mandla"
-    #     existing_user = "guneap"
-    #     non_existing_user = "poiqaalkj"
-
-    #     # remove from a group that exists
-    #     user = users.find_one("guneap")
-    #     if user:
-    #         users.delete("guneap")
-    #     users.save(guneap)
-
-    #     group = groups.find_one("natsuki")
-    #     if group:
-    #         groups.delete("natsuki")
-    #     groups.save(original_group)
-
-    #     # Add a member
-    #     groups.save_member("natsuki", existing_user)
-    #     group = groups.find_one("natsuki")
-    #     new_group = {"name": "natsuki", "members": ['mandla', 'guneap']}
-    #     self.assertEquals(group, new_group)
-    #     # remove the member
-    #     groups.remove_member("natsuki", existing_user)
-    #     group = groups.find_one("natsuki")
-    #     original_group = {"name": "natsuki", "members": ['mandla']}
-    #     self.assertEquals(group, original_group)
-
-    #     # member does not exist, I don't care, remain the same
-    #     groups.remove_member("natsuki", non_existing_user)
-    #     group = groups.find_one("natsuki")
-    #     original_group = {"name": "natsuki", "members": ['mandla']}
-    #     self.assertEquals(group, original_group)
-
-    #     # remove from a group that does not exist
-    #     with self.assertRaises(ValueError):
-    #         groups.remove_member("aslkjalskj", existing_user)
-    #     with self.assertRaises(ValueError):
-    #         groups.remove_member("aslkjqoi", non_existing_user)
-    #     with self.assertRaises(ValueError):
-    #         groups.remove_member("alskjaslkj", non_existing_user)
-
-    #     # what if there is only one member remaining
-    #     with self.assertRaises(ReferenceError):
-    #         groups.remove_member("natsuki", "mandla")
+    def test_remove_member_non_existant_member(self):
+        '''removing non-existant user just does nothing'''
+        groups.remove_member(self.existing_group['name'], 'not_there')
 
 
 if __name__ == "__main__":
