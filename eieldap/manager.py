@@ -67,6 +67,7 @@ class Manager():
 
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
+        self.admin_bind()
         modlist = self.prepare_modlist(dn, new_attr)
         if modlist:
             try:
@@ -96,6 +97,7 @@ class Manager():
         return "\n".join(['%s\t: %s' % (k, v) for k, v in attr.items()])
 
     def delete(self, dn):
+        self.admin_bind()
         try:
             self.connection.delete_s(dn)
         except ldap.NO_SUCH_OBJECT:
