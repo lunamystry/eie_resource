@@ -12,6 +12,37 @@ for k, v in TO_LDAP_MAP.items():
     FROM_LDAP_MAP[v] = k
 
 
+def save(group):
+    """ if the group exists update, if not create"""
+    if ("members" not in group
+            or type(group['members']) is not list
+            or len(group['members']) == 0):
+        raise TypeError("You must give atleast one group member")
+    unfixed_group = dict(group)
+    unfixed_group['members'] = list(group['members'])
+    for i, member_name in enumerate(unfixed_group["members"]):
+        # TODO: member[i] = users.find_one(member)["id"]
+        unfixed_group['members'][i] = "uid=" + member_name + "," + users.BASEDN
+
+    fixed_group = convert(unfixed_group, FROM_LDAP_MAP)
+    dn = "cn=" + fixed_group["cn"] + "," + BASEDN
+    existing_group = manager.find_one(fixed_group, filter_key="cn")
+    if existing_group:
+        if manager.update(dn, fixed_group):
+            logger.info("Updated group: " + str(fixed_group))
+            return True
+        return False
+    else:
+        fixed_group["objectClass"] = ["groupOfNames"]
+        fixed_group["cn"] = str(fixed_group["cn"])
+        if 'dn' in fixed_group:
+            del fixed_group['dn']
+        manager.create(dn, fixed_group)
+        logger.info("Created group: " + str(dn))
+        return True
+    return False
+
+
 def find():
     """ Returns all the groups in the directory (think ldap)"""
     groups = manager.find(BASEDN, filter_key="cn")
@@ -53,37 +84,6 @@ def get_names(dn_list):
         _, name, _ = dn[0][0]
         dn_list[i] = name
     return dn_list
-
-
-def save(group):
-    """ if the group exists update, if not create"""
-    if ("members" not in group
-            or type(group['members']) is not list
-            or len(group['members']) == 0):
-        raise TypeError("You must give atleast one group member")
-    unfixed_group = dict(group)
-    unfixed_group['members'] = list(group['members'])
-    for i, member_name in enumerate(unfixed_group["members"]):
-        # TODO: member[i] = users.find_one(member)["id"]
-        unfixed_group['members'][i] = "uid=" + member_name + "," + users.BASEDN
-
-    fixed_group = fix(unfixed_group, FROM_LDAP_MAP)
-    dn = "cn=" + fixed_group["cn"] + "," + BASEDN
-    existing_group = manager.find_one(fixed_group, filter_key="cn")
-    if existing_group:
-        if manager.update(dn, fixed_group):
-            logger.info("Updated group: " + str(fixed_group))
-            return True
-        return False
-    else:
-        fixed_group["objectClass"] = ["groupOfNames"]
-        fixed_group["cn"] = str(fixed_group["cn"])
-        if 'dn' in fixed_group:
-            del fixed_group['dn']
-        manager.create(dn, fixed_group)
-        logger.info("Created group: " + str(dn))
-        return True
-    return False
 
 
 def delete(name=None, group=None):
