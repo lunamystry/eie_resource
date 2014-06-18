@@ -6,7 +6,8 @@ import logging
 logger = logging.getLogger('eieldap.models.groups')
 BASEDN = "ou=groups," + manager.base
 TO_LDAP_MAP = {"cn": "name",
-          "member": "members"}
+               "gidNumber": "gid_number",
+               "memberUid": "members"}
 FROM_LDAP_MAP = {}
 for k, v in TO_LDAP_MAP.items():
     FROM_LDAP_MAP[v] = k
@@ -33,7 +34,7 @@ def save(group):
             return True
         return False
     else:
-        fixed_group["objectClass"] = ["groupOfNames"]
+        fixed_group["objectClass"] = ["posixGroup"]
         fixed_group["cn"] = str(fixed_group["cn"])
         if 'dn' in fixed_group:
             del fixed_group['dn']
