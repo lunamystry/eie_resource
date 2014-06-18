@@ -91,36 +91,36 @@ class groupsTestCase(unittest.TestCase):
 
 
 class groupMembersTestCase(unittest.TestCase):
+    pass
+    # def setUp(self):
+    #     self.existing_user = {"username": "guneap",
+    #                           "first_name": "Gunea",
+    #                           "last_name": "Pig",
+    #                           "email": "123@students.wits.ac.za",
+    #                           "password": "secret",
+    #                           "hosts": ['babbage.ug.eie.wits.ac.za'],
+    #                           "yos": "3"}
+    #     self.existing_group = {"name": "testgroup",
+    #                            "members": [self.existing_user['username']]}
+    #     self.non_existing_user = "poiqaalkj"
+    #     models.users.save(self.existing_user)
+    #     models.groups.save(self.existing_group)
+    #     self.new_member = {"username": "johnd",
+    #                        "first_name": "John",
+    #                        "last_name": "Doe",
+    #                        "email": "mandla.niigata@students.wits.ac.za",
+    #                        "password": "passing",
+    #                        "hosts": ['dummy'],
+    #                        "yos": "4"}
 
-    def setUp(self):
-        self.existing_user = {"username": "guneap",
-                              "first_name": "Gunea",
-                              "last_name": "Pig",
-                              "email": "123@students.wits.ac.za",
-                              "password": "secret",
-                              "hosts": ['babbage.ug.eie.wits.ac.za'],
-                              "yos": "3"}
-        self.existing_group = {"name": "testgroup",
-                               "members": [self.existing_user['username']]}
-        self.non_existing_user = "poiqaalkj"
-        models.users.save(self.existing_user)
-        models.groups.save(self.existing_group)
-        self.new_member = {"username": "johnd",
-                           "first_name": "John",
-                           "last_name": "Doe",
-                           "email": "mandla.niigata@students.wits.ac.za",
-                           "password": "passing",
-                           "hosts": ['dummy'],
-                           "yos": "4"}
+    # def tearDown(self):
+    #     models.users.delete(self.existing_user['name'])
+    #     models.groups.delete(self.existing_group['name'])
 
-    def tearDown(self):
-        models.users.delete(self.existing_user['name'])
-        models.groups.delete(self.existing_group['name'])
-
-    def test_add_member_new_member(self):
-        '''I should be able to simply add a new valid member'''
-        models.groups.add_member(self.existing_group['name'],
-                                 self.new_member['username'])
+    # def test_add_member_new_member(self):
+    #     '''I should be able to simply add a new valid member'''
+    #     models.groups.add_member(self.existing_group['name'],
+    #                              self.new_member['username'])
 
     # def test_add_group_member(self):
     #     """ Can I add a group member?"""

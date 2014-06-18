@@ -4,22 +4,22 @@ import ldap
 import logging
 
 logger = logging.getLogger('eieldap.models.groups')
-basedn = "ou=groups," + manager.base
-keymap = {"cn": "name",
+BASEDN = "ou=groups," + manager.base
+TO_LDAP_MAP = {"cn": "name",
           "member": "members"}
-inv_keymap = {}
-for k, v in keymap.items():
-    inv_keymap[v] = k
+FROM_LDAP_MAP = {}
+for k, v in TO_LDAP_MAP.items():
+    FROM_LDAP_MAP[v] = k
 
 
 def find():
     """ Returns all the groups in the directory (think ldap)"""
-    groups = manager.find(basedn, filter_key="cn")
+    groups = manager.find(BASEDN, filter_key="cn")
     groups_list = []
     for group in groups:
         try:
             group['member'] = get_names(group['member'])  # NOT DRY
-            new_group = fix(group, keymap)
+            new_group = fix(group, TO_LDAP_MAP)
             groups_list.append(new_group)
         except KeyError:
             logger.error("Problem with Group: " + str(group))
@@ -31,20 +31,20 @@ def find_one(name=None, group=None):
     """ Returns a single group """
     found_group = None
     if name is not None:
-        dn = "cn=" + name + "," + basedn
+        dn = "cn=" + name + "," + BASEDN
         found_group = manager.find_by_dn(dn)
 
     if found_group:
         found_group['member'] = get_names(found_group['member'])  # Repeated in find
-        return fix(found_group, keymap)
+        return fix(found_group, TO_LDAP_MAP)
 
     if group is not None:
-        fixed_group = fix(group, inv_keymap)
-        found_group = manager.find_one(fixed_group, basedn, filter_key="cn")
+        fixed_group = fix(group, FROM_LDAP_MAP)
+        found_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
     if found_group:
         found_group['member'] = get_names(found_group['member'])  # Repeated in find
-        return fix(found_group, keymap)
+        return fix(found_group, TO_LDAP_MAP)
 
 
 def get_names(dn_list):
@@ -65,10 +65,10 @@ def save(group):
     unfixed_group['members'] = list(group['members'])
     for i, member_name in enumerate(unfixed_group["members"]):
         # TODO: member[i] = users.find_one(member)["id"]
-        unfixed_group['members'][i] = "uid=" + member_name + "," + users.basedn
+        unfixed_group['members'][i] = "uid=" + member_name + "," + users.BASEDN
 
-    fixed_group = fix(unfixed_group, inv_keymap)
-    dn = "cn=" + fixed_group["cn"] + "," + basedn
+    fixed_group = fix(unfixed_group, FROM_LDAP_MAP)
+    dn = "cn=" + fixed_group["cn"] + "," + BASEDN
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
         if manager.update(dn, fixed_group):
@@ -90,12 +90,12 @@ def delete(name=None, group=None):
     """ Deletes a group """
     existing_group = None
     if name is not None:
-        dn = "cn=" + name + "," + basedn
+        dn = "cn=" + name + "," + BASEDN
         existing_group = manager.find_by_dn(dn)
     elif group is not None:
-        fixed_group = fix(group, inv_keymap)
-        dn = "cn=" + fixed_group['cn'] + "," + basedn
-        existing_group = manager.find_one(fixed_group, basedn, filter_key="cn")
+        fixed_group = fix(group, FROM_LDAP_MAP)
+        dn = "cn=" + fixed_group['cn'] + "," + BASEDN
+        existing_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
     if existing_group:
         manager.delete(dn)
@@ -133,12 +133,12 @@ def remove_member(group_name, member_username):
         logger.debug("{0} not found in {1} group".format(member_username, group_name))
 
 
-def fix(group, keymap):
+def fix(group, TO_LDAP_MAP):
     if group:
         new_group = {}
         for key in group.keys():
             try:
-                nkey = keymap[key]
+                nkey = TO_LDAP_MAP[key]
                 if type(group[key]) is list:
                     new_group[nkey] = group[key]
                 else:
