@@ -130,9 +130,10 @@ class UserServicesTests(unittest.TestCase):
         '''this just passes things to the manager'''
         users.reset_password('user')
 
-    def test_authenticate(self):
+    def test_authenticate_invalid_credentials(self):
         '''this just passes things to the manager'''
-        users.authenticate('user', 'password')
+        with self.assertRaises(RuntimeError):
+            users.authenticate('invalid_user', 'invalid_password')
 
 
 class UsersTestCase(unittest.TestCase):
