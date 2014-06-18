@@ -42,9 +42,11 @@ def save(group):
         manager.create(dn, fixed_group)
 
 
-def find():
+def find(name=None):
     """ Returns all the groups in the directory (think ldap)"""
     groups = manager.find(BASEDN, filter_key="cn")
+    if name is not None:
+        return find_one(name)
     # groups_list = []
     # for group in groups:
     #     try:
@@ -56,34 +58,34 @@ def find():
     return groups
 
 
-# def find_one(name=None, group=None):
-#     """ Returns a single group """
-#     found_group = None
-#     if name is not None:
-#         dn = "cn=" + name + "," + BASEDN
-#         found_group = manager.find_by_dn(dn)
-#
-#     if found_group:
-#         found_group['member'] = get_names(found_group['member'])  # Repeated in find
-#         return convert(found_group, TO_LDAP_MAP)
-#
-#     if group is not None:
-#         fixed_group = convert(group, FROM_LDAP_MAP)
-#         found_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
-#
-#     if found_group:
-#         found_group['member'] = get_names(found_group['member'])  # Repeated in find
-#         return convert(found_group, TO_LDAP_MAP)
-#
-#
-# def get_names(dn_list):
-#     for i, strdn in enumerate(dn_list):
-#         dn = ldap.dn.str2dn(strdn)
-#         _, name, _ = dn[0][0]
-#         dn_list[i] = name
-#     return dn_list
-#
-#
+def find_one(name=None, group=None):
+    """ Returns a single group """
+    found_group = None
+    if name is not None:
+        dn = "cn=" + name + "," + BASEDN
+        found_group = manager.find_by_dn(dn)
+
+    if found_group:
+        found_group['memberUid'] = get_names(found_group['memberUid'])
+        return convert(found_group, TO_LDAP_MAP)
+
+    if group is not None:
+        fixed_group = convert(group, FROM_LDAP_MAP)
+        found_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
+
+    if found_group:
+        found_group['memberUid'] = get_names(found_group['memberUid'])
+        return convert(found_group, TO_LDAP_MAP)
+
+
+def get_names(dn_list):
+    for i, strdn in enumerate(dn_list):
+        dn = ldap.dn.str2dn(strdn)
+        _, name, _ = dn[0][0]
+        dn_list[i] = name
+    return dn_list
+
+
 # def delete(name=None, group=None):
 #     """ Deletes a group """
 #     existing_group = None

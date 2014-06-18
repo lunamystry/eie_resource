@@ -34,10 +34,17 @@ class groupsTestCase(unittest.TestCase):
     #     models.groups.delete(self.expected['name'])
     #     models.groups.delete(self.updated_valid['name'])
 
+    def test_save_and_find_one(self):
+        '''simple save of a valid group'''
+        groups.save(self.valid)
+        group = groups.find(self.valid['name'])
+        self.assertEquals(group, self.valid)
+
     def test_save_with_user_not_in_directory(self):
         '''cannot save a group which has a member who is not in the LDAP dir'''
         with self.assertRaises(ValueError):
-            groups.save(self.valid)
+            invalid = {"name": "invalid", "members": ["not_there"]}
+            groups.save(invalid)
         # group = models.groups.find_one(self.valid['name'])
         # self.assertEquals(group, self.valid)
 
