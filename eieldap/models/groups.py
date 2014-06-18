@@ -26,7 +26,6 @@ def save(group):
         if not users.find_one(member_name):
             logger.error(error_msg)
             raise ValueError(error_msg)
-        unfixed_group['members'][i] = "memberUid=" + member_name
 
     fixed_group = convert(unfixed_group, FROM_LDAP_MAP)
     dn = "cn=" + fixed_group["cn"] + "," + BASEDN
