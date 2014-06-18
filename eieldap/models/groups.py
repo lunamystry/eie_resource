@@ -47,14 +47,13 @@ def find(name=None):
     groups = manager.find(BASEDN, filter_key="cn")
     if name is not None:
         return find_one(name)
-    # groups_list = []
-    # for group in groups:
-    #     try:
-    #         group['member'] = get_names(group['member'])  # NOT DRY
-    #         new_group = convert(group, TO_LDAP_MAP)
-    #         groups_list.append(new_group)
-    #     except KeyError:
-    #         logger.error("Problem with Group: " + str(group))
+    groups_list = []
+    for group in groups:
+        if 'memberUid' in group:
+            new_group = convert(group, TO_LDAP_MAP)
+            groups_list.append(new_group)
+        else:
+            logger.error("{} does not have members".format(group['cn']))
     return groups
 
 
@@ -66,7 +65,6 @@ def find_one(name=None, group=None):
         found_group = manager.find_by_dn(dn)
 
     if found_group:
-        found_group['memberUid'] = get_names(found_group['memberUid'])
         return convert(found_group, TO_LDAP_MAP)
 
     if group is not None:
@@ -74,16 +72,7 @@ def find_one(name=None, group=None):
         found_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
     if found_group:
-        found_group['memberUid'] = get_names(found_group['memberUid'])
         return convert(found_group, TO_LDAP_MAP)
-
-
-def get_names(dn_list):
-    for i, strdn in enumerate(dn_list):
-        dn = ldap.dn.str2dn(strdn)
-        _, name, _ = dn[0][0]
-        dn_list[i] = name
-    return dn_list
 
 
 # def delete(name=None, group=None):
