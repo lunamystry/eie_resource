@@ -50,7 +50,7 @@ def find():
     for group in groups:
         try:
             group['member'] = get_names(group['member'])  # NOT DRY
-            new_group = fix(group, TO_LDAP_MAP)
+            new_group = convert(group, TO_LDAP_MAP)
             groups_list.append(new_group)
         except KeyError:
             logger.error("Problem with Group: " + str(group))
@@ -67,15 +67,15 @@ def find_one(name=None, group=None):
 
     if found_group:
         found_group['member'] = get_names(found_group['member'])  # Repeated in find
-        return fix(found_group, TO_LDAP_MAP)
+        return convert(found_group, TO_LDAP_MAP)
 
     if group is not None:
-        fixed_group = fix(group, FROM_LDAP_MAP)
+        fixed_group = convert(group, FROM_LDAP_MAP)
         found_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
     if found_group:
         found_group['member'] = get_names(found_group['member'])  # Repeated in find
-        return fix(found_group, TO_LDAP_MAP)
+        return convert(found_group, TO_LDAP_MAP)
 
 
 def get_names(dn_list):
@@ -93,7 +93,7 @@ def delete(name=None, group=None):
         dn = "cn=" + name + "," + BASEDN
         existing_group = manager.find_by_dn(dn)
     elif group is not None:
-        fixed_group = fix(group, FROM_LDAP_MAP)
+        fixed_group = convert(group, FROM_LDAP_MAP)
         dn = "cn=" + fixed_group['cn'] + "," + BASEDN
         existing_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
@@ -133,7 +133,7 @@ def remove_member(group_name, member_username):
         logger.debug("{0} not found in {1} group".format(member_username, group_name))
 
 
-def fix(group, TO_LDAP_MAP):
+def convert(group, TO_LDAP_MAP):
     if group:
         new_group = {}
         for key in group.keys():
