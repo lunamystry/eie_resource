@@ -56,14 +56,14 @@ class Manager():
         try:
             modlist = ldap.modlist.addModlist(fields)
             self.connection.add_s(dn, modlist)
-            return True
         except ldap.ALREADY_EXISTS:
-            logger.error("{0} already exists".format(dn))
-            return False  # Should I rather raise ldap.ALREADY_EXISTS maybe
+            error_msg = "{0} already exists".format(dn)
+            logger.error(error_msg)
+            raise ValueError(error_msg)
         except ldap.LDAPError as e:
             logger.error("An error occured while adding: {0}, {1}".format(
                 str(fields), str(e)))
-        return False
+        raise RuntimeError("{} not create for reasons unknown".format(dn))
 
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
