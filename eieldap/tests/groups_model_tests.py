@@ -47,9 +47,9 @@ class groupsTestCase(unittest.TestCase):
     def tearDown(self):
         users.delete(self.existing_user['username'])
         users.delete(self.existing_user2['username'])
-    #     models.groups.delete(self.valid['name'])
-    #     models.groups.delete(self.expected['name'])
-    #     models.groups.delete(self.updated_valid['name'])
+    #     groups.delete(self.valid['name'])
+    #     groups.delete(self.expected['name'])
+    #     groups.delete(self.updated_valid['name'])
 
     def test_save_and_find_one(self):
         '''simple save of a valid group'''
@@ -137,79 +137,81 @@ class groupsTestCase(unittest.TestCase):
         self.assertEquals(group, None)
 
 
-
 class groupMembersTestCase(unittest.TestCase):
-    pass
-    # def setUp(self):
-    #     self.existing_user = {"username": "guneap",
-    #                           "first_name": "Gunea",
-    #                           "last_name": "Pig",
-    #                           "email": "123@students.wits.ac.za",
-    #                           "password": "secret",
-    #                           "hosts": ['babbage.ug.eie.wits.ac.za'],
-    #                           "yos": "3"}
-    #     self.existing_group = {"name": "testgroup",
-    #                            "members": [self.existing_user['username']]}
-    #     self.non_existing_user = "poiqaalkj"
-    #     models.users.save(self.existing_user)
-    #     models.groups.save(self.existing_group)
-    #     self.new_member = {"username": "johnd",
-    #                        "first_name": "John",
-    #                        "last_name": "Doe",
-    #                        "email": "mandla.niigata@students.wits.ac.za",
-    #                        "password": "passing",
-    #                        "hosts": ['dummy'],
-    #                        "yos": "4"}
+    def setUp(self):
+        self.existing_user = {"username": "guneap",
+                              "first_name": "Gunea",
+                              "last_name": "Pig",
+                              "email": "123@students.wits.ac.za",
+                              "password": "secret",
+                              "hosts": ['babbage.ug.eie.wits.ac.za'],
+                              "yos": "3"}
+        users.delete(self.existing_user['username'])
+        users.add(self.existing_user)
+        self.existing_group = {"name": "natsuki",
+                               "gid_number": "1000",
+                               "description": "Natsuki, like the summer",
+                               "members": [self.existing_user['username']]}
+        groups.save(self.existing_group)
+        self.non_existing_user = "poiqaalkj"
+        groups.save(self.existing_group)
+        self.new_member = {"username": "johnd",
+                           "first_name": "John",
+                           "last_name": "Doe",
+                           "email": "mandla.niigata@students.wits.ac.za",
+                           "password": "passing",
+                           "hosts": ['dummy'],
+                           "yos": "4"}
 
-    # def tearDown(self):
-    #     models.users.delete(self.existing_user['name'])
-    #     models.groups.delete(self.existing_group['name'])
+    def tearDown(self):
+        users.delete(self.existing_user['username'])
+        groups.delete(self.existing_group['name'])
 
-    # def test_save_member_new_member(self):
-    #     '''I should be able to simply save a new valid member'''
-    #     models.groups.save_member(self.existing_group['name'],
-    #                              self.new_member['username'])
+    def test_add_member_new_member(self):
+        '''I should be able to simply add new valid member'''
+        groups.add_member(self.existing_group['name'],
+                          self.existing_user['username'])
 
     # def test_save_group_member(self):
     #     """ Can I save a group member?"""
 
     #     # remove from a group that exists
-    #     user = models.users.find_one("guneap")
+    #     user = users.find_one("guneap")
     #     if user:
-    #         models.users.delete("guneap")
-    #     models.users.save(guneap)
-    #     user = models.users.find_one("mandla")
+    #         users.delete("guneap")
+    #     users.save(guneap)
+    #     user = users.find_one("mandla")
     #     if user:
-    #         models.users.delete("mandla")
-    #     models.users.save(mandla)
+    #         users.delete("mandla")
+    #     users.save(mandla)
 
-    #     group = models.groups.find_one("natsuki")
+    #     group = groups.find_one("natsuki")
     #     if group:
-    #         models.groups.delete("natsuki")
-    #     models.groups.save(original_group)
+    #         groups.delete("natsuki")
+    #     groups.save(original_group)
 
     #     # save to a group that exists
-    #     models.groups.save_member("natsuki", new_member)
-    #     group = models.groups.find_one("natsuki")
+    #     groups.save_member("natsuki", new_member)
+    #     group = groups.find_one("natsuki")
     #     expected = {"name": "natsuki", "members": ['mandla', 'guneap']}
     #     self.assertEquals(group, expected)
-    #     models.groups.remove_member("natsuki", new_member)
+    #     groups.remove_member("natsuki", new_member)
 
-    #     models.groups.save_member("natsuki", already_member)
-    #     group = models.groups.find_one("natsuki")
+    #     groups.save_member("natsuki", already_member)
+    #     group = groups.find_one("natsuki")
     #     original_group = {"name": "natsuki", "members": ['mandla']}
     #     self.assertEquals(group, original_group)
 
     #     with self.assertRaises(ValueError):
-    #         models.groups.save_member("natsuki", non_existing_user)
+    #         groups.save_member("natsuki", non_existing_user)
 
     #     # save to a group that does not exist
     #     with self.assertRaises(ValueError):
-    #         models.groups.save_member("aslkjalskj", existing_user)
+    #         groups.save_member("aslkjalskj", existing_user)
     #     with self.assertRaises(ValueError):
-    #         models.groups.save_member("aslkjqoi", non_existing_user)
+    #         groups.save_member("aslkjqoi", non_existing_user)
     #     with self.assertRaises(ValueError):
-    #         models.groups.save_member("alskjaslkj", non_existing_user)
+    #         groups.save_member("alskjaslkj", non_existing_user)
 
     # def test_remove_group_member(self):
     #     """ Can I remove a group member?"""
@@ -226,44 +228,44 @@ class groupMembersTestCase(unittest.TestCase):
     #     non_existing_user = "poiqaalkj"
 
     #     # remove from a group that exists
-    #     user = models.users.find_one("guneap")
+    #     user = users.find_one("guneap")
     #     if user:
-    #         models.users.delete("guneap")
-    #     models.users.save(guneap)
+    #         users.delete("guneap")
+    #     users.save(guneap)
 
-    #     group = models.groups.find_one("natsuki")
+    #     group = groups.find_one("natsuki")
     #     if group:
-    #         models.groups.delete("natsuki")
-    #     models.groups.save(original_group)
+    #         groups.delete("natsuki")
+    #     groups.save(original_group)
 
     #     # Add a member
-    #     models.groups.save_member("natsuki", existing_user)
-    #     group = models.groups.find_one("natsuki")
+    #     groups.save_member("natsuki", existing_user)
+    #     group = groups.find_one("natsuki")
     #     new_group = {"name": "natsuki", "members": ['mandla', 'guneap']}
     #     self.assertEquals(group, new_group)
     #     # remove the member
-    #     models.groups.remove_member("natsuki", existing_user)
-    #     group = models.groups.find_one("natsuki")
+    #     groups.remove_member("natsuki", existing_user)
+    #     group = groups.find_one("natsuki")
     #     original_group = {"name": "natsuki", "members": ['mandla']}
     #     self.assertEquals(group, original_group)
 
     #     # member does not exist, I don't care, remain the same
-    #     models.groups.remove_member("natsuki", non_existing_user)
-    #     group = models.groups.find_one("natsuki")
+    #     groups.remove_member("natsuki", non_existing_user)
+    #     group = groups.find_one("natsuki")
     #     original_group = {"name": "natsuki", "members": ['mandla']}
     #     self.assertEquals(group, original_group)
 
     #     # remove from a group that does not exist
     #     with self.assertRaises(ValueError):
-    #         models.groups.remove_member("aslkjalskj", existing_user)
+    #         groups.remove_member("aslkjalskj", existing_user)
     #     with self.assertRaises(ValueError):
-    #         models.groups.remove_member("aslkjqoi", non_existing_user)
+    #         groups.remove_member("aslkjqoi", non_existing_user)
     #     with self.assertRaises(ValueError):
-    #         models.groups.remove_member("alskjaslkj", non_existing_user)
+    #         groups.remove_member("alskjaslkj", non_existing_user)
 
     #     # what if there is only one member remaining
     #     with self.assertRaises(ReferenceError):
-    #         models.groups.remove_member("natsuki", "mandla")
+    #         groups.remove_member("natsuki", "mandla")
 
 
 if __name__ == "__main__":

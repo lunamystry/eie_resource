@@ -88,36 +88,36 @@ def delete(name=None, group=None):
         manager.delete(dn)
 
 
-# def add_member(group_name, member_username):
-#     """ should check it the member is the ldap then add them"""
-#     group = find_one(group_name)
-#     if not group:
-#         raise ValueError(str(group_name) + " does not exists")
-#     user = users.find_one(member_username)
-#     if not user:
-#         error_msg = "Trying to add : {0} to {1} but {0} is not in the directory".format(member_username, group_name)
-#         logger.error(error_msg)
-#         raise ValueError(error_msg)
-#
-#     if user['username'] not in group['members']:
-#         group['members'].append(user['username'])
-#         save(group)
-#
-#
-# def remove_member(group_name, member_username):
-#     """ should check it the member is the ldap then add them"""
-#     group = find_one(group_name)
-#     if not group:
-#         raise ValueError(str(group_name) + " does not exists")
-#
-#     if member_username in group['members']:
-#         if len(group['members']) == 1:
-#             raise ReferenceError("You cannot remove the last member of a group")
-#         group['members'].remove(member_username)
-#         save(group)
-#         logger.info("Removed {0} from {1} group".format(member_username, group_name))
-#     else:
-#         logger.debug("{0} not found in {1} group".format(member_username, group_name))
+def add_member(group_name, member_username):
+    """ should check it the member is the ldap then add them"""
+    group = find_one(group_name)
+    if not group:
+        raise ValueError(str(group_name) + " does not exists")
+    user = users.find_one(member_username)
+    if not user:
+        error_msg = "trying to add {0} to {1} but {0} is not in the directory".format(member_username, group_name)
+        logger.error(error_msg)
+        raise ValueError(error_msg)
+
+    if user['username'] not in group['members']:
+        group['members'].append(user['username'])
+        save(group)
+
+
+def remove_member(group_name, member_username):
+    """ should check it the member is the ldap then add them"""
+    group = find_one(group_name)
+    if not group:
+        raise ValueError(str(group_name) + " does not exists")
+
+    if member_username in group['members']:
+        if len(group['members']) == 1:
+            raise ReferenceError("You cannot remove the last member of a group")
+        group['members'].remove(member_username)
+        save(group)
+        logger.info("Removed {0} from {1} group".format(member_username, group_name))
+    else:
+        logger.debug("{0} not found in {1} group".format(member_username, group_name))
 
 
 def convert(group, keymap):
