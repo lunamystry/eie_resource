@@ -47,9 +47,9 @@ class groupsTestCase(unittest.TestCase):
     def tearDown(self):
         users.delete(self.existing_user['username'])
         users.delete(self.existing_user2['username'])
-    #     groups.delete(self.valid['name'])
-    #     groups.delete(self.expected['name'])
-    #     groups.delete(self.updated_valid['name'])
+        groups.delete(self.valid['name'])
+        groups.delete(self.expected['name'])
+        groups.delete(self.updated_valid['name'])
 
     def test_save_and_find_one(self):
         '''simple save of a valid group'''
