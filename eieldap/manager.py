@@ -62,8 +62,7 @@ class Manager():
             raise ValueError(error_msg)
         except ldap.LDAPError as e:
             logger.error("An error occured while adding: {0}, {1}".format(
-                str(fields), str(e)))
-        raise RuntimeError("{} not create for reasons unknown".format(dn))
+                str(fields), e[0]['desc']))
 
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
@@ -76,8 +75,7 @@ class Manager():
                 logger.error("""\n\tCould not update user with dn: {0}
                                 \tbecause: {1} \n\tmodlist: {2}""".format(
                     dn, e, str(modlist)))
-                raise ValueError(str(e))
-        raise RuntimeError("{} not updated for reasons unknown".format(dn))
+                raise ValueError(e[0]['desc'])
 
     def prepare_modlist(self, dn, new_attr):
         attr = self.find_by_dn(dn)
@@ -103,7 +101,7 @@ class Manager():
             logger.info("The dn: {0} was not there!".format(dn))
         except ldap.LDAPError as e:
             logger.debug(e)
-            raise RuntimeError(str(e))
+            raise RuntimeError(e[0]['desc'])
 
     def change_password(self, dn, oldpw, newpw):
         try:
@@ -111,7 +109,7 @@ class Manager():
             self.connection.passwd_s(dn, None, newpw)
         except ldap.LDAPError as e:
             logger.debug("Password for {0} not changed - {1}".format(dn, e))
-            raise RuntimeError(str(e))
+            raise RuntimeError(e[0]['desc'])
 
     def authenticate(self, dn, password):
         try:
@@ -119,7 +117,7 @@ class Manager():
             return True
         except ldap.LDAPError as e:
             logger.debug("Couldn't authenticate {0} - {1}".format(dn, e))
-            raise RuntimeError(str(e[0]["desc"]))
+            raise RuntimeError(e[0]["desc"])
         return False
 
     def find(self, base=None, filter_key="objectClass"):
