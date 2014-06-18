@@ -111,17 +111,9 @@ def add(attr):
 def update(attr):
     """ updates a user"""
     user = User(attr)
-    if manager.update(user.dn, user.attributes):
-        try:
-            change_password(user.attributes['uid'], None, attr['password'])
-        except KeyError:
-            pass
-        logger.info("updated user: " + str(user.dn))
-        return True
-    else:
-        # Assume the only reason for failure is no existance
-        raise ValueError("{} could not be updated".format(attr['username']))
-    return False
+    manager.update(user.dn, user.attributes)
+    if 'password' in attr:
+        change_password(user.attributes['uid'], None, attr['password'])
 
 
 def delete(username=None, user=None):
