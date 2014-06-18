@@ -133,29 +133,3 @@ def convert(group, keymap):
         return new_group
     else:
         return group
-
-
-# def next_gid_number(yos):
-#     """returns the gid number based on the year of study given.
-#     The following code applies:
-#
-#     yos - gid number - name
-#      1  - 1000       - first year
-#      2  - 2000       - second year
-#      3  - 3000       - third year
-#      4  - 4000       - fourth year
-#         - M Eng      - 4500        - 4599        4500
-#      5  - 5000       - postgrad
-#      6  - 6000
-#         - lecturers  - 6000        - 6099        6000
-#         - admin      - 6100        - 6199        6100
-#         - technical  - 6200        - 6299        6200
-#         - postgrads  - 5000        - 5999        5000
-#      7  - 7000       - machine
-#
-#     """
-#     if yos not in range(1, 8):
-#         logger.error("Tried to add out of range uid/yos")
-#         raise ValueError("The Year of Study: " + str(yos) + " is out of range")
-#
-#     return yos*1000
