@@ -13,6 +13,17 @@ class UserServicesTests(unittest.TestCase):
                       "hosts": ['dummy'],
                       "yos": "1"}
         self.invalid = {"username": "testuser"}
+        self.existing_user = {"username": "johnd",
+                              "first_name": "John",
+                              "last_name": "Doe",
+                              "email": ["john.doe@students.wits.ac.za"],
+                              "password": "passing",
+                              "hosts": ['dummy'],
+                              "gid_number": "4000",
+                              "uid_number": "4001",
+                              "login_shell": "/bin/bash",
+                              "home_directory": "/home/ug/johnd",
+                              "yos": "4"}
 
     def test_next_uid_number_in_range(self):
         for yos in range(1, 8):
@@ -209,7 +220,7 @@ class UsersTestCase(unittest.TestCase):
 
     def test_add(self):
         '''simply add a new valid user'''
-        self.assertTrue(users.add(self.valid))
+        users.add(self.valid)
 
     def test_add_existing(self):
         '''raises an error if the user already exists'''

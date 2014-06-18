@@ -98,17 +98,14 @@ class User():
 def add(attr):
     """ adds a new user """
     user = User(attr)
-    if manager.create(user.dn, user.attributes):
-        try:
+    try:
+        manager.create(user.dn, user.attributes)
+        if 'password' in attr:
             change_password(user.attributes['uid'], None, attr['password'])
-        except KeyError:
-            pass
-        logger.info("created user: {}".format(user.dn))
-        return True
-    else:
-        # Assume the only reason for failure is no existance
-        raise ValueError("user {} already exists".format(attr['username']))
-    return False
+    except ValueError:
+        error_msg = "user {} already exists".format(attr['username'])
+        logger.error(error_msg)
+        raise ValueError(error_msg)
 
 
 def update(attr):
@@ -133,8 +130,6 @@ def delete(username=None, user=None):
     if username is None or not isinstance(username, str):
         if user is not None:
             username = user['username']
-        else:
-            return False
 
     dn = "uid=" + username + "," + BASEDN
     existing_user = manager.find_by_dn(dn)
@@ -142,8 +137,6 @@ def delete(username=None, user=None):
     if existing_user:
         if manager.delete(existing_user['dn']):
             logger.info("deleted: " + existing_user['dn'])
-            return True
-    return False
 
 
 def find():
@@ -170,7 +163,7 @@ def find_one(username=None):
     if found_user:
         found_user = convert(found_user, FROM_LDAP_MAP)
         found_user['yos'] = str(int(found_user['gid_number'])/1000)
-        return found_user
+    return found_user
 
 
 def validate(attr):
