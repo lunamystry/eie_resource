@@ -1,20 +1,35 @@
-from eieldap import models
+from eieldap.models import groups
+from eieldap.models import users
 import unittest
 
 
 class groupsTestCase(unittest.TestCase):
 
     def setUp(self):
+        self.existing_user = {"username": "johnd",
+                              "first_name": "John",
+                              "last_name": "Doe",
+                              "email": ["john.doe@students.wits.ac.za"],
+                              "password": "passing",
+                              "hosts": ['dummy'],
+                              "gid_number": "4000",
+                              "uid_number": "4001",
+                              "login_shell": "/bin/bash",
+                              "home_directory": "/home/ug/johnd",
+                              "yos": "4"}
+        users.delete(self.existing_user['username'])
+        users.add(self.existing_user)
         self.valid = {"name": "natsuki",
                       "gid_number": "1000",
                       "description": "Natsuki, like the summer",
-                      "members": ['john', 'gary']}
+                      "members": [self.existing_user['username']]}
         self.expected = {"name": "natsuki", "members": ['john', 'gary']}
         self.updated_valid = {"name": "natsuki", "members": ['gary', 'vicky']}
         self.no_members = {"name": "navina"}
         self.empty_members = {"name": "navina", "members": []}
 
-    # def tearDown(self):
+    def tearDown(self):
+        users.delete(self.existing_user['username'])
     #     models.groups.delete(self.valid['name'])
     #     models.groups.delete(self.expected['name'])
     #     models.groups.delete(self.updated_valid['name'])
@@ -22,7 +37,7 @@ class groupsTestCase(unittest.TestCase):
     def test_save_with_user_not_in_directory(self):
         '''cannot save a group which has a member who is not in the LDAP dir'''
         with self.assertRaises(ValueError):
-            models.groups.save(self.valid)
+            groups.save(self.valid)
         # group = models.groups.find_one(self.valid['name'])
         # self.assertEquals(group, self.valid)
 
