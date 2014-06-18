@@ -122,18 +122,16 @@ def find_one(name=None, group=None):
 #         logger.debug("{0} not found in {1} group".format(member_username, group_name))
 
 
-def convert(group, TO_LDAP_MAP):
+def convert(group, keymap):
     if group:
         new_group = {}
         for key in group.keys():
-            try:
-                nkey = TO_LDAP_MAP[key]
-                if type(group[key]) is list:
+            if key in keymap:
+                nkey = keymap[key]
+                if isinstance(group[key], list):
                     new_group[nkey] = group[key]
                 else:
                     new_group[nkey] = str(group[key])
-            except KeyError:
-                logger.debug("key not mapped: " + key)
         return new_group
     else:
         return group
