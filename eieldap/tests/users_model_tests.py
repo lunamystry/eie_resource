@@ -142,7 +142,7 @@ class UserServicesTests(unittest.TestCase):
         users.reset_password('user')
 
     def test_authenticate_valid_credentials(self):
-        users.authenticate(self.existing_user['username'], 
+        users.authenticate(self.existing_user['username'],
                            self.existing_user['password'])
 
     def test_authenticate_invalid_credentials(self):
