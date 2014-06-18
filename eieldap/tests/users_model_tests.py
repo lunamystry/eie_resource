@@ -147,7 +147,7 @@ class UserServicesTests(unittest.TestCase):
 
     def test_authenticate_invalid_credentials(self):
         '''this just passes things to the manager'''
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(ValueError):
             users.authenticate('invalid_user', 'invalid_password')
 
 
@@ -234,7 +234,7 @@ class UsersTestCase(unittest.TestCase):
 
     def test_update(self):
         self.existing_user['first_name'] = 'Jane'
-        self.assertTrue(users.update(self.existing_user))
+        users.update(self.existing_user)
         user = users.find_one(self.existing_user['username'])
         self.existing_user['uid_number'] = '4002'  # This is a problem
         del self.existing_user['password']
@@ -244,7 +244,7 @@ class UsersTestCase(unittest.TestCase):
         '''you should are not allowed to change username'''
         username = self.existing_user['username']
         self.existing_user['username'] = 'janed'
-        self.assertTrue(users.update(self.existing_user))
+        users.update(self.existing_user)
         self.existing_user['username'] = username
         user = users.find_one(username)
         del self.existing_user['password']
@@ -252,11 +252,11 @@ class UsersTestCase(unittest.TestCase):
 
     def test_delete(self):
         '''simply delete a user, try to find it and see if its really gone'''
-        self.assertTrue(users.delete(self.existing_user['username']))
+        users.delete(self.existing_user['username'])
 
     def test_delete_no_username_given(self):
         '''as long as this call does not fail'''
-        self.assertTrue(users.delete(user=self.existing_user))
+        users.delete(user=self.existing_user)
 
     def test_delete_nothing_given(self):
         '''as long as this call does not fail'''
