@@ -169,9 +169,3 @@ class Manager():
             if key not in list_fields:
                 fields[key] = fields[key][0]
         return fields
-
-
-if __name__ == '__main__':
-    manager = Manager(config)
-    base = "ou=people," + manager.base
-    r = manager.connection.search_s(base, ldap.SCOPE_SUBTREE, 'uid=*')
