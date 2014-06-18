@@ -19,6 +19,10 @@ def save(group):
             or type(group['members']) is not list
             or len(group['members']) == 0):
         raise ValueError("You must give atleast one group member")
+    if 'gid_number' not in group:
+        raise ValueError("You must give a gid number")
+    if 'name' not in group:
+        raise ValueError("You must give a name")
     unfixed_group = dict(group)  # I don't want to be editing what I'm given
     unfixed_group['members'] = list(group['members'])
     for i, member_name in enumerate(unfixed_group["members"]):
