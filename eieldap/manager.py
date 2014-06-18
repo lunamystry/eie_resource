@@ -13,11 +13,8 @@ logger = logging.getLogger("eieldap.manager")
 class Manager():
     """This a module to help with managing the eieldap using python"""
 
-    def __init__(self,  config=config):
+    def __init__(self, config=config):
         self.connect(config)
-
-    # def __del__(self):
-    #     self.disconnect()
 
     def connect(self, config):
         error_msg = ""
