@@ -6,30 +6,47 @@ import unittest
 class groupsTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.existing_user = {"username": "johnd",
-                              "first_name": "John",
+        self.existing_user = {"username": "janed",
+                              "first_name": "Jane",
                               "last_name": "Doe",
-                              "email": ["john.doe@students.wits.ac.za"],
+                              "email": ["jane.doe@students.wits.ac.za"],
                               "password": "passing",
                               "hosts": ['dummy'],
                               "gid_number": "4000",
                               "uid_number": "4001",
                               "login_shell": "/bin/bash",
-                              "home_directory": "/home/ug/johnd",
+                              "home_directory": "/home/ug/janed",
                               "yos": "4"}
+        self.existing_user2 = {"username": "johnd",
+                               "first_name": "John",
+                               "last_name": "Doe",
+                               "email": ["john.doe@students.wits.ac.za"],
+                               "password": "passing",
+                               "hosts": ['dummy'],
+                               "gid_number": "4000",
+                               "uid_number": "4001",
+                               "login_shell": "/bin/bash",
+                               "home_directory": "/home/ug/johnd",
+                               "yos": "4"}
         users.delete(self.existing_user['username'])
+        users.delete(self.existing_user2['username'])
         users.add(self.existing_user)
+        users.add(self.existing_user2)
         self.valid = {"name": "natsuki",
                       "gid_number": "1000",
                       "description": "Natsuki, like the summer",
                       "members": [self.existing_user['username']]}
-        self.expected = {"name": "natsuki", "members": ['john', 'gary']}
-        self.updated_valid = {"name": "natsuki", "members": ['gary', 'vicky']}
+        self.updated_valid = {"name": "natsuki",
+                              "gid_number": "1000",
+                              "description": "Natsuki, like the summer",
+                              "members": [self.existing_user['username'],
+                                          self.existing_user2['username']]}
         self.no_members = {"name": "navina"}
         self.empty_members = {"name": "navina", "members": []}
 
     def tearDown(self):
         users.delete(self.existing_user['username'])
+        users.delete(self.existing_user2['username'])
     #     models.groups.delete(self.valid['name'])
     #     models.groups.delete(self.expected['name'])
     #     models.groups.delete(self.updated_valid['name'])
@@ -45,30 +62,35 @@ class groupsTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             invalid = {"name": "invalid", "members": ["not_there"]}
             groups.save(invalid)
-        # group = models.groups.find_one(self.valid['name'])
-        # self.assertEquals(group, self.valid)
 
-    # def test_save_a_group_that_exists(self):
-    #     '''saving a group that exists, will update its members'''
-    #     self.assertTrue(models.groups.save(self.valid))
-    #     group = models.groups.find_one(self.valid['name'])
-    #     self.assertEquals(group, self.expected)
+    def test_save_a_group_that_exists(self):
+        '''saving a group that exists, will update its members'''
+        groups.save(self.valid)
+        group = groups.find_one(self.valid['name'])
+        self.assertEquals(group, self.valid)
 
-    #     self.assertTrue(models.groups.save(self.updated_valid))
-    #     group = models.groups.find_one(self.valid['name'])
-    #     self.assertEquals(group, self.updated_valid)
+    def test_save_updates_existing_group(self):
+        '''saving a group that exists, will update its members'''
+        groups.save(self.valid)
+        group = groups.find_one(self.valid['name'])
+        self.assertEquals(group, self.valid)
 
-    # def test_cant_save_group_with_no_members(self):
-    #     ''' Because LDAP does not allow creating a group without members, I
-    #     don't allow it either'''
-    #     with self.assertRaises(TypeError):
-    #         models.groups.save(self.no_members)
+        groups.save(self.updated_valid)
+        group = groups.find_one(self.valid['name'])
+        self.assertEquals(group, self.updated_valid)
 
-    # def test_cant_save_group_with_empty_members(self):
-    #     ''' Because LDAP does not allow creating a group without members, I
-    #     don't allow it either'''
-    #     with self.assertRaises(TypeError):
-    #         models.groups.save(self.empty_members)
+
+    def test_cant_save_group_with_no_members(self):
+        ''' Because LDAP does not allow creating a group without members, I
+        don't allow it either'''
+        with self.assertRaises(ValueError):
+            groups.save(self.no_members)
+
+    def test_cant_save_group_with_empty_members(self):
+        ''' Because LDAP does not allow creating a group without members, I
+        don't allow it either'''
+        with self.assertRaises(ValueError):
+            groups.save(self.empty_members)
 
     # def test_delete_an_existing_group(self):
     #     ''' If a group exists, I should be able to delete it and not get it
