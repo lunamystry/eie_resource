@@ -92,6 +92,35 @@ class groupsTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             groups.save(self.empty_members)
 
+    def test_find_using_valid_group(self):
+        groups.save(self.valid)
+        group = groups.find_one(group=self.valid)
+        self.assertEquals(group, self.valid)
+
+    def test_find_a_non_existing_group(self):
+        '''If a group does not exist, then None should be returned'''
+        group = groups.find_one("qpoipwoqi")
+        self.assertEquals(group, None)
+
+    def test_find_can_specify_both_name_and_group(self):
+        '''should use names if both name and group are given'''
+        groups.save(self.valid)
+        group = groups.find_one(name=self.valid['name'],
+                                group=self.no_members)
+        self.assertEquals(group, self.valid)
+
+    def test_find_can_specify_wrong_name_and_correct_group(self):
+        '''will return one group if attributes are valid'''
+        groups.save(self.valid)
+        group = groups.find_one(name='aslkajsa',
+                                group=self.valid)
+        self.assertEquals(group, self.valid)
+
+    def test_find_None_if_both_name_and_group_are_None(self):
+        '''If you a name or attribute are None, then None is returned'''
+        group = groups.find_one(name=None, group=None)
+        self.assertEquals(group, None)
+
     def test_delete_an_existing_group(self):
         ''' If a group exists, I should be able to delete it and not get it
         back '''
@@ -107,34 +136,6 @@ class groupsTestCase(unittest.TestCase):
         group = groups.find_one(self.valid['name'])
         self.assertEquals(group, None)
 
-    # def test_find_using_valid_group(self):
-    #     self.assertTrue(models.groups.save(self.valid))
-    #     group = models.groups.find_one(group=self.valid)
-    #     self.assertEquals(group, self.valid)
-
-    # def test_find_a_non_existing_group(self):
-    #     '''If a group does not exist, then None should be returned'''
-    #     group = models.groups.find_one("qpoipwoqi")
-    #     self.assertEquals(group, None)
-
-    # def test_find_can_specify_both_name_and_group(self):
-    #     '''should use names if both name and group are given'''
-    #     self.assertTrue(models.groups.save(self.valid))
-    #     group = models.groups.find_one(name=self.valid['name'],
-    #                                    group=self.no_members)
-    #     self.assertEquals(group, self.expected)
-
-    # def test_find_can_specify_wrong_name_and_correct_group(self):
-    #     '''will return one group if attributes are valid'''
-    #     self.assertTrue(models.groups.save(self.valid))
-    #     group = models.groups.find_one(name='aslkajsa',
-    #                                    group=self.valid)
-    #     self.assertEquals(group, self.valid)
-
-    # def test_find_None_if_both_name_and_group_are_None(self):
-    #     '''If you a name or attribute are None, then None is returned'''
-    #     group = models.groups.find_one(name=None, group=None)
-    #     self.assertEquals(group, None)
 
 
 class groupMembersTestCase(unittest.TestCase):
