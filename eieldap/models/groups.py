@@ -14,12 +14,12 @@ for k, v in TO_LDAP_MAP.items():
     FROM_LDAP_MAP[v] = k
 
 
-def add(group):
+def save(group):
     """adds a new posix group to the LDAP directory"""
     if ("members" not in group
             or type(group['members']) is not list
             or len(group['members']) == 0):
-        raise TypeError("You must give atleast one group member")
+        raise ValueError("You must give atleast one group member")
     unfixed_group = dict(group)  # I don't want to be editing what I'm given
     unfixed_group['members'] = list(group['members'])
     for i, member_name in enumerate(unfixed_group["members"]):
@@ -34,15 +34,13 @@ def add(group):
     dn = "cn=" + fixed_group["cn"] + "," + BASEDN
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
-        if manager.update(dn, fixed_group):
-            logger.info("Updated group: " + str(fixed_group))
+        manager.update(dn, fixed_group)
     else:
         fixed_group["objectClass"] = ["posixGroup"]
         fixed_group["cn"] = str(fixed_group["cn"])
         if 'dn' in fixed_group:
             del fixed_group['dn']
         manager.create(dn, fixed_group)
-        logger.info("Created group: " + str(dn))
 
 
 def find():
