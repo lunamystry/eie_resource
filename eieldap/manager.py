@@ -99,12 +99,11 @@ class Manager():
     def delete(self, dn):
         try:
             self.connection.delete_s(dn)
-            return True
         except ldap.NO_SUCH_OBJECT:
             logger.info("The dn: {0} was not there!".format(dn))
         except ldap.LDAPError as e:
             logger.debug(e)
-        return False
+            raise RuntimeError(str(e))
 
     def change_password(self, dn, oldpw, newpw):
         try:
