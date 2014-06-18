@@ -7,6 +7,7 @@ class groupsTestCase(unittest.TestCase):
     def setUp(self):
         self.valid = {"name": "natsuki",
                       "gid_number": "1000",
+                      "description": "Natsuki, like the summer",
                       "members": ['john', 'gary']}
         self.expected = {"name": "natsuki", "members": ['john', 'gary']}
         self.updated_valid = {"name": "natsuki", "members": ['gary', 'vicky']}

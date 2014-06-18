@@ -7,6 +7,7 @@ logger = logging.getLogger('eieldap.models.groups')
 BASEDN = "ou=groups," + manager.base
 TO_LDAP_MAP = {"cn": "name",
                "gidNumber": "gid_number",
+               "description": "description",
                "memberUid": "members"}
 FROM_LDAP_MAP = {}
 for k, v in TO_LDAP_MAP.items():
