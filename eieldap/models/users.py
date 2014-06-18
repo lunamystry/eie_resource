@@ -69,38 +69,30 @@ class User():
         self.attributes["sambaSID"] = "S-1-5-21-3949128619-541665055-2325163404-{}".format(str(smbRid))
         self.attributes["displayName"] = "{0} {1}".format(attr["first_name"],
                                                           attr["last_name"])
-        try:
+        if 'password' in attr:
             lm_password, nt_password = smb_encrypt(attr["password"])
             self.attributes['sambaNTPassword'] = nt_password
             self.attributes['sambaLMPassword'] = lm_password
-        except KeyError:
-            pass
-        try:
+        if 'email' in attr:
             if not isinstance(attr['email'], list):
                 self.attributes["mail"] = [attr['email']]
             else:
                 self.attributes["mail"] = attr['email']
-        except KeyError:
-            pass
-        try:
+        if "hosts" in attr:
             self.attributes["host"] = attr['hosts']
-        except KeyError:
-            pass
-        try:
+        if 'login_shel' in attr:
             self.attributes["loginShell"] = attr['login_shell']
-        except KeyError:
-            pass
-        try:
+        if 'username' in attr:
+            self.attributes['uid'] = attr['username']
+        else:
+            # TODO: What if username already exists?
+            self.attributes['uid'] = attr['last_name'] + attr['first_name'][0]
+        if 'home_directory' in attr:
             self.attributes['homeDirectory'] = attr['home_directory']
-        except KeyError:
+        else:
             self.attributes["homeDirectory"] = "{0}/{1}".format(
                 home_base,
-                attr["username"])
-        try:
-            self.attributes['uid'] = attr['username']
-        except KeyError:
-            # TODO: What username already exists?
-            self.attributes['uid'] = attr['last_name'] + attr['first_name'][0]
+                self.attributes["uid"])
 
 
 def add(attr):
