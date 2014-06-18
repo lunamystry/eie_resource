@@ -92,20 +92,20 @@ class groupsTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             groups.save(self.empty_members)
 
-    # def test_delete_an_existing_group(self):
-    #     ''' If a group exists, I should be able to delete it and not get it
-    #     back '''
-    #     self.assertTrue(models.groups.save(self.valid))
-    #     models.groups.delete(self.valid['name'])
-    #     group = models.groups.find_one(self.valid['name'])
-    #     self.assertEquals(group, None)
+    def test_delete_an_existing_group(self):
+        ''' If a group exists, I should be able to delete it and not get it
+        back '''
+        groups.save(self.valid)
+        groups.delete(self.valid['name'])
+        group = groups.find_one(self.valid['name'])
+        self.assertEquals(group, None)
 
-    # def test_delete_a_non_existing_group(self):
-    #     ''' If a group does not exist, it does not matter, just pretend it was
-    #     deleted'''
-    #     models.groups.delete(self.valid['name'])
-    #     group = models.groups.find_one(self.valid['name'])
-    #     self.assertEquals(group, None)
+    def test_delete_a_non_existing_group(self):
+        ''' If a group does not exist, it does not matter, just pretend it was
+        deleted'''
+        groups.delete(self.valid['name'])
+        group = groups.find_one(self.valid['name'])
+        self.assertEquals(group, None)
 
     # def test_find_using_valid_group(self):
     #     self.assertTrue(models.groups.save(self.valid))
