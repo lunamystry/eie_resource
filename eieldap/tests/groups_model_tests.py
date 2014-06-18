@@ -21,7 +21,7 @@ class groupsTestCase(unittest.TestCase):
 
     def test_add_and_find_known_group(self):
         '''can add a group which does not exist and is valid'''
-        self.assertTrue(models.groups.add(self.valid))
+        models.groups.add(self.valid)
         # group = models.groups.find_one(self.valid['name'])
         # self.assertEquals(group, self.valid)
 

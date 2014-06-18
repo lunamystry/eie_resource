@@ -24,6 +24,10 @@ def add(group):
     unfixed_group['members'] = list(group['members'])
     for i, member_name in enumerate(unfixed_group["members"]):
         # TODO: member[i] = users.find_one(member)["id"]
+        error_msg = "{} is not in the directory".format(member_name)
+        if not users.find_one(member_name):
+            logger.error(error_msg)
+            raise ValueError(error_msg)
         unfixed_group['members'][i] = "memberUid=" + member_name
 
     fixed_group = convert(unfixed_group, FROM_LDAP_MAP)
@@ -32,8 +36,6 @@ def add(group):
     if existing_group:
         if manager.update(dn, fixed_group):
             logger.info("Updated group: " + str(fixed_group))
-            return True
-        return False
     else:
         fixed_group["objectClass"] = ["posixGroup"]
         fixed_group["cn"] = str(fixed_group["cn"])
@@ -41,8 +43,6 @@ def add(group):
             del fixed_group['dn']
         manager.create(dn, fixed_group)
         logger.info("Created group: " + str(dn))
-        return True
-    return False
 
 
 def find():
