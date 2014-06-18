@@ -73,21 +73,21 @@ def find_one(name=None, group=None):
         return convert(found_group, TO_LDAP_MAP)
 
 
-# def delete(name=None, group=None):
-#     """ Deletes a group """
-#     existing_group = None
-#     if name is not None:
-#         dn = "cn=" + name + "," + BASEDN
-#         existing_group = manager.find_by_dn(dn)
-#     elif group is not None:
-#         fixed_group = convert(group, FROM_LDAP_MAP)
-#         dn = "cn=" + fixed_group['cn'] + "," + BASEDN
-#         existing_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
-#
-#     if existing_group:
-#         manager.delete(dn)
-#
-#
+def delete(name=None, group=None):
+    """ Deletes a group """
+    existing_group = None
+    if name is not None:
+        dn = "cn=" + name + "," + BASEDN
+        existing_group = manager.find_by_dn(dn)
+    elif group is not None:
+        fixed_group = convert(group, FROM_LDAP_MAP)
+        dn = "cn=" + fixed_group['cn'] + "," + BASEDN
+        existing_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
+
+    if existing_group:
+        manager.delete(dn)
+
+
 # def add_member(group_name, member_username):
 #     """ should check it the member is the ldap then add them"""
 #     group = find_one(group_name)
