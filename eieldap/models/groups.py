@@ -23,7 +23,6 @@ def save(group):
     unfixed_group = dict(group)  # I don't want to be editing what I'm given
     unfixed_group['members'] = list(group['members'])
     for i, member_name in enumerate(unfixed_group["members"]):
-        # TODO: member[i] = users.find_one(member)["id"]
         error_msg = "{} is not in the directory".format(member_name)
         if not users.find_one(member_name):
             logger.error(error_msg)
