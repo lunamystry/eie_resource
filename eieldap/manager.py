@@ -119,7 +119,7 @@ class Manager():
             return True
         except ldap.LDAPError as e:
             logger.debug("Couldn't authenticate {0} - {1}".format(dn, e))
-            raise RuntimeError(str(e))
+            raise RuntimeError(str(e[0]["desc"]))
         return False
 
     def find(self, base=None, filter_key="objectClass"):
