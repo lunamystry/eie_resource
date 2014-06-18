@@ -83,16 +83,12 @@ class Manager():
         attr = self.find_by_dn(dn)
         if attr is None:
             return None
-        try:
+        if "dn" in attr:
             del(attr["dn"])
-        except KeyError:
-            pass
-        try:
+        if "dn" in new_attr:
             del(new_attr["dn"])
-        except KeyError:
-            pass
-        for key in attr.keys():
-            if key not in new_attr.keys():
+        for key in attr:
+            if key not in new_attr:
                 new_attr[key] = attr[key]
         modlist = ldap.modlist.modifyModlist(attr, new_attr)
         return modlist
