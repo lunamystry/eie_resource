@@ -109,10 +109,9 @@ class Manager():
         try:
             self.admin_bind()
             self.connection.passwd_s(dn, None, newpw)
-            return True
         except ldap.LDAPError as e:
             logger.debug("Password for {0} not changed - {1}".format(dn, e))
-        return False
+            raise RuntimeError(str(e))
 
     def authenticate(self, dn, password):
         try:
