@@ -1,6 +1,5 @@
 from eieldap import manager
 from eieldap.models import users
-import ldap
 import logging
 
 logger = logging.getLogger('eieldap.models.groups')
