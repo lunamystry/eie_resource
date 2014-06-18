@@ -122,6 +122,8 @@ def delete(username=None, user=None):
     if username is None or not isinstance(username, str):
         if user is not None:
             username = user['username']
+        else:
+            return
 
     dn = "uid=" + username + "," + BASEDN
     existing_user = manager.find_by_dn(dn)
