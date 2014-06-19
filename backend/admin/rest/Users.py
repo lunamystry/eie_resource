@@ -68,6 +68,7 @@ class Users(Resource):
         user_list = users.find()[start:][:limit]
         return user_list, 200
 
+    @admin_only
     def post(self):
         # users = users.find()
         args = request.json

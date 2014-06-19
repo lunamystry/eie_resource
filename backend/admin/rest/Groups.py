@@ -5,6 +5,7 @@ from backend import app
 from backend.validators import required
 from backend.validators import ValidationError
 from eieldap import models
+from utils import admin_only
 import logging
 
 
@@ -16,6 +17,7 @@ class Group(Resource):
         group = models.groups.find_one(group_name)
         return group
 
+    @admin_only
     def delete(self, group_name):
         group = models.groups.find_one(group_name)
         if group:
@@ -24,10 +26,12 @@ class Group(Resource):
 
 
 class Groups(Resource):
+    @admin_only
     def get(self):
         groups = models.groups.find()
         return jsonify({"result": groups})
 
+    @admin_only
     def post(self):
         """ Create a new Group, must provide only Name """
         app.logger.info("Trying to create a group... joto mate")
