@@ -1,6 +1,5 @@
 from flask import request
 from flask import jsonify
-from flask.views import MethodView
 from flask.ext.restful import Resource
 from backend import app
 from backend.validators import required
@@ -9,7 +8,7 @@ from eieldap import models
 import logging
 
 
-logger = logging.getLogger('backend.admin.rest.groups')
+logger = logging.getLogger('backend.admin.rest.Groups')
 
 
 class Group(Resource):
