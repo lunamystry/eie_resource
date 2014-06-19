@@ -2,15 +2,14 @@ from flask import request
 from flask import jsonify
 from flask.views import MethodView
 from flask.ext.restful import Resource
-from flask.ext.restful import reqparse
-from flask.ext.restful import abort
-import functools
 from backend import app
 from backend.validators import required
-from backend.validators import length
 from backend.validators import ValidationError
 from eieldap import models
-from eieldap import logger
+import logging
+
+
+logger = logging.getLogger('backend.admin.rest.groups')
 
 
 class Group(Resource):
@@ -21,7 +20,7 @@ class Group(Resource):
     def delete(self, group_name):
         group = models.groups.find_one(group_name)
         if group:
-            models.groups.delete(group_name);
+            models.groups.delete(group_name)
         return group_name, 200
 
 
