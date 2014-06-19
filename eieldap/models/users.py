@@ -75,11 +75,14 @@ class User():
             self.attributes['sambaLMPassword'] = lm_password
         if 'email' in attr:
             if not isinstance(attr['email'], list):
-                self.attributes["mail"] = [attr['email']]
+                raise TypeError("email must be in a list")
             else:
-                self.attributes["mail"] = attr['email']
+                self.attributes["mail"] = [str(email) for email in
+                                           attr['email']]
         if "hosts" in attr:
-            self.attributes["host"] = attr['hosts']
+            if not isinstance(attr['hosts'], list):
+                raise TypeError("hosts must be in a list")
+            self.attributes["host"] = [str(host) for host in attr['hosts']]
         if 'login_shel' in attr:
             self.attributes["loginShell"] = attr['login_shell']
         if 'username' in attr:

@@ -44,13 +44,14 @@ class User(Resource):
         if user:
             for key, val in args.iteritems():
                 user[key] = val
-            if users.save(user):
+            if users.update(user):
                 return user, 201
             logger.info(user)
         else:
             logger.warning("user "+username+" not found")
         return False, 500
 
+    @admin_only
     def delete(self, username):
         users.delete(str(username))
         return username, 200
@@ -76,7 +77,7 @@ class Users(Resource):
         data["password"] = "passing"
         if errors:
             return errors, 500
-        if users.save(data):
+        if users.update(data):
             return args, 201
         else:
             return "User could not be created " + str(args), 500
