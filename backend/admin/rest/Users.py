@@ -46,7 +46,6 @@ class User(Resource):
                 user[key] = val
             if users.update(user):
                 return user, 201
-            logger.info(user)
         else:
             logger.warning("user "+username+" not found")
         return False, 500
