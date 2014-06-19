@@ -21,10 +21,11 @@ def admin_only(f):
             '_id': ObjectId(request.headers['x-auth-key'])})
         if not session:
             abort(401)
-        # Check if the person who the key belongs to is admin
-        for group in groups.find():
-            logger.info(group)
-            # if session['username'] in group['members']:
-            #     logger.info("So we know the username is in one group")
+        admin_group = groups.find("IT")
+        if admin_group:
+            logger.info(admin_group)
+        else:
+            logger.error("IT group does not exist")
+            abort(500)
         return f(*args, **kwargs)
     return decorated
