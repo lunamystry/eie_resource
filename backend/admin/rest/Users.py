@@ -51,8 +51,8 @@ class User(Resource):
         return False, 500
 
     def delete(self, username):
-        if users.delete(username):
-            return username, 200
+        users.delete(str(username))
+        return username, 200
 
 
 class Users(Resource):
