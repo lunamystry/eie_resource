@@ -3,6 +3,7 @@ from flask.ext.restful import abort
 import functools
 import logging
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 client = MongoClient()
 logger = logging.getLogger("backend.admin.utils")
@@ -16,7 +17,7 @@ def admin_only(f):
             abort(401)
         logger.info("get session: "+str(request.headers['x-auth-key']))
         session = client.resource.sessions.find_one({
-            '_id': request.headers['x-auth-key']})
+            '_id': ObjectId(request.headers['x-auth-key'])})
         if not session:
             abort(401)
         # Check if the person who the key belongs to is admin
