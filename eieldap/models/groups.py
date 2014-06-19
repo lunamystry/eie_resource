@@ -4,15 +4,13 @@ import logging
 
 logger = logging.getLogger('eieldap.models.groups')
 BASEDN = "ou=groups," + manager.base
-TO_LDAP_MAP = {"cn": "name",
-               "gidNumber": "gid_number",
-               "description": "description",
-               "memberUid": "members"}
-FROM_LDAP_MAP = {}
-for k, v in TO_LDAP_MAP.items():
-    FROM_LDAP_MAP[v] = k
-
-
+FROM_LDAP_MAP = {"cn": "name",
+                 "gidNumber": "gid_number",
+                 "description": "description",
+                 "memberUid": "members"}
+TO_LDAP_MAP = {}
+for k, v in FROM_LDAP_MAP.items():
+    TO_LDAP_MAP[v] = k 
 def save(group):
     """adds a new posix group to the LDAP directory"""
     if ("members" not in group
@@ -31,7 +29,7 @@ def save(group):
             logger.error(error_msg)
             raise ValueError(error_msg)
 
-    fixed_group = convert(unfixed_group, FROM_LDAP_MAP)
+    fixed_group = convert(unfixed_group, TO_LDAP_MAP)
     dn = "cn=" + fixed_group["cn"] + "," + BASEDN
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
@@ -46,17 +44,10 @@ def save(group):
 
 def find(name=None):
     """ Returns all the groups in the directory (think ldap)"""
-    groups = manager.find(BASEDN, filter_key="cn")
     if name is not None:
         return find_one(name)
-    groups_list = []
-    for group in groups:
-        if 'memberUid' in group:
-            new_group = convert(group, TO_LDAP_MAP)
-            groups_list.append(new_group)
-        else:
-            logger.error("{} does not have members".format(group['cn']))
-    return groups
+    groups = manager.find(BASEDN, filter_key="cn")
+    return [convert(group, FROM_LDAP_MAP) for group in groups]
 
 
 def find_one(name=None, group=None):
@@ -67,14 +58,14 @@ def find_one(name=None, group=None):
         found_group = manager.find_by_dn(dn)
 
     if found_group:
-        return convert(found_group, TO_LDAP_MAP)
+        return convert(found_group, FROM_LDAP_MAP)
 
     if group is not None:
-        fixed_group = convert(group, FROM_LDAP_MAP)
+        fixed_group = convert(group, TO_LDAP_MAP)
         found_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
     if found_group:
-        return convert(found_group, TO_LDAP_MAP)
+        return convert(found_group, FROM_LDAP_MAP)
 
 
 def delete(name=None, group=None):
@@ -84,7 +75,7 @@ def delete(name=None, group=None):
         dn = "cn=" + name + "," + BASEDN
         existing_group = manager.find_by_dn(dn)
     elif group is not None:
-        fixed_group = convert(group, FROM_LDAP_MAP)
+        fixed_group = convert(group, TO_LDAP_MAP)
         dn = "cn=" + fixed_group['cn'] + "," + BASEDN
         existing_group = manager.find_one(fixed_group, BASEDN, filter_key="cn")
 
@@ -127,10 +118,10 @@ def remove_member(group_name, member_username):
 def convert(group, keymap):
     if group:
         new_group = {}
-        for key in group.keys():
+        for key in group:
             if key in keymap:
                 nkey = keymap[key]
-                if isinstance(group[key], list):
+                if type(group[key]) is list:
                     new_group[nkey] = group[key]
                 else:
                     new_group[nkey] = str(group[key])
