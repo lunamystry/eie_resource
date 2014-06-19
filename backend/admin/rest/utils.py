@@ -4,6 +4,7 @@ import functools
 import logging
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from eieldap.models import groups
 
 client = MongoClient()
 logger = logging.getLogger("backend.admin.utils")
@@ -21,6 +22,10 @@ def admin_only(f):
         if not session:
             abort(401)
         # Check if the person who the key belongs to is admin
+        for group in groups.find():
+            logger.info(group)
+            # if session['username'] in group['members']:
+            #     logger.info("So we know the username is in one group")
         logger.info(session)
         return f(*args, **kwargs)
     return decorated
