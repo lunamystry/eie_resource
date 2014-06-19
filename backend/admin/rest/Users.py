@@ -1,6 +1,7 @@
 from flask import request
 from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
+import functools
 import logging
 from backend.validators import required
 from backend.validators import length
