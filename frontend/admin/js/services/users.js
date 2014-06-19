@@ -3,7 +3,7 @@
 
 var service = angular.module('service.users', []);
 
-service.factory('Users', ['$resource', function($resource) {
+service.factory('Users', ['$log', '$cookieStore', '$resource', function($log, $cookieStore, $resource) {
     return $resource('/users/:username',
         {username: '@username'},
         {
