@@ -26,6 +26,5 @@ def admin_only(f):
             logger.info(group)
             # if session['username'] in group['members']:
             #     logger.info("So we know the username is in one group")
-        logger.info(session)
         return f(*args, **kwargs)
     return decorated
