@@ -1,0 +1,75 @@
+<div class='container'>
+    <section class="jumbotron jumbotron-home">
+        <h1> Resource </h1>
+        <p>
+            Welcome to resource. A resource repository for Information and Electrical Engineering students
+            at Wits.
+            You need to sign in for a locker, DHCP and DNS and to make dlab bookings
+        </p>
+        <div class="clearfix"></div>
+        <div class="col-md-3">
+            <h2>Sign in</h2>
+            <form role="form" name="login_form" ng-submit="sign_in()" novalidate>
+                <fieldset>
+                    <div class="alert alert-danger alert-login"
+                        ng-show="has_error">
+                        <strong>ERROR!</strong> {{login_form.error_message}}
+                    </div>
+                    <div class="alert alert-danger alert-login"
+                        ng-show="server_error">
+                        <strong>ERROR (STATUS 500)!</strong> Error occured is has,
+                        fault of yours it not. Attempting to login again you should.
+
+                        not your fault, try logging in again and if it still does
+                        not let you in, send an email to the dlab administrator
+                        <a href="mailto:dlabadmin@eie.wits.ac.za?Subject=Resource%20it%20is%20break">
+                            my email: dlabadmin@eie.wits.ac.za
+                        </a>.
+                    </div>
+                    <div class="form-group"
+                        ng-class="{ 'has-error' : has_error || login_form.username.$error }">
+                        <input type="text"
+                        ng-model="username"
+                        class="form-control input-lg"
+                        name="username_input"
+                        placeholder="username"
+                        required/>
+                    </div>
+                    <div class="form-group"
+                        ng-class="{ 'has-error' : has_error || login_form.password.$error}">
+                        <input type="password"
+                        ng-model="password"
+                        class="form-control input-lg"
+                        name="password_input"
+                        placeholder="password"
+                        required/>
+                    </div>
+                    <button ng-disabled="!login_form.$valid"
+                        type="submit"
+                        class="btn btn-success">
+                        Sign in
+                    </button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    <section>
+        <!-- Useful links -->
+        <div class="row">
+            <h2>useful links</h2>
+            <div class="col-md-4">
+                <h3>School Website</h3>
+                <p><a role="button" href="http://www.eie.wits.ac.za" class="btn btn-default">Visit »</a></p>
+            </div>
+            <div class="col-md-4">
+                <h3>Student mail</h3>
+                <p><a role="button" href="http://studentmail.wits.ac.za" class="btn btn-default">Visit »</a></p>
+            </div>
+            <div class="col-md-4">
+                <h3>Wits eLearn (Sakai)</h3>
+                <p><a role="button" href="http://cle.wits.ac.za" class="btn btn-default">Visit »</a></p>
+            </div>
+        </div>
+    </section>
+</div>
