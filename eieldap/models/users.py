@@ -222,9 +222,8 @@ def change_password(username, oldpw, newpw):
         user["sambaNTPassword"] = nt_password
         user["sambaLMPassword"] = lm_password
         dn = user['dn']
-        if manager.update(dn, user):
-            return manager.change_password(dn, oldpw, newpw)
-    return False
+        manager.update(dn, user)
+        manager.change_password(dn, oldpw, newpw)
 
 
 def reset_password(username):
