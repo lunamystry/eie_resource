@@ -5,9 +5,9 @@ import os
 
 
 app = Flask(__name__,
-            template_folder='../frontend/guest',
+            template_folder='../frontend/views',
             static_url_path='',
-            static_folder='../frontend/guest')
+            static_folder='../frontend')
 
 
 for location in ["/etc/eieldap"]:
@@ -27,7 +27,4 @@ if os.environ.get('RESOURCE_SETTINGS') is not None:
 app.wsgi_app = ProxyFix(app.wsgi_app)
 api = Api(app)
 
-
 from backend import routes
-import admin
-app.register_blueprint(admin.admin, url_prefix='/admin')
