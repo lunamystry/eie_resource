@@ -1,0 +1,59 @@
+html, body {
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #7F8C8D;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.container {
+    width: 1100px;
+}
+.container {
+    margin-left: auto;
+    margin-right: auto;
+}
+.container:before, .container:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+.container:after {
+    clear: both;
+}
+.container:before, .container:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+footer {
+    margin-top: 5%;
+    padding: 2%;
+    text-align: center;
+    background-color: #333;
+    color: white;
+}
+#credit {
+    font-size: 0.8em;
+    font-weight: bold;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+#credit a {
+    color: #CCCCCC;
+    text-decoration: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 2px;
+}
+#credit a:hover {
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: purple;
+}
