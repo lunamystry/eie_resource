@@ -8,6 +8,7 @@ angular.module('resource', [
   'ui.bootstrap',
   'controller.home',
   'controller.profile',
+  'controller.admin',
   'service.session',
   'service.users',
 ])
@@ -19,5 +20,8 @@ angular.module('resource', [
     .when('/profile', {
         templateUrl: 'views/profile.html',
         controller: 'profileCtrl'})
+    .when('/admin', {
+        templateUrl: 'views/admin.html',
+        controller: 'adminCtrl'})
     .otherwise({redirectTo: '/home'});
 }])
