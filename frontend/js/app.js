@@ -9,6 +9,7 @@ angular.module('resource', [
   'controller.home',
   'controller.profile',
   'service.session',
+  'service.users',
 ])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider

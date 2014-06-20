@@ -16,6 +16,15 @@ service.factory('SessionUser', [
                 session: {},
                 homePage: "/profile",
                 errors: {},
+                // TODO: this does not work, fix it
+                change_password: function(password, new_password) {
+                  $http.put('/passwords/' + sessionUser.session.username,
+                            {"password": password, "new_password": new_password}).success(
+                              // inform the user
+                            ).error(
+                              // inform the user
+                            );
+                },
                 restore_session: function() {
                     if ('undefined' == typeof $cookieStore.get('session_id')) {
                         sessionUser.sign_out();
