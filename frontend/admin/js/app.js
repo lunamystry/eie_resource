@@ -10,6 +10,7 @@ angular.module('resource', [
   'service.version',
   'service.users',
   'service.groups',
+  'service.sessions',
   'controller.login',
   'controller.home',
   'controller.users',
@@ -19,8 +20,8 @@ angular.module('resource', [
   'controller.userEdit',
   'filters.version',
   'directives.appVersion',
-]).
-  config(['$routeProvider', function($routeProvider) {
+])
+  .config(['$routeProvider', function($routeProvider) {
       $routeProvider.when('/home', {
           templateUrl: 'views/home.html',
           controller: 'homeCtrl'});
@@ -31,4 +32,20 @@ angular.module('resource', [
           templateUrl: 'views/groups.html',
           controller: 'groupsCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
+  }])
+  .run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
+    var noAuthRoutes = ['/home'];
+
+    var routeClean = function (route) {
+      return _.find(noAuthRoutes, function (noAuthRoute) {
+        return route.startsWith(noAuthRoute);
+      });
+    };
+
+    SessionUser.restore_session();
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+      if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
+        $location.path("/home");
+      }
+    });
   }]);
