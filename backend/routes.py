@@ -6,11 +6,19 @@ import logging
 
 logger = logging.getLogger("backend.routes")
 
+api.add_resource(rest.Users, '/users')
+api.add_resource(rest.User, '/users/<string:username>')
+# api.add_resource(rest.ChangePassword,
+#                  '/users/<string:username>/change_password')
+# api.add_resource(rest.ResetPassword, '/users/<string:username>/reset_password')
+# api.add_resource(rest.Groups, '/groups')
+# api.add_resource(rest.GroupMembers, '/groups/<string:group_name>')
+# api.add_resource(rest.GroupMember,
+#                  '/groups/<string:group_name>/<string:username>')
 api.add_resource(rest.ClassPhotos, '/class_photos')
 api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
 api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
-api.add_resource(rest.Password, '/passwords/<string:username>/<string:session_key>')
 
 
 @app.route('/')
