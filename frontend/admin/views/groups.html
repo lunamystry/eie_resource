@@ -8,7 +8,7 @@
 <div class="col-md-4">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      add a new groups
+      add a new group
     </div>
     <div class="panel-body">
       <div ng-include="'views/group_form.html'"></div>
@@ -31,15 +31,18 @@
            placeholder="filter posix groups..." />
   </div>
     <div ng-repeat="group in groups | filter:q">
-        <h2>{{group.name}}  {{group.gid_number}}</h2>
-        <p>{{group.description}}</p>
+        <h2>
+            {{group.name}}  <small>gid: {{group.gid_number}}</small>
+            <button ng-click="editGroup($index)"
+                    class="btn btn-primary btn-xs pull-right">
+                <span class="glyphicon glyphicon-pencil"></span>
+                edit
+            </button>
+        </h2>
+        <hr/>
+        <p><em>{{group.description}}</em></p>
         <div ng-repeat="member in group.members">
             {{member}}
         </div>
-        <button ng-click="editGroup($index)"
-                class="btn-primary btn">
-          <span class="glyphicon glyphicon-pencil"></span>
-          edit
-        </button>
     </div>
 </div>
