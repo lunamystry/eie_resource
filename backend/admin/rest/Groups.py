@@ -1,10 +1,10 @@
 from flask import request
-from flask import jsonify
+from flask.ext.restful import reqparse
 from flask.ext.restful import Resource
 from backend import app
 from backend.validators import required
 from backend.validators import ValidationError
-from eieldap import models
+from eieldap.models import groups
 from utils import admin_only
 import logging
 
@@ -14,22 +14,28 @@ logger = logging.getLogger('backend.admin.rest.Groups')
 
 class Group(Resource):
     def get(self, group_name):
-        group = models.groups.find_one(group_name)
+        group = groups.find_one(group_name)
         return group
 
     @admin_only
     def delete(self, group_name):
-        group = models.groups.find_one(group_name)
+        group = groups.find_one(group_name)
         if group:
-            models.groups.delete(group_name)
+            groups.delete(group_name)
         return group_name, 200
 
 
 class Groups(Resource):
     @admin_only
     def get(self):
-        groups = models.groups.find()
-        return jsonify({"result": groups})
+        parser = reqparse.RequestParser()
+        parser.add_argument('start', type=int, help='start must be a number')
+        parser.add_argument('limit', type=int, help='limit must be a number')
+        args = parser.parse_args()
+        start = args["start"]
+        limit = args["limit"]
+        group_list = groups.find()[start:][:limit]
+        return group_list, 200
 
     @admin_only
     def post(self):
@@ -39,7 +45,7 @@ class Groups(Resource):
         data, errors = self.validate(args)
         if errors:
             return errors, 400
-        if models.groups.save(data):
+        if groups.save(data):
             return args, 201
         else:
             return "Group could not be created " + str(args), 500
