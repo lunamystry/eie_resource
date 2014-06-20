@@ -33,6 +33,7 @@ angular.module('resource', [
           controller: 'groupsCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
   }])
+  // TODO: merge the admin and guest into one app and remove this duplication
   .run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
     var noAuthRoutes = ['/home'];
 
