@@ -9,9 +9,11 @@ angular.module('resource', [
   'ui.bootstrap',
   'service.version',
   'service.users',
+  'service.groups',
   'controller.login',
   'controller.home',
   'controller.users',
+  'controller.groups',
   'controller.nav',
   'controller.title',
   'controller.userEdit',
@@ -25,8 +27,8 @@ angular.module('resource', [
       $routeProvider.when('/users', {
           templateUrl: 'views/users.html',
           controller: 'usersCtrl'});
-      $routeProvider.when('/users/:username', {
-          templateUrl: 'views/user_edit.html',
-          controller: 'userEditCtrl'});
+      $routeProvider.when('/groups', {
+          templateUrl: 'views/groups.html',
+          controller: 'groupsCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
   }]);
