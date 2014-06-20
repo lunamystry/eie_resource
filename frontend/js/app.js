@@ -6,6 +6,7 @@ angular.module('resource', [
   'ngCookies',
   'ngAnimate',
   'ui.bootstrap',
+  'controller.home',
 ])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {
