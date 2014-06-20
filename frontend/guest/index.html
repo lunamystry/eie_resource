@@ -17,7 +17,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#home">Resource</a>
+          <a class="navbar-brand" href="#home">
+              Resource
+              <span class='label label-warning' app-version></span>
+          </a>
         </div>
         <div id="menu" class="collapse navbar-collapse" ng-controller="navCtrl">
           <ul class="nav navbar-nav navbar-right">
@@ -92,5 +95,7 @@
     <script type="text/javascript" src="js/controllers.js"></script>
     <script type="text/javascript" src="js/filters.js"></script>
     <script type="text/javascript" src="js/directives.js"></script>
+    <script type="text/javascript" src="js/filters/version.js"></script>
+    <script type="text/javascript" src="js/directives/appVersion.js"></script>
   </body>
 </html>

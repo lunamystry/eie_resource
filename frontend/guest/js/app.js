@@ -10,7 +10,9 @@ angular.module('resource', [
   'app.filters',
   'app.services',
   'app.directives',
-  'app.controllers'
+  'app.controllers',
+  'filters.version',
+  'directives.appVersion',
 ]).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'views/home.html', controller: 'homeCtrl'});
