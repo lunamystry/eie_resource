@@ -37,7 +37,7 @@ service.factory('SessionUser', [
                     this.session = new Session({"username": username, "password": password});
                     this.session.$save(function(value, headers) {
                         if (sessionUser.session.group == 'IT') {
-                            sessionUser.homePage = "//admin";
+                            sessionUser.homePage = "/admin";
                         }
                         sessionUser.isLoggedIn = true;
                         if ("function" == typeof successFn) {

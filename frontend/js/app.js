@@ -7,11 +7,16 @@ angular.module('resource', [
   'ngAnimate',
   'ui.bootstrap',
   'controller.home',
+  'controller.profile',
   'service.session',
 ])
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/home', {
+    $routeProvider
+    .when('/home', {
         templateUrl: 'views/home.html',
-    controller: 'homeCtrl'});
-    $routeProvider.otherwise({redirectTo: '/home'});
+        controller: 'homeCtrl'})
+    .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'profileCtrl'})
+    .otherwise({redirectTo: '/home'});
 }])
