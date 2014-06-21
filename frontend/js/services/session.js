@@ -6,10 +6,10 @@ service.factory('Session', ['$resource', function($resource) {
     return $resource('/sessions/:_id', {_id: '@id'})
 }])
 service.factory('SessionUser', [
-        '$log', 
-        '$http', 
-        '$cookieStore', 
-        'Session', 
+        '$log',
+        '$http',
+        '$cookieStore',
+        'Session',
         function($log, $http, $cookieStore, Session) {
             var sessionUser = {
                 isLoggedIn: false,
@@ -53,7 +53,6 @@ service.factory('SessionUser', [
                             successFn(value, headers);
                         }
                         $cookieStore.put('session_id', sessionUser.session._id);
-                        $log.info("logged in: " + username);
                     }, function(response) {
                         sessionUser.session = {};
                         sessionUser.isLoggedIn = false;
