@@ -29,3 +29,19 @@ angular.module('resource', [
         controller: 'usersCtrl'})
     .otherwise({redirectTo: '/home'});
 }])
+.run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
+    var noAuthRoutes = ['/home', '/about', '/class_photos'];
+
+    var routeClean = function (route) {
+        return _.find(noAuthRoutes, function (noAuthRoute) {
+            return route.startsWith(noAuthRoute);
+        });
+    };
+
+    SessionUser.restore_session();
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
+            $location.path("/home");
+        }
+    });
+}]);
