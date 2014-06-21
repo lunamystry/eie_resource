@@ -10,6 +10,7 @@ from bson.objectid import ObjectId
 from backend.validators import required
 from backend.validators import ValidationError
 from eieldap.models import users
+from eieldap.models import groups
 
 client = MongoClient()
 logger = logging.getLogger("backend.rest.Sessions")
@@ -71,6 +72,8 @@ class Sessions(Resource):
                 "username": str(user["username"])})
             if not session:
                 session = {"username": str(user["username"])}
+            if (session['username'] in groups.find('IT')['members']):
+                session['is_admin'] = True
             session["key"] = str(uuid.uuid4())
             session["timestamp"] = str(
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

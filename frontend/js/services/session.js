@@ -45,7 +45,7 @@ service.factory('SessionUser', [
                 sign_in: function(username, password, successFn, errorFn) {
                     this.session = new Session({"username": username, "password": password});
                     this.session.$save(function(value, headers) {
-                        if (sessionUser.session.group == 'IT') {
+                        if (sessionUser.session.is_admin) {
                             sessionUser.homePage = "/admin";
                         }
                         sessionUser.isLoggedIn = true;
