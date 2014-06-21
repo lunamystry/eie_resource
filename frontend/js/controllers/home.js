@@ -40,5 +40,9 @@ controller.controller('homeCtrl', [
             $scope.session = function() {
                 return SessionUser.session;
             }
+
+            $scope.currentRoute = function () {
+                return $location.path().substring(1);
+            };
         }
 ]);

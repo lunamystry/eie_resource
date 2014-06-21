@@ -20,7 +20,7 @@
                   ng-click="sign_out()">
                   (sign out)
               </a>
-              <a ng-hide="isLoggedIn()"
+              <a ng-hide="isLoggedIn() || currentRoute() == 'home'"
                   href="#/home">
                   <span class="glyphicon glyphicon-user"></span>
                   sign in
