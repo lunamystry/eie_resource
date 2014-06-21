@@ -11,6 +11,7 @@ angular.module('resource', [
   'controller.admin',
   'controller.users',
   'controller.groups',
+  'controller.about',
   'service.session',
   'service.users',
   'service.groups',
@@ -34,6 +35,9 @@ angular.module('resource', [
     .when('/groups', {
         templateUrl: 'views/groups.html',
         controller: 'groupsCtrl'})
+    .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'aboutCtrl'})
     .otherwise({redirectTo: '/home'});
 }])
 .run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
