@@ -8,7 +8,8 @@
                 You need to sign in for a locker, DHCP and DNS and to make dlab bookings
             </p>
         </div>
-        <div class="col-md-3">
+        <div ng-hide="isLoggedIn()"
+             class="col-md-3">
             <h2>Sign in</h2>
             <form role="form" name="login_form" ng-submit="sign_in()" novalidate>
                 <fieldset>

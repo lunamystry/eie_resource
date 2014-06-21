@@ -8,9 +8,6 @@ controller.controller('homeCtrl', [
         '$location',
         'SessionUser',
         function($scope, $log, $location, SessionUser) {
-            if (SessionUser.isLoggedIn) {
-                $location.path(SessionUser.homePage);
-            }
             $scope.sign_in = function() {
                 if ($scope.login_form.$valid) {
                     SessionUser.sign_in($scope.username, $scope.password,
