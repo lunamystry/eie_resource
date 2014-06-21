@@ -10,8 +10,10 @@ angular.module('resource', [
   'controller.profile',
   'controller.admin',
   'controller.users',
+  'controller.groups',
   'service.session',
   'service.users',
+  'service.groups',
   'service.alerts',
   'directives.alert',
 ])
@@ -29,6 +31,9 @@ angular.module('resource', [
     .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'usersCtrl'})
+    .when('/groups', {
+        templateUrl: 'views/groups.html',
+        controller: 'groupsCtrl'})
     .otherwise({redirectTo: '/home'});
 }])
 .run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
