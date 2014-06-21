@@ -18,22 +18,24 @@ dir.directive('eieAlert', [
                     ngModel: '=',
                 },
                 controller: ['$scope', '$timeout', function($scope, $timeout) {
-                  var show = true;
                   if ($scope.ngModel.type == '' || typeof($scope.ngModel.type) == 'undefined') {
                     $scope.ngModel.type = 'info';
                   }
                   if ($scope.ngModel.timeout == '' || typeof($scope.ngModel.timeout) == 'undefined') {
                     $scope.ngModel.timeout = 5000;
                   }
+                  if (typeof($scope.ngModel.timedOut) == 'undefined') {
+                    $scope.ngModel.timedOut = false;
+                  }
                   $scope.close = function() {
-                      show = false;
+                      $scope.ngModel.timedOut = true;
                   }
                   $timeout(function() {
                       $scope.close();
                       $scope.ngModel.timedOut = true;
                   }, parseInt($scope.ngModel.timeout, 10));
                   $scope.shown = function() {
-                        return show;
+                        return !$scope.ngModel.timedOut;
                   }
                 }],
             }
