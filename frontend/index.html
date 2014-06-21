@@ -27,9 +27,10 @@
               </a>
           </div>
       </header>
-      <span ng-init="alerts=[{'timeout': 5000, 'type':'warning', 'message': 'message1'}, {'timeout': 6000, 'message': 'message2'}]"></span>
-      <div ng-repeat='alert in alerts'>
-          <div eie-alert ng-model='alert'>{{alert.message}}</div>
+      <div ng-controller='homeCtrl'>
+          <div ng-repeat='alert in alerts'>
+              <div eie-alert ng-model='alert'>{{alert.message}}</div>
+          </div>
       </div>
       <div ng-view></div>
       <footer class="col-md-12">
