@@ -93,7 +93,11 @@ class Sessions(Resource):
         return args, errors
 
     def authenticate(self, username, password):
-        return users.authenticate(username, password)
+        try:
+            users.authenticate(username, password)
+            return True
+        except ValueError:
+            return False
 
     def hashed(self, password, salt):
         return hashlib.sha512(password + salt).hexdigest()
