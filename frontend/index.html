@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/app.css"/>
   </head>
   <body>
-      <header class="container">
+      <section class="container">
           <div ng-controller="homeCtrl"
               class="pull-right">
               <a ng-show="isLoggedIn()"
@@ -26,7 +26,8 @@
                   sign in
               </a>
           </div>
-      </header>
+      </section>
+      <div ng-include="'views/navbar_guest.html'"></div>
       <div ng-controller='homeCtrl'>
           <div ng-repeat='alert in alerts'>
               <div eie-alert ng-model='alert'>{{alert.message}}</div>
