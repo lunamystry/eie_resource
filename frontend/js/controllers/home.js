@@ -30,6 +30,16 @@ controller.controller('homeCtrl', [
                 }
             }
 
+            $scope.sign_out = function () {
+                SessionUser.sign_out(function() {
+                    $location.path("/home");
+                });
+            }
+
+            $scope.isLoggedIn = function() {
+                return SessionUser.isLoggedIn;
+            }
+
             $scope.session = function() {
                 return SessionUser.session;
             }

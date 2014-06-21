@@ -8,15 +8,34 @@
     <link rel="stylesheet" type="text/css" href="css/app.css"/>
   </head>
   <body>
-    <div ng-view></div>
-    <footer class="col-md-12">
-      <span id="copyright">
-        <p>&#169; 2014, University Of The Witwatersrand, Johannesburg</p>
-      </span>
-      <div id="credit">
-        created by <a href="http://mandla.me"> Mandla Mbuli</a>
-      </div>
-    </footer>
+      <header class="container">
+          <div ng-controller="homeCtrl"
+              class="pull-right">
+              <a ng-show="isLoggedIn()"
+                  href="#/profile">
+                  <span class="glyphicon glyphicon-user"></span>
+                  {{ session().username }}
+              </a>
+              <a ng-show="isLoggedIn()"
+                  ng-click="sign_out()">
+                  (sign out)
+              </a>
+              <a ng-hide="isLoggedIn()"
+                  href="#/home">
+                  <span class="glyphicon glyphicon-user"></span>
+                  sign in
+              </a>
+          </div>
+      </header>
+      <div ng-view></div>
+      <footer class="col-md-12">
+          <span id="copyright">
+              <p>&#169; 2014, University Of The Witwatersrand, Johannesburg</p>
+          </span>
+          <div id="credit">
+              created by <a href="http://mandla.me"> Mandla Mbuli</a>
+          </div>
+      </footer>
     <!-- lib -->
     <script type="text/javascript" src="lib/angular/angular.js"></script>
     <script type="text/javascript" src="lib/angular/angular-route.js"></script>
