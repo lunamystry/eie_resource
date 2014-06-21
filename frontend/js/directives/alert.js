@@ -19,8 +19,6 @@ dir.directive('eieAlert', [
                 },
                 controller: ['$scope', '$timeout', function($scope, $timeout) {
                   var show = true;
-                  $scope.type = "info";
-                  $scope.message = "";
                   $scope.close = function() {
                       show = false;
                   }
