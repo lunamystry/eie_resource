@@ -27,7 +27,8 @@
               </a>
           </div>
       </header>
-      <div eie-alert type="info" message="Testing alerts" timeout=5000></div>
+      <span ng-init="alert={'timeout': 5000, 'message': 'message'}"></span>
+      <div eie-alert ng-model='alert'>{{alert.message}}</div>
       <div ng-view></div>
       <footer class="col-md-12">
           <span id="copyright">
