@@ -66,7 +66,7 @@ service.factory('SessionUser', [
                 },
                 sign_out: function(callbackFn) {
                     if (typeof(sessionUser.session._id) != "undefined") {
-                        sessionUser.session.$delete();
+                        sessionUser.session.$remove(sessionUser.session);
                         sessionUser.session = {};
                         $cookieStore.remove('session_id');
                         sessionUser.isLoggedIn = false;
