@@ -109,3 +109,16 @@ footer {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     color: purple;
 }
+.sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #F5F5F5;
+    border-right: 1px solid #EEE;
+}
