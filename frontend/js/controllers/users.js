@@ -3,11 +3,20 @@
 var controller = angular.module('controller.users', []);
 
 controller.controller('usersCtrl', [
-        "$scope", 
-        "$http", 
-        "Users", 
-        function ($scope, $http, Users) {
-            $scope.users = Users.query();
+        "$scope",
+        "$log",
+        "$http",
+        "$location",
+        "Users",
+        function ($scope, $log, $http, $location, Users) {
+            $scope.users = Users.query(null, 
+                function(value, headers){
+                }, 
+                function(response){
+                    if (response.status == 401) {
+                        $location.path("#/home");
+                    }
+                });
 
             var user = $scope.user = {'last_name':"", "first_name": ""
                 ,"student_number": "", "yos": 3}; // for the form

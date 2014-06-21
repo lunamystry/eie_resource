@@ -13,8 +13,8 @@ service.factory('Users', [
                 {
                     query: {
                         method: 'GET',
-                   isArray: true,
-                   headers: { 'x-auth-key': key }
+                        isArray: true,
+                        headers: { 'x-auth-key': key }
                     },
                 }
                 )
