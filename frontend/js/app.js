@@ -12,6 +12,7 @@ angular.module('resource', [
   'controller.users',
   'service.session',
   'service.users',
+  'directives.alert',
 ])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider
