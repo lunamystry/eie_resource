@@ -52,31 +52,16 @@ body {
     font-weight: bold;
     font-size: x-large;
 }
-.jumbotron-home {
+.jumbotron-eie {
     background-image: url('../img/dlab_cartoonified.jpg');
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     border-color: #46B8DA;
-    min-height: 400px;
     color: #FFFFFF;
     text-shadow: 1px 1px 1px #000;
     font-size: x-large;
-    font-weight: bold;
-}
-.jumbotron-about {
-    background-image: url('../img/dlab_cartoonified.jpg');
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    border-color: #46B8DA;
-    background-color: #5BC0DE;
-    color: #FFFFFF;
-    text-shadow: 1px 1px 1px #000;
-    font-size: x-large;
-    border-color: #46B8DA;
     font-weight: bold;
 }
 .container {
