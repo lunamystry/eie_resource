@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Resource',
-    version='0.8',
+    version='0.9',
     long_description=__doc__,
     packages=['backend'],
     include_package_data=True,
