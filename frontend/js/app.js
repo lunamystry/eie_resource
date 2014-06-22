@@ -12,10 +12,12 @@ angular.module('resource', [
   'controller.users',
   'controller.groups',
   'controller.about',
+  'controller.gallery',
   'service.session',
   'service.users',
   'service.groups',
   'service.alerts',
+  'service.images',
   'directives.alert',
 ])
 .config(['$routeProvider', function($routeProvider) {
@@ -38,10 +40,13 @@ angular.module('resource', [
     .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'aboutCtrl'})
+    .when('/gallery', {
+        templateUrl: 'views/gallery.html',
+        controller: 'galleryCtrl'})
     .otherwise({redirectTo: '/home'});
 }])
 .run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
-    var noAuthRoutes = ['/home', '/about', '/class_photos'];
+    var noAuthRoutes = ['/home', '/about', '/gallery'];
 
     var routeClean = function (route) {
         return _.find(noAuthRoutes, function (noAuthRoute) {

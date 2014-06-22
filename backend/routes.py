@@ -16,8 +16,8 @@ api.add_resource(rest.Groups, '/groups')
 # api.add_resource(rest.GroupMembers, '/groups/<string:group_name>')
 # api.add_resource(rest.GroupMember,
 #                  '/groups/<string:group_name>/<string:username>')
-api.add_resource(rest.ClassPhotos, '/class_photos')
-api.add_resource(rest.ClassPhoto, '/class_photos/<string:name>')
+api.add_resource(rest.Images, '/images')
+api.add_resource(rest.Image, '/images/<string:id>')
 api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
 

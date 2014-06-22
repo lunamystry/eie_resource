@@ -7,37 +7,34 @@ import glob
 from backend import app
 
 
-class ClassPhoto(Resource):
-    def get(self, category, class_photo_name):
+class Image(Resource):
+    def get(self, category, image_name):
         cwd = os.path.dirname(__file__)
-        local_filename = cwd + "/static/img/gallery/" + category + '/' + class_photo_name
-        filename = 'img/gallery/' + category + '/' + class_photo_name
+        local_filename = cwd + "/static/img/gallery/" + category + '/' + image_name
+        filename = 'img/gallery/' + category + '/' + image_name
         try:
             with open(local_filename): pass
         except IOError:
             abort(404)
-        class_photo = url_for('static', filename=filename)
-        return class_photo
+        image = url_for('static', filename=filename)
+        return image
 
-    def delete(self, category, class_photo_name):
+    def delete(self, category, image_name):
         cwd = os.path.dirname(__file__)
-        local_filename = cwd + "/static/img/gallery/" + category + '/' + class_photo_name
+        local_filename = cwd + "/static/img/gallery/" + category + '/' + image_name
         os.remove(local_filename)
         return "", 204
 
 
-class ClassPhotos(Resource):
+class Images(Resource):
     def get(self):
-        cwd = os.path.dirname(__file__)
-        directory = app.config['CLASS_PHOTOS_FOLDER']
-        paths = glob.glob(directory + "/*")
-        class_photo_list = []
-        for class_photo_path in paths:
-            class_photo_name = os.path.basename(class_photo_path)
-            url = "static/images/" + class_photo_name
-            class_photo = {'name': class_photo_name[:-4], 'url': url}
-            class_photo_list.append(class_photo)
-        return jsonify({"result": class_photo_list})
+        image_list = [{"id": 1,
+                       "year": 2012,
+                       "imageUrl": "img/gallery/2012.jpg",
+                       "thumbUrl": "img/gallery/thumbs/2012.jpg",
+                       "name": "2012 class photo",
+                       "snippet": "can you see Patrice and Didier?"}]
+        return image_list
 
     def post(self):
         # This will need some more testing
