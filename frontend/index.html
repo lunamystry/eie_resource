@@ -33,7 +33,12 @@
               <div eie-alert ng-model='alert'>{{alert.message}}</div>
           </div>
       </div>
-      <div ng-view></div>
+      <div ng-view>
+          <div class='container loading'>
+              <p>make sure javascript is enabled please</p>
+              <img src='img/loading.gif'/>
+          </div>
+      </div>
       <footer class="col-md-12">
           <span id="copyright">
               <p>&#169; 2014, University Of The Witwatersrand, Johannesburg</p>
