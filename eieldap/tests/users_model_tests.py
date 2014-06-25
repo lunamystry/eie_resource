@@ -8,7 +8,7 @@ class UserServicesTests(unittest.TestCase):
         self.valid = {"username": "guneap",
                       "first_name": "Gunea",
                       "last_name": "Pig",
-                      "email": "guneap@students.wits.ac.za",
+                      "email": ["guneap@students.wits.ac.za"],
                       "password": "passing",
                       "hosts": ['dummy'],
                       "yos": "1"}
@@ -157,7 +157,7 @@ class UsersTestCase(unittest.TestCase):
         self.valid = {"username": "guneap",
                       "first_name": "Gunea",
                       "last_name": "Pig",
-                      "email": "guneap@students.wits.ac.za",
+                      "email": ["guneap@students.wits.ac.za"],
                       "password": "passing",
                       "hosts": ['dummy'],
                       "yos": "1"}
@@ -187,7 +187,7 @@ class UsersTestCase(unittest.TestCase):
         valid = {"username": "guneap",
                  "first_name": "Gunea",
                  "last_name": "Pig",
-                 "email": "gunea.pig@students.wits.ac.za",
+                 "email": ["gunea.pig@students.wits.ac.za"],
                  "password": "passing",
                  "hosts": ['dummy'],
                  "yos": "1"}
@@ -303,7 +303,7 @@ class UsersTestCase(unittest.TestCase):
         host_less = {"username": "hostless",
                      "first_name": "Host",
                      "last_name": "Less",
-                     "email": "host.less@students.wits.ac.za",
+                     "email": ["host.less@students.wits.ac.za"],
                      "password": "nohost",
                      "yos": "1"}
         expected = {'username': 'hostless',
