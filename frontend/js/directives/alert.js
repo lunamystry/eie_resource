@@ -9,7 +9,7 @@ dir.directive('eieAlert', [
                 replace: true,
                 transclude: true,
                 require: 'ngModel',
-                template: "<div class='alert alert-{{ngModel.type}}' ng-show='shown()'>"+
+                template: "<div class='alert alert-eie alert-{{ngModel.type}}' ng-show='shown()'>"+
                   "<span class='glyphicon glyphicon-remove pull-right' ng-click='close()'></span>"+
                   "<div ng-transclude></div>" +
                   "<div class='clearfix'></div>"+
