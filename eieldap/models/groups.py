@@ -7,10 +7,12 @@ BASEDN = "ou=groups," + manager.base
 FROM_LDAP_MAP = {"cn": "name",
                  "gidNumber": "gid_number",
                  "description": "description",
-                 "memberUid": "members"}
+                 "member": "members"}
 TO_LDAP_MAP = {}
 for k, v in FROM_LDAP_MAP.items():
-    TO_LDAP_MAP[v] = k 
+    TO_LDAP_MAP[v] = k
+
+
 def save(group):
     """adds a new posix group to the LDAP directory"""
     if ("members" not in group
@@ -35,7 +37,7 @@ def save(group):
     if existing_group:
         manager.update(dn, fixed_group)
     else:
-        fixed_group["objectClass"] = ["posixGroup"]
+        fixed_group["objectClass"] = ["posixGroup", "groupsOfNames"]
         fixed_group["cn"] = str(fixed_group["cn"])
         if 'dn' in fixed_group:
             del fixed_group['dn']
