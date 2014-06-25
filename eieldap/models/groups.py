@@ -50,12 +50,14 @@ def save(group):
             raise ValueError(error_msg)
 
     fixed_group = convert(unfixed_group, TO_LDAP_MAP)
+    fixed_group['member'] = [make_dn(username) for username in
+                             fixed_group['member']]
     dn = "cn=" + fixed_group["cn"] + "," + BASEDN
     existing_group = manager.find_one(fixed_group, filter_key="cn")
     if existing_group:
         manager.update(dn, fixed_group)
     else:
-        fixed_group["objectClass"] = ["posixGroup", "groupsOfNames"]
+        fixed_group["objectClass"] = ["groupsOfNames"]
         fixed_group["cn"] = str(fixed_group["cn"])
         if 'dn' in fixed_group:
             del fixed_group['dn']

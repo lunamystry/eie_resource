@@ -52,6 +52,7 @@ class Manager():
         logger.info("disonnected to {}".format(self.server))
 
     def create(self, dn, fields):
+        logger.debug(fields)
         self.admin_bind()
         try:
             modlist = ldap.modlist.addModlist(fields)
