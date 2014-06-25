@@ -142,7 +142,7 @@ class groupMembersTestCase(unittest.TestCase):
         self.existing_user = {"username": "guneap",
                               "first_name": "Gunea",
                               "last_name": "Pig",
-                              "email": "123@students.wits.ac.za",
+                              "email": ["123@students.wits.ac.za"],
                               "password": "secret",
                               "hosts": ['babbage.ug.eie.wits.ac.za'],
                               "yos": "3"}
@@ -171,7 +171,7 @@ class groupMembersTestCase(unittest.TestCase):
         self.new_member = {"username": "johnd",
                            "first_name": "John",
                            "last_name": "Doe",
-                           "email": "mandla.niigata@students.wits.ac.za",
+                           "email": ["mandla.niigata@students.wits.ac.za"],
                            "password": "passing",
                            "hosts": ['dummy'],
                            "yos": "4"}
