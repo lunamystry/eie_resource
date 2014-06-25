@@ -1,3 +1,4 @@
+from ldap.dn import explode_dn
 from eieldap import manager
 from eieldap.models import users
 import logging
@@ -11,6 +12,23 @@ FROM_LDAP_MAP = {"cn": "name",
 TO_LDAP_MAP = {}
 for k, v in FROM_LDAP_MAP.items():
     TO_LDAP_MAP[v] = k
+
+
+def make_dn(username):
+    """
+    >>> make_dn('test')
+    'uid=test,ou=people,dc=eie,dc=wits,dc=ac,dc=za'
+
+    """
+    return "uid={0},{1}".format(username, users.BASEDN)
+
+
+def make_username(dn):
+    """
+    >>> make_username('uid=gunea,ou=people,dc=eie,dc=ac,dc=za')
+    'gunea'
+    """
+    return explode_dn(dn)[0].split('=')[1]
 
 
 def save(group):
