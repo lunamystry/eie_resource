@@ -63,7 +63,7 @@ class Manager():
         except ldap.LDAPError as e:
             logger.error("An error occured while adding: {0}, {1}".format(
                 str(fields), e[0]['desc']))
-            raise RuntimeError(e[0]['desc'])
+            raise RuntimeError(e[0])
 
     def update(self, dn, new_attr):
         """ new_attr is a dictionary of values"""
