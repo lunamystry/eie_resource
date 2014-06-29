@@ -10,6 +10,13 @@ app = Flask(__name__,
             static_folder='../frontend')
 
 
+config_dir = "/etc/eieldap"
+try:
+    filename = os.path.join(config_dir, "resource.cfg")
+    with open(filename) as source:
+        app.config.from_pyfile(filename)
+except IOError:
+    app.logger.error("No application configuration in: " + config_dir)
 
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
