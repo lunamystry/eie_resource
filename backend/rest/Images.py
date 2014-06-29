@@ -32,6 +32,7 @@ class Image(Resource):
 class Images(Resource):
     def get(self):
         image_dir = app.config['GALLERY_FOLDER']
+        gallery_url = app.config['GALLERY_URL']
         image_list = []
         if not os.path.isdir(image_dir):
             logger.error("directory {} does not exist".format(image_dir))
@@ -42,9 +43,8 @@ class Images(Resource):
                     if re.search(r'([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
                                  filename):
                         img = {"name": filename,
-                               "imageUrl": os.path.join(root, filename),
-                               "thumbUrl": os.path.join(root, "thumbs",
-                                                        filename),
+                               "imageUrl": gallery_url+filename,
+                               "thumbUrl": gallery_url+filename,
                                "directory": root}
                         image_list.append(img)
         return image_list
