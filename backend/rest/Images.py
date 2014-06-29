@@ -28,12 +28,14 @@ class Image(Resource):
 
 class Images(Resource):
     def get(self):
+        
         image_list = [{"id": 1,
                        "year": 2012,
                        "imageUrl": "img/gallery/2012.jpg",
                        "thumbUrl": "img/gallery/thumbs/2012.jpg",
                        "name": "2012 class photo",
                        "snippet": "can you see Patrice and Didier?"}]
+
         return image_list
 
     def post(self):
