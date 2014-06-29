@@ -1,5 +1,4 @@
 from flask import request
-from flask import jsonify
 from flask.ext.restful import Resource
 from flask.ext.restful import abort
 import os
@@ -13,7 +12,8 @@ class Image(Resource):
         local_filename = cwd + "/static/img/gallery/" + category + '/' + image_name
         filename = 'img/gallery/' + category + '/' + image_name
         try:
-            with open(local_filename): pass
+            with open(local_filename):
+                pass
         except IOError:
             abort(404)
         image = url_for('static', filename=filename)
