@@ -2,8 +2,11 @@ from flask import request
 from flask.ext.restful import Resource
 from flask.ext.restful import abort
 import os
-import glob
+import re
+import logging
 from backend import app
+
+logger = logging.getLogger("backend.admin.rest.Images")
 
 
 class Image(Resource):
@@ -28,14 +31,22 @@ class Image(Resource):
 
 class Images(Resource):
     def get(self):
-        
-        image_list = [{"id": 1,
-                       "year": 2012,
-                       "imageUrl": "img/gallery/2012.jpg",
-                       "thumbUrl": "img/gallery/thumbs/2012.jpg",
-                       "name": "2012 class photo",
-                       "snippet": "can you see Patrice and Didier?"}]
-
+        image_dir = app.config['GALLERY_FOLDER']
+        image_list = []
+        if not os.path.isdir(image_dir):
+            logger.error("directory {} does not exist".format(image_dir))
+            abort(500)
+        for root, dirs, files in os.walk(image_dir):
+            if files:
+                for filename in files:
+                    if re.search(r'([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
+                                 filename):
+                        img = {"name": filename,
+                               "imageUrl": os.path.join(root, filename),
+                               "thumbUrl": os.path.join(root, "thumbs",
+                                                        filename),
+                               "directory": root}
+                        image_list.append(img)
         return image_list
 
     def post(self):
