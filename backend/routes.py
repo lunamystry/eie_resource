@@ -1,8 +1,12 @@
 from flask import render_template
+from flask import redirect
+from flask import send_from_directory
 from backend import app
 from backend import rest
 from backend import api
+import os
 import logging
+
 
 logger = logging.getLogger("backend.routes")
 
@@ -31,6 +35,18 @@ def index():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('templates/404.html'), 404
+
+
+@app.route('/docs/')
+def documentation_index():
+    return redirect("/docs/index.html")
+
+
+@app.route('/docs/<path:filename>')
+def documentation(filename):
+    cwd = os.path.dirname(__file__)
+    logger.info("CWD: " + cwd)
+    return send_from_directory(cwd + '/../docs/build/html/', filename)
 
 
 @app.errorhandler(500)
