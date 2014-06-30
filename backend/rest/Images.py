@@ -4,7 +4,7 @@ from flask.ext.restful import abort
 import os
 import re
 import logging
-import Image
+import PIL
 from backend import app
 
 logger = logging.getLogger("backend.admin.rest.Images")
@@ -45,7 +45,7 @@ class Images(Resource):
                                  filename):
                         img = {"name": filename,
                                "imageUrl": gallery_url+filename,
-                               "thumbUrl": gallery_url+filename,
+                               "thumbUrl": gallery_url+"thumbs/"+filename,
                                "directory": root}
                         image_list.append(img)
         return image_list
@@ -94,26 +94,26 @@ def resize_and_crop(img_path, modified_path, size, crop_type='top'):
     Resize and crop an image to fit the specified size.
 
     args:
-    img_path: path for the image to resize.
-    modified_path: path to store the modified image.
-    size: `(width, height)` tuple.
-    crop_type: can be 'top', 'middle' or 'bottom', depending on this
-    value, the image will cropped getting the 'top/left', 'middle' or
-    'bottom/right' of the image to fit the size.
+      img_path: path for the image to resize.
+      modified_path: path to store the modified image.
+      size: `(width, height)` tuple.
+      crop_type: can be 'top', 'middle' or 'bottom', depending on this
+        value, the image will cropped getting the 'top/left', 'middle' or
+        'bottom/right' of the image to fit the size.
     raises:
-    Exception: if can not open the file in img_path of there is problems
-    to save the image.
-    ValueError: if an invalid `crop_type` is provided.
+      Exception: if can not open the file in img_path of there is problems
+        to save the image.
+      ValueError: if an invalid `crop_type` is provided.
     """
     # If height is higher we resize vertically, if not we resize horizontally
-    img = Image.open(img_path)
+    img = PIL.Image.open(img_path)
     # Get current and desired ratio for the images
     img_ratio = img.size[0] / float(img.size[1])
     ratio = size[0] / float(size[1])
     if ratio > img_ratio:
         img = img.resize((size[0],
                           int(round(size[0] * img.size[1] / img.size[0]))),
-                         Image.ANTIALIAS)
+                         PIL.Image.ANTIALIAS)
         # Crop in the top, middle or bottom
         if crop_type == 'top':
             box = (0, 0, img.size[0], size[1])
@@ -128,7 +128,7 @@ def resize_and_crop(img_path, modified_path, size, crop_type='top'):
     elif ratio < img_ratio:
         img = img.resize((int(round(size[1] * img.size[0] / img.size[1])),
                           size[1]),
-                         Image.ANTIALIAS)
+                         PIL.Image.ANTIALIAS)
         # Crop in the top, middle or bottom
         if crop_type == 'top':
             box = (0, 0, size[0], img.size[1])
@@ -142,5 +142,5 @@ def resize_and_crop(img_path, modified_path, size, crop_type='top'):
         img = img.crop(box)
     else:
         img = img.resize((size[0], size[1]),
-                         Image.ANTIALIAS)
+                         PIL.Image.ANTIALIAS)
     img.save(modified_path)
