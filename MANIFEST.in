@@ -1,4 +1,5 @@
-include runserver.py 
+include run
+include requirements.txt
 include backend/resource.cfg
 recursive-include frontend *
 recursive-include backend/scripts *
