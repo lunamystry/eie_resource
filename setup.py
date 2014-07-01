@@ -2,9 +2,9 @@ from setuptools import setup
 
 setup(
     name='Resource',
-    version='0.9',
+    version='0.10',
     long_description=__doc__,
-    packages=['backend'],
+    packages=['backend', 'eieldap'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
