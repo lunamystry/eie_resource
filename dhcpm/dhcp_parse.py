@@ -64,3 +64,37 @@ def options(config_lines):
             values = "".join(words[2:]).split(',')
             options.append({"name": name, "values": values})
     return options
+
+
+def subnets(config_lines):
+    """
+        assume:
+            * subnets take up multiple lines and are not closed when are opened
+
+        input: a list of lines
+        return: a list of subnets with its options and groups
+    """
+    subnets = []
+    for line in config_lines:
+        line.lstrip()
+        subnet = ""
+        netmask = ""
+        subnet_options = []
+        subnet_lines = []
+        in_subnet_config = False
+        if line.startswith("subnet") and "{" in line:
+            if in_subnet_config:
+                raise SyntaxError("we don't support subnet in a subnet")
+            words = line.split(" ")
+            subnet = words[1]
+            netmask = words[3]
+            in_subnet_config = True
+        elif line.startwith("}"):
+            subnet_options = options(subnet_lines)
+            subnets.append({"subnet": subnet,
+                            "netmask": netmask,
+                            "options": subnet_options})
+            in_subnet_config = False
+        else:
+            subnet_lines.append(line)
+    return subnets
