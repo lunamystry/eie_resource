@@ -19,7 +19,7 @@ class dhcp_parse_testcase(unittest.TestCase):
         expected = [{'name': 'multi-values',
                      'values': ['1', '2', '2', '3', '4']}]
 
-        result = dp.options(lines)
+        result = dp.extract_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_single_value(self):
@@ -27,7 +27,7 @@ class dhcp_parse_testcase(unittest.TestCase):
         expected = [{'name': 'single-value',
                      'values': ['1']}]
 
-        result = dp.options(lines)
+        result = dp.extract_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_indented_line(self):
@@ -35,12 +35,12 @@ class dhcp_parse_testcase(unittest.TestCase):
         expected = [{'name': 'indented',
                      'values': ['1', '2', '2', '3', '4']}]
 
-        result = dp.options(lines)
+        result = dp.extract_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_not_option(self):
         lines = ["not-option"]
         expected = []
 
-        result = dp.options(lines)
+        result = dp.extract_options(lines)
         self.assertEquals(expected, result)

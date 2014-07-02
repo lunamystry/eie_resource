@@ -70,7 +70,7 @@ def strip_comments(config_lines):
     return uncommented
 
 
-def options(config_lines):
+def extract_options(config_lines):
     """
         input: a list of lines from the config file
         return: a list of options from those lines
