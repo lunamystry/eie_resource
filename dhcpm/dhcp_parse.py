@@ -17,7 +17,14 @@ def extract_parameters(config_lines):
         return: a list of parameters, Each parameter is a tuple with name and
                 value.
     """
-    pass
+    parameters = []
+    for line in config_lines:
+        line.lstrip()
+        if "{" in line:
+            return parameters
+        parameters = {"options": extract_options(config_lines)}
+
+    return parameters
 
 
 def extract_groups(config_lines):
@@ -36,9 +43,7 @@ def extract_groups(config_lines):
     groups = []
     for line in config_lines:
         line.lstrip()
-        sub_groups = []
         group_lines = []
-        parameters = []
         in_group = False
 
         if "{" in line:
@@ -46,6 +51,7 @@ def extract_groups(config_lines):
             in_group = True
         elif line.startwith("}"):
             sub_groups = extract_groups(group_lines)
+            parameters = extract_parameters(group_lines)
             groups.append({"name": name,
                            "parameters": parameters,
                            "groups": sub_groups})
