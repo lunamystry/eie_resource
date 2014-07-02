@@ -3,8 +3,6 @@
 """
 __version__ = '0.1'
 
-import re
-
 
 def extract_parameters(config_lines):
     """
@@ -59,10 +57,10 @@ def options(config_lines):
     """
     options = []
     for line in config_lines:
-        if re.search(r'option', line):
+        line = line.lstrip()
+        if line.startswith('option'):
             words = line.split(" ")
             name = words[1]
             values = "".join(words[2:]).split(',')
             options.append({"name": name, "values": values})
     return options
-
