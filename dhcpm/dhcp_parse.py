@@ -40,12 +40,16 @@ def extract_groups(config_lines):
 
 def strip_comments(config_lines):
     """
-
+        input: list of lines with comments
+        return: list of lines without comments
     """
-    comments = []
+    uncommented = []
     for line in config_lines:
-        if re.search(r'#'):
-            pass
+        if "#" in line:
+            uncommented.append(line[:line.find("#")])
+        else:
+            uncommented.append(line)
+    return uncommented
 
 
 def options(config_lines):
