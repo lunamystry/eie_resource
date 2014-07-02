@@ -33,7 +33,27 @@ def extract_groups(config_lines):
         input: config string
         return: a list of groups.
     """
-    pass
+    groups = []
+    for line in config_lines:
+        line.lstrip()
+        sub_groups = []
+        group_lines = []
+        parameters = []
+        in_group = False
+
+        if "{" in line:
+            name = line[:line.find("{")]
+            in_group = True
+        elif line.startwith("}"):
+            sub_groups = extract_groups(group_lines)
+            groups.append({"name": name,
+                           "parameters": parameters,
+                           "groups": sub_groups})
+            in_group = False
+        elif in_group:
+                group_lines.append(line)
+
+    return groups
 
 
 def strip_comments(config_lines):
@@ -74,27 +94,4 @@ def subnets(config_lines):
         input: a list of lines
         return: a list of subnets with its options and groups
     """
-    subnets = []
-    for line in config_lines:
-        line.lstrip()
-        subnet = ""
-        netmask = ""
-        subnet_options = []
-        subnet_lines = []
-        in_subnet_config = False
-        if line.startswith("subnet") and "{" in line:
-            if in_subnet_config:
-                raise SyntaxError("we don't support subnet in a subnet")
-            words = line.split(" ")
-            subnet = words[1]
-            netmask = words[3]
-            in_subnet_config = True
-        elif line.startwith("}"):
-            subnet_options = options(subnet_lines)
-            subnets.append({"subnet": subnet,
-                            "netmask": netmask,
-                            "options": subnet_options})
-            in_subnet_config = False
-        else:
-            subnet_lines.append(line)
-    return subnets
+    pass
