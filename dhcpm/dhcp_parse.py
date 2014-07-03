@@ -104,7 +104,7 @@ def extract_parameters(config_lines):
     """
     parameters = {}
     for line in config_lines:
-        line.lstrip()
+        line = line.lstrip()
         if "{" in line:
             return parameters
         m = re.match(r'^('+'|'.join(KNOWN_PARAMETERS)+')', line)
@@ -128,23 +128,24 @@ def extract_groups(config_lines):
         return: a list of groups.
     """
     groups = []
+    in_group = False
+    group_lines = []
     for line in config_lines:
         line.lstrip()
-        group_lines = []
-        in_group = False
-
-        if "{" in line:
+        if "{" in line and not in_group:
             name = line[:line.find("{")]
             in_group = True
-        elif line.startwith("}"):
+        elif line.startswith("}"):
             parameters = extract_parameters(group_lines)
             sub_groups = extract_groups(group_lines)
+            group_options = extract_options(group_lines)
             groups.append({"name": name,
+                           "options": group_options,
                            "parameters": parameters,
                            "groups": sub_groups})
             in_group = False
         elif in_group:
-                group_lines.append(line)
+            group_lines.append(line)
 
     return groups
 
@@ -187,3 +188,9 @@ def extract_allow_deny_ignore(config_lines):
         if m:
             params.append({m.group(): line[m.end():].lstrip()})
     return params
+
+
+if __name__ == '__main__':
+    with open('data/test.conf', 'r') as f:
+        for group in extract_groups(f.readlines()):
+            print(group)
