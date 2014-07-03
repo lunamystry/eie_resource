@@ -44,3 +44,15 @@ class dhcp_parse_testcase(unittest.TestCase):
 
         result = dp.extract_options(lines)
         self.assertEquals(expected, result)
+
+    def test_extract_parameters(self):
+        ''' Not exhaustive test of parameter extraction'''
+        lines = ['authoritative',
+                 'unknow bugger this is',
+                 'server-duid LLT duid']
+
+        expected = {'authoritative': '',
+                    'server-duid LLT': 'duid'}
+
+        result = dp.extract_parameters(lines)
+        self.assertEquals(expected, result)

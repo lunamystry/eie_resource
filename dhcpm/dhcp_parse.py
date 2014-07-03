@@ -44,7 +44,7 @@ KNOWN_PARAMETERS = [
     'default-lease-time',
     'delayed-ack',
     'max-ack-delay',
-    'do-forward-updates [',
+    'do-forward-updates',
     'dynamic-bootp-lease-cutoff',
     'dynamic-bootp-lease-length',
     'filename',
@@ -102,14 +102,14 @@ def extract_parameters(config_lines):
         return: a list of parameters, Each parameter is a tuple with name and
                 value.
     """
-    parameters = []
+    parameters = {}
     for line in config_lines:
         line.lstrip()
         if "{" in line:
             return parameters
-        param = line.split(" ")
-        if param[0] in KNOWN_PARAMETERS:
-            parameters.append({param[0]: " ".join(param[1:])})
+        m = re.match(r'^('+'|'.join(KNOWN_PARAMETERS)+')', line)
+        if m:
+            parameters[m.group()] = line[m.end():].lstrip()
 
     return parameters
 
