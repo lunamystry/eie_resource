@@ -64,7 +64,7 @@ __version__ = '0.1'
 #   omapi-port [ port ];
 #   one-lease-per-client [ flag ];
 #   pid-file-name [ name ];
-# 
+#
 #   dhcpv6-pid-file-name [ name ];
 #   ping-check [ flag ];
 #   ping-timeout [ seconds ];
@@ -73,8 +73,8 @@ __version__ = '0.1'
 #   server-identifier [ hostname ];
 #   server-duid LLT [ hardware-type timestamp hardware-address ];
 #   server-duid EN enterprise-number enterprise-identifier;
-#   server-duid LL [ hardware-type hardware-address ]; 
-#   server-name [ name ]; 
+#   server-duid LL [ hardware-type hardware-address ];
+#   server-name [ name ];
 #   site-option-space [ name ];
 #   stash-agent-options [ flag ];
 #   update-conflict-detection [ flag ];
@@ -172,13 +172,12 @@ def extract_options(config_lines):
             options.append({"name": name, "values": values})
     return options
 
+
 def extract_allow_deny_ignore(config_lines):
     params = []
     for line in config_lines:
         line = line.lstrip()
-        if line.startswith('allow') or
-            line.startswith('deny') or
-            line.startswith('ignore'):
+        if line.startswith('allow') or line.startswith('deny') or line.startswith('ignore'):
                 words = line.split(" ")
                 params.append({words[0]: words[1]})
     return params
