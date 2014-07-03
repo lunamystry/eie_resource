@@ -183,7 +183,7 @@ def extract_allow_deny_ignore(config_lines):
     params = []
     for line in config_lines:
         line = line.lstrip()
-        if line.startswith('allow') or line.startswith('deny') or line.startswith('ignore'):
+        if re.match(r'^(allow|deny|ignore)', line):
                 words = line.split(" ")
                 params.append({words[0]: words[1]})
     return params
