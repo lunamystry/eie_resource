@@ -137,8 +137,8 @@ def extract_groups(config_lines):
             name = line[:line.find("{")]
             in_group = True
         elif line.startwith("}"):
-            sub_groups = extract_groups(group_lines)
             parameters = extract_parameters(group_lines)
+            sub_groups = extract_groups(group_lines)
             groups.append({"name": name,
                            "parameters": parameters,
                            "groups": sub_groups})
@@ -168,14 +168,14 @@ def extract_options(config_lines):
         input: a list of lines from the config file
         return: a list of options from those lines
     """
-    options = []
+    options = {}
     for line in config_lines:
         line = line.lstrip()
         if line.startswith('option'):
             words = line.split(" ")
             name = words[1]
             values = "".join(words[2:]).split(',')
-            options.append({"name": name, "values": values})
+            options[name] = values
     return options
 
 
