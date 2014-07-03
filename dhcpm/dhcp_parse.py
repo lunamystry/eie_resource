@@ -3,6 +3,8 @@
 """
 __version__ = '0.1'
 
+import re
+
 # failover statements:
 #   [ primary | secondary ];
 #   address [ address ];
@@ -26,63 +28,65 @@ __version__ = '0.1'
 # prefix6
 #   prefix6 low-address high-address / bits;
 #
-# parameters
-#   adaptive-lease-time-threshold [ percentage ];
-#   always-broadcast [ flag ];
-#   always-reply-rfc1048 [ flag ];
-#   [authoritative | not authoritative];
-#   boot-unknown-clients [ flag ];
-#   db-time-format [ default | local ];
-#   ddns-hostname [ name ];
-#   ddns-domainname [ name ];
-#   ddns-rev-domainname [ name ];
-#   ddns-update-style [ style ];
-#   ddns-updates [ flag ];
-#   default-lease-time [ time ];
-#   delayed-ack [count];
-#   max-ack-delay [ microseconds ];
-#   do-forward-updates [ flag ];
-#   dynamic-bootp-lease-cutoff [ date ];
-#   dynamic-bootp-lease-length [ length ];
-#   filename [ "filename" ];
-#   fixed-address address [, address ... ];
-#   [ fixed-address6 ip6-address ];
-#   get-lease-hostnames [ flag ];
-#   hardware [ hardware-type ] [ hardware-address ];
-#   host-identifier option [ option-name ] [ option-data ];
-#   infinite-is-reserved [ flag ];
-#   lease-file-name [ name ];
-#   limit-addrs-per-ia [ number ];
-#   dhcpv6-lease-file-name [ name ];
-#   local-port [ port ];
-#   local-address [ address ];
-#   log-facility [ facility ];
-#   max-lease-time [ time ];
-#   min-lease-time [ time ];
-#   min-secs [ seconds ];
-#   next-server [ server-name ];
-#   omapi-port [ port ];
-#   one-lease-per-client [ flag ];
-#   pid-file-name [ name ];
-#
-#   dhcpv6-pid-file-name [ name ];
-#   ping-check [ flag ];
-#   ping-timeout [ seconds ];
-#   preferred-lifetime [ seconds ];
-#   remote-port [ port ];
-#   server-identifier [ hostname ];
-#   server-duid LLT [ hardware-type timestamp hardware-address ];
-#   server-duid EN enterprise-number enterprise-identifier;
-#   server-duid LL [ hardware-type hardware-address ];
-#   server-name [ name ];
-#   site-option-space [ name ];
-#   stash-agent-options [ flag ];
-#   update-conflict-detection [ flag ];
-#   update-optimization [ flag ];
-#   update-static-leases [ flag ];
-#   use-host-decl-names [ flag ];
-#   use-lease-addr-for-default-route [ flag ];
-#   vendor-option-space [ string ];
+KNOWN_PARAMETERS = [
+    'adaptive-lease-time-threshold',
+    'always-broadcast',
+    'always-reply-rfc1048',
+    'authoritative',
+    'not authoritative',
+    'boot-unknown-clients',
+    'db-time-format',
+    'ddns-hostname',
+    'ddns-domainname',
+    'ddns-rev-domainname',
+    'ddns-update-style',
+    'ddns-updates',
+    'default-lease-time',
+    'delayed-ack',
+    'max-ack-delay',
+    'do-forward-updates [',
+    'dynamic-bootp-lease-cutoff',
+    'dynamic-bootp-lease-length',
+    'filename',
+    'fixed-address address,'
+    'fixed-address6'
+    'ip6-address',
+    'get-lease-hostnames',
+    'hardware',
+    'host-identifier option',
+    'infinite-is-reserved',
+    'lease-file-name',
+    'limit-addrs-per-ia',
+    'dhcpv6-lease-file-name',
+    'local-port',
+    'local-address',
+    'log-facility',
+    'max-lease-time',
+    'min-lease-time',
+    'min-secs',
+    'next-server',
+    'omapi-port',
+    'one-lease-per-client',
+    'pid-file-name',
+    'dhcpv6-pid-file-name',
+    'ping-check',
+    'ping-timeout',
+    'preferred-lifetime',
+    'remote-port',
+    'server-identifier',
+    'server-duid LLT',
+    'server-duid EN',
+    'server-duid LL',
+    'server-name',
+    'site-option-space',
+    'stash-agent-options',
+    'update-conflict-detection',
+    'update-optimization',
+    'update-static-leases',
+    'use-host-decl-names',
+    'use-lease-addr-for-default-route',
+    'vendor-option-space'
+    ]
 
 
 def extract_parameters(config_lines):
@@ -103,7 +107,9 @@ def extract_parameters(config_lines):
         line.lstrip()
         if "{" in line:
             return parameters
-        parameters = {"options": extract_options(config_lines)}
+        param = line.split(" ")
+        if param[0] in KNOWN_PARAMETERS:
+            parameters.append({param[0]: " ".join(param[1:])})
 
     return parameters
 

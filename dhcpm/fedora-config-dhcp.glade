@@ -1,0 +1,717 @@
+// http://www.redhat.com/archives/fedora-devel-list/2003-November/msg00127.html
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Collections;
+
+namespace ConfParser
+{
+	
+	public class CommonConfig 
+	{
+		public ArrayList Allow = new ArrayList();
+		public ArrayList Deny = new ArrayList();
+		public Hashtable Options = new Hashtable();
+		public ArrayList SubnetConfigs = new ArrayList();
+		public ArrayList HostConfigs = new ArrayList();
+		public ArrayList GroupConfigs = new ArrayList();
+		public ArrayList SharedNetworkConfigs = new ArrayList();
+
+		public string DefaultLeaseTime;
+		public string MaxLeaseTime;
+		public string Hardware;
+		public string FileName;
+		public string ServerName;
+		public string NextServer;
+		public string FixedAddress;
+		public string DynamicBootpLeaseCutoff;
+		public string DynamicBootpLeaseLength;
+		public string GetLeaseHostnames;
+		public string UseHostDeclNames;
+		public string Authoritative;
+		public string UseLeaseAddrForDefaultRoute;
+		public string AlwaysReplyRfc1048;
+		public string ServerIdentifier;
+
+
+		private Regex GetLeaseHostnamesRegex = new Regex(@"get-lease-hostnames\s(.*);$");
+		private Regex UseHostDeclNamesRegex = new Regex(@"use-host-decl-names\s(.*);$");
+		private Regex AuthoritativeRegex = new Regex(@"([not\s|])authoritative;$");
+		private Regex UseLeaseAddrForDefaultRouteRegex = new Regex(@"use-lease-addr-for-default-route\s(.*);$");
+		private Regex AlwaysReplyRfc1048Regex = new Regex(@"always-reply-rfc1048\s(.*);$");
+		private Regex ServerIdentifierRegex = new Regex(@"server-identifier\s(.*);$");
+		private Regex NextServerRegex = new Regex(@"next-server\s(.*);$");
+		private Regex FixedAddressRegex = new Regex(@"fixed-address address\s(.*);$");
+		private Regex DynamicBootpLeaseCutoffRegex = new Regex(@"dynamic-bootp-lease-cutoff\s(.*);$");
+		private Regex DynamicBootpLeaseLengthRegex = new Regex(@"dynamic-bootp-lease-length\s(.*);$");
+		private Regex HardwareRegex = new Regex(@"hardware\s(.*);$");
+		private Regex FileNameRegex = new Regex("filename\\s\"(.*)\";$");
+		private Regex ServerNameRegex = new Regex("server-name\\s\"(.*)\";$");
+		private Regex DefaultLeaseTimeRegex = new Regex(@"default-lease-time\s(.*);$");
+		private Regex MaxLeaseTimeRegex = new Regex(@"max-lease-time\s(.*);$");
+		private Regex OptionRegex = new Regex("option\\s(.*)\\s(\"?)(.*)(\"?);$");
+		private Regex AllowRegex = new Regex(@"allow\s(.*);$");
+		private Regex DenyRegex = new Regex(@"deny\s(.*);$");
+
+		private bool ParseGetLeaseHostnames (string line) 
+		{
+			return ParseParameter (line, ref GetLeaseHostnames, GetLeaseHostnamesRegex);
+		}
+
+		private bool ParseUseHostDeclNames (string line) 
+		{
+			return ParseParameter (line, ref UseHostDeclNames, UseHostDeclNamesRegex);
+		}
+
+		private bool ParseAuthoritative (string line) 
+		{
+			return ParseParameter (line, ref Authoritative, AuthoritativeRegex);
+		}
+
+		private bool ParseUseLeaseAddrForDefaultRoute (string line) 
+		{
+			return ParseParameter (line, ref UseLeaseAddrForDefaultRoute, UseLeaseAddrForDefaultRouteRegex);
+		}
+
+		private bool ParseAlwaysReplyRfc1048 (string line) 
+		{
+			return ParseParameter (line, ref AlwaysReplyRfc1048, AlwaysReplyRfc1048Regex);
+		}
+
+		private bool ParseServerIdentifier (string line) 
+		{
+			return ParseParameter (line, ref ServerIdentifier, ServerIdentifierRegex);
+		}
+
+
+		private bool ParseNextServer (string line) 
+		{
+			return ParseParameter (line, ref NextServer, NextServerRegex);
+		}
+
+		private bool ParseFixedAddress (string line) 
+		{
+			return ParseParameter (line, ref FixedAddress, FixedAddressRegex);
+		}
+
+		private bool ParseDynamicBootpLeaseCutoff (string line) 
+		{
+			return ParseParameter (line, ref DynamicBootpLeaseCutoff, DynamicBootpLeaseCutoffRegex);
+		}
+
+		private bool ParseDynamicBootpLeaseLength (string line) 
+		{
+			return ParseParameter (line, ref DynamicBootpLeaseLength, DynamicBootpLeaseLengthRegex);
+		}
+
+		private bool ParseHardware (string line) 
+		{
+			return ParseParameter (line, ref Hardware, HardwareRegex);
+		}
+
+		private bool ParseFileName (string line) 
+		{
+			return ParseParameter (line, ref FileName, FileNameRegex);
+		}
+
+		private bool ParseServerName (string line) 
+		{
+		  return ParseParameter (line, ref ServerName, ServerNameRegex);
+		}
+
+		private bool ParseMaxLeaseTime (string line) 
+		{
+			return ParseParameter (line, ref MaxLeaseTime, MaxLeaseTimeRegex);
+		}
+
+		private bool ParseDefaultLeaseTime (string line) 
+		{
+			return ParseParameter (line, ref DefaultLeaseTime, DefaultLeaseTimeRegex);
+		}
+
+		private bool ParseParameter (string line, ref string result, Regex regex) 
+		{
+			Match m = regex.Match(line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				result = m.Groups[1].Value;
+				return true;
+			}
+			return false;
+		}
+
+		private bool ParseOption (string line) 
+		{
+			Match m = OptionRegex.Match(line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				if (!this.Options.Contains (m.Groups[1].Value))
+					this.Options.Add (m.Groups[1].Value, m.Groups[3].Value);
+				return true;
+			}
+			return false;
+		}
+
+		private bool ParseAllow (string line) 
+		{
+			Match m = AllowRegex.Match (line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				this.Allow.Add (m.Groups[0].Value);
+				return true;
+			}
+			return false;
+		}
+
+		private bool ParseDeny (string line) 
+		{
+			Match m = DenyRegex.Match (line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				this.Deny.Add (m.Groups[0].Value);
+				return true;
+			}
+			return false;
+		}
+
+
+		public void ParseAnyConfigAndReturn (StreamReader sr, string line) 
+		{
+			try 
+			{
+				SubnetConfig subnetconfig = SubnetConfig.Parse (sr, line);
+				this.SubnetConfigs.Add (subnetconfig);
+				return;
+			} 
+			catch (NotSubnetConfigException) {} 
+
+			try 
+			{
+				HostConfig hostconfig = HostConfig.Parse (sr, line);
+				this.HostConfigs.Add (hostconfig);
+				return;
+			} 
+			catch (NotHostConfigException) {}
+
+			try 
+			{
+				GroupConfig groupconfig = GroupConfig.Parse (sr, line);
+				this.GroupConfigs.Add (groupconfig);
+				return;
+			} 
+			catch (NotGroupConfigException) {}
+
+			try 
+			{
+				SharedNetwork sconfig = SharedNetwork.Parse(sr, line);
+				this.SharedNetworkConfigs.Add (sconfig);
+				return;
+			} 
+			catch (NotSharedNetworkConfigException) {}
+
+		}
+
+		public void ParseAnySingleLineAndReturn (string line) 
+		{
+			if (this.ParseDefaultLeaseTime (line)) return;
+			if (this.ParseMaxLeaseTime (line)) return;
+			if (this.ParseHardware (line)) return;
+			if (this.ParseFileName (line)) return;
+			if (this.ParseServerName (line)) return;
+			if (this.ParseNextServer (line)) return;
+			if (this.ParseFixedAddress (line)) return;
+			if (this.ParseDynamicBootpLeaseCutoff (line)) return;
+			if (this.ParseDynamicBootpLeaseLength (line)) return;
+			if (this.ParseGetLeaseHostnames (line)) return;
+			if (this.ParseUseHostDeclNames (line)) return;
+			if (this.ParseAuthoritative (line)) return;
+			if (this.ParseUseLeaseAddrForDefaultRoute (line)) return;
+			if (this.ParseAlwaysReplyRfc1048 (line)) return;
+			if (this.ParseServerIdentifier (line)) return;
+			if (this.ParseOption (line)) return;
+			if (this.ParseAllow (line)) return;
+			if (this.ParseDeny (line)) return;
+		}
+
+
+
+		public virtual void ParseBody (StreamReader sr) 
+		{
+			bool KeepGoing = true;
+			string line;
+			if ((line = sr.ReadLine ()) == null) 
+				throw new FormatException ("Unexpected end of file");
+
+			int begin=line.IndexOf ('{'), end=-1;
+
+			if (begin != -1)
+				line = line.Substring (begin+1, line.Length);
+			
+			while (KeepGoing)
+			{
+				end = line.IndexOf ('}');
+				if (end != -1)
+				{
+					if (end == 0) line = "";
+					else line = line.Substring (0, end-1);
+					KeepGoing = false;
+				}
+				
+				
+				this.ParseAnySingleLineAndReturn (line);
+				this.ParseAnyConfigAndReturn (sr, line);
+				
+				if (end == -1) 
+				{
+					if ((line = sr.ReadLine ()) == null)
+						throw new FormatException ("Unexpected end of file");
+				}
+			}
+		}
+
+		#region doc
+		
+		//		allow unknown-clients;
+		//		deny unknown-clients;
+		//		allow bootp;
+		//		deny bootp;
+		//		allow booting;
+		//		deny booting;
+
+	
+
+		// [parameters]
+		//		default-lease-time time;
+		//		max-lease-time time;
+		//		hardware hardware-type hardware-address;
+		//		filename "filename";
+		//		server-name "name";
+		//		next-server server-name;
+		//		fixed-address address [, address ... ];
+		//		dynamic-bootp-lease-cutoff date;
+		//		dynamic-bootp-lease-length length;
+		//		get-lease-hostnames flag;
+		//		use-host-decl-names flag;
+		//		authoritative;
+		//		[not ]authoritative;
+		//		use-lease-addr-for-default-route flag;
+		//		always-reply-rfc1048 flag;
+		//		server-identifier hostname;
+
+		#endregion
+
+		
+
+		#region doc
+		
+		// [options]
+		//		option all-subnets-local flag; 
+		//		option arp-cache-timeout uint32; 
+		//		option bootfile-name text; 
+		//		option boot-size uint16; 
+		//		option broadcast-address ip-address; 
+		//		option cookie-servers ip-address [, ip-address... ]; 
+		//		option default-ip-ttl uint8; 
+		//		option default-tcp-ttl uint8; 
+		//		option dhcp-client-identifier string; 
+		//		option dhcp-lease-time uint32; 
+		//		option dhcp-max-message-size uint16; 
+		//		option dhcp-message text; 
+		//		option dhcp-message-type uint8; 
+		//		option dhcp-parameter-request-list uint16; 
+		//		option dhcp-option-overload uint8; 
+		//		option dhcp-rebinding-time uint32; 
+		//		option dhcp-renewal-time uint32; 
+		//		option dhcp-requested-address ip-address; 
+		//		option dhcp-server-identifier ip-address; 
+		//		option domain-name text; 
+		//		option domain-name-servers ip-address [, ip-address... ]; 
+		//		option extensions-path text; 
+		//		option finger-server ip-address [, ip-address... ]; 
+		//		option font-servers ip-address [, ip-address... ]; 
+		//		option host-name string; 
+		//		option ieee802-3-encapsulation flag; 
+		//		option ien116-name-servers ip-address [, ip-address... ]; 
+		//		option impress-servers ip-address [, ip-address... ]; 
+		//		option interface-mtu uint16; 
+		//		option ip-forwarding flag; 
+		//		option irc-server ip-address [, ip-address... ]; 
+		//		option log-servers ip-address [, ip-address... ]; 
+		//		option lpr-servers ip-address [, ip-address... ]; 
+		//		option mask-supplier flag; 
+		//		option max-dgram-reassembly uint16; 
+		//		option merit-dump text; 
+		//		option mobile-ip-home-agent ip-address [, ip-address... ]; 
+		//		option nds-context string; 
+		//		option nds-servers ip-address [, ip-address... ]; 
+		//		option nds-tree-name string; 			 
+		//		option netbios-dd-server ip-address [, ip-address... ]; 		   
+		//		option netbios-name-servers ip-address [, ip-address...]; 
+		//		option netbios-node-type uint8; 
+					//	Possible node types are: 
+					//	1  B-node: Broadcast - no WINS  
+					//	2  P-node: Peer - WINS only.  
+					//	4  M-node: Mixed - broadcast, then WINS  
+					//	8  H-node: Hybrid - WINS, then broadcast  
+		//		option netbios-scope string; 
+		//		option nis-domain text; 
+		//		option nis-servers ip-address [, ip-address... ]; 
+		//		option nisplus-domain text; 
+		//		option nisplus-servers ip-address [, ip-address... ]; 			
+		//		option nntp-server ip-address [, ip-address... ]; 				
+		//		option non-local-source-routing flag; 
+		//		option ntp-servers ip-address [, ip-address... ]; 
+		//		option nwip-domain string; 
+		//		option nwip-suboptions string; 
+		//		option path-mtu-aging-timeout uint32; 
+		//		option path-mtu-plateau-table uint16 [, uint16... ]; 
+		//		option perform-mask-discovery flag; 
+		//		option policy-filter ip-address ip-address [, ip-address ip-address...];
+		//		option pop-server ip-address [, ip-address... ]; 
+		//		option resource-location-servers ip-address [, ip-address...]; 		 
+		//		option root-path text; 
+		//		option router-discovery flag; 
+		//		option router-solicitation-address ip-address; 
+		//		option routers ip-address [, ip-address... ]; 
+		//		option slp-directory-agent boolean ip-address [, ip-address... ]; 
+		//		option slp-service-scope boolean text; 
+		//		option smtp-server ip-address [, ip-address... ]; 
+		//		option static-routes ip-address ip-address [, ip-address ip-address...];
+		//		option streettalk-directory-assistance-server ip-address [, ip-address...];
+		//		option streettalk-server ip-address [, ip-address... ]; 
+		//		option subnet-mask ip-address; 
+		//		option subnet-selection string; 
+		//		option swap-server ip-address; 
+		//		option tcp-keepalive-garbage flag; 
+		//		option tcp-keepalive-interval uint32; 
+		//		option tftp-server-name text; 
+		//		option time-offset int32; 
+		//		option time-servers ip-address [, ip-address... ]; 
+		//		option trailer-encapsulation flag; 
+		//		option uap-servers text; 
+		//		option user-class string; 
+
+		//		option vendor-class-identifier string; 
+		//		option vendor-encapsulated-options string; 
+		//		option www-server ip-address [, ip-address... ]; 
+		//		option x-display-manager ip-address [, ip-address... ]; 
+		//		option agent.circuit-id string; 
+		//		option agent.remote-id string; 
+		//		option fqdn.no-client-update flag; 
+		//		option fqdn.server-update flag; 
+		//		option fqdn.encoded flag; 
+		//		option fqdn.rcode1 flag; 
+		//		option fqdn.rcode1 flag; 
+		//		option fqdn.fqdn text; 
+		//		option nwip.nsq-broadcast flag; 
+		//		option nwip.preferred-dss ip-address [, ip-address... ]; 
+		//		option nwip.nearest-nwip-server ip-address [, ip-address...]; 
+		//		option nwip.autoretries uint8; 
+		//		option nwip.autoretry-secs uint8; 
+		//		option nwip.nwip-1-1 uint8; 
+		//		option nwip.primary-dss ip-address; 
+
+		//		custom options
+		//        option new-name code new-code = definition ; 
+		//		examples
+		//		option use-zephyr code 180 = boolean;
+		//		option use-zephyr on;
+		//
+		//		option sql-connection-max code 192 = unsigned integer 16;
+		//		option sql-connection-max 1536;
+		//		option sql-server-address code 193 = ip-address;
+		//		option sql-server-address sql.example.com;
+		//		option sql-default-connection-name code 194 = text;
+		//		option sql-default-connection-name "PRODZA";
+		//
+		//		option sql-identification-token code 195 = string;
+		//		option sql-identification-token 17:23:19:a6:42:ea:99:7c:22;
+		//		option space local;
+		//		option local.demo code 1 = text;
+		//		option local-encapsulation code 197 = encapsulate local;
+		//		option local.demo "demo";
+		//		option kerberos-servers code 200 = array of ip-address;
+		//		option kerberos-servers 10.20.10.1, 10.20.11.1;
+		//		option contrived-001 code 201 = { boolean, integer 32, text };
+		//		option contrived-001 on 1772 "contrivance";
+		//		option new-static-routes code 201 = array of { ip-address, ip-address, ip-address, integer 8 };
+		//
+		//		option static-routes
+		//		10.0.0.0 255.255.255.0 net-0-rtr.example.com 1,
+		//		10.0.1.0 255.255.255.0 net-1-rtr.example.com 1,
+		//		10.2.0.0 255.255.224.0 net-2-0-rtr.example.com 3;
+		//
+		//		option vendor-encapsulated-options
+		//		2:4:AC:11:41:1:
+		//		3:12:73:75:6e:64:68:63:70:2d:73:65:72:76:65:72:31:37:2d:31:
+		//		4:12:2f:65:78:70:6f:72:74:2f:72:6f:6f:74:2f:69:38:36:70:63;
+		//
+		//		option space SUNW;
+		//		option SUNW.server-address code 2 = ip-address;
+		//		option SUNW.server-name code 3 = text;
+		//		option SUNW.root-path code 4 = text;
+
+
+		//		class "vendor-classes" 
+		//		{
+		//			match option vendor-class-identifier;
+		//									}
+		//
+		//			option SUNW.server-address 172.17.65.1;
+		//			option SUNW.server-name "sundhcp-server17-1";
+		//
+		//			subclass "vendor-classes" "SUNW.Ultra-5_10" 
+		//			{
+		//				vendor-option-space SUNW;
+		//				option SUNW.root-path "/export/root/sparc";
+		//			}
+		//
+		//			subclass "vendor-classes" "SUNW.i86pc" 
+		//			{
+		//				vendor-option-space SUNW;
+		//				option SUNW.root-path "/export/root/i86pc";
+		//			}
+		//
+		//		}
+		#endregion
+	}
+
+	public class GlobalConfig : CommonConfig 
+	{
+		
+		public static GlobalConfig Parse (string filename) 
+		{
+			using (StreamReader sr = new StreamReader(filename)) 
+			{
+				return Parse (sr);
+			}
+		}
+
+		public static GlobalConfig Parse (StreamReader sr) 
+		{
+			bool KeepGoing = true;
+
+			GlobalConfig gconfig = new GlobalConfig ();
+			
+
+			while (KeepGoing)
+			{
+				string line;
+				try 
+				{
+					
+					if ((line = sr.ReadLine ()) == null)
+						throw new EndOfStreamException ();
+
+					gconfig.ParseAnySingleLineAndReturn (line);
+					gconfig.ParseAnyConfigAndReturn (sr, line);
+
+				} 
+				catch (EndOfStreamException)
+				{
+					KeepGoing = false;
+				}
+
+			} 
+
+			return gconfig;
+		}
+	}
+
+
+	// [declarations]
+
+	public class NotGroupConfigException : Exception {}
+	public class GroupConfig : CommonConfig 
+	{
+		public GroupConfig () 
+		{
+		}
+
+		public override void ParseBody (StreamReader sr) 
+		{
+			base.ParseBody (sr);
+		}
+
+
+		// group 
+		// {
+		//		[ parameters ]
+		//		[ declarations ]
+		// }
+		public static GroupConfig Parse (StreamReader sr, string line) 
+		{
+			if (line == null)
+				throw new EndOfStreamException ();
+
+			Regex r = new Regex(@"group[$|.*]");
+			Match m = r.Match(line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				GroupConfig gconfig = new GroupConfig ();
+				gconfig.ParseBody (sr);
+				return gconfig;
+			}
+			throw new NotGroupConfigException ();
+		}
+
+	}
+
+	public class NotSharedNetworkConfigException : Exception {}
+	public class SharedNetwork : CommonConfig 
+	{
+		public string Name;
+
+		public SharedNetwork (string Name) 
+		{
+			this.Name = Name;
+		}
+
+		public override void ParseBody (StreamReader sr)
+		{
+			base.ParseBody (sr);
+		}
+
+
+		// shared-network name 
+		// {
+		//		[ parameters ]
+		//		[ declarations ]
+		// }
+		public static SharedNetwork Parse (StreamReader sr, string line) 
+		{
+		
+			if (line == null)
+				throw new EndOfStreamException ();
+
+			Regex r = new Regex(@"shared-network\s(.*)[$|.*]");
+			Match m = r.Match(line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				SharedNetwork sconfig = new SharedNetwork (m.Groups[1].Value);
+				sconfig.ParseBody (sr);
+				return sconfig;
+			}
+			throw new NotSharedNetworkConfigException ();
+		}
+	}
+
+	public class NotHostConfigException : Exception {}
+	public class HostConfig : CommonConfig 
+	{
+		public string Name;
+
+		public HostConfig (string Name) 
+		{
+			this.Name = Name;
+		}
+
+		public override void ParseBody (StreamReader sr)
+		{
+			base.ParseBody (sr);
+		}
+
+		// host hostname 
+		// {
+		//	[ parameters ]
+		//	[ declarations ]
+		// }
+
+		public static HostConfig Parse (StreamReader sr, string line)
+		{
+			if (line == null)
+				throw new EndOfStreamException ();
+
+			Regex r = new Regex(@"host\s(.*)[$|.*]");
+			Match m = r.Match(line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				HostConfig hostconfig = new HostConfig (m.Groups[1].Value);
+				hostconfig.ParseBody (sr);
+				return hostconfig;
+			}
+			throw new NotHostConfigException ();
+		}
+	}
+
+	public class NotSubnetConfigException : Exception {}
+	public class SubnetConfig : CommonConfig 
+	{
+		public string Number;
+		public string Netmask;
+
+		public SubnetConfig (string Number, string Netmask)
+		{
+			this.Number = Number;
+			this.Netmask = Netmask;
+		}
+
+		public override void ParseBody (StreamReader sr)
+		{
+			base.ParseBody (sr);
+		}
+
+		// subnet subnet-number netmask netmask 
+		// {
+		//		[ parameters ]
+		//		[ declarations ]
+		// }
+
+		public static SubnetConfig Parse (StreamReader sr, string line)
+		{	
+			if (line == null)
+				throw new EndOfStreamException ();
+
+			Regex r = new Regex(@"subnet\s(.*)\snetmask\s(.*)[$|.*]");
+			Match m = r.Match(line);
+			if (m.Success)
+			{
+				m.NextMatch();
+				SubnetConfig subnetconfig = new SubnetConfig (m.Groups[1].Value,  m.Groups[2].Value);
+				subnetconfig.ParseBody (sr);
+				return subnetconfig;
+			}
+			throw new NotSubnetConfigException ();
+		}
+
+
+
+
+	}
+
+
+	/// <summary>
+	/// Summary description for Class1.
+	/// </summary>
+	class Class1
+	{
+		
+		[STAThread]
+		static void Main(string[] args)
+		{
+		
+			GlobalConfig config = GlobalConfig.Parse (@"D:\Temp\dhcpd.conf");
+			if (config.SubnetConfigs.Count > 0)
+			{
+				SubnetConfig c = (SubnetConfig)config.SubnetConfigs[0];
+
+				Console.WriteLine (c.Number);
+				Console.WriteLine (c.Netmask);
+
+				IDictionaryEnumerator myenum = c.Options.GetEnumerator();
+				while (myenum.MoveNext())
+				{
+					Console.WriteLine ("{0}={1}", myenum.Key, myenum.Value);
+				}
+				Console.ReadLine();
+			}
+		}
+	}
+}
