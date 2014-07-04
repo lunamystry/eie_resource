@@ -24,7 +24,7 @@ controller.controller('bookingsCtrl', [
                                 "status": "available",
                                 "software": [],
                                 "comment": "not in the lab"},
-                                {"name": "dlab1",
+                                {"name": "dlab43",
                                 "number": 43,
                                 "eietag": "0000",
                                 "ipv4": "0.0.0.0",
