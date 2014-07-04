@@ -15,21 +15,21 @@ class dhcp_parse_testcase(unittest.TestCase):
         self.assertEquals(expected, result)
 
     def test_options_multiple_values(self):
-        lines = ["option multi-values 1,2, 2,3, 4"]
+        lines = ["option multi-values 1,2, 2,3, 4;"]
         expected = {'multi-values': ['1', '2', '2', '3', '4']}
 
         result = dp.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_single_value(self):
-        lines = ["option single-value 1"]
+        lines = ["option single-value 1;"]
         expected = {'single-value': ['1']}
 
         result = dp.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_indented_line(self):
-        lines = ["        option indented 1,2, 2,3,4"]
+        lines = ["        option indented 1,2, 2,3,4;"]
         expected = {'indented': ['1', '2', '2', '3', '4']}
 
         result = dp.read_options(lines)

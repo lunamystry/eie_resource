@@ -180,12 +180,10 @@ def read_options(config_lines):
     """
     options = {}
     for line in config_lines:
-        line = line.lstrip()
-        if line.startswith('option'):
-            words = line.split(" ")
-            name = words[1]
-            values = "".join(words[2:]).split(',')
-            options[name] = values
+        m = re.search(r'option\s(\S*)\s(.*);', line)
+        if m:
+            name, values = m.groups()
+            options[name] = values.replace(" ", "").split(',')
     return options
 
 
