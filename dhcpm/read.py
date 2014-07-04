@@ -200,10 +200,11 @@ def read_adi(config_lines):
     return adi
 
 
-if __name__ == '__main__':
-    with open('data/test.conf', 'r') as f:
+def read_file(filename):
+    with open(filename) as f:
         lines = f.readlines()
-        # print(read_parameters(lines))
-        # print(read_options(lines))
-        for group in read_groups(lines):
-            print(group)
+        return read_parameters(lines), read_options(lines), read_groups(lines)
+
+
+if __name__ == '__main__':
+    print(read_file('data/test.conf'))
