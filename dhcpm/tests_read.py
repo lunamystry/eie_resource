@@ -65,3 +65,17 @@ class dhcp_parse_testcase(unittest.TestCase):
 
         result = dp.read_parameters(lines)
         self.assertEquals(expected, result)
+
+    def test_read_adi(self):
+        lines = ["deny;",
+                 "allow fenix;",
+                 "allow bar;",
+                 "deny boo;",
+                 "ignore baz;"]
+        expected = [{'allow': 'fenix'},
+                    {'allow': 'bar'},
+                    {'deny': 'boo'},
+                    {'ignore': 'baz'}]
+
+        result = dp.read_adi(lines)
+        self.assertEquals(expected, result)

@@ -187,14 +187,17 @@ def read_options(config_lines):
     return options
 
 
-def read_allow_deny_ignore(config_lines):
-    params = []
+def read_adi(config_lines):
+    """
+        because allow deny ignore is too long
+    """
+    adi = []
     for line in config_lines:
-        line = line.lstrip()
-        m = re.match(r'^(allow|deny|ignore)', line)
+        m = re.search(r'(allow|deny|ignore)\s(.*);', line)
         if m:
-            params.append({m.group(): line[m.end():].lstrip()})
-    return params
+            name, value = m.groups()
+            adi.append({name: value})
+    return adi
 
 
 if __name__ == '__main__':
