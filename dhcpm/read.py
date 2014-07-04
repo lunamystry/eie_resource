@@ -90,7 +90,7 @@ KNOWN_PARAMETERS = [
     ]
 
 
-def extract_parameters(config_lines):
+def read_parameters(config_lines):
     """
         assume:
             * one parameter per line
@@ -116,7 +116,7 @@ def extract_parameters(config_lines):
     return parameters
 
 
-def extract_groups(config_lines):
+def read_groups(config_lines):
     """
         Search for all lines that have '{' and return:
             {'parameters': [('name1', 'value1'), ('name2', 'value2')],
@@ -142,9 +142,9 @@ def extract_groups(config_lines):
             open_brace_count += 1
             group_lines.append(line)
         elif line.startswith("}") and open_brace_count == 0:
-            parameters = extract_parameters(group_lines)
-            group_options = extract_options(group_lines)
-            sub_groups = extract_groups(group_lines)
+            parameters = read_parameters(group_lines)
+            group_options = read_options(group_lines)
+            sub_groups = read_groups(group_lines)
             groups.append({"name": name,
                            "options": group_options,
                            "parameters": parameters,
@@ -174,7 +174,7 @@ def strip_comments(config_lines):
     return uncommented
 
 
-def extract_options(config_lines):
+def read_options(config_lines):
     """
         input: a list of lines from the config file
         return: a list of options from those lines
@@ -190,7 +190,7 @@ def extract_options(config_lines):
     return options
 
 
-def extract_allow_deny_ignore(config_lines):
+def read_allow_deny_ignore(config_lines):
     params = []
     for line in config_lines:
         line = line.lstrip()
@@ -202,5 +202,10 @@ def extract_allow_deny_ignore(config_lines):
 
 if __name__ == '__main__':
     with open('data/test.conf', 'r') as f:
-        for group in extract_groups(f.readlines()):
-            print(group['groups'])
+        lines = f.readlines()
+        for line in lines:
+            print(line.strip())
+        # print(read_parameters(lines))
+        # print(read_options(lines))
+        # for group in read_groups(lines):
+        #     print(group)

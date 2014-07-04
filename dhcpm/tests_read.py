@@ -1,5 +1,5 @@
 import unittest
-import dhcp_parse as dp
+import read as dp
 
 
 class dhcp_parse_testcase(unittest.TestCase):
@@ -18,38 +18,38 @@ class dhcp_parse_testcase(unittest.TestCase):
         lines = ["option multi-values 1,2, 2,3, 4"]
         expected = {'multi-values': ['1', '2', '2', '3', '4']}
 
-        result = dp.extract_options(lines)
+        result = dp.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_single_value(self):
         lines = ["option single-value 1"]
         expected = {'single-value': ['1']}
 
-        result = dp.extract_options(lines)
+        result = dp.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_indented_line(self):
         lines = ["        option indented 1,2, 2,3,4"]
         expected = {'indented': ['1', '2', '2', '3', '4']}
 
-        result = dp.extract_options(lines)
+        result = dp.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_not_option(self):
         lines = ["not-option"]
         expected = {}
 
-        result = dp.extract_options(lines)
+        result = dp.read_options(lines)
         self.assertEquals(expected, result)
 
-    def test_extract_parameters(self):
+    def test_read_parameters(self):
         ''' Not exhaustive test of parameter extraction'''
-        lines = ['authoritative',
-                 'unknown bugger this is',
-                 'server-duid LLT duid']
+        lines = ['authoritative;',
+                 'unknown bugger this is;',
+                 'server-duid LLT duid;']
 
         expected = {'authoritative': '',
                     'server-duid LLT': 'duid'}
 
-        result = dp.extract_parameters(lines)
+        result = dp.read_parameters(lines)
         self.assertEquals(expected, result)
