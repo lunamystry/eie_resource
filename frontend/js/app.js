@@ -19,8 +19,10 @@ angular.module('resource', [
   'service.groups',
   'service.alerts',
   'service.images',
+  'service.computers',
   'service.version',
   'directives.alert',
+  'directives.computer',
   'directives.appVersion',
 ])
 .config(['$routeProvider', function($routeProvider) {
