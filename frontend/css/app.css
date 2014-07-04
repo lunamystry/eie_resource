@@ -131,3 +131,32 @@ footer {
     background-color: #F5F5F5;
     border-right: 1px solid #EEE;
 }
+.computer {
+    color: #CCCCCC;
+    text-decoration: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 2px;
+    padding: 2px;
+}
+.computer h2 {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+.computer-booked {
+
+}
+.computer-available {
+
+}
+.computer-unknown {
+
+}
+.computer-absent {
+
+}
+.computer-faulty {
+
+}
