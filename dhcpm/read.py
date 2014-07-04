@@ -203,9 +203,7 @@ def read_adi(config_lines):
 if __name__ == '__main__':
     with open('data/test.conf', 'r') as f:
         lines = f.readlines()
-        for line in lines:
-            print(line.strip())
-        # print(read_parameters(lines))
-        # print(read_options(lines))
-        # for group in read_groups(lines):
-        #     print(group)
+        print(read_parameters(lines))
+        print(read_options(lines))
+        for group in read_groups(lines):
+            print(group)
