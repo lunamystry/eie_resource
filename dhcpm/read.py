@@ -49,8 +49,8 @@ KNOWN_PARAMETERS = [
     'dynamic-bootp-lease-cutoff',
     'dynamic-bootp-lease-length',
     'filename',
-    'fixed-address address,'
-    'fixed-address6'
+    'fixed-address',
+    'fixed-address6',
     'ip6-address',
     'get-lease-hostnames',
     'hardware',
@@ -203,7 +203,7 @@ def read_adi(config_lines):
 if __name__ == '__main__':
     with open('data/test.conf', 'r') as f:
         lines = f.readlines()
-        print(read_parameters(lines))
-        print(read_options(lines))
+        # print(read_parameters(lines))
+        # print(read_options(lines))
         for group in read_groups(lines):
             print(group)
