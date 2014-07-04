@@ -1,5 +1,5 @@
 import unittest
-import read as dp
+import read
 
 
 class dhcp_parse_testcase(unittest.TestCase):
@@ -11,35 +11,35 @@ class dhcp_parse_testcase(unittest.TestCase):
                     "this line does not have a comment",
                     ""]
 
-        result = dp.strip_comments(lines)
+        result = read.strip_comments(lines)
         self.assertEquals(expected, result)
 
     def test_options_multiple_values(self):
         lines = ["option multi-values 1,2, 2,3, 4;"]
         expected = {'multi-values': ['1', '2', '2', '3', '4']}
 
-        result = dp.read_options(lines)
+        result = read.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_single_value(self):
         lines = ["option single-value 1;"]
         expected = {'single-value': ['1']}
 
-        result = dp.read_options(lines)
+        result = read.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_indented_line(self):
         lines = ["        option indented 1,2, 2,3,4;"]
         expected = {'indented': ['1', '2', '2', '3', '4']}
 
-        result = dp.read_options(lines)
+        result = read.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_options_not_option(self):
         lines = ["not-option"]
         expected = {}
 
-        result = dp.read_options(lines)
+        result = read.read_options(lines)
         self.assertEquals(expected, result)
 
     def test_read_parameters(self):
@@ -51,7 +51,7 @@ class dhcp_parse_testcase(unittest.TestCase):
         expected = {'authoritative': '',
                     'server-duid LLT': 'duid'}
 
-        result = dp.read_parameters(lines)
+        result = read.read_parameters(lines)
         self.assertEquals(expected, result)
 
     def test_read_parameters_indented(self):
@@ -63,7 +63,7 @@ class dhcp_parse_testcase(unittest.TestCase):
         expected = {'authoritative': '',
                     'server-duid LLT': 'duid'}
 
-        result = dp.read_parameters(lines)
+        result = read.read_parameters(lines)
         self.assertEquals(expected, result)
 
     def test_read_adi(self):
@@ -77,7 +77,7 @@ class dhcp_parse_testcase(unittest.TestCase):
                     {'deny': 'boo'},
                     {'ignore': 'baz'}]
 
-        result = dp.read_adi(lines)
+        result = read.read_adi(lines)
         self.assertEquals(expected, result)
 
     def test_read_groups(self):
@@ -140,5 +140,5 @@ class dhcp_parse_testcase(unittest.TestCase):
                      'options': {}}
                     ]
         self.maxDiff = None
-        result = dp.read_groups(lines)
+        result = read.read_groups(lines)
         self.assertEquals(expected, result)
