@@ -1,5 +1,6 @@
 """
-    a dhcp parser cause I can't find one that I like or works the way I want.
+    a dhcpd.conf reader cause I can't find one that I like or works the
+    way I want.
 """
 __version__ = '0.1'
 
@@ -107,9 +108,10 @@ def extract_parameters(config_lines):
         line = line.lstrip()
         if "{" in line:
             return parameters
-        m = re.match(r'^('+'|'.join(KNOWN_PARAMETERS)+')', line)
+        m = re.match(r'('+'|'.join(KNOWN_PARAMETERS)+')\s*(.*);', line)
         if m:
-            parameters[m.group()] = line[m.end():].lstrip()
+            name, value = m.groups()
+            parameters[name] = value
 
     return parameters
 
