@@ -105,10 +105,9 @@ def read_parameters(config_lines):
     """
     parameters = {}
     for line in config_lines:
-        line = line.lstrip()
         if "{" in line:
             return parameters
-        m = re.match(r'('+'|'.join(KNOWN_PARAMETERS)+')\s*(.*);', line)
+        m = re.search(r'('+'|'.join(KNOWN_PARAMETERS)+')\s*(.*);', line)
         if m:
             name, value = m.groups()
             parameters[name] = value
