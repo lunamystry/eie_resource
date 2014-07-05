@@ -40,15 +40,6 @@ controller.controller('groupsCtrl', [
                 }
             }
 
-            $scope.alerts = [];
-            $scope.addAlert = function(type, msg) {
-                $scope.alerts.push({type: type, msg: msg});
-            };
-
-            $scope.closeAlert = function(index) {
-                $scope.alerts.splice(index, 1);
-            }
-
             $scope.form = {};
             $scope.form.host = "";
             $scope.group.hosts = [];
