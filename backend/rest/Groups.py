@@ -26,8 +26,8 @@ class Group(Resource):
         if errors:
             logger.error(errors)
             return errors, 400
-        # if groups.save(data):
-        #     return args, 201
+        if groups.save(data):
+            return args, 201
         else:
             return "Group could not be created " + str(args), 500
 
