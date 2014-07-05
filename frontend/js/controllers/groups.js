@@ -22,7 +22,10 @@ controller.controller('groupsCtrl', [
                                     'gid_number': '',
                                     'members': [],
                                     'description': ''};
-                })
+                }, function(response) {
+                    console.log(response.data);
+                }
+                )
             };
 
             $scope.deleteGroup = function(name) {

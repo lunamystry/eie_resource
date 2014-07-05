@@ -39,7 +39,7 @@ class Group(Resource):
         return group_name, 200
 
     def validate(self, data):
-        errors = {}
+        errors = []
         validators = {"name": [required], "members": [required]}
         # make sure all value keys are there
         for key in validators.keys():
@@ -48,16 +48,10 @@ class Group(Resource):
             except KeyError:
                 data[key] = None
         # validate
-        for key in validators.keys():
-            value = data[key]
-            field_errors = []
-            for validator in validators[key]:
-                try:
-                    validator(value)
-                except ValidationError as e:
-                    field_errors.append(e.message)
-            if field_errors:
-                errors[key] = field_errors
+        if 'members' not in data or not data['members']:
+            errors.append("at least one members is required")
+        if 'name' not in data or not data['name']:
+            errors.append("groups must have a name")
         return data, errors
 
 
