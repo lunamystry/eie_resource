@@ -9,7 +9,7 @@ dir.directive('eieComputer', [
                 replace: true,
                 transclude: true,
                 require: 'ngModel',
-                template: "<div class='computer'>"+
+                template: "<div class='computer computer-{{ngModel.status}}'>"+
                   "<h2>{{ngModel.name}}</h2>"+
                   "<div class='clearfix'></div>"+
                   "</div>",
