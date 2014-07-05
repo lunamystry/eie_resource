@@ -5,8 +5,9 @@ var controller = angular.module('controller.groups', []);
 controller.controller('groupsCtrl', [
         "$scope",
         "$http",
+        "Alerts",
         "Groups",
-        function ($scope, $http, Groups) {
+        function ($scope, $http, Alerts, Groups) {
             $scope.groups = Groups.query();
 
             var group = $scope.group = {'name':'',
@@ -23,7 +24,8 @@ controller.controller('groupsCtrl', [
                                     'members': [],
                                     'description': ''};
                 }, function(response) {
-                    console.log(response.data);
+                    var error_msg = response.data;
+                    Alerts.add('danger', error_msg);
                 }
                 )
             };
