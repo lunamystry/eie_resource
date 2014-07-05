@@ -11,6 +11,10 @@ service.factory('Groups', [
             return $resource('/groups/:name',
                 {name: '@name'},
                 {
+                    save: {
+                        method: 'POST',
+                        headers: { 'x-auth-key': key }
+                    },
                     query: {
                         method: 'GET',
                         isArray: true,

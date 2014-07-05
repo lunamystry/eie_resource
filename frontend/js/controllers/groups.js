@@ -15,14 +15,14 @@ controller.controller('groupsCtrl', [
                                         'description': ''}; // for the form
 
             $scope.saveGroup = function  () {
-                $http.post('/groups', group)
-                    .success(function (group) {
-                        $scope.groups.push(group);
-                        $scope.group = {'name':'',
-                                        'gid_number': '',
-                                        'members': [],
-                                        'description': ''};
-                    });
+                var new_group = new Groups(group);
+                new_group.$save(function (group) {
+                    $scope.groups.push(group);
+                    $scope.group = {'name':'',
+                                    'gid_number': '',
+                                    'members': [],
+                                    'description': ''};
+                })
             };
 
             $scope.deleteGroup = function(name) {

@@ -18,27 +18,7 @@ class Group(Resource):
         return group
 
     @admin_only
-    def delete(self, group_name):
-        group = groups.find_one(group_name)
-        if group:
-            groups.delete(group_name)
-        return group_name, 200
-
-
-class Groups(Resource):
-    @admin_only
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('start', type=int, help='start must be a number')
-        parser.add_argument('limit', type=int, help='limit must be a number')
-        args = parser.parse_args()
-        start = args["start"]
-        limit = args["limit"]
-        group_list = groups.find()[start:][:limit]
-        return group_list, 200
-
-    @admin_only
-    def post(self):
+    def post(self, group_name):
         """ Create a new Group, must provide only Name """
         app.logger.info("Trying to create a group... joto mate")
         args = request.json
@@ -46,10 +26,17 @@ class Groups(Resource):
         if errors:
             logger.error(errors)
             return errors, 400
-        if groups.save(data):
-            return args, 201
+        # if groups.save(data):
+        #     return args, 201
         else:
             return "Group could not be created " + str(args), 500
+
+    @admin_only
+    def delete(self, group_name):
+        group = groups.find_one(group_name)
+        if group:
+            groups.delete(group_name)
+        return group_name, 200
 
     def validate(self, data):
         errors = {}
@@ -72,3 +59,17 @@ class Groups(Resource):
             if field_errors:
                 errors[key] = field_errors
         return data, errors
+
+
+class Groups(Resource):
+    @admin_only
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('start', type=int, help='start must be a number')
+        parser.add_argument('limit', type=int, help='limit must be a number')
+        args = parser.parse_args()
+        start = args["start"]
+        limit = args["limit"]
+        group_list = groups.find()[start:][:limit]
+        return group_list, 200
+

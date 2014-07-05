@@ -17,9 +17,7 @@ api.add_resource(rest.User, '/users/<string:username>')
 # api.add_resource(rest.ResetPassword,
 # '/users/<string:username>/reset_password')
 api.add_resource(rest.Groups, '/groups')
-# api.add_resource(rest.GroupMembers, '/groups/<string:group_name>')
-# api.add_resource(rest.GroupMember,
-#                  '/groups/<string:group_name>/<string:username>')
+api.add_resource(rest.Group, '/groups/<string:group_name>')
 api.add_resource(rest.Images, '/images')
 api.add_resource(rest.Image, '/images/<string:id>')
 api.add_resource(rest.Sessions, '/sessions')
