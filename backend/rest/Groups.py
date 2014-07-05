@@ -20,16 +20,14 @@ class Group(Resource):
     @admin_only
     def post(self, group_name):
         """ Create a new Group, must provide only Name """
-        app.logger.info("Trying to create a group... joto mate")
         args = request.json
         data, errors = self.validate(args)
         if errors:
             logger.error(errors)
             return errors, 400
-        if groups.save(data):
-            return args, 201
-        else:
-            return "Group could not be created " + str(args), 500
+        logger.error(data)
+        groups.save(data)
+        return args, 201
 
     @admin_only
     def delete(self, group_name):
