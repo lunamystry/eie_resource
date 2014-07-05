@@ -44,6 +44,7 @@ class Groups(Resource):
         args = request.json
         data, errors = self.validate(args)
         if errors:
+            logger.error(errors)
             return errors, 400
         if groups.save(data):
             return args, 201

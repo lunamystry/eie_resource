@@ -15,6 +15,7 @@ def admin_only(f):
     def decorated(*args, **kwargs):
         # Check if the authentication header is set
         if "x-auth-key" not in request.headers:
+            logger.error('missing headers')
             return "missing headers", 400
         session = client.resource.sessions.find_one({
             '_id': ObjectId(request.headers['x-auth-key'])})
