@@ -22,7 +22,7 @@ dir.directive('eieAlert', [
                     $scope.ngModel.type = 'info';
                   }
                   if ($scope.ngModel.timeout == '' || typeof($scope.ngModel.timeout) == 'undefined') {
-                    $scope.ngModel.timeout = 5000;
+                    $scope.ngModel.timeout = 10000;
                   }
                   if (typeof($scope.ngModel.timedOut) == 'undefined') {
                     $scope.ngModel.timedOut = false;
