@@ -33,54 +33,18 @@ service.factory('Computers', [
 
                         });
                     } else {
-                        var section1 = [{"name": "dlab1",
-                                         "comment": "not in the lab"},
-                                        {"name": "dlab2",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab3",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab4",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab5",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab6",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab7",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab8",
-                                        "comment": "not in the lab"}];
-                        var section2 = [{"name": "dlab19",
-                                         "comment": "not in the lab"},
-                                        {"name": "dlab20",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab21",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab22",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab23",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab24",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab25",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab26",
-                                        "comment": "not in the lab"}];
-                        var section3 = [{"name": "dlab43",
-                                         "comment": "not in the lab"},
-                                        {"name": "dlab44",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab45",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab46",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab47",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab48",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab49",
-                                        "comment": "not in the lab"},
-                                        {"name": "dlab50",
-                                        "comment": "not in the lab"}];
+                        var section1 = [];
+                        for (var i = 1; i < 19; i++) {
+                            section1.push({"name": "dlab"+i});
+                        }
+                        var section2 = [];
+                        for (var i = 19; i < 43; i++) {
+                            section2.push({"name": "dlab"+i});
+                        }
+                        var section3 = [];
+                        for (var i = 43; i < 78; i++) {
+                            section3.push({"name": "dlab"+i});
+                        }
                         var sections = [section1, section2, section3]
                         return sections;
                     }
