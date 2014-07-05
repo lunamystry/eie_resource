@@ -34,12 +34,13 @@ def save(group):
 
     fixed_group = convert(unfixed_group, TO_LDAP_MAP)
     dn = "cn=" + fixed_group["cn"] + "," + BASEDN
-    existing_group = manager.find_one(fixed_group, filter_key="cn")
+    existing_group = manager.find_one(fixed_group, base=BASEDN, filter_key="cn")
     if existing_group:
         manager.update(dn, fixed_group)
     else:
         fixed_group["objectClass"] = ["posixGroup"]
         fixed_group["cn"] = str(fixed_group["cn"])
+        fixed_group['memberUid'] = [str(member) for member in fixed_group['memberUid']]
         if 'dn' in fixed_group:
             del fixed_group['dn']
         manager.create(dn, fixed_group)
