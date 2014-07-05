@@ -53,8 +53,8 @@ controller.controller('groupsCtrl', [
             $scope.form.host = "";
             $scope.group.hosts = [];
             $scope.addMember = function() {
-                if ($scope.group.hosts.indexOf($scope.form.host) == -1) {
-                    $scope.group.hosts.push($scope.form.host);
+                if ($scope.group.members.indexOf($scope.form.member) == -1) {
+                    $scope.group.members.push($scope.form.member);
                 }
             }
 
