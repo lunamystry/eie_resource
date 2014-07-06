@@ -23,6 +23,7 @@ controller.controller('groupsCtrl', [
                                     'gid_number': '',
                                     'members': [],
                                     'description': ''};
+                    Alerts.add('success', 'saved');
                 }, function(response) {
                     var error_msg = response.data;
                     Alerts.add('danger', error_msg);
