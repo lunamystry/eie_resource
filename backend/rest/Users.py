@@ -37,6 +37,18 @@ class User(Resource):
         user = users.find_one(username)
         return user
 
+    @admin_only
+    def post(self, username):
+        # users = users.find()
+        args = request.json
+        data, errors = validate(args)
+        data["password"] = "passing"
+        if errors:
+            logger.error(errors)
+            return errors, 500
+        users.add(data)
+        return args, 201
+
     def put(self, username):
         user = users.find_one(username)
         args = request.json
@@ -68,19 +80,6 @@ class Users(Resource):
         limit = args["limit"]
         user_list = users.find()[start:][:limit]
         return user_list, 200
-
-    @admin_only
-    def post(self):
-        # users = users.find()
-        args = request.json
-        data, errors = validate(args)
-        data["password"] = "passing"
-        if errors:
-            return errors, 500
-        if users.update(data):
-            return args, 201
-        else:
-            return "User could not be created " + str(args), 500
 
 
 def validate(data):
