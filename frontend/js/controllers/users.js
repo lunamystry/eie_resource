@@ -61,15 +61,10 @@ controller.controller('usersCtrl', [
                     Alerts.add('danger', error_msg);
                 });
             };
-            $scope.deleteUser = function(user) {
+            $scope.deleteUser = function(user, index) {
                 var username = user.username;
                 user.$remove(function(data, headers) {
-                    for (var i = 0; i < $scope.users.length; ++i) {
-                        var entry = $scope.users[i];
-                        if (entry.username == username){
-                            $scope.users.splice(i, 1);
-                        }
-                    }
+                    $scope.users.splice(index, 1);
                     Alerts.add('success', 'deleted');
                 }, function(response) {
                     var error_msg = 'could not delete ' + user.first_name + " " + user.last_name
