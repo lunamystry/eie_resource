@@ -4,14 +4,21 @@ var controller = angular.module('controller.group_edit', []);
 
 controller.controller('groupEditCtrl', [
         "$scope",
-        "$http",
+        "$location",
         "$routeParams",
         "Alerts",
         "Groups",
-        function ($scope, $http, $routeParams, Alerts, Groups) {
+        function ($scope, $location, $routeParams, Alerts, Groups) {
 
             var group = $scope.group = new Groups();
-            group.$get({"name": $routeParams.name});
+            var group_name = $routeParams.name;
+            group.$get({"name": group_name}, function(data, headers) {},
+                function(response) {
+                    if (response.status == 404) {
+                        Alerts.add('danger', group_name + " not found");
+                        $location.path('/groups');
+                    }
+                });
 
             $scope.saveGroup = function  () {
                 var new_group = new Groups(group);
