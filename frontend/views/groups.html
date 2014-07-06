@@ -34,7 +34,7 @@
         <div ng-repeat="group in groups | filter:q">
             <h2>
                 {{group.name}}  <small>gid: {{group.gid_number}}</small>
-                <button ng-click="deleteGroup(group)"
+                <button ng-click="deleteGroup(group, $index)"
                     class="btn btn-danger btn-xs pull-right">
                     <span class="glyphicon glyphicon-remove"></span>
                     delete
