@@ -15,6 +15,10 @@ service.factory('Groups', [
                         method: 'POST',
                         headers: { 'x-auth-key': key }
                     },
+                    remove: {
+                        method: 'DELETE',
+                        headers: { 'x-auth-key': key }
+                    },
                     query: {
                         method: 'GET',
                         isArray: true,

@@ -30,14 +30,18 @@ controller.controller('groupsCtrl', [
                 )
             };
 
-            $scope.deleteGroup = function(name) {
-                Groups.delete({'name': name});
-                for (var i = 0; i < $scope.groups.length; ++i) {
-                    var entry = $scope.groups[i];
-                    if (entry.name == name){
-                        $scope.groups.splice(i, 1);
+            $scope.deleteGroup = function(group) {
+                group.$remove(function(data, headers) {
+                    for (var i = 0; i < $scope.groups.length; ++i) {
+                        var entry = $scope.groups[i];
+                        if (entry.name == name){
+                            $scope.groups.splice(i, 1);
+                        }
                     }
+                }, function(response) {
+                    console.log(response.status);
                 }
+                );
             }
 
             $scope.form = {};
