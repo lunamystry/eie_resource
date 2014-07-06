@@ -51,10 +51,14 @@ controller.controller('usersCtrl', [
             $scope.saveUser = function  () {
                 $http.post('/users', user)
                     .success(function (user) {
+                        Alerts.add('success', 'saved');
                         $scope.users.push(user);
                         $scope.user = {};
                         $scope.user.login_shell = "/bin/bash";
                         $scope.user.home_directory = "/home/ug/";
+                    }).error(function (response) {
+                        var error_msg = 'could not save ' + user.first_name + " " + user.last_name;
+                        Alerts.add('danger', error_msg);
                     });
             };
             $scope.deleteUser = function(user) {
@@ -114,15 +118,17 @@ controller.controller('usersCtrl', [
                     $scope.editing = false;
                 }
                 $scope.editing = true;
-                $scope.updateUser = function() {
-                    $http({method: 'PUT', url: '/users/'+ $scope.user.username, data: $scope.user})
-                        .success(function(data) {
-                            for ( var key in $scope.users) {
-                                if ($scope.users.hasOwnProperty(key)){
-                                    $scope.users.splice(key + 1, 1);
-                                }
+                $scope.updateUser = function(user) {
+                    user.$update(function(data) {
+                        for ( var key in $scope.users) {
+                            if ($scope.users.hasOwnProperty(key)){
+                                $scope.users.splice(key + 1, 1);
                             }
-                        });
+                        }
+                    }, function (response) {
+                        var error_msg = 'could not save ' + user.first_name + " " + user.last_name;
+                        Alerts.add('danger', error_msg);
+                    });
                 }
 
                 var studentSuffix = "@students.ug.eie.wits.ac.za";
