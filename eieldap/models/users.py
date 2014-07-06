@@ -61,8 +61,8 @@ class User():
             error_msg = "Invalid Year of Study {}".format(attr['yos'])
             logger.error(error_msg)
             raise TypeError(error_msg)
-        self.attributes['cn'] = attr['first_name']
-        self.attributes['sn'] = attr['last_name']
+        self.attributes['cn'] = str(attr['first_name'])
+        self.attributes['sn'] = str(attr['last_name'])
         self.attributes['uidNumber'] = str(next_uid_number(int(attr['yos'])))
         self.attributes['gidNumber'] = str(user_gid_number(int(attr['yos'])))
         smbRid = str(int(self.attributes['uidNumber'])*4)
@@ -84,14 +84,14 @@ class User():
                 raise TypeError("hosts must be in a list")
             self.attributes["host"] = [str(host) for host in attr['hosts']]
         if 'login_shel' in attr:
-            self.attributes["loginShell"] = attr['login_shell']
+            self.attributes["loginShell"] = str(attr['login_shell'])
         if 'username' in attr:
-            self.attributes['uid'] = attr['username']
+            self.attributes['uid'] = str(attr['username'])
         else:
             # TODO: What if username already exists?
-            self.attributes['uid'] = attr['last_name'] + attr['first_name'][0]
+            self.attributes['uid'] = str(attr['last_name'] + attr['first_name'][0])
         if 'home_directory' in attr:
-            self.attributes['homeDirectory'] = attr['home_directory']
+            self.attributes['homeDirectory'] = str(attr['home_directory'])
         else:
             self.attributes["homeDirectory"] = "{0}/{1}".format(
                 home_base,
