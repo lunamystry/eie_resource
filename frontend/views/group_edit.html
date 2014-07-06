@@ -1,0 +1,19 @@
+<div class='container'>
+    <h2 class="page-header">
+        <span class="pull-right">
+            <span class="glyphicon glyphicon-th-large"></span>
+            Edit {{group.name}}
+        </span>
+        <span class="clearfix"></span>
+    </h2>
+    <div class="col-md-4">
+        <div class="panel-body">
+            <div ng-include="'views/group_form.html'"></div>
+            <button ng-click="saveGroup()"
+                class="btn-success btn">
+                <span class="glyphicon glyphicon-save"></span>
+                save
+            </button>
+        </div>
+    </div>
+</div>

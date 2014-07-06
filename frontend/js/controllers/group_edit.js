@@ -1,19 +1,17 @@
 'use strict'
 
-var controller = angular.module('controller.groups', []);
+var controller = angular.module('controller.group_edit', []);
 
-controller.controller('groupsCtrl', [
+controller.controller('groupEditCtrl', [
         "$scope",
         "$http",
+        "$routeParams",
         "Alerts",
         "Groups",
-        function ($scope, $http, Alerts, Groups) {
-            $scope.groups = Groups.query();
+        function ($scope, $http, $routeParams, Alerts, Groups) {
 
-            var group = $scope.group = {'name':'',
-                                        'gid_number': '',
-                                        'members': [],
-                                        'description': ''}; // for the form
+            var group = $scope.group = new Groups();
+            group.$get({"name": $routeParams.name});
 
             $scope.saveGroup = function  () {
                 var new_group = new Groups(group);

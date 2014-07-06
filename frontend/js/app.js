@@ -11,6 +11,7 @@ angular.module('resource', [
   'controller.admin',
   'controller.users',
   'controller.groups',
+  'controller.group_edit',
   'controller.about',
   'controller.gallery',
   'controller.bookings',
@@ -42,6 +43,9 @@ angular.module('resource', [
     .when('/groups', {
         templateUrl: 'views/groups.html',
         controller: 'groupsCtrl'})
+    .when('/groups/:name', {
+        templateUrl: 'views/group_edit.html',
+        controller: 'groupEditCtrl'})
     .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'aboutCtrl'})
