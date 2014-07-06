@@ -120,11 +120,7 @@ controller.controller('usersCtrl', [
                 $scope.editing = true;
                 $scope.updateUser = function(user) {
                     user.$update(function(data) {
-                        for ( var key in $scope.users) {
-                            if ($scope.users.hasOwnProperty(key)){
-                                $scope.users.splice(key + 1, 1);
-                            }
-                        }
+                        Alerts.add('success', 'updated');
                     }, function (response) {
                         var error_msg = 'could not save ' + user.first_name + " " + user.last_name;
                         Alerts.add('danger', error_msg);
