@@ -44,10 +44,11 @@ class User(Resource):
         if user:
             for key, val in args.iteritems():
                 user[key] = val
-            if users.update(user):
-                return user, 201
+            users.update(user)
+            return user, 201
         else:
             logger.warning("user "+username+" not found")
+            return username + " not found", 404
         return False, 500
 
     @admin_only
