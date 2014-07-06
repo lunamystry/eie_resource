@@ -14,6 +14,7 @@ angular.module('resource', [
   'controller.group_edit',
   'controller.about',
   'controller.gallery',
+  'controller.computers',
   'controller.bookings',
   'service.session',
   'service.users',
@@ -49,6 +50,9 @@ angular.module('resource', [
     .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'aboutCtrl'})
+    .when('/computers', {
+        templateUrl: 'views/computers.html',
+        controller: 'computersCtrl'})
     .when('/bookings', {
         templateUrl: 'views/bookings.html',
         controller: 'bookingsCtrl'})

@@ -11,6 +11,18 @@ service.factory('Computer', [
             return $resource('/computers/:_id',
                 {_id: '@id'},
                 {
+                    save: {
+                        method: 'POST',
+                        headers: { 'x-auth-key': key }
+                    },
+                    update: {
+                        method: 'PUT',
+                        headers: { 'x-auth-key': key }
+                    },
+                    remove: {
+                        method: 'DELETE',
+                        headers: { 'x-auth-key': key }
+                    },
                     query: {
                         method: 'GET',
                         isArray: true,
@@ -49,13 +61,6 @@ service.factory('Computers', [
                         return sections;
                     }
                 },
-                first_col: function(successFn, errorFn) {
-                },
-                second_col: function(successFn, errorFn) {
-                },
-                third_col: function(successFn, errorFn) {
-                    return section3;
-                }
             };
             return computers;
 }]);

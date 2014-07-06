@@ -45,11 +45,6 @@
         </div>
         <div class="clearfix"></div>
         </accordion-heading>
-        <alert ng-repeat="alert in alerts"
-        type="alert.type"
-        close="closeAlert($index)">
-        {{alert.msg}}
-        </alert>
         <div ng-controller="userViewCtrl">
             <div ng-hide="editing">
                 <div class="btn-group pull-right">
