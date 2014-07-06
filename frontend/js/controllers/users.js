@@ -72,14 +72,6 @@ controller.controller('usersCtrl', [
                 });
             }
 
-            $scope.alerts = [];
-            $scope.addAlert = function(type, msg) {
-                $scope.alerts.push({type: type, msg: msg});
-            };
-            $scope.closeAlert = function(index) {
-                $scope.alerts.splice(index, 1);
-            }
-
             $scope.availableHosts = ["babbage.ug.eie.wits.ac.za",
                 "hotseat1.ug.eie.wits.ac.za",
                 "hotseat2.ug.eie.wits.ac.za",
