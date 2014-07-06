@@ -7,13 +7,15 @@ controller.controller('usersCtrl', [
         "$log",
         "$http",
         "$location",
+        "Alerts",
         "Users",
-        function ($scope, $log, $http, $location, Users) {
+        function ($scope, $log, $http, $location, Alerts, Users) {
             $scope.users = Users.query(null, 
                 function(value, headers){
                 }, 
                 function(response){
                     if (response.status == 401) {
+                        Alerts.add('danger', 'You are not authorized');
                         $location.path("#/home");
                     }
                 });
@@ -55,14 +57,20 @@ controller.controller('usersCtrl', [
                         $scope.user.home_directory = "/home/ug/";
                     });
             };
-            $scope.deleteUser = function(username) {
-                Users.delete({'username': username});
-                for (var i = 0; i < $scope.users.length; ++i) {
-                    var entry = $scope.users[i];
-                    if (entry.username == username){
-                        $scope.users.splice(i, 1);
+            $scope.deleteUser = function(user) {
+                var username = user.username;
+                user.$remove(function(data, headers) {
+                    for (var i = 0; i < $scope.users.length; ++i) {
+                        var entry = $scope.users[i];
+                        if (entry.username == username){
+                            $scope.users.splice(i, 1);
+                        }
                     }
-                }
+                    Alerts.add('success', 'deleted');
+                }, function(response) {
+                    var error_msg = 'could not delete ' + user.first_name + " " + user.last_name
+                    Alerts.add('danger', error_msg);
+                });
             }
 
             $scope.alerts = [];

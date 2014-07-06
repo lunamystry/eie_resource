@@ -11,6 +11,14 @@ service.factory('Users', [
             return $resource('/users/:username',
                 {username: '@username'},
                 {
+                    save: {
+                        method: 'POST',
+                        headers: { 'x-auth-key': key }
+                    },
+                    remove: {
+                        method: 'DELETE',
+                        headers: { 'x-auth-key': key }
+                    },
                     query: {
                         method: 'GET',
                         isArray: true,
