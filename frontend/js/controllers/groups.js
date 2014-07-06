@@ -38,8 +38,10 @@ controller.controller('groupsCtrl', [
                             $scope.groups.splice(i, 1);
                         }
                     }
+                    Alerts.add('success', 'deleted');
                 }, function(response) {
                     console.log(response.status);
+                    Alerts.add('danger', 'could not delete user');
                 }
                 );
             }
