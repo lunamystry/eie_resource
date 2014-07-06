@@ -41,25 +41,25 @@ controller.controller('usersCtrl', [
                                  7: staffSuffix};
             $scope.updateEmail = function() {
                 if(user.yos < 6) {
-                    $scope.user.email = user.student_number.toLowerCase()+emailSuffixes[user.yos];
+                    $scope.user.email = [user.student_number.toLowerCase()+emailSuffixes[user.yos]];
                 } else {
-                    $scope.user.email = user.first_name.toLowerCase()+"."+user.last_name.toLowerCase()+staffSuffix;
+                    $scope.user.email = [user.first_name.toLowerCase()+"."+user.last_name.toLowerCase()+staffSuffix];
                 }
             }
             user.login_shell = "/bin/bash";
             user.home_directory = "/home/ug/";
-            $scope.saveUser = function  () {
-                $http.post('/users', user)
-                    .success(function (user) {
-                        Alerts.add('success', 'saved');
-                        $scope.users.push(user);
-                        $scope.user = {};
-                        $scope.user.login_shell = "/bin/bash";
-                        $scope.user.home_directory = "/home/ug/";
-                    }).error(function (response) {
-                        var error_msg = 'could not save ' + user.first_name + " " + user.last_name;
-                        Alerts.add('danger', error_msg);
-                    });
+            $scope.saveUser = function () {
+                var new_user = new Users(user);
+                new_user.$save(function (user) {
+                    $scope.users.push(user);
+                    $scope.user = {};
+                    $scope.user.login_shell = "/bin/bash";
+                    $scope.user.home_directory = "/home/ug/";
+                    Alerts.add('success', 'saved');
+                }, function (response) {
+                    var error_msg = 'could not save ' + user.first_name + " " + user.last_name;
+                    Alerts.add('danger', error_msg);
+                });
             };
             $scope.deleteUser = function(user) {
                 var username = user.username;
@@ -138,9 +138,9 @@ controller.controller('usersCtrl', [
                         7: staffSuffix}
                 $scope.updateEmail = function() {
                     if($scope.user.yos < 6) {
-                        $scope.user.email = $scope.user.student_number.toLowerCase()+emailSuffixes[user.yos];
+                        $scope.user.email = [$scope.user.student_number.toLowerCase()+emailSuffixes[user.yos]];
                     } else {
-                        $scope.user.email = $scope.user.first_name.toLowerCase()+"."+$scope.user.last_name.toLowerCase()+staffSuffix;
+                        $scope.user.email = [$scope.user.first_name.toLowerCase()+"."+$scope.user.last_name.toLowerCase()+staffSuffix];
                     }
                 }
                 $scope.addHost = function() {
