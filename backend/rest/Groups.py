@@ -15,7 +15,10 @@ logger = logging.getLogger('backend.admin.rest.Groups')
 class Group(Resource):
     def get(self, group_name):
         group = groups.find_one(group_name)
-        return group
+        if group:
+            return group
+        else:
+            return group_name + " not found", 404
 
     @admin_only
     def post(self, group_name):
