@@ -22,6 +22,19 @@ class Computer(Resource):
             return computer
         return "{'computer': 'Computer not found'}", 404
 
+    def put(self, computer_id):
+        args = request.json
+        computer = client.resource.computers.find_one({
+            '_id': ObjectId(computer_id)})
+        if computer:
+            del args['_id']
+            for key in args:
+                computer[key] = args[key]
+            client.resource.computers.save(computer)
+            computer["_id"] = str(computer["_id"])
+            return computer, 200
+        return "{'computer': 'Computer not found'}", 404
+
     def delete(self, computer_id):
         client.resource.computers.remove({'_id': ObjectId(computer_id)})
         return "{'result': 'Deleted computer'}", 205

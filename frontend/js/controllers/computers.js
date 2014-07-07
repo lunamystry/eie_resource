@@ -46,6 +46,14 @@ controller.controller('computersCtrl', [
                     Alerts.add('danger', error_msg);
                 });
             };
+            $scope.updateComputer = function(computer) {
+                computer.$update(function(data) {
+                    Alerts.add('success', 'updated');
+                }, function (response) {
+                    var error_msg = 'could not save ' + computer.name;
+                    Alerts.add('danger', error_msg);
+                });
+            }
             $scope.deleteComputer = function(computer, index) {
                 computer.$remove(function(data, headers) {
                     $scope.computers.splice(index, 1);
