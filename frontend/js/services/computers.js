@@ -9,7 +9,7 @@ service.factory('Computer', [
         function($log, $cookieStore, $resource) {
             var key = $cookieStore.get('session_id');
             return $resource('/computers/:_id',
-                {_id: '@id'},
+                {_id: '@_id'},
                 {
                     save: {
                         method: 'POST',
