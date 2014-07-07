@@ -22,6 +22,8 @@ api.add_resource(rest.Images, '/images')
 api.add_resource(rest.Image, '/images/<string:id>')
 api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
+api.add_resource(rest.Computers, '/computers')
+api.add_resource(rest.Computer, '/computers/<string:computer_id>')
 
 
 @app.route('/')
