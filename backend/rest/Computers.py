@@ -56,6 +56,35 @@ class Computers(Resource):
         computer['_id'] = str(computer['_id'])
         return computer, 201
 
+    def to_macs(self, computers):
+        """
+            input: list of computers
+            return: string mac address list for clonezilla
+        """
+        macs = ""
+        for computer in computers:
+            mac = "# {0} {1} {2} \n{3}\n".format(computer['number'],
+                                                 computer['name'],
+                                                 computer['comment'],
+                                                 computer['mac'])
+            macs += mac.lstrip()
+        return macs
+
+    def to_dhcp_conf(self, computers):
+        """
+            input: list of computers
+            return: dhcp.conf formated list
+        """
+        dhcp_conf = ""
+        for computer in computers:
+            host = ("host {name} {{ \n"
+                    "  ddns-hostname {name} \n"
+                    "  fixed-address {ipv4} \n"
+                    "  hardware ethernet {mac} \n"
+                    "}}").format(**computer)
+            dhcp_conf += host.rjust(2, ' ')
+        return dhcp_conf
+
     def validate(self, args):
         errors = {}
         error = "missing information"
