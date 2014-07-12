@@ -23,7 +23,7 @@ controller.controller('computersCtrl', [
 
             var computer = $scope.computer = {'name':'dlab',
                                               'mac': '',
-                                              'ip': '',
+                                              'ipv4': '',
                                               'number': '',
                                               'eietag': '',
                                               'status': 'available',
@@ -35,7 +35,7 @@ controller.controller('computersCtrl', [
                     $scope.computers.push(computer);
                     $scope.computer = {'name':'dlab',
                                        'mac': '',
-                                       'ip': '',
+                                       'ipv4': '',
                                        'number': '',
                                        'eietag': '',
                                        'status': 'available',
@@ -74,7 +74,7 @@ controller.controller('computersCtrl', [
                 });
             }
             $scope.downloadDhcpConf = function() {
-                var data = Computer.get_macs(function(response, headers) {
+                var data = Computer.get_dhcp_conf(function(response, headers) {
                     var file = new Blob([response.data], { type: 'text/conf' });
                     saveAs(file, 'dhcp.conf');
                 }, 

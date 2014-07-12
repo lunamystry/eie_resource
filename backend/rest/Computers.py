@@ -39,17 +39,17 @@ class Computer(Resource):
 
 class Computers(Resource):
     def get(self):
-        computers = client.resource.computers
-        computer_list = [computer for computer in computers.find()]
-        for computer in computer_list:
+        computer_collection = client.resource.computers
+        computers = [computer for computer in computer_collection.find()]
+        for computer in computers:
             computer["_id"] = str(computer["_id"])
 
-        logger.error(request.headers)
+        logger.error(computers)
         if request.headers['Accept'] == 'text/x-macs':
             return {'data': self.to_macs(computers)}
         if request.headers['Accept'] == 'text/x-dhcp-conf':
             return {'data': self.to_dhcp_conf(computers)}
-        return computer_list
+        return computers
 
     def post(self):
         args = request.json
