@@ -1,9 +1,6 @@
 from flask import request
-from flask import jsonify
 from flask.ext.restful import Resource
-import uuid
 import logging
-from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from backend.validators import required
