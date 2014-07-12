@@ -14,7 +14,7 @@ controller.controller('bookingsCtrl', [
             Computer.query(null, function(response, headers) {
                 var section1 = [];
                 for (var i = 1; i < 19; i++) {
-                    $scope.section1.push({"name": "dlab"+i});
+                    $scope.section1.push({"name": i});
                 }
                 for (var i = 0; i < response.length; i++) {
                     var n = response[i].number;
@@ -24,7 +24,7 @@ controller.controller('bookingsCtrl', [
                 }
                 var section2 = [];
                 for (var i = 19; i < 43; i++) {
-                    $scope.section2.push({"name": "dlab"+i});
+                    $scope.section2.push({"name": i});
                 }
                 for (var i = 0; i < response.length; i++) {
                     var n = response[i].number;
@@ -34,7 +34,7 @@ controller.controller('bookingsCtrl', [
                 }
                 var section3 = [];
                 for (var i = 43; i < 78; i++) {
-                    $scope.section3.push({"name": "dlab"+i});
+                    $scope.section3.push({"name": i});
                 }
                 for (var i = 0; i < response.length; i++) {
                     var n = response[i].number;

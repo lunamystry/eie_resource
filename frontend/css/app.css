@@ -143,8 +143,8 @@ footer {
 .computer {
     color: #CCCCCC;
     text-decoration: none;
-    border: 1px solid #CCCCCC;
-    border-radius: 2px;
+    border: 1px dotted #CCCCCC;
+    border-radius: 1px;
     padding: 2px;
 }
 .computer h2 {
@@ -155,7 +155,8 @@ footer {
     margin: 0;
 }
 .computer-booked {
-
+    border: 2px solid blue;
+    color: #blue;
 }
 .computer-available {
     background-color: green;
