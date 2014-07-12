@@ -64,14 +64,24 @@ controller.controller('computersCtrl', [
                 });
             }
             $scope.downloadMacs = function() {
-                var file = new Blob([data], { type: 'text/plain' });
-                saveAs(file, 'mac-ethx.txt');
-                Computer.get_macs();
+                var data = Computer.get_macs(function(response, headers) {
+                    var file = new Blob([response.data], { type: 'text/conf' });
+                    saveAs(file, 'mac-ethx.txt');
+                }, 
+                function(response) {
+                    var error_msg = 'could not download MACs';
+                    Alerts.add('danger', error_msg);
+                });
             }
             $scope.downloadDhcpConf = function() {
-                var data = Computer.get_dhcp_conf();
-                var file = new Blob([data], { type: 'text/conf' });
-                saveAs(file, 'dhcp.conf');
+                var data = Computer.get_macs(function(response, headers) {
+                    var file = new Blob([response.data], { type: 'text/conf' });
+                    saveAs(file, 'dhcp.conf');
+                }, 
+                function(response) {
+                    var error_msg = 'could not download MACs';
+                    Alerts.add('danger', error_msg);
+                });
             }
         }
 ]);

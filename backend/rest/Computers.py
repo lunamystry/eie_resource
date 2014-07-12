@@ -43,6 +43,12 @@ class Computers(Resource):
         computer_list = [computer for computer in computers.find()]
         for computer in computer_list:
             computer["_id"] = str(computer["_id"])
+
+        logger.error(request.headers)
+        if request.headers['Accept'] == 'text/x-macs':
+            return {'data': self.to_macs(computers)}
+        if request.headers['Accept'] == 'text/x-dhcp-conf':
+            return {'data': self.to_dhcp_conf(computers)}
         return computer_list
 
     def post(self):

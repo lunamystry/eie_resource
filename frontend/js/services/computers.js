@@ -30,11 +30,11 @@ service.factory('Computer', [
                     },
                     get_macs: {
                         method: 'GET',
-                        headers: { 'x-auth-key': key, 'Content-Type': 'text/x-macs'}
+                        headers: { 'x-auth-key': key, 'Accept': 'text/x-macs'}
                     },
                     get_dhcp_conf: {
                         method: 'GET',
-                        headers: { 'x-auth-key': key, 'Content-Type': 'text/x-dhcp-conf'}
+                        headers: { 'x-auth-key': key, 'Accept': 'text/x-dhcp-conf'}
                     },
                 }
                 )
