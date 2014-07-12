@@ -132,6 +132,14 @@ footer {
     background-color: #F5F5F5;
     border-right: 1px solid #EEE;
 }
+.col-md-5 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 20%;
+    float: left;
+}
 .computer {
     color: #CCCCCC;
     text-decoration: none;
