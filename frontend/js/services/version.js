@@ -3,5 +3,5 @@
 
 var service = angular.module('service.version', []);
 
-service.value('version', '0.10');
+service.value('version', '0.11');
 
