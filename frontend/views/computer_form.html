@@ -40,11 +40,18 @@
         required/>
     </div>
     <div class="form-group">
+        <input id='computer_servicetag'
+        class="form-control input-sm"
+        type="text"
+        ng-model="computer.servicetag"
+        placeholder="Service Tag"
+        required/>
+    </div>
+    <div class="form-group">
         <select class="form-control input-sm"
             type="text"
             ng-model="form.status"
             placeholder="Status">
-            <option value="" selected>[Select status...]</option>
             <option value="{{status}}" ng-repeat="status in statuses">
             {{status}}
             </option>

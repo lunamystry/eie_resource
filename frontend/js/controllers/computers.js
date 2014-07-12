@@ -21,11 +21,12 @@ controller.controller('computersCtrl', [
                 });
             $scope.statuses = ['available', 'faulty', 'absent'];
 
-            var computer = $scope.computer = {'name':'dlab',
-                                              'mac': '',
-                                              'ipv4': '',
+            var computer = $scope.computer = {'name':'DLAB',
+                                              'mac': 'F8:B1:56:',
+                                              'ipv4': '146.141.119.',
                                               'number': '',
-                                              'eietag': '',
+                                              'eietag': 'ND',
+                                              'servicetag': 'ND02',
                                               'status': 'available',
                                               'comment': ''};
 
@@ -33,11 +34,12 @@ controller.controller('computersCtrl', [
                 var new_computer = new Computer(computer);
                 new_computer.$save(function (computer) {
                     $scope.computers.push(computer);
-                    $scope.computer = {'name':'dlab',
-                                       'mac': '',
-                                       'ipv4': '',
+                    $scope.computer = {'name':'DLAB',
+                                       'mac': 'F8:B1:56:',
+                                       'ipv4': '146.141.119.',
                                        'number': '',
-                                       'eietag': '',
+                                       'eietag': 'ND',
+                                       'servicetag': 'ND02',
                                        'status': 'available',
                                        'comment': ''};
                     Alerts.add('success', 'saved');
