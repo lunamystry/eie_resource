@@ -63,6 +63,11 @@ controller.controller('computersCtrl', [
                     Alerts.add('danger', error_msg);
                 });
             }
-
+            $scope.downloadMacs = function() {
+                Computer.get_macs();
+            }
+            $scope.downloadDhcpConf = function() {
+                Computer.get_dhcp_conf();
+            }
         }
 ]);
