@@ -64,10 +64,14 @@ controller.controller('computersCtrl', [
                 });
             }
             $scope.downloadMacs = function() {
+                var file = new Blob([data], { type: 'text/plain' });
+                saveAs(file, 'mac-ethx.txt');
                 Computer.get_macs();
             }
             $scope.downloadDhcpConf = function() {
-                Computer.get_dhcp_conf();
+                var data = Computer.get_dhcp_conf();
+                var file = new Blob([data], { type: 'text/conf' });
+                saveAs(file, 'dhcp.conf');
             }
         }
 ]);
