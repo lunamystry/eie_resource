@@ -51,10 +51,8 @@
         <select class="form-control input-sm"
             type="text"
             ng-model="form.status"
-            placeholder="Status">
-            <option value="{{status}}" ng-repeat="status in statuses">
-            {{status}}
-            </option>
+            ng-options="status for status in statuses">
+            <option value="">-- choose status --</option>
         </select>
     </div>
     <div class="form-group">
