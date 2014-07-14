@@ -34,14 +34,6 @@ controller.controller('computersCtrl', [
                 var new_computer = new Computer(computer);
                 new_computer.$save(function (computer) {
                     $scope.computers.push(computer);
-                    $scope.computer = {'name':'DLAB',
-                                       'mac': 'F8:B1:56:',
-                                       'ipv4': '146.141.119.',
-                                       'number': '',
-                                       'eietag': 'ND',
-                                       'servicetag': 'ND02',
-                                       'status': 'available',
-                                       'comment': ''};
                     Alerts.add('success', 'saved');
                 }, function (response) {
                     var error_msg = 'could not save ' + computer.name;
