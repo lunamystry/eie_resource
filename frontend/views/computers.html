@@ -42,9 +42,12 @@
             placeholder="filter computers..." />
         </div>
         <accordion close-others="true">
-        <accordion-group ng-repeat="computer in computers | filter:q">
+        <accordion-group ng-repeat="computer in computers | orderBy:'number' | filter:q">
         <accordion-heading>
-        {{computer.number}} {{computer.name}}
+        <span class='badge computer-{{computer.status}}'>
+            {{computer.number}}
+        </span>
+           {{computer.name}}
         <div class="btn-group pull-right">
             <button ng-click="deleteComputer(computer, $index)"
                 class='btn btn-danger btn-xs'>
