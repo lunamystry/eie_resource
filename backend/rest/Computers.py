@@ -68,7 +68,7 @@ class Computers(Resource):
             return: string mac address list for clonezilla
         """
         macs = ""
-        for computer in computers:
+        for computer in sorted(computers, key=lambda item: item['number']):
             try:
                 mac = "# {0} {1} {2} \n{3}\n".format(computer['number'],
                                                      computer['name'],
@@ -86,12 +86,12 @@ class Computers(Resource):
             return: dhcp.conf formated list
         """
         dhcp_conf = ""
-        for computer in computers:
+        for computer in sorted(computers, key=lambda item: item['number']):
             host = ("host {name} {{ \n"
                     "  ddns-hostname {name} \n"
                     "  fixed-address {ipv4} \n"
                     "  hardware ethernet {mac} \n"
-                    "}}").format(**computer)
+                    "}}\n").format(**computer)
             dhcp_conf += host.rjust(2, ' ')
         return dhcp_conf
 
