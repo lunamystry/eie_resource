@@ -69,11 +69,15 @@ class Computers(Resource):
         """
         macs = ""
         for computer in computers:
-            mac = "# {0} {1} {2} \n{3}\n".format(computer['number'],
-                                                 computer['name'],
-                                                 computer['comment'],
-                                                 computer['mac'])
-            macs += mac.lstrip()
+            try:
+                mac = "# {0} {1} {2} \n{3}\n".format(computer['number'],
+                                                     computer['name'],
+                                                     computer['comment'],
+                                                     computer['mac'])
+                macs += mac.lstrip()
+            except KeyError:
+                logger.error(computer)
+                raise KeyError
         return macs
 
     def to_dhcp_conf(self, computers):
