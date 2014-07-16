@@ -34,7 +34,7 @@ controller.controller('computersCtrl', [
                 var new_computer = new Computer(computer);
                 new_computer.$save(function (computer) {
                     $scope.computers.push(computer);
-                    Alerts.add('success', 'saved');
+                    Alerts.add('success', 'No.' + computer.number + ' added');
                 }, function (response) {
                     var error_msg = 'could not save ' + computer.name;
                     Alerts.add('danger', error_msg);
@@ -42,20 +42,25 @@ controller.controller('computersCtrl', [
             };
             $scope.updateComputer = function(computer) {
                 computer.$update(function(data) {
-                    Alerts.add('success', 'updated');
+                    Alerts.add('success', 'No.'+computer.number + ' save');
                 }, function (response) {
                     var error_msg = 'could not save ' + computer.name;
                     Alerts.add('danger', error_msg);
                 });
             }
             $scope.deleteComputer = function(computer, index) {
-                computer.$remove(function(data, headers) {
-                    $scope.computers.splice(index, 1);
-                    Alerts.add('success', 'deleted');
-                }, function(response) {
-                    var error_msg = 'could not delete ' + computer.name;
-                    Alerts.add('danger', error_msg);
-                });
+                var number = computer.number;
+                var really_delete = confirm('are you sure?');
+                if (really_delete) {
+                    computer.$remove(function(data, headers) {
+                        console.log(index);
+                        $scope.computers.splice(index, 1);
+                        Alerts.add('success', 'No.' + number + ' deleted');
+                    }, function(response) {
+                        var error_msg = 'could not delete ' + computer.name;
+                        Alerts.add('danger', error_msg);
+                    });
+                }
             }
             $scope.downloadMacs = function() {
                 var data = Computer.get_macs(function(response, headers) {

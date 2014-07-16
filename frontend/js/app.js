@@ -62,7 +62,7 @@ angular.module('resource', [
     .otherwise({redirectTo: '/home'});
 }])
 .run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
-    var noAuthRoutes = ['/home', '/about', '/gallery', '/computers'];
+    var noAuthRoutes = ['/home', '/about', '/gallery', '/computers', '/bookings'];
 
     var routeClean = function (route) {
         return _.find(noAuthRoutes, function (noAuthRoute) {
