@@ -88,9 +88,9 @@ class Computers(Resource):
         dhcp_conf = ""
         for computer in sorted(computers, key=lambda item: item['number']):
             host = ("host {name} {{ \n"
-                    "  ddns-hostname {name} \n"
-                    "  fixed-address {ipv4} \n"
-                    "  hardware ethernet {mac} \n"
+                    "  ddns-hostname {name}; \n"
+                    "  fixed-address {ipv4}; \n"
+                    "  hardware ethernet {mac}; \n"
                     "}}\n").format(**computer)
             dhcp_conf += host.rjust(2, ' ')
         return dhcp_conf
