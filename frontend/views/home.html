@@ -56,6 +56,34 @@
         </div>
         <div class="clearfix"></div>
     </section>
+    <section class="container">
+        <div class='col-md-12' ng-controller='labLayoutCtrl'>
+            <div class='col-md-4'>
+                <h4>SECTION 3</h4>
+                <div ng-repeat='computer in section3'>
+                    <span class='col-md-5 pull-right' eie-computer ng-model='computer'></span>
+                </div>
+            </div>
+            <div class='col-md-4'>
+                <h4>SECTION 2</h4>
+                <div ng-repeat='computer in section2'>
+                    <span class='col-md-3 pull-right' eie-computer ng-model='computer'></span>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <h4>SECTION 1</h4>
+                <div ng-repeat='computer in section1'>
+                    <span class='col-md-4 pull-right' eie-computer ng-model='computer'></span>
+                </div>
+            </div>
+            <div class='col-md-1'>
+                <h5>Legend</h5>
+                <div class="computer-available">available</div>
+                <div class="computer-absent">absent</div>
+                <div class="computer-faulty">faulty</div>
+            </div>
+        </div>
+    </section>
     <section class=containter">
         <h4>USEFUL LINKS</h4>
         <div class="col-md-4">

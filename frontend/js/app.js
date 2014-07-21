@@ -15,6 +15,7 @@ angular.module('resource', [
   'controller.about',
   'controller.gallery',
   'controller.computers',
+  'controller.lab_layout',
   'controller.bookings',
   'service.session',
   'service.users',
@@ -61,7 +62,7 @@ angular.module('resource', [
         controller: 'galleryCtrl'})
     .otherwise({redirectTo: '/home'});
 }])
-.run(['$rootScope', '$location', 'SessionUser', function($rootScope, $location, SessionUser) {
+.run(['$rootScope', '$location', 'SessionUser', 'Alerts', function($rootScope, $location, SessionUser, Alerts) {
     var noAuthRoutes = ['/home', '/about', '/gallery', '/computers', '/bookings'];
 
     var routeClean = function (route) {
@@ -73,6 +74,7 @@ angular.module('resource', [
     SessionUser.restore_session();
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
+            Alerts.add('danger', "you are not authorized, please log in");
             $location.path("/home");
         }
     });
