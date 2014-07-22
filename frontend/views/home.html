@@ -76,19 +76,28 @@
                     <span class='col-md-4 pull-right' eie-computer ng-model='computer'></span>
                 </div>
             </div>
-            <div class='col-md-1'>
-                <h5>Legend</h5>
-                <div class="label computer-available">available</div>
-                <div class="label computer-absent">absent</div>
-                <div class="label computer-faulty">faulty</div>
+            <div class='col-md-4'>
+                <h4>EXTENSION</h4>
+                <div ng-repeat='computer in section4'>
+                    <span class='col-md-5 pull-right' eie-computer ng-model='computer'></span>
+                </div>
             </div>
         </div>
-        <p class='text-center'> 
-            <i>
-            NOTE: you can hover over either a faulty or an absent PC to see
-            a comment
-            </i>
-        </p>
+        <div class='col-md-4'>
+            Legend:
+            <span class="label computer-available">available</span>
+            <span class="label computer-absent">absent</span>
+            <span class="label computer-faulty">faulty</span>
+            <span class="label computer">unknown</span>
+        </div>
+        <div class='col-md-8'>
+            <p class='text-center'> 
+                <i>
+                    NOTE: you can hover over either a faulty or an absent PC to see
+                    a comment
+                </i>
+            </p>
+        </div>
     </section>
     <section class=containter">
         <h4>USEFUL LINKS</h4>

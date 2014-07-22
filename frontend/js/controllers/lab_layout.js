@@ -10,6 +10,7 @@ controller.controller('labLayoutCtrl', [
             $scope.section1 = [];
             $scope.section2 = [];
             $scope.section3 = [];
+            $scope.section4 = [];
 
             Computer.query(null, function(response, headers) {
                 var section1 = [];
@@ -40,6 +41,16 @@ controller.controller('labLayoutCtrl', [
                     var n = response[i].number;
                     if (n > 42 && n < 78) {
                         $scope.section3[n - 43] = response[i];
+                    }
+                }
+                var section4 = [];
+                for (var i = 78; i < 93; i++) {
+                    $scope.section4.push({"name": i});
+                }
+                for (var i = 0; i < response.length; i++) {
+                    var n = response[i].number;
+                    if (n > 78 && n < 93) {
+                        $scope.section4[n - 43] = response[i];
                     }
                 }
             }, function (response) {
