@@ -43,8 +43,6 @@ class Computers(Resource):
         computers = [computer for computer in computer_collection.find()]
         for computer in computers:
             computer["_id"] = str(computer["_id"])
-
-        logger.error(computers)
         if request.headers['Accept'] == 'text/x-macs':
             return {'data': self.to_macs(computers)}
         if request.headers['Accept'] == 'text/x-dhcp-conf':
@@ -54,7 +52,6 @@ class Computers(Resource):
     def post(self):
         args = request.json
         computer, errors = self.validate(args)
-        logger.info(args)
         if errors:
             return errors, 400
 
