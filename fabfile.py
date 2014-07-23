@@ -1,4 +1,8 @@
 from fabric.api import local, run, env, put, cd, sudo, settings
+import re
+import sys
+import fileinput
+
 
 # the user to use for the remote commands
 env.user = 'admin2'
@@ -17,12 +21,31 @@ def pack():
     local('python setup.py sdist --formats=gztar', capture=False)
 
 
+def chversion(version):
+
+    def s_and_r(filename, search, replace):
+        for line in fileinput.input(filename, inplace=True):
+            if re.search(search, line):
+                line = replace
+            sys.stdout.write(line)
+
+    filename = 'frontend/js/services/version.js'
+    search = r'service.value'
+    replace = "service.value('version', '{}');\n".format(version)
+    s_and_r(filename, search, replace)
+
+    filename = 'setup.py'
+    search = r'version='
+    replace = "    version='{}',\n".format(version)
+    s_and_r(filename, search, replace)
+
+
 def deploy():
     dist = local('python setup.py --fullname', capture=True).strip()
     pack()
     put('dist/%s.tar.gz' % dist, '/tmp')
     with settings(warn_only=True):
-        result = run('mkdir /tmp/%s' % dist)
+        run('mkdir /tmp/%s' % dist)
         with cd('/tmp/%s' % dist):
             run('tar xzf /tmp/%s.tar.gz' % dist)
             sudo('rm -rf /srv/www/htdocs/vhosts/resource.eie.wits.ac.za')
