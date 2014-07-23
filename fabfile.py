@@ -1,4 +1,5 @@
 from fabric.api import local, run, env, put, cd, sudo, settings
+from fabric.colors import cyan, green
 import re
 import sys
 import fileinput
@@ -11,8 +12,10 @@ env.hosts = ['resource.eie.wits.ac.za']
 
 
 def clean():
+    print(cyan("cleaning..."))
     local("find . -name '*.pyc' -exec rm -f {} \;", capture=False)
     local("find . -name '__pycache__' -exec rm -rf {} \;", capture=False)
+    print(green(u'\u2713'))
 
 
 def pack():
@@ -21,9 +24,17 @@ def pack():
     local('python setup.py sdist --formats=gztar', capture=False)
 
 
-def chversion(version):
+def commit():
+    local('git add -A')
+    local('git commit')
+    local('git push')
 
+
+def chversion(version):
     def s_and_r(filename, search, replace):
+        print(cyan(
+            "changing version to version {0} in {1}...".format(version,
+                                                               filename)))
         for line in fileinput.input(filename, inplace=True):
             if re.search(search, line):
                 line = replace
@@ -40,7 +51,8 @@ def chversion(version):
     s_and_r(filename, search, replace)
 
 
-def deploy():
+def deploy(version):
+    chversion(version)
     dist = local('python setup.py --fullname', capture=True).strip()
     pack()
     put('dist/%s.tar.gz' % dist, '/tmp')
