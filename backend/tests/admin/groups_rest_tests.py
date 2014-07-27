@@ -6,7 +6,7 @@ import unittest
 import backend
 import logging
 
-logger = logging.getLogger('backend.tests.group_rest_tests')
+logger = logging.getLogger(__name__)
 
 
 class GroupsRestTestCase(unittest.TestCase):

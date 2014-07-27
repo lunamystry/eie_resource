@@ -7,7 +7,8 @@ import logging
 # import PIL
 from backend import app
 
-logger = logging.getLogger("backend.admin.rest.Images")
+
+logger = logging.getLogger(__name__)
 
 
 class Image(Resource):

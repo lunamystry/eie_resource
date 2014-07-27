@@ -8,7 +8,7 @@ import os
 import logging
 
 
-logger = logging.getLogger("backend.routes")
+logger = logging.getLogger(__name__)
 
 api.add_resource(rest.Users, '/users')
 api.add_resource(rest.User, '/users/<string:username>')

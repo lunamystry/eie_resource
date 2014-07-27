@@ -9,7 +9,8 @@ from backend.validators import ValidationError
 from eieldap.models import users
 from utils import admin_only
 
-logger = logging.getLogger("backend.admin.rest.Users")
+
+logger = logging.getLogger(__name__)
 
 
 class ChangePassword(Resource):

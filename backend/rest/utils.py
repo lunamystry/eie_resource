@@ -7,7 +7,7 @@ from bson.objectid import ObjectId
 from eieldap.models import groups
 
 client = MongoClient()
-logger = logging.getLogger("backend.admin.utils")
+logger = logging.getLogger(__name__)
 
 
 def admin_only(f):
