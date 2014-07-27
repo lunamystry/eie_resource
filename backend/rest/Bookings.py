@@ -64,6 +64,6 @@ class Bookings(Resource):
     @checked_for_errors
     def post(self):
         booking = request.json
-        client.resource.bookings.save(booking)
-        booking['_id'] = str(booking['_id'])
+        # client.resource.bookings.save(booking)
+        # booking['_id'] = str(booking['_id'])
         return booking, 201
