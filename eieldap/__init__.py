@@ -8,11 +8,11 @@ from ConfigParser import SafeConfigParser
 # for the package
 
 
-def _setup_logging(
-        default_path='/etc/eie_config/logging_config.json',
-        default_level=logging.DEBUG,
-        env_key='RESOURCE_LOG_CFG'
-        ):
+def setup_logging(
+    default_path='/etc/eie_config/logging_config.json',
+    default_level=logging.DEBUG,
+    env_key='RESOURCE_LOG_CFG'
+):
     """Setup logging configuration
 
     """
