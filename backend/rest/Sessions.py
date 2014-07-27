@@ -7,8 +7,6 @@ import hashlib
 from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from backend.validators import required
-from backend.validators import ValidationError
 from eieldap.models import users
 from eieldap.models import groups
 
@@ -83,17 +81,18 @@ class Sessions(Resource):
         return {"error": "username or password error"}, 401
 
     def validate(self, args):
-        errors = {}
-        error = "Username or Password error"
-        try:
-            required(args["username"])
-        except ValidationError:
-            errors["username"] = error
-        try:
-            required(args["password"])
-        except ValidationError:
-            errors["password"] = error
-        return args, errors
+        pass
+        # errors = {}
+        # error = "Username or Password error"
+        # try:
+        #     required(args["username"])
+        # except ValidationError:
+        #     errors["username"] = error
+        # try:
+        #     required(args["password"])
+        # except ValidationError:
+        #     errors["password"] = error
+        # return args, errors
 
     def authenticate(self, username, password):
         try:

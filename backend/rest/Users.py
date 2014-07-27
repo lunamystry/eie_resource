@@ -3,9 +3,6 @@ from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
 import functools
 import logging
-from backend.validators import required
-from backend.validators import length
-from backend.validators import ValidationError
 from eieldap.models import users
 from utils import admin_only
 
@@ -84,31 +81,32 @@ class Users(Resource):
 
 
 def validate(data):
-    errors = {}
-    validators = {"first_name": [required],
-                  "last_name": [required],
-                  "username": [required,
-                               functools.partial(length, min=3)],
-                  "student_number": [],
-                  "home_directory": [],
-                  "login_shell": [],
-                  "yos": [],
-                  "email": []}
-    # make sure all value keys are there
-    for key in validators.keys():
-        try:
-            value = data[key]
-        except KeyError:
-            data[key] = None
-    # validate
-    for key in validators.keys():
-        value = data[key]
-        field_errors = []
-        for validator in validators[key]:
-            try:
-                validator(value)
-            except ValidationError as e:
-                field_errors.append(e.message)
-        if field_errors:
-            errors[key] = field_errors
-    return data, errors
+    pass
+    # errors = {}
+    # validators = {"first_name": [required],
+    #               "last_name": [required],
+    #               "username": [required,
+    #                            functools.partial(length, min=3)],
+    #               "student_number": [],
+    #               "home_directory": [],
+    #               "login_shell": [],
+    #               "yos": [],
+    #               "email": []}
+    # # make sure all value keys are there
+    # for key in validators.keys():
+    #     try:
+    #         value = data[key]
+    #     except KeyError:
+    #         data[key] = None
+    # # validate
+    # for key in validators.keys():
+    #     value = data[key]
+    #     field_errors = []
+    #     for validator in validators[key]:
+    #         try:
+    #             validator(value)
+    #         except ValidationError as e:
+    #             field_errors.append(e.message)
+    #     if field_errors:
+    #         errors[key] = field_errors
+    # return data, errors

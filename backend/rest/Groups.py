@@ -1,9 +1,6 @@
 from flask import request
 from flask.ext.restful import reqparse
 from flask.ext.restful import Resource
-from backend import app
-from backend.validators import required
-from backend.validators import ValidationError
 from eieldap.models import groups
 from utils import admin_only
 import logging
@@ -40,20 +37,21 @@ class Group(Resource):
         return group_name, 200
 
     def validate(self, data):
-        errors = []
-        validators = {"name": [required], "members": [required]}
-        # make sure all value keys are there
-        for key in validators.keys():
-            try:
-                value = data[key]
-            except KeyError:
-                data[key] = None
-        # validate
-        if 'members' not in data or not data['members']:
-            errors.append("at least one members is required")
-        if 'name' not in data or not data['name']:
-            errors.append("groups must have a name")
-        return data, errors
+        pass
+        # errors = []
+        # validators = {"name": [required], "members": [required]}
+        # # make sure all value keys are there
+        # for key in validators.keys():
+        #     try:
+        #         value = data[key]
+        #     except KeyError:
+        #         data[key] = None
+        # # validate
+        # if 'members' not in data or not data['members']:
+        #     errors.append("at least one members is required")
+        # if 'name' not in data or not data['name']:
+        #     errors.append("groups must have a name")
+        # return data, errors
 
 
 class Groups(Resource):
@@ -67,4 +65,3 @@ class Groups(Resource):
         limit = args["limit"]
         group_list = groups.find()[start:][:limit]
         return group_list, 200
-

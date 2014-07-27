@@ -3,8 +3,6 @@ from flask.ext.restful import Resource
 import logging
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from backend.validators import required
-from backend.validators import ValidationError
 
 client = MongoClient()
 logger = logging.getLogger(__name__)
@@ -93,14 +91,15 @@ class Computers(Resource):
         return dhcp_conf
 
     def validate(self, args):
-        errors = {}
-        error = "missing information"
-        try:
-            required(args["mac"])
-        except ValidationError:
-            errors["mac"] = error
-        try:
-            required(args["name"])
-        except ValidationError:
-            errors["name"] = error
-        return args, errors
+        pass
+        # errors = {}
+        # error = "missing information"
+        # try:
+        #     required(args["mac"])
+        # except ValidationError:
+        #     errors["mac"] = error
+        # try:
+        #     required(args["name"])
+        # except ValidationError:
+        #     errors["name"] = error
+        # return args, errors

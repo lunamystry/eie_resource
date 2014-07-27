@@ -1,7 +1,5 @@
 from flask import request
 from flask.ext.restful import Resource
-from backend.validators import required
-from backend.validators import ValidationError
 from eieldap.models import users
 import logging
 
@@ -38,14 +36,15 @@ class Password(Resource):
         return users.authenticate(username, password)
 
     def validate(self, args):
-        errors = {}
-        error = "You need to provide both current password and new password"
-        try:
-            required(args["password"])
-        except ValidationError as e:
-            errors["password"] = error
-        try:
-            required(args["new_password"])
-        except ValidationError as e:
-            errors["new_password"] = error
-        return args, errors
+        pass
+        # errors = {}
+        # error = "You need to provide both current password and new password"
+        # try:
+        #     required(args["password"])
+        # except ValidationError as e:
+        #     errors["password"] = error
+        # try:
+        #     required(args["new_password"])
+        # except ValidationError as e:
+        #     errors["new_password"] = error
+        # return args, errors
