@@ -24,5 +24,4 @@ pip-log.txt
 #Translations
 *.mo
 
-/config/
 frontend/img/gallery
