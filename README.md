@@ -18,9 +18,6 @@ The following files must exist:
 
         /etc/eie_config/logging_config.json
         /etc/eie_config/resource.cfg
-        /etc/eie_config/eieldaprc
+        /etc/eie_config/eieldap.cfg
 
-The naming is to try reflect the kind of configuration they have, and I think
-of eieldap as a separate package from eie_resource thus two  configuration
-files.
-
+Examples are in the `config` directory of this

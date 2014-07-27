@@ -30,7 +30,7 @@ def setup_logging(
 config = SafeConfigParser()
 for location in os.curdir, "/etc/eie_config":
     try:
-        with open(os.path.join(location, "eieldaprc")) as source:
+        with open(os.path.join(location, "eieldap.cfg")) as source:
             config.readfp(source)
     except IOError:
         logging.error(" No application configuration in: " + location)
