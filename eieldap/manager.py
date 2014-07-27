@@ -7,7 +7,7 @@ import logging
 from eieldap import config
 
 
-logger = logging.getLogger("eieldap.manager")
+logger = logging.getLogger(__name__)
 
 
 class Manager():

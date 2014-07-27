@@ -4,8 +4,9 @@ and remove machines, if a machine is removed, it has to added by joining
 it to the domain again.
 """
 from eieldap import manager
-from eieldap import logger
+import logging
 
+logger = logging.getLogger(__name__)
 
 basedn = "ou=machines," + manager.base
 keymap = {"uid": "name"}  # the only thing that is unique

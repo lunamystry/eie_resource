@@ -12,7 +12,7 @@ import time
 # technical - 6200 -> 6299
 # separate home directories for staff
 
-logger = logging.getLogger("eieldap.models.users")
+logger = logging.getLogger(__name__)
 BASEDN = "ou=people," + manager.base
 FROM_LDAP_MAP = {"uid": "username",
                  "cn": "first_name",

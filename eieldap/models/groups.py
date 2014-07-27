@@ -1,9 +1,8 @@
-from ldap.dn import explode_dn
 from eieldap import manager
 from eieldap.models import users
 import logging
 
-logger = logging.getLogger('eieldap.models.groups')
+logger = logging.getLogger(__name__)
 BASEDN = "ou=groups," + manager.base
 FROM_LDAP_MAP = {"cn": "name",
                  "gidNumber": "gid_number",
