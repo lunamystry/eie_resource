@@ -1,5 +1,6 @@
 from flask import request
 from flask.ext.restful import Resource
+import functools
 import logging
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -7,6 +8,20 @@ from backend.validators import find_errors
 
 client = MongoClient()
 logger = logging.getLogger(__name__)
+
+
+def checked_for_errors(f):
+    @functools.wraps(f)
+    def decorated(*args, **kwargs):
+        values = request.json
+        required = ['contact_person', 'dates', 'computers', 'software',
+                    'demis', 'comment']
+        errors = find_errors(values, required)
+        if errors:
+            logger.warning(str(errors))
+            return errors, 400
+        return f(*args, **kwargs)
+    return decorated
 
 
 class Booking(Resource):
@@ -18,8 +33,10 @@ class Booking(Resource):
             return booking
         return "{'booking': 'Booking not found'}", 404
 
+    @checked_for_errors()
     def put(self, booking_id):
         args = request.json
+
         booking = client.resource.bookings.find_one({
             '_id': ObjectId(booking_id)})
         if booking:
@@ -44,21 +61,9 @@ class Bookings(Resource):
             booking["_id"] = str(booking["_id"])
         return bookings
 
+    @checked_for_errors()
     def post(self):
-        args = request.json
-        booking = self.add_missing(args)
-        errors = self.find_errors(booking)
-        if errors:
-            return errors, 400
-
+        booking = request.json
         client.resource.bookings.save(booking)
         booking['_id'] = str(booking['_id'])
         return booking, 201
-
-    def add_missing(args):
-        pass
-
-    def find_errors(self, args):
-        required = ['contact_person', 'dates', 'computers', 'software',
-                    'demis', 'comment']
-        return find_errors(args, required)
