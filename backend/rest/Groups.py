@@ -9,7 +9,7 @@ from utils import admin_only
 import logging
 
 
-logger = logging.getLogger('backend.admin.rest.Groups')
+logger = logging.getLogger(__name__)
 
 
 class Group(Resource):

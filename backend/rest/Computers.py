@@ -7,7 +7,7 @@ from backend.validators import required
 from backend.validators import ValidationError
 
 client = MongoClient()
-logger = logging.getLogger("backend.rest.Computers")
+logger = logging.getLogger(__name__)
 
 
 class Computer(Resource):
