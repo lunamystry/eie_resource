@@ -20,7 +20,7 @@ class BackendRestTestCase(unittest.TestCase):
         """ I should be able to add a member to a group """
         data = ('{"dates":"20.9.0",'
                 '"computers": [1,2,3],'
-                '"software": ["matlab"],'
+                '"software": ["python"],'
                 '"demis": [{"name": "student"}],'
                 '"contact_person": "name"}')
         rv = self.app.post("/bookings",

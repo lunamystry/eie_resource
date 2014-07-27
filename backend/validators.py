@@ -27,6 +27,6 @@ def length(field, min=-1, max=-1, message=None):
 def required(values, required_items=list()):
     errors = list()
     for item in required_items:
-        if item not in values:
+        if item not in values or not values[item]:
             errors.append(item + " is required")
     return errors
