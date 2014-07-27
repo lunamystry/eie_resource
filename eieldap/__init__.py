@@ -8,7 +8,7 @@ from ConfigParser import SafeConfigParser
 # for the package
 
 
-def setup_logging(
+def _setup_logging(
         default_path='/etc/eie_config/logging_config.json',
         default_level=logging.DEBUG,
         env_key='RESOURCE_LOG_CFG'
@@ -30,7 +30,7 @@ def setup_logging(
         logging.basicConfig(level=default_level)
 
 
-def setup_app(
+def _setup_app(
         default_path='/etc/eie_config/eieldap.cfg',
         env_key='RESOURCE_LOG_CFG'
         ):
@@ -48,8 +48,8 @@ def setup_app(
         raise IOError(error_msg)
     return config
 
-setup_logging()
-config = setup_app()
+_setup_logging()
+config = _setup_app()
 
 from eieldap.manager import Manager
 manager = Manager(config)
