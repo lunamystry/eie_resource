@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def find_errors(values, required_items=list()):
     """
         simple tests:
@@ -30,3 +33,11 @@ def required(values, required_items=list()):
         if item not in values or not values[item]:
             errors.append(item + " is required")
     return errors
+
+
+def valid_dates(dates):
+    for dt in dates:
+        try:
+            datetime.strptime(dt, "%Y-%m-%d %HH%M")
+        except:
+            pass
