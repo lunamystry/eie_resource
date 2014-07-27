@@ -18,7 +18,7 @@ class BackendRestTestCase(unittest.TestCase):
 
     def test_post_booking(self):
         """ I should be able to add a member to a group """
-        data = ('{"dates":"20.9.0",'
+        data = ('{"dates": ["20.11.2014", "20.21.2012"],'
                 '"computers": [1,2,3],'
                 '"software": ["python"],'
                 '"demis": [{"name": "student"}],'
