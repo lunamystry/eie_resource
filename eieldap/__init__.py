@@ -9,10 +9,10 @@ from ConfigParser import SafeConfigParser
 
 
 def setup_logging(
-    default_path='/etc/eie_config/logging_config.json',
-    default_level=logging.DEBUG,
-    env_key='RESOURCE_LOG_CFG'
-):
+        default_path='/etc/eie_config/logging_config.json',
+        default_level=logging.DEBUG,
+        env_key='RESOURCE_LOG_CFG'
+        ):
     """Setup logging configuration
 
     """
@@ -25,20 +25,31 @@ def setup_logging(
             config = json.loads(f.read())
         logging.config.dictConfig(config)
     else:
+        error_msg = "{} does not exist".format(path)
+        logging.warn(error_msg)
         logging.basicConfig(level=default_level)
 
-config = SafeConfigParser()
-for location in os.curdir, "/etc/eie_config":
-    try:
-        with open(os.path.join(location, "eieldap.cfg")) as source:
-            config.readfp(source)
-    except IOError:
-        logging.error(" No application configuration in: " + location)
-    try:
-        setup_logging()
-    except IOError:
-        logging.error(" No logging configuration in: " + location)
 
+def setup_app(
+        default_path='/etc/eie_config/eieldap.cfg',
+        env_key='RESOURCE_LOG_CFG'
+        ):
+    """Setup application configuration
+
+    """
+    config = SafeConfigParser()
+    path = default_path
+    if os.path.exists(path):
+        with open(path) as source:
+            config.readfp(source)
+    else:
+        error_msg = "{} does not exist".format(path)
+        logging.error(error_msg)
+        raise IOError(error_msg)
+    return config
+
+setup_logging()
+config = setup_app()
 
 from eieldap.manager import Manager
 manager = Manager(config)
