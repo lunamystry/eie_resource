@@ -24,6 +24,8 @@ api.add_resource(rest.Sessions, '/sessions')
 api.add_resource(rest.Session, '/sessions/<string:session_id>')
 api.add_resource(rest.Computers, '/computers')
 api.add_resource(rest.Computer, '/computers/<string:computer_id>')
+api.add_resource(rest.Bookings, '/bookings')
+api.add_resource(rest.Booking, '/bookings/<string:booking_id>')
 
 
 @app.route('/')

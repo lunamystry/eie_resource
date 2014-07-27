@@ -15,7 +15,7 @@ def checked_for_errors(f):
     def decorated(*args, **kwargs):
         values = request.json
         required = ['contact_person', 'dates', 'computers', 'software',
-                    'demis', 'comment']
+                    'demis']
         errors = find_errors(values, required)
         if errors:
             logger.warning(str(errors))
@@ -33,7 +33,7 @@ class Booking(Resource):
             return booking
         return "{'booking': 'Booking not found'}", 404
 
-    @checked_for_errors()
+    @checked_for_errors
     def put(self, booking_id):
         args = request.json
 
@@ -61,7 +61,7 @@ class Bookings(Resource):
             booking["_id"] = str(booking["_id"])
         return bookings
 
-    @checked_for_errors()
+    @checked_for_errors
     def post(self):
         booking = request.json
         client.resource.bookings.save(booking)
