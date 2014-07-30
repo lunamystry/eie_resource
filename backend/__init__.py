@@ -10,7 +10,7 @@ app = Flask(__name__,
             static_folder='../frontend')
 
 
-config_dir = "/etc/eieldap"
+config_dir = "/etc/eie_config"
 try:
     filename = os.path.join(config_dir, "resource.cfg")
     with open(filename) as source:
