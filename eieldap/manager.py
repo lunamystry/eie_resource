@@ -30,8 +30,9 @@ class Manager():
                 error_msg = "{0} seems to be down".format(self.server)
                 logger.error("{0}, 2 sec wait...".format(error_msg))
                 time.sleep(2)
-            except ldap.LDAPError:
-                error_msg = "Unable to connect to {0}".format(self.server)
+            except ldap.LDAPError as e:
+                error_msg = "Unable to connect to {0}: {1}".format(
+                        self.server, e[0]['desc'])
                 logger.error("{0}, 2 sec wait...".format(error_msg))
                 time.sleep(2)
             else:
