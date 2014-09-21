@@ -52,6 +52,11 @@
             "handlers": ["console"],
             "propagate": "no"
         },
+        "backend": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": "no"
+        },
         "werkzeug": {
             "level": "INFO",
             "handlers": ["werkzeug"],
@@ -60,7 +65,7 @@
     },
 
     "root": {
-        "level": "WARNING",
+        "level": "DEBUG",
         "handlers": ["info_file_handler", "error_file_handler"]
     }
 }
