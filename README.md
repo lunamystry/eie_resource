@@ -1,11 +1,21 @@
-EIE resource frontend
-=====================
+# EIE resource frontend
 
 Web front end for electrical engineering resource. 
 
 
-Configuration
-=============
+## Requirements
+mongodb - is used to store non-user items.
+
+ldap - is used to store users, you thus must be able to connect to an ldap
+server for testing. python-ldap is used.
+
+smbencrypt - for generating LM and NT password hashes. This is usually provided
+by a freeradius package, on ubuntu it is installed by 
+
+    sudo apt-get install freeradius-utils
+
+
+## Configuration
 
 Because I am lazy to figure out how to handle the following properly, I am
 requiring that this be done:
