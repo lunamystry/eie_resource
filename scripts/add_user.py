@@ -1,14 +1,18 @@
 from eieldap.models import users
 
-user = {"username": "guneap",
-        "first_name": "Gunea",
-        "last_name": "Pig",
-        "email": ["gunea.pig@students.wits.ac.za"],
-        "password": "passing",
-        "hosts": ['babbage.ug.eie.wits.ac.za',
-                  'testing.ug.eie.wits.ac.za',
-                    'volt.eie.wits.ac.za'],
+user = {"username": "root",
+        "first_name": "Super",
+        "last_name": "User",
+        "email": ["root@localhost.local"],
+        "password": "secret",
+        "hosts": [
+            'babbage.ug.eie.wits.ac.za',
+            'testing.ug.eie.wits.ac.za',
+            'volt.eie.wits.ac.za'
+            ],
+        "login_shell": "/bin/bash",
+        "home_directory": "/home/ug/root",
         "yos": "4"}
 
-if users.save(user):
-    print "Saved"
+users.add(user)
+print "Saved"
