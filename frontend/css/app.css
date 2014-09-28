@@ -143,24 +143,24 @@ footer {
 .computer {
     color: #CCCCCC;
     text-decoration: none;
-    border: 1px dotted #CCCCCC;
+    border: 1px solid #F2F2F2;
     border-radius: 1px;
     padding: 2px;
 }
 .computer h2 {
     font-size: 0.9em;
     font-weight: bold;
-    text-align: center;
     padding: 0;
     margin: 0;
+    height: 40px;
 }
 .computer-booked {
     border: 2px solid blue;
     color: #blue;
 }
 .computer-available {
-    background-color: green;
-    border: 1px solid green;
+    background-color: #82FA58;
+    border: 1px solid #82FA58;
     color: #FFFFFF;
 }
 .computer-absent {
@@ -169,7 +169,6 @@ footer {
     color: #FFFFFF;
 }
 .computer-faulty {
-    background-color: red;
-    border: 1px solid red;
-    color: #FFFFFF;
+    border: 1px solid #FF8000;
+    color: #FF8000;
 }
