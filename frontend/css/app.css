@@ -167,6 +167,6 @@ footer {
     color: #FFFFFF;
 }
 .computer-faulty {
-    border: 1px solid #FF8000;
-    color: #FF8000;
+    background-color: #FE2E2E;
+    color: #FFFFFF;
 }

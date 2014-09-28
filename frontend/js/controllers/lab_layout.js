@@ -49,7 +49,7 @@ controller.controller('labLayoutCtrl', [
                 }
                 for (var i = 0; i < response.length; i++) {
                     var n = response[i].number;
-                    if (n > 79 && n < 93) {
+                    if (n > 77 && n < 93) {
                         $scope.section4[n - 78] = response[i];
                     }
                 }
