@@ -57,6 +57,21 @@
         <div class="clearfix"></div>
     </section>
     <section class="container">
+        <div class='col-md-8'>
+            <p class='text-left'> 
+                <i>
+                    NOTE: you can hover over either a faulty or an absent PC to see
+                    a comment
+                </i>
+            </p>
+        </div>
+        <div class="col-md-4 pull-right">
+            Legend:
+            <span class="label computer-available">available</span>
+            <span class="label computer-absent">absent</span>
+            <span class="label computer-faulty">faulty</span>
+            <span class="label computer">unknown</span>
+        </div>
         <div class='col-md-12' ng-controller='labLayoutCtrl'>
             <div class='col-md-4'>
                 <h4>SECTION 3</h4>
@@ -76,6 +91,7 @@
                     <span class='col-md-4 pull-right' eie-computer ng-model='computer'></span>
                 </div>
             </div>
+            <div class="clearfix"></div>
             <div class='col-md-4'>
                 <h4>EXTENSION</h4>
                 <div ng-repeat='computer in section4'>
@@ -83,22 +99,8 @@
                 </div>
             </div>
         </div>
-        <div class='col-md-4'>
-            Legend:
-            <span class="label computer-available">available</span>
-            <span class="label computer-absent">absent</span>
-            <span class="label computer-faulty">faulty</span>
-            <span class="label computer">unknown</span>
-        </div>
-        <div class='col-md-8'>
-            <p class='text-center'> 
-                <i>
-                    NOTE: you can hover over either a faulty or an absent PC to see
-                    a comment
-                </i>
-            </p>
-        </div>
     </section>
+    <hr/>
     <section class=containter">
         <h4>USEFUL LINKS</h4>
         <div class="col-md-4">
