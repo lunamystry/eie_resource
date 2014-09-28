@@ -160,12 +160,10 @@ footer {
 }
 .computer-available {
     background-color: #82FA58;
-    border: 1px solid #82FA58;
     color: #FFFFFF;
 }
 .computer-absent {
     background-color: #000000;
-    border: 1px solid #000000;
     color: #FFFFFF;
 }
 .computer-faulty {
