@@ -81,9 +81,8 @@ class Sessions(Resource):
         return {"error": "username or password error"}, 401
 
     def validate(self, args):
-        pass
-        # errors = {}
-        # error = "Username or Password error"
+        errors = {}
+        error = "Username or Password error"
         # try:
         #     required(args["username"])
         # except ValidationError:
@@ -92,7 +91,7 @@ class Sessions(Resource):
         #     required(args["password"])
         # except ValidationError:
         #     errors["password"] = error
-        # return args, errors
+        return args, errors
 
     def authenticate(self, username, password):
         try:
