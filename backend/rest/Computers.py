@@ -91,9 +91,8 @@ class Computers(Resource):
         return dhcp_conf
 
     def validate(self, args):
-        pass
-        # errors = {}
-        # error = "missing information"
+        errors = {}
+        error = "missing information"
         # try:
         #     required(args["mac"])
         # except ValidationError:
@@ -102,4 +101,4 @@ class Computers(Resource):
         #     required(args["name"])
         # except ValidationError:
         #     errors["name"] = error
-        # return args, errors
+        return args, errors
