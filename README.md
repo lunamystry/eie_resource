@@ -12,7 +12,7 @@ server for testing. python-ldap is used.
 smbencrypt - for generating LM and NT password hashes. This is usually provided
 by a freeradius package, on ubuntu it is installed by 
 
-    sudo apt-get install freeradius-utils
+    sudo apt-get install freeradius-utils python-ldap
 
 ## Installation
 Python2.7 is needed to run the application. The requirements are listed in the 
@@ -25,12 +25,13 @@ virtualenv, the virtualenv installed in this can be used to create the
 virtualenv for the application. With env0 activated, the following command will
 create a virtualenv::
 
-        virtualenv --distribute --python=2.7 $HOME/.bin/virtualenvironments/resource
+        virtualenv --distribute --python=2.7 --system-site-packages $HOME/.bin/virtualenvironments/resource
 
 You install the required modules using::
 
         . $HOME/.bin/virtualenvironments/resource/bin/activate
         pip install -r requirements.txt
+
 
 ## Configuration
 
