@@ -31,6 +31,6 @@ rm -rf virtualenv-$VERSION
 rm -rf virtualenv-$VERSION.tar.gz
 
 #activate the initial env
-sh $VIRTUALENV_DIR/$INITIAL_ENV/bin/activate
+. $VIRTUALENV_DIR/$INITIAL_ENV/bin/activate
 
 cd $curr_dir
