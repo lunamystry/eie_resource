@@ -29,7 +29,7 @@ create a virtualenv::
 
 You install the required modules using::
 
-        . $HOME/.bin/virtualenvironments/resource/activate
+        . $HOME/.bin/virtualenvironments/resource/bin/activate
         pip install -r requirements.txt
 
 ## Configuration
