@@ -4,7 +4,7 @@ Web front end for electrical engineering resource.
 
 
 ## Requirements
-mongodb - is used to store non-user items. The scripts folder has a script to
+`mongodb` - is used to store non-user items. The scripts folder has a script to
 install mongo on Ubuntu. Such as the session.
 
 `ldap` - is used to store users, you thus must be able to connect to an ldap
@@ -13,7 +13,7 @@ python-ldap is used and it can be installed on Ubuntu using the command below.
 
     sudo apt-get install python-ldap
 
-smbencrypt - for generating LM and NT password hashes. This is usually provided
+`smbencrypt` - for generating LM and NT password hashes. This is usually provided
 by a freeradius package, on ubuntu it is installed by 
 
     sudo apt-get install freeradius-utils
@@ -29,7 +29,8 @@ virtualenv, the virtualenv installed in this can be used to create the
 virtualenv for the application. With env0 activated, the following command will
 create a virtualenv::
 
-        virtualenv --distribute --python=2.7 --system-site-packages $HOME/.bin/virtualenvironments/resource
+        virtualenv --distribute --python=2.7 --system-site-packages \
+        $HOME/.bin/virtualenvironments/resource
 
 You install the required modules using::
 
