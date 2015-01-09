@@ -1,4 +1,13 @@
 #! /usr/bin/env python
 from backend import app
+import random, threading, webbrowser
 
-app.run(host='0.0.0.0',port=3000)
+port = 3000 + random.randint(0, 999)
+url = "http://localhost:{0}".format(port)
+try:
+    if app.config['DEVELOP']:
+        threading.Timer(1.25, lambda: webbrowser.open(url)).start()
+except KeyError:
+    pass
+
+app.run(host='0.0.0.0', port=port)
