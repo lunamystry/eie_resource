@@ -1,6 +1,6 @@
 # EIE resource frontend
 
-Web front end for electrical engineering resource. 
+Web front end for electrical engineering resource.
 
 
 ## Requirements
@@ -14,17 +14,17 @@ python-ldap is used and it can be installed on Ubuntu using the command below.
     sudo apt-get install python-ldap
 
 `smbencrypt` - for generating LM and NT password hashes. This is usually provided
-by a freeradius package, on ubuntu it is installed by 
+by a freeradius package, on ubuntu it is installed by
 
     sudo apt-get install freeradius-utils
 
 ## Installation
-Python2.7 is needed to run the application. The requirements are listed in the 
+Python2.7 is needed to run the application. The requirements are listed in the
 requirements.txt file. It is recommended that the application be developed in a
-virtualenvironment. The python-bootstrap script in the scripts folder can be 
+virtualenvironment. The python-bootstrap script in the scripts folder can be
 used to install virtualenv.
 
-Once the script is ran, it will create a $HOME/bin/virtualenvironments/env0 
+Once the script is ran, it will create a $HOME/bin/virtualenvironments/env0
 virtualenv, the virtualenv installed in this can be used to create the
 virtualenv for the application. With env0 activated, the following command will
 create a virtualenv::
