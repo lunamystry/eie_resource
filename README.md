@@ -4,15 +4,19 @@ Web front end for electrical engineering resource.
 
 
 ## Requirements
-mongodb - is used to store non-user items.
+mongodb - is used to store non-user items. The scripts folder has a script to
+install mongo on Ubuntu. Such as the session.
 
-ldap - is used to store users, you thus must be able to connect to an ldap
-server for testing. python-ldap is used.
+`ldap` - is used to store users, you thus must be able to connect to an ldap
+server for testing. Assuming there is a ldap server running already,
+python-ldap is used and it can be installed on Ubuntu using the command below.
+
+    sudo apt-get install python-ldap
 
 smbencrypt - for generating LM and NT password hashes. This is usually provided
 by a freeradius package, on ubuntu it is installed by 
 
-    sudo apt-get install freeradius-utils python-ldap
+    sudo apt-get install freeradius-utils
 
 ## Installation
 Python2.7 is needed to run the application. The requirements are listed in the 
