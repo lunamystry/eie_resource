@@ -28,8 +28,95 @@ for k, v in FROM_LDAP_MAP.items():
     TO_LDAP_MAP[v] = k
 
 
-class User():
-    """This encapsulates converting and validating the user"""
+class Typed:
+    ty = object
+
+    def __init__(self):
+        self.data = {}
+
+    def __get__(self, instance, cls):
+        ''' This will translate the internal dictionary values into what the
+        world should work with
+        '''
+        return self.data.get(instance, 0)
+
+    def __set__(self, instance, value):
+        if not isinstance(value, self.ty):
+            raise TypeError('Expected %s' % self.ty)
+        self.data[instance] = value
+
+
+class String(Typed):
+    ty = str
+
+    def __init__(self, min=None, max=None):
+        self.min = min
+        self.max = max
+        super(String, self).__init__()
+
+    def __set__(self, instance, value):
+        ''' This will ensure that the min and max values are proper and that the
+        type is a string
+        '''
+        if len(value) < self.min:
+            raise ValueError('Must be >= %d' % self.min)
+        if len(value) > self.max:
+            raise ValueError('Must be <= %d' % self.max)
+        super(String, self).__set__(instance, value)
+
+
+class Integer(Typed):
+    ty = int
+
+
+class YearOfStudy(Integer):
+    def __init__(self, min, max):
+        self.min = min
+        self.max = max
+        super(YearOfStudy, self).__init__()
+
+    def __set__(self, instance, value):
+        if value < self.min:
+            raise ValueError('Must be >= %d' % self.min)
+        if value > self.max:
+            raise ValueError('Must be <= %d' % self.max)
+        super(YearOfStudy, self).__set__(instance, value)
+
+
+class IntString(Typed):
+    '''
+    A string that can be converted to an integer
+    '''
+    ty = str
+
+    def __set__(self, instance, value):
+        try:
+            int(value)
+        except ValueError:
+            raise ValueError('Must be convertable to integer' % self.max)
+        super(YearOfStudy, self).__set__(instance, value)
+
+
+class User(object):
+    '''
+    This encapsulates converting and validating the user
+    '''
+    first_name = String()
+    last_name = String()
+    username = String(min=3)
+    student_number = String()  # thumb suck min length
+    home_directory = String()  # TODO: check if it is a dir using re
+    login_shell = String()  # TODO: check if it is a dir using re
+    yos = YearOfStudy(min=1, max=7)
+    uid_number = IntString(max=4)
+    gid_number = IntString(max=4)
+    display_name = String()
+    samba_sid = String()
+    emails = []  # TODO: can I combine descriptor with properties?
+    hosts = []
+    password = String()
+    samba_nt_password = String()
+    samba_lm_password = String()
 
     def __init__(self, attr):
         self.dn = None
@@ -86,7 +173,7 @@ class User():
             if not isinstance(attr['hosts'], list):
                 raise TypeError("hosts must be in a list")
             self.attributes["host"] = [str(host) for host in attr['hosts']]
-        if 'login_shel' in attr:
+        if 'login_shell' in attr:
             self.attributes["loginShell"] = str(attr['login_shell'])
         if 'username' in attr:
             self.attributes['uid'] = str(attr['username'])
