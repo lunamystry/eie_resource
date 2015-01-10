@@ -194,7 +194,7 @@ def add(attr):
     try:
         manager.create(user.dn, user.attributes)
         if 'password' in attr:
-            change_password(user.attributes['uid'], None, attr['password'])
+            set_password(user.attributes['uid'], None, attr['password'])
     except ValueError:
         error_msg = "user {} already exists".format(attr['username'])
         logger.error(error_msg)
@@ -206,7 +206,7 @@ def update(attr):
     user = User(attr)
     manager.update(user.dn, user.attributes)
     if 'password' in attr:
-        change_password(user.attributes['uid'], None, attr['password'])
+        set_password(user.attributes['uid'], None, attr['password'])
 
 
 def delete(username=None, user=None):
@@ -302,7 +302,7 @@ def smb_encrypt(password):
     return lm_password, nt_password
 
 
-def change_password(username, oldpw, newpw):
+def set_password(username, oldpw, newpw):
     """ User the python ldap function to change the password
     of the user with the supplied username"""
     dn = "uid=" + username + "," + BASEDN
@@ -313,7 +313,7 @@ def change_password(username, oldpw, newpw):
         user["sambaLMPassword"] = lm_password
         dn = user['dn']
         manager.update(dn, user)
-        manager.change_password(dn, oldpw, newpw)
+        manager.set_password(dn, oldpw, newpw)
 
 
 def reset_password(username):
@@ -329,7 +329,7 @@ def reset_password(username):
         logger.debug("Changing password for user with dn: " + str(user['dn']))
         dn = user['dn']
         if manager.update(dn, user):
-            return manager.change_password(dn, None, newpw)
+            return manager.set_password(dn, None, newpw)
     return False
 
 

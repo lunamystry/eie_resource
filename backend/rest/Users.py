@@ -14,7 +14,7 @@ class ChangePassword(Resource):
     def put(self, username):
         args = request.json
         # Talk about weak security!
-        if users.change_password(username,
+        if users.set_password(username,
                                  None,
                                  args['new_password']):
             return True, 201

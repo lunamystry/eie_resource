@@ -25,7 +25,7 @@ class Password(Resource):
         password = data["password"]
         new_password = data["new_password"]
         if self.authenticate(username, password):
-            if users.change_password(username, password, new_password):
+            if users.set_password(username, password, new_password):
                 return "Done", 201
             else:
                 return "There was a server problem", 500

@@ -133,9 +133,9 @@ class UserServicesTests(unittest.TestCase):
         '''As long as it can be called'''
         users.smb_encrypt('password')
 
-    def test_change_password(self):
+    def test_set_password(self):
         '''this just passes things to the manager'''
-        users.change_password('user', 'old_password', 'new_password')
+        users.set_password('user', 'old_password', 'new_password')
 
     def test_reset_password(self):
         '''this just passes things to the manager'''

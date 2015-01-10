@@ -7,11 +7,11 @@ controller.controller('profileCtrl', [
         'SessionUser', 
         'Users', 
         function($scope, SessionUser, Users) {
-            $scope.change_password = function() {
+            $scope.set_password = function() {
                 if ( Users.authenticate()) {
                     console.log("Changed password");
                     if ( $scope.password_form.new_password == $scope.password_form.new_password2) {
-                        Users.change_password($scope.password, $scope.new_password);
+                        Users.set_password($scope.password, $scope.new_password);
                     } else {
                         $scope.password_form.error_message = "Passwords don't match";
                     }

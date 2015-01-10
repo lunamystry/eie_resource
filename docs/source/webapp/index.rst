@@ -59,7 +59,7 @@ PUT /users/johnd/resetpassword
 
     Reset the password for an individual user with username  johnd
 
-PUT /users/johnd/change_password
+PUT /users/johnd/set_password
 
     Change the password for an individual user with username  johnd
 

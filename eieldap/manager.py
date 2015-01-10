@@ -108,7 +108,7 @@ class Manager():
             logger.debug(e)
             raise RuntimeError(e[0]['desc'])
 
-    def change_password(self, dn, oldpw, newpw):
+    def set_password(self, dn, oldpw, newpw):
         try:
             self.admin_bind()
             self.connection.passwd_s(dn, None, newpw)
