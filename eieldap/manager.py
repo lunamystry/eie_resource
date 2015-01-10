@@ -39,7 +39,7 @@ class Manager():
             else:
                 logger.info("Connected to {0}".format(self.server))
                 return
-        raise EnvironmentError(error_msg)
+        # raise EnvironmentError(error_msg)
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
@@ -118,7 +118,7 @@ class Manager():
             raise RuntimeError(e[0]['desc'])
 
     def authenticate(self, dn, password):
-        # TODO: This will simply not work because the connection and ldapObject 
+        # TODO: This will simply not work because the connection and ldapObject
         # are bound together, to authenticate I have to create a new object
         # each time I think.
         try:
