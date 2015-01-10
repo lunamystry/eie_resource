@@ -14,6 +14,7 @@ class Manager():
     """This a module to help with managing the eieldap using python"""
 
     def __init__(self, config=config):
+        self.connection = None
         self.connect(config)
 
     def connect(self, config):
@@ -32,7 +33,7 @@ class Manager():
                 time.sleep(2)
             except ldap.LDAPError as e:
                 error_msg = "Unable to connect to {0}: {1}".format(
-                        self.server, e[0]['desc'])
+                    self.server, e[0]['desc'])
                 logger.error("{0}, 2 sec wait...".format(error_msg))
                 time.sleep(2)
             else:
@@ -117,6 +118,9 @@ class Manager():
             raise RuntimeError(e[0]['desc'])
 
     def authenticate(self, dn, password):
+        # TODO: This will simply not work because the connection and ldapObject 
+        # are bound together, to authenticate I have to create a new object
+        # each time I think.
         try:
             self.connection.bind_s(dn, password)
             return True
