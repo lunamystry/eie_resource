@@ -28,22 +28,34 @@ for k, v in FROM_LDAP_MAP.items():
     TO_LDAP_MAP[v] = k
 
 
-class Typed:
+class Descriptor(object):
+    def __init__(self, name):
+        self.name = name
+
+    def __set__(self, instance, value):
+        instance.__dict__[self.name] = value
+
+    def __delete__(self, instance):
+        del instance.__dict__[self.name]
+
+
+class DescriptorMeta(type):
+    def __new__(cls, name, bases, attrs):
+        # automatically set the name of the fields in my class
+        for key, value in attrs.items():
+            if isinstance(value, Descriptor):
+                value.label = key
+        return super(DescriptorMeta, cls).__new__(cls, name, bases, attrs)
+
+
+class Typed(object):
+    __metaclass__ = DescriptorMeta
     ty = object
-
-    def __init__(self):
-        self.data = {}
-
-    def __get__(self, instance, cls):
-        ''' This will translate the internal dictionary values into what the
-        world should work with
-        '''
-        return self.data.get(instance, 0)
 
     def __set__(self, instance, value):
         if not isinstance(value, self.ty):
             raise TypeError('Expected %s' % self.ty)
-        self.data[instance] = value
+        super(Typed, self).__set__(instance, value)
 
 
 class String(Typed):
@@ -65,11 +77,9 @@ class String(Typed):
         super(String, self).__set__(instance, value)
 
 
-class Integer(Typed):
+class YearOfStudy(Typed):
     ty = int
 
-
-class YearOfStudy(Integer):
     def __init__(self, min, max):
         self.min = min
         self.max = max
@@ -83,11 +93,14 @@ class YearOfStudy(Integer):
         super(YearOfStudy, self).__set__(instance, value)
 
 
-class IntString(Typed):
+class IntString(String):
     '''
     A string that can be converted to an integer
     '''
     ty = str
+
+    def __init__(self, **kwargs):
+        super(IntString, self).__init__(**kwargs)
 
     def __set__(self, instance, value):
         try:
@@ -95,6 +108,16 @@ class IntString(Typed):
         except ValueError:
             raise ValueError('Must be convertable to integer' % self.max)
         super(YearOfStudy, self).__set__(instance, value)
+
+
+class List(Typed):
+    ty = list
+
+    def __set__(self, instance, value):
+        if not isinstance(value, list):
+            raise TypeError('Expected %s' % self.ty)  # don't need Typed
+        bstringed = [str(item) for item in value]  # convert to bytestring
+        super(List, self).__set__(instance, bstringed)
 
 
 class User(object):
@@ -112,11 +135,11 @@ class User(object):
     gid_number = IntString(max=4)
     display_name = String()
     samba_sid = String()
-    emails = []  # TODO: can I combine descriptor with properties?
-    hosts = []
     password = String()
     samba_nt_password = String()
     samba_lm_password = String()
+    emails = List()
+    hosts = List()
 
     def __init__(self, attr):
         self.dn = None
