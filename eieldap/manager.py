@@ -15,16 +15,16 @@ class Manager():
 
     def __init__(self, config=config):
         self.connection = None
-        self.connect(config)
+        self.server = config.get("ldap", "server")
+        self.dn = config.get("ldap", "dn")
+        self.pw = config.get("ldap", "pw")
+        self.base = config.get("ldap", "base")
+        # self.connect(config)
 
     def connect(self, config):
         error_msg = ""
         for trycount in range(3):
             try:
-                self.server = config.get("ldap", "server")
-                self.dn = config.get("ldap", "dn")
-                self.pw = config.get("ldap", "pw")
-                self.base = config.get("ldap", "base")
                 self.connection = ldap.initialize('ldap://'+self.server)
                 self.admin_bind()
             except ldap.SERVER_DOWN:
@@ -39,7 +39,7 @@ class Manager():
             else:
                 logger.info("Connected to {0}".format(self.server))
                 return
-        # raise EnvironmentError(error_msg)
+        raise EnvironmentError(error_msg)
 
     def admin_bind(self):
         self.dn = config.get("ldap", "dn")
