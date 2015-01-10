@@ -1,6 +1,6 @@
 from flask import request
 from flask.ext.restful import Resource
-from eieldap.models import users
+from eieldap import users
 import logging
 
 

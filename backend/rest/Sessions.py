@@ -7,8 +7,8 @@ import hashlib
 from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from eieldap.models import users
-from eieldap.models import groups
+from eieldap import users
+from eieldap import groups
 
 client = MongoClient()
 logger = logging.getLogger("backend.rest.Sessions")

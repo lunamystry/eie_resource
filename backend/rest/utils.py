@@ -4,7 +4,7 @@ import functools
 import logging
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from eieldap.models import groups
+from eieldap import groups
 
 client = MongoClient()
 logger = logging.getLogger(__name__)

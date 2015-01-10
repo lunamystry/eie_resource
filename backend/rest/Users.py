@@ -3,7 +3,7 @@ from flask.ext.restful import Resource
 from flask.ext.restful import reqparse
 import functools
 import logging
-from eieldap.models import users
+from eieldap import users
 from utils import admin_only
 
 

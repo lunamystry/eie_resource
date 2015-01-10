@@ -1,7 +1,7 @@
 from flask import request
 from flask.ext.restful import reqparse
 from flask.ext.restful import Resource
-from eieldap.models import groups
+from eieldap import groups
 from utils import admin_only
 import logging
 

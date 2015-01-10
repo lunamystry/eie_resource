@@ -1,5 +1,5 @@
 from eieldap import manager
-from eieldap.models import users
+from eieldap import users
 import logging
 
 logger = logging.getLogger(__name__)
