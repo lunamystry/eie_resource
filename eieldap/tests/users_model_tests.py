@@ -1,4 +1,4 @@
-from eieldap.models import users
+from eieldap import users
 import unittest
 
 

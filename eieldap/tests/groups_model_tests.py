@@ -1,5 +1,5 @@
-from eieldap.models import groups
-from eieldap.models import users
+from eieldap import groups
+from eieldap import users
 import unittest
 
 
