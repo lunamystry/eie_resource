@@ -156,12 +156,22 @@ class User(object):
         return home_base
 
     def as_ldap_attrs(self):
-        return {"uid": self.username,
+        return {"objectClass": ["inetOrgPerson",
+                                "organizationalPerson",
+                                "posixAccount",
+                                "sambaSamAccount",
+                                "hostObject"],
+                "uid": self.username,
                 "cn": self.first_name,
                 "sn": self.last_name,
                 "homeDirectory": self.home_directory,
                 "loginShell": self.login_shell,
                 "uidNumber": self.uid_number,
                 "gidNumber": self.gid_number,
+                "sambaAcctFlags": "[U         ]",
+                "sambaSID": self.samba_sid,
+                "sambaNTPassword": self.samba_nt_password,
+                "sambaLMPassword": self.samba_lm_password,
                 "host": self.hosts,
-                "mail": self.emails}
+                "mail": self.emails
+                }

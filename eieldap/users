@@ -5,3 +5,17 @@ s = ''
 pw = '/home/under_grads.d/pigg'
 
 print(re.match(r'^[\/\_\.a-zA-Z0-9]*$', pw))
+
+attributes = {"objectClass": ["inetOrgPerson",
+                              "organizationalPerson",
+                              "posixAccount",
+                              "sambaSamAccount", "hostObject"],
+              "uidNumber": "",
+              "gidNumber": "",
+              "homeDirectory": "",
+              "loginShell": "/bin/bash",
+              "displayName": "",
+              "sambaSID": "",
+              "sambaAcctFlags": "[U         ]",
+              "sambaNTPassword": "",
+              "sambaLMPassword": ""}
