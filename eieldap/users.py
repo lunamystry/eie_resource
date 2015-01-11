@@ -154,3 +154,14 @@ class User(object):
             raise TypeError(error_msg)
 
         return home_base
+
+    def as_ldap_attrs(self):
+        return {"uid": self.username,
+                "cn": self.first_name,
+                "sn": self.last_name,
+                "homeDirectory": self.home_directory,
+                "loginShell": self.login_shell,
+                "uidNumber": self.uid_number,
+                "gidNumber": self.gid_number,
+                "host": self.hosts,
+                "mail": self.emails}
