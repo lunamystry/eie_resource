@@ -5,6 +5,7 @@ import logging
 
 from eieldap import manager
 from eieldap.descriptors import SizedString
+from eieldap.descriptors import RegexString
 from eieldap.descriptors import IntSizedString
 from eieldap.descriptors import YearOfStudy
 from eieldap.descriptors import PasswordString
@@ -23,6 +24,12 @@ class User(object):
      4. At least one numeric character
      5. At least one capital letter
      6. Only two repetitive characters allowed
+
+     Directory rules:
+     1. Can contain dots
+     2. Can contain /
+     3. Can contain alphanumeric characters
+     4. No spaces allowed
     '''
     first_name = SizedString(min=1)
     last_name = SizedString(min=1)
@@ -30,8 +37,8 @@ class User(object):
     password = PasswordString(min=6, pattern=r'^(?=.*[A-Z])(?=.*\d)(?!.*(.)\1\1)[a-zA-Z0-9@]{6,20}$')
     username = SizedString(min=3)  # TODO: username must be unique
     student_number = SizedString()  # thumb suck min length
-    home_directory = SizedString()  # TODO: check if it is a dir using re
-    login_shell = SizedString()  # TODO: check if it is a dir using re
+    home_directory = RegexString(pattern=r'^[\/\_\.a-zA-Z0-9]*$')
+    login_shell = RegexString(pattern=r'^[\/\_\.a-zA-Z0-9]*$')
     uid_number = IntSizedString(max=4)
     gid_number = IntSizedString(max=4)
     display_name = SizedString()
