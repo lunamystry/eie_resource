@@ -27,15 +27,19 @@ class User(object):
 
      Directory rules:
      1. Can contain dots
-     2. Can contain /
+     2. Can contain "/"
      3. Can contain alphanumeric characters
      4. No spaces allowed
     '''
     first_name = SizedString(min=1)
     last_name = SizedString(min=1)
     yos = YearOfStudy(min=1, max=7)
-    password = PasswordString(min=6, pattern=r'^(?=.*[A-Z])(?=.*\d)(?!.*(.)\1\1)[a-zA-Z0-9@]{6,20}$')
-    username = SizedString(min=3)  # TODO: username must be unique
+    password = PasswordString(
+        min=6,  # even though regex takes care of it
+        max=20,
+        pattern=r'^(?=.*[A-Z])(?=.*\d)(?!.*(.)\1\1)[a-zA-Z0-9@]{6,20}$'
+        )
+    username = SizedString(min=3)
     student_number = SizedString()  # thumb suck min length
     home_directory = RegexString(pattern=r'^[\/\_\.a-zA-Z0-9]*$')
     login_shell = RegexString(pattern=r'^[\/\_\.a-zA-Z0-9]*$')
