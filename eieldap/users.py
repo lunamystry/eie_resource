@@ -4,8 +4,8 @@ import subprocess
 import logging
 
 from eieldap import manager
-from eieldap.descriptors import String
-from eieldap.descriptors import IntString
+from eieldap.descriptors import SizedString
+from eieldap.descriptors import IntSizedString
 from eieldap.descriptors import YearOfStudy
 from eieldap.descriptors import PasswordString
 
@@ -16,21 +16,28 @@ BASEDN = "ou=people," + manager.base
 class User(object):
     '''
     This encapsulates converting and validating the user
+     Password rules:
+     1. No special characters allowed
+     2. Space not allowed
+     3. Min 6 Max 20
+     4. At least one numeric character
+     5. At least one capital letter
+     6. Only two repetitive characters allowed
     '''
-    first_name = String(min=1)
-    last_name = String(min=1)
+    first_name = SizedString(min=1)
+    last_name = SizedString(min=1)
     yos = YearOfStudy(min=1, max=7)
-    password = PasswordString(min=6)  # TODO: turn this into a PasswordString
-    username = String(min=3)  # TODO: username must be unique
-    student_number = String()  # thumb suck min length
-    home_directory = String()  # TODO: check if it is a dir using re
-    login_shell = String()  # TODO: check if it is a dir using re
-    uid_number = IntString(max=4)
-    gid_number = IntString(max=4)
-    display_name = String()
-    samba_sid = String()
-    samba_nt_password = String()
-    samba_lm_password = String()
+    password = PasswordString(min=6, pattern=r'^(?=.*[A-Z])(?=.*\d)(?!.*(.)\1\1)[a-zA-Z0-9@]{6,20}$')
+    username = SizedString(min=3)  # TODO: username must be unique
+    student_number = SizedString()  # thumb suck min length
+    home_directory = SizedString()  # TODO: check if it is a dir using re
+    login_shell = SizedString()  # TODO: check if it is a dir using re
+    uid_number = IntSizedString(max=4)
+    gid_number = IntSizedString(max=4)
+    display_name = SizedString()
+    samba_sid = SizedString()
+    samba_nt_password = SizedString()
+    samba_lm_password = SizedString()
 
     def __init__(self, first_name, last_name, yos, password, **kwargs):
         self.first_name = first_name

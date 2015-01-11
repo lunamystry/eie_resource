@@ -40,7 +40,7 @@ def test_password_must_have_length_greater_than_6():
 
 
 def test_password_must_have_atleast_one_numeral():
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         User('Gunea', 'Pig', 1, password='passW@rd')
 
 

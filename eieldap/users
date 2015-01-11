@@ -2,6 +2,6 @@ import re
 
 s = ''
 
-pw = 'p8s&W0rd'
+pw = '/home/under_grads.d/pigg'
 
-print(re.match(r'^(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*(.)\1\1)[a-zA-Z0-9@]{6,20}$', pw))
+print(re.match(r'^[\/\_\.a-zA-Z0-9]*$', pw))
