@@ -12,6 +12,12 @@ def test_create_valid_user():
     '''
     User('Gunea', 'Pig', 1, valid_password)
     User(last_name='Pig', password=valid_password, first_name='Gunea', yos=1)
+    u = User(last_name='Pig',
+             password=valid_password,
+             first_name='Gunea',
+             yos=1,
+             home_directory="/home/directrory")
+    assert u.home_directory == "/home/directrory"
 
 
 def test_cannot_create_invalid_user():

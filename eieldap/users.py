@@ -4,6 +4,7 @@ import subprocess
 import logging
 
 from eieldap import manager
+from eieldap.descriptors import String
 from eieldap.descriptors import SizedString
 from eieldap.descriptors import RegexString
 from eieldap.descriptors import IntSizedString
@@ -49,6 +50,9 @@ class User(object):
     samba_sid = SizedString()
     samba_nt_password = SizedString()
     samba_lm_password = SizedString()
+    dn = String()
+    emails = []
+    hosts = []
 
     def __init__(self, first_name, last_name, yos, password, **kwargs):
         self.first_name = first_name
@@ -57,21 +61,25 @@ class User(object):
         self.password = password
 
         # Default values
-        lm_password, nt_password = self.smb_encrypt(password)
-        self.samba_nt_password = nt_password
-        self.samba_lm_password = lm_password
-        self.uid_number = str(self.user_gid_number(yos))
-        samba_rid = str(int(self.uid_number)*4)
-        smbid_base = "S-1-5-21-3949128619-541665055-2325163404-"
-        self.samba_sid = smbid_base + samba_rid
         self.username = (last_name + first_name[0]).lower()
-        self.dn = "uid=%s,%s" % (self.username, BASEDN)
+        self.uid_number = str(self.user_gid_number(yos))
         self.display_name = '%s %s' % (first_name, last_name)
         self.home_directory = '%s/%s' % (self.home_base(yos), self.username)
         self.gid_number = str(self.user_gid_number(yos))
         self.login_shell = '/bin/bash'
-        self.emails = []
-        self.hosts = []
+
+        # optional values take precedence except for samba_ntlm_passwords, dn,
+        # samba_sid
+        for key, val in kwargs.items():
+            setattr(self, key, val)
+
+        self.dn = "uid=%s,%s" % (self.username, BASEDN)
+        lm_password, nt_password = self.smb_encrypt(password)
+        self.samba_nt_password = nt_password
+        self.samba_lm_password = lm_password
+        samba_rid = str(int(self.uid_number)*4)
+        smbid_base = "S-1-5-21-3949128619-541665055-2325163404-"
+        self.samba_sid = smbid_base + samba_rid
 
     def smb_encrypt(self, password):
         """ Calls an smbencrypt which comes with freeradius-utils on Ubuntu
