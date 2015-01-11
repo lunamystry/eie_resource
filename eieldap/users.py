@@ -1,10 +1,11 @@
-from __future__ import unicode_literals
 from __future__ import print_function
 
-from eieldap import manager
+from weakref import WeakKeyDictionary
 import subprocess
 import logging
 import time
+
+from eieldap import manager
 
 # get email template with a lot of very useful information on it
 # lecturer - 6000 -> 6099
@@ -29,32 +30,26 @@ for k, v in FROM_LDAP_MAP.items():
 
 
 class Descriptor(object):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.data = WeakKeyDictionary()
+
+    def __get__(self, instance, owner):
+        return self.data.get(instance, None)
 
     def __set__(self, instance, value):
-        instance.__dict__[self.name] = value
+        self.data[instance] = value
 
     def __delete__(self, instance):
-        del instance.__dict__[self.name]
+        del self.data[instance]
 
 
-class DescriptorMeta(type):
-    def __new__(cls, name, bases, attrs):
-        # automatically set the name of the fields in my class
-        for key, value in attrs.items():
-            if isinstance(value, Descriptor):
-                value.label = key
-        return super(DescriptorMeta, cls).__new__(cls, name, bases, attrs)
-
-
-class Typed(object):
-    __metaclass__ = DescriptorMeta
+class Typed(Descriptor):
     ty = object
 
     def __set__(self, instance, value):
         if not isinstance(value, self.ty):
-            raise TypeError('Expected %s' % self.ty)
+            raise TypeError('Expected %s instead of %s' % (self.ty,
+                                                           value.__class__))
         super(Typed, self).__set__(instance, value)
 
 
@@ -70,10 +65,10 @@ class String(Typed):
         ''' This will ensure that the min and max values are proper and that the
         type is a string
         '''
-        if len(value) < self.min:
-            raise ValueError('Must be >= %d' % self.min)
-        if len(value) > self.max:
-            raise ValueError('Must be <= %d' % self.max)
+        if self.min and len(value) < self.min:
+            raise TypeError('Must be >= %d' % self.min)
+        if self.max and len(value) > self.max:
+            raise TypeError('Must be <= %d' % self.max)
         super(String, self).__set__(instance, value)
 
 
@@ -86,10 +81,10 @@ class YearOfStudy(Typed):
         super(YearOfStudy, self).__init__()
 
     def __set__(self, instance, value):
-        if value < self.min:
-            raise ValueError('Must be >= %d' % self.min)
-        if value > self.max:
-            raise ValueError('Must be <= %d' % self.max)
+        if self.min and value < self.min:
+            raise TypeError('Must be >= %d' % self.min)
+        if self.max and value > self.max:
+            raise TypeError('Must be <= %d' % self.max)
         super(YearOfStudy, self).__set__(instance, value)
 
 
@@ -107,57 +102,62 @@ class IntString(String):
             int(value)
         except ValueError:
             raise ValueError('Must be convertable to integer' % self.max)
-        super(YearOfStudy, self).__set__(instance, value)
+        super(IntString, self).__set__(instance, value)
 
 
-class List(Typed):
-    ty = list
-
-    def __set__(self, instance, value):
-        if not isinstance(value, list):
-            raise TypeError('Expected %s' % self.ty)  # don't need Typed
-        bstringed = [str(item) for item in value]  # convert to bytestring
-        super(List, self).__set__(instance, bstringed)
+# class List(Typed):
+#     ty = list
+#
+#     def __set__(self, instance, value):
+#         if not isinstance(value, list):
+#             raise TypeError('Expected %s' % self.ty)  # don't need Typed
+#         bstringed = [str(item) for item in value]  # convert to bytestring
+#         super(List, self).__set__(instance, bstringed)
 
 
 class User(object):
     '''
     This encapsulates converting and validating the user
     '''
-    first_name = String()
-    last_name = String()
-    username = String(min=3)
+    first_name = String(min=1)
+    last_name = String(min=1)
+    yos = YearOfStudy(min=1, max=7)
+    password = String(min=6)  # TODO: turn this into a PasswordString
+    username = String(min=3)  # TODO: username must be unique
     student_number = String()  # thumb suck min length
     home_directory = String()  # TODO: check if it is a dir using re
     login_shell = String()  # TODO: check if it is a dir using re
-    yos = YearOfStudy(min=1, max=7)
     uid_number = IntString(max=4)
     gid_number = IntString(max=4)
     display_name = String()
     samba_sid = String()
-    password = String()
     samba_nt_password = String()
     samba_lm_password = String()
-    emails = List()
-    hosts = List()
+    # emails = List()
+    # hosts = List()
 
-    def __init__(self, attr):
-        self.dn = None
-        self.attributes = {"objectClass": ["inetOrgPerson",
-                                           "organizationalPerson",
-                                           "posixAccount",
-                                           "sambaSamAccount", "hostObject"],
-                           "uidNumber": "",
-                           "gidNumber": "",
-                           "homeDirectory": "",
-                           "loginShell": "/bin/bash",
-                           "displayName": "",
-                           "sambaSID": "",
-                           "sambaAcctFlags": "[U         ]",
-                           "sambaNTPassword": "",
-                           "sambaLMPassword": ""}
-        validate(attr)
-        self.set_attributes(attr)
+    def __init__(self, first_name, last_name, yos, password, **kwargs):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.yos = yos
+        self.password = password
+
+        # Default values
+        lm_password, nt_password = smb_encrypt(password)
+        self.samba_nt_password = nt_password
+        self.samba_lm_password = lm_password
+        self.uid_number = str(next_uid_number(yos))  # TODO: use uid number
+        samba_rid = str(int(self.uid_number)*4)
+        smbid_base = "S-1-5-21-3949128619-541665055-2325163404-"
+        self.samba_sid = smbid_base + samba_rid
+        self.username = (last_name + first_name[0]).lower()
+        self.dn = "uid=%s,%s" % (self.username, BASEDN)
+        self.display_name = '%s %s' % (first_name, last_name)
+        self.home_directory = '%s/%s' % (home_base(yos), self.username)
+        self.gid_number = str(user_gid_number(yos))
+        self.login_shell = '/bin/bash'
+        self.emails = []
+        self.hosts = []
 
     def set_attributes(self, attr):
         '''Set the attributes'''
@@ -439,3 +439,22 @@ def user_gid_number(yos):
         raise ValueError(error_msg)
 
     return yos*1000
+
+
+def home_base(yos):
+    """ Home directory is changed based on the year of study
+    """
+    if int(yos) < 5:
+        home_base = "/home/ug"
+    elif int(yos) == 5:
+        home_base = "/home/pg"
+    elif int(yos) == 6:
+        home_base = "/home/staff"
+    elif int(yos) == 7:
+        home_base = "/dev/null"
+    else:
+        error_msg = "Invalid Year of Study {}".format(yos)
+        logger.error(error_msg)
+        raise TypeError(error_msg)
+
+    return home_base
