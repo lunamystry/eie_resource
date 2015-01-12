@@ -62,7 +62,7 @@ class User(object):
 
         # Default values
         self.username = (last_name + first_name[0]).lower()
-        self.uid_number = str(self.user_gid_number(yos))
+        self.uid_number = str(self.next_uid_number(yos))
         self.display_name = '%s %s' % (first_name, last_name)
         self.home_directory = '%s/%s' % (self.home_base(yos), self.username)
         self.gid_number = str(self.user_gid_number(yos))
@@ -86,6 +86,7 @@ class User(object):
         to encrypt the password given in smbencrypt form
         """
         smbencrypt_output = subprocess.check_output(["smbencrypt", password])
+        # carefully counted where the password starts in the returned string
         lm_password = smbencrypt_output[0:32].strip()
         nt_password = smbencrypt_output[32:].strip()
         return lm_password, nt_password
@@ -119,14 +120,13 @@ class User(object):
                     uids.append(uid)
             except KeyError:
                 error_msg = "{} does not have a uid number".format(user['uid'])
-                logger.error(error_msg)
-                raise TypeError(error_msg)
+                logger.warning(error_msg)
         for uid in range(start_uid, start_uid + 1000):
             if uid not in uids:
                 return uid
         error_msg = "uid numbers for {} have been depleted".format(str(yos))
         logger.error(error_msg)
-        raise RuntimeError(error_msg)
+        raise RuntimeError(error_msg)  # How would anyone recover from this?
 
     def user_gid_number(self, yos):
         """ There are 7 groups, depending on the year of study """

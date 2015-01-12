@@ -19,7 +19,7 @@ class Manager():
         self.dn = config.get("ldap", "dn")
         self.pw = config.get("ldap", "pw")
         self.base = config.get("ldap", "base")
-        # self.connect(config)
+        self.connect(config)
 
     def connect(self, config):
         error_msg = ""
