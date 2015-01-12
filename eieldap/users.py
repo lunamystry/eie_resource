@@ -81,10 +81,75 @@ class User(object):
         smbid_base = "S-1-5-21-3949128619-541665055-2325163404-"
         self.samba_sid = smbid_base + samba_rid
 
+    def create(self):
+        '''
+        This will create the user with the given attributes on the ldap
+        directory.
+
+        example:
+            User('Gunea', 'Pig', 1, 'password').create()
+            monty = User('Monty', 'Python', 4, 'spam')
+            monty.home_directory = '/home/england/pythonm'
+            monty.create()
+        '''
+        pass
+
+    def update(self, attributes):
+        '''
+        This will try to update the User, throws an error if the username does
+        not exist
+
+        example:
+            pigg = User.find('pigg')
+            pigg.update({'first_name': 'Test', 'last_name': 'Subject'})
+            pigg.home_directory = '/dev/null'
+            pigg.update()
+        '''
+        pass
+
+    def save(self):
+        '''
+        A convinince which will check if a user exists and then try to update
+        the user. If the user does not exist, a new user is created.
+
+        example:
+            pigg = User('Gunea', 'Pig', 1, 'passing').save()
+            new_attr = {'first_name': 'Passed'}
+            testuser = User.find('testuser').save(new_attr)
+            pigg.last_name = 'Pigs'
+            pigg.save()
+        '''
+        pass
+
+    @classmethod
+    def delete(self, username):
+        '''
+        This will try to delete the user with the username given. If the user
+        does not exist then nothing is done.
+
+        example:
+            User.delete('pigg')
+        '''
+        pass
+
+    @classmethod
+    def find(self, username=None):
+        '''
+        If the username is given, it will try to find the user with the given
+        username, if the username is not given, then if will return a list of
+        all users.
+
+        example: 
+            for user in User.find():
+                print(user.display_name)
+            pigg = User.find('pigg')
+        '''
+        pass
+
     def smb_encrypt(self, password):
-        """ Calls an smbencrypt which comes with freeradius-utils on Ubuntu
+        ''' Calls an smbencrypt which comes with freeradius-utils on Ubuntu
         to encrypt the password given in smbencrypt form
-        """
+        '''
         smbencrypt_output = subprocess.check_output(["smbencrypt", password])
         # carefully counted where the password starts in the returned string
         lm_password = smbencrypt_output[0:32].strip()
@@ -92,7 +157,7 @@ class User(object):
         return lm_password, nt_password
 
     def next_uid_number(self, yos):
-        """ Goes through all the uid numbers in the chosen year of study and
+        ''' Goes through all the uid numbers in the chosen year of study and
         returns an available one. In that year of study range. There are 1000
         available uid numbers in a range, if the number is reached, an
         exception is thrown yos can take on the following values
@@ -105,7 +170,7 @@ class User(object):
         6 - staff
         7 - machine
 
-        """
+        '''
         if yos not in range(1, 8):
             error_msg = "{} is out of uid/yos range".format(str(yos))
             logger.error(error_msg)
@@ -129,7 +194,7 @@ class User(object):
         raise RuntimeError(error_msg)  # How would anyone recover from this?
 
     def user_gid_number(self, yos):
-        """ There are 7 groups, depending on the year of study """
+        ''' There are 7 groups, depending on the year of study '''
         if yos not in range(1, 8):
             error_msg = "{} is out of uid/yos range".format(str(yos))
             logger.error(error_msg)
@@ -138,8 +203,8 @@ class User(object):
         return yos*1000
 
     def home_base(self, yos):
-        """ Home directory is changed based on the year of study
-        """
+        ''' Home directory is changed based on the year of study
+        '''
         if int(yos) < 5:
             home_base = "/home/ug"
         elif int(yos) == 5:
