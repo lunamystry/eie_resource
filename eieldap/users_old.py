@@ -103,7 +103,7 @@ def add(attr):
             set_password(user.attributes['uid'], None, attr['password'])
     except ValueError:
         error_msg = "user {} already exists".format(attr['username'])
-        logger.error(error_msg)
+        logger.error(error_msg):
         raise ValueError(error_msg)
 
 
@@ -132,33 +132,6 @@ def delete(username=None, user=None):
             logger.info("deleted: " + existing_user['dn'])
 
 
-def find():
-    """ Returns all the people in the directory (think ldap)"""
-    users = manager.find(BASEDN, filter_key="uid")
-    users_list = []
-    for user in users:
-        new_user = convert(user, FROM_LDAP_MAP)
-        new_user['yos'] = int(new_user['gid_number'])/1000
-        if new_user['email']:
-            email = new_user['email'][0]
-            new_user['student_number'] = email[:email.find('@')]
-        users_list.append(new_user)
-    return users_list
-
-
-def find_one(username=None):
-    """ Returns a single user """
-    found_user = None
-    if username is not None:
-        dn = "uid=" + username + "," + BASEDN
-        found_user = manager.find_by_dn(dn)
-
-    if found_user:
-        found_user = convert(found_user, FROM_LDAP_MAP)
-        found_user['yos'] = str(int(found_user['gid_number'])/1000)
-    return found_user
-
-
 def validate(attr):
     '''Make sure that attributes are all there in the correct form'''
     required_attributes = ['first_name', 'last_name', 'yos', 'email']
@@ -166,38 +139,6 @@ def validate(attr):
         if attribute not in attr:
             raise TypeError("missing attributes: {}".format(
                 attribute))
-
-
-def convert(user, keymap):
-    '''DESTRUCTIVE: Converts a user either from LDAP form or to depending on
-    keymap. If converting keys are not in the keymap passed, they will be
-    removed from the result'''
-    if user is None:
-        return None
-    new_user = {}
-    for key in keymap:
-        if keymap[key] == 'uid_number' or keymap[key] == 'gid_number':
-            new_user[keymap[key]] = 0
-        elif (keymap[key] == 'hosts'
-                or keymap[key] == 'email'
-                or keymap[key] == 'host'):
-            new_user[keymap[key]] = []
-        else:
-            new_user[keymap[key]] = None
-
-    if user:
-        for key in user.keys():
-            try:
-                nkey = keymap[key]
-                if type(user[key]) is list:
-                    new_user[nkey] = user[key]
-                else:
-                    new_user[nkey] = str(user[key])
-            except KeyError:
-                pass
-    return new_user
-
-
 
 
 def set_password(username, oldpw, newpw):
