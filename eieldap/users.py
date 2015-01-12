@@ -122,7 +122,7 @@ class User(object):
         pass
 
     @classmethod
-    def delete(self, username):
+    def delete(cls, username):
         '''
         This will try to delete the user with the username given. If the user
         does not exist then nothing is done.
@@ -133,18 +133,75 @@ class User(object):
         pass
 
     @classmethod
-    def find(self, username=None):
+    def find(cls, username=None):
         '''
         If the username is given, it will try to find the user with the given
         username, if the username is not given, then if will return a list of
         all users.
 
-        example: 
+        example:
             for user in User.find():
                 print(user.display_name)
             pigg = User.find('pigg')
         '''
-        pass
+        users = manager.find(BASEDN, filter_key="uid")
+        users_list = []
+        for user in users:
+            new_user = convert(user, FROM_LDAP_MAP)
+            new_user['yos'] = int(new_user['gid_number'])/1000
+            if new_user['email']:
+                email = new_user['email'][0]
+                new_user['student_number'] = email[:email.find('@')]
+            users_list.append(new_user)
+        return users_list
+
+    @classmethod
+    def find_one(cls, username):
+        """ Returns a single user """
+        attr = {}
+        if username is not None:
+            dn = "uid=" + username + "," + BASEDN
+            attr = manager.find_by_dn(dn)
+
+        if attr:
+            attr = User.convert_from_ldap(attr)
+        return attr
+
+    @staticmethod
+    def convert_from_ldap(user):
+        '''Converts a user from LDAP format. If converting keys are not in the
+        keymap passed, they will be removed from the result
+        '''
+        from_ldap_map = {"objectClass": "object_classes",
+                         "uid": "username",
+                         "cn": "first_name",
+                         "sn": "last_name",
+                         "homeDirectory": "home_directory",
+                         "loginShell": "login_shell",
+                         "uidNumber": "uid_number",
+                         "gidNumber": "gid_number",
+                         "sambaAcctFlags": "samba_acct_flags",
+                         "sambaSID": "samba_sid",
+                         "sambaNTPassword": "samba_nt_password",
+                         "sambaLMPassword": "samba_lm_password",
+                         "host": "hosts",
+                         "mail": "emails"}
+
+        new_user = {}
+        if user:
+            for key, val in user.items():
+                try:
+                    nkey = from_ldap_map[key]
+                except KeyError:
+                    continue  # if the key is not in the map i don't care
+                if val == 'host' or val == 'mail':
+                    new_user[nkey] = val
+                else:
+                    new_user[nkey] = str(val)
+
+        if 'gidNumber' in user:
+            new_user['yos'] = int(new_user['gid_number'])/1000
+        return new_user
 
     def smb_encrypt(self, password):
         ''' Calls an smbencrypt which comes with freeradius-utils on Ubuntu
