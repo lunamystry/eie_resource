@@ -56,7 +56,7 @@ class User(object):
 
     def __init__(self, username, yos, password, **kwargs):
 
-        self.username = (last_name + first_name[0]).lower()
+        self.username = username
         self.yos = yos
         self.password = password
 
@@ -73,9 +73,6 @@ class User(object):
             setattr(self, key, val)
 
         self.dn = "uid=%s,%s" % (self.username, BASEDN)
-        self.first_name = first_name
-        self.last_name = last_name
-        self.display_name = '%s %s' % (first_name, last_name)
         lm_password, nt_password = self.smb_encrypt(password)
         self.samba_nt_password = nt_password
         self.samba_lm_password = lm_password
