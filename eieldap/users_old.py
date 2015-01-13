@@ -107,14 +107,6 @@ def add(attr):
         raise ValueError(error_msg)
 
 
-def update(attr):
-    """ updates a user"""
-    user = User(attr)
-    manager.update(user.dn, user.attributes)
-    if 'password' in attr:
-        set_password(user.attributes['uid'], None, attr['password'])
-
-
 def delete(username=None, user=None):
     """ Deletes a user """
     existing_user = None

@@ -32,8 +32,8 @@ class User(object):
      3. Can contain alphanumeric characters
      4. No spaces allowed
     '''
-    first_name = SizedString(min=1)
-    last_name = SizedString(min=1)
+    first_name = SizedString()
+    last_name = SizedString()
     yos = YearOfStudy(min=0, max=7)
     password = PasswordString(
         min=6,  # even though regex takes care of it
@@ -62,6 +62,8 @@ class User(object):
 
         # Default values
         self.display_name = username
+        self.first_name = username
+        self.last_name = username
         self.uid_number = str(self.next_uid_number(yos))
         self.gid_number = str(self.user_gid_number(yos))
         self.login_shell = '/bin/bash'
@@ -93,14 +95,19 @@ class User(object):
         '''
         pass
 
-    def update(self, attributes):
+    def update(self, attributes=None):
         '''
         This will try to update the User, throws an error if the username does
         not exist
 
-        Password will not be updated by this function, it will be pop out of
-        the attributes sent to the manager. If you want to change the password
-        you have to use the set_password function.
+        WARNING!!: If the even of an error called `Object class violation`, the
+        user will be deleted and recreated with the attributes that were
+        returned. I added this as a convinience for users added through Samba
+        which may not have the correct ObjectClasses
+
+        Password will not be updated by this function, it will not be passed
+        out to the manager. If you want to change the password you have to use
+        the set_password function.
 
         example:
             pigg = User.find('pigg')
@@ -108,7 +115,19 @@ class User(object):
             pigg.home_directory = '/dev/null'
             pigg.update()
         '''
-        pass
+        if attributes:
+            for key, attr in attributes.items():
+                setattr(self, key, attr)
+        ldap_attr = self.as_ldap_attrs()
+        ldap_attr.pop('objectClass')
+        try:
+            manager.update(self.dn, ldap_attr)
+        except ValueError as e:
+            if str(e) == "Object class violation":
+                manager.delete(self.dn)
+                manager.create(self.dn, self.as_ldap_attrs())
+            else:
+                raise e
 
     def save(self):
         '''
@@ -219,7 +238,7 @@ class User(object):
         self.samba_nt_password = nt_password
         self.samba_lm_password = lm_password
 
-        # manager.update(self.dn, self.as_ldap_attrs())
+        self.update()
         manager.set_password(self.dn, None, newpw)
 
     def smb_encrypt(self, password):
