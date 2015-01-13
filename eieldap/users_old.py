@@ -141,18 +141,6 @@ def validate(attr):
                 attribute))
 
 
-def set_password(username, oldpw, newpw):
-    """ User the python ldap function to change the password
-    of the user with the supplied username"""
-    dn = "uid=" + username + "," + BASEDN
-    user = manager.find_by_dn(dn)
-    if user:
-        lm_password, nt_password = smb_encrypt(newpw)
-        user["sambaNTPassword"] = nt_password
-        user["sambaLMPassword"] = lm_password
-        dn = user['dn']
-        manager.update(dn, user)
-        manager.set_password(dn, oldpw, newpw)
 
 
 def reset_password(username):

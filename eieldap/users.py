@@ -212,6 +212,16 @@ class User(object):
 
         return u
 
+    def set_password(self, newpw):
+        """ User the python ldap function to change the password
+        of the user with the supplied username"""
+        lm_password, nt_password = self.smb_encrypt(newpw)
+        self.samba_nt_password = nt_password
+        self.samba_lm_password = lm_password
+
+        # manager.update(self.dn, self.as_ldap_attrs())
+        manager.set_password(self.dn, None, newpw)
+
     def smb_encrypt(self, password):
         ''' Calls an smbencrypt which comes with freeradius-utils on Ubuntu
         to encrypt the password given in smbencrypt form
