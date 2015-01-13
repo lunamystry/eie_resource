@@ -154,10 +154,6 @@ class User(object):
         users_list = []
         for user in users:
             new_user = User.convert_from_ldap(user)
-            new_user['yos'] = int(new_user['gid_number'])/1000
-            if new_user['email']:
-                email = new_user['email'][0]
-                new_user['student_number'] = email[:email.find('@')]
             users_list.append(new_user)
         return users_list
 
