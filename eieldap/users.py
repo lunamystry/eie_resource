@@ -34,7 +34,7 @@ class User(object):
     '''
     first_name = SizedString(min=1)
     last_name = SizedString(min=1)
-    yos = YearOfStudy(min=1, max=7)
+    yos = YearOfStudy(min=0, max=7)
     password = PasswordString(
         min=6,  # even though regex takes care of it
         max=20,
@@ -65,7 +65,7 @@ class User(object):
         self.uid_number = str(self.next_uid_number(yos))
         self.gid_number = str(self.user_gid_number(yos))
         self.login_shell = '/bin/bash'
-        self.home_directory = '%s/%s' % (self.home_base(yos), self.username)
+        self.home_directory = self.home_base(yos)
 
         # optional values take precedence except for samba_ntlm_passwords, dn,
         # samba_sid
@@ -97,6 +97,10 @@ class User(object):
         '''
         This will try to update the User, throws an error if the username does
         not exist
+
+        Password will not be updated by this function, it will be pop out of
+        the attributes sent to the manager. If you want to change the password
+        you have to use the set_password function.
 
         example:
             pigg = User.find('pigg')
@@ -203,7 +207,14 @@ class User(object):
 
         if 'gidNumber' in user:
             new_user['yos'] = int(new_user['gid_number'])/1000
-        return new_user
+        else:
+            new_user['yos'] = 0
+
+        u = User(new_user['username'], new_user['yos'], 'dummyPa3sword')
+        for key, attr in new_user.items():
+            setattr(u, key, attr)
+
+        return u
 
     def smb_encrypt(self, password):
         ''' Calls an smbencrypt which comes with freeradius-utils on Ubuntu
@@ -221,6 +232,7 @@ class User(object):
         available uid numbers in a range, if the number is reached, an
         exception is thrown yos can take on the following values
 
+        0 - unknown
         1 - first year
         2 - second year
         3 - third year
@@ -230,7 +242,7 @@ class User(object):
         7 - machine
 
         '''
-        if yos not in range(1, 8):
+        if yos not in range(0, 8):
             error_msg = "{} is out of uid/yos range".format(str(yos))
             logger.error(error_msg)
             raise ValueError(error_msg)
@@ -254,7 +266,7 @@ class User(object):
 
     def user_gid_number(self, yos):
         ''' There are 7 groups, depending on the year of study '''
-        if yos not in range(1, 8):
+        if yos not in range(0, 8):
             error_msg = "{} is out of uid/yos range".format(str(yos))
             logger.error(error_msg)
             raise ValueError(error_msg)
@@ -264,13 +276,13 @@ class User(object):
     def home_base(self, yos):
         ''' Home directory is changed based on the year of study
         '''
-        if int(yos) < 5:
-            home_base = "/home/ug"
+        if int(yos) < 5 and int(yos) > 0:
+            home_base = "/home/ug/" + self.username
         elif int(yos) == 5:
-            home_base = "/home/pg"
+            home_base = "/home/pg/" + self.username
         elif int(yos) == 6:
-            home_base = "/home/staff"
-        elif int(yos) == 7:
+            home_base = "/home/staff/" + self.username
+        elif int(yos) == 7 or int(yos) == 0:
             home_base = "/dev/null"
         else:
             error_msg = "Invalid Year of Study {}".format(yos)
@@ -299,3 +311,15 @@ class User(object):
                 "host": self.hosts,
                 "mail": self.emails
                 }
+
+    def __repr__(self):
+        return str({"username": self.username,
+                    "first_name": self.first_name,
+                    "last_name": self.last_name,
+                    "home_directory": self.home_directory,
+                    "login_shell": self.login_shell,
+                    "uid_number": self.uid_number,
+                    "gid_number": self.gid_number,
+                    "hosts": self.hosts,
+                    "emails": self.emails
+                })
