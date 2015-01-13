@@ -54,19 +54,18 @@ class User(object):
     emails = []
     hosts = []
 
-    def __init__(self, first_name, last_name, yos, password, **kwargs):
-        self.first_name = first_name
-        self.last_name = last_name
+    def __init__(self, username, yos, password, **kwargs):
+
+        self.username = (last_name + first_name[0]).lower()
         self.yos = yos
         self.password = password
 
         # Default values
-        self.username = (last_name + first_name[0]).lower()
+        self.display_name = username
         self.uid_number = str(self.next_uid_number(yos))
-        self.display_name = '%s %s' % (first_name, last_name)
-        self.home_directory = '%s/%s' % (self.home_base(yos), self.username)
         self.gid_number = str(self.user_gid_number(yos))
         self.login_shell = '/bin/bash'
+        self.home_directory = '%s/%s' % (self.home_base(yos), self.username)
 
         # optional values take precedence except for samba_ntlm_passwords, dn,
         # samba_sid
@@ -74,6 +73,9 @@ class User(object):
             setattr(self, key, val)
 
         self.dn = "uid=%s,%s" % (self.username, BASEDN)
+        self.first_name = first_name
+        self.last_name = last_name
+        self.display_name = '%s %s' % (first_name, last_name)
         lm_password, nt_password = self.smb_encrypt(password)
         self.samba_nt_password = nt_password
         self.samba_lm_password = lm_password
@@ -144,10 +146,13 @@ class User(object):
                 print(user.display_name)
             pigg = User.find('pigg')
         '''
+        if username:
+            return User.find_one(username)
+
         users = manager.find(BASEDN, filter_key="uid")
         users_list = []
         for user in users:
-            new_user = convert(user, FROM_LDAP_MAP)
+            new_user = User.convert_from_ldap(user)
             new_user['yos'] = int(new_user['gid_number'])/1000
             if new_user['email']:
                 email = new_user['email'][0]
