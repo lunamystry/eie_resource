@@ -93,7 +93,14 @@ class User(object):
             monty.home_directory = '/home/england/pythonm'
             monty.create()
         '''
-        pass
+        try:
+            manager.create(self.dn, self.as_ldap_attrs())
+            if 'password' in attr:
+                set_password(user.attributes['uid'], None, attr['password'])
+        except ValueError:
+            error_msg = "user {} already exists".format(attr['username'])
+            logger.error(error_msg)
+            raise ValueError(error_msg)
 
     def update(self, attributes=None):
         '''
@@ -152,7 +159,8 @@ class User(object):
         example:
             User.delete('pigg')
         '''
-        pass
+        dn = "uid=%s,%s" % (username, BASEDN)
+        manager.delete(dn)
 
     @classmethod
     def find(cls, username=None):
