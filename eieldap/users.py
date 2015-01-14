@@ -345,6 +345,25 @@ class User(object):
                 "mail": self.emails
                 }
 
+    def add_host(self, host_domain):
+        """ Allow the user with username to login to host with host_domain.
+        this assumes the host has been configured to use the host property
+        """
+        if host_domain not in self.hosts:
+            self.hosts.append(host_domain)
+            self.update()
+
+    def remove_host(username, host_domain):
+        """ Disallow a user with username to login into a host with host_domain.
+        this assumes the host has been configured to use the host property
+        """
+        if host_domain in self.hosts:
+            self.hosts.remove(host_domain)
+            self.update()
+
+    def authenticate(self, password):
+       return manager.authenticate(self.dn, password)
+
     def __repr__(self):
         return str({"username": self.username,
                     "first_name": self.first_name,
@@ -356,3 +375,4 @@ class User(object):
                     "hosts": self.hosts,
                     "emails": self.emails
                 })
+
