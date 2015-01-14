@@ -1,13 +1,12 @@
 #! /usr/bin/env python2
-import argparse
-import subprocess
 import xlrd
-import re
+
+from .users import User, default_password
 
 VALID_TITLES = ["Year Of Study", "Student Number", "First Name", "Last Name"]
 
 
-def main(workbook_name, ldif_name):
+def import_from_xls(workbook_name):
     class_list = xlrd.open_workbook(workbook_name)
     rows = extract(class_list)
 
@@ -18,10 +17,15 @@ def main(workbook_name, ldif_name):
     rows = add_passwords(rows)
     rows = make_yos_int(rows)
 
-    if ldif_name is None:
-        ldif_name = workbook_name[:-3] + "ldif"
-
-    make_ldif(rows, ldif_name)
+    for row in rows[1:]:
+        print(row)
+        u = User(username=row[4], 
+             year_of_study=row[3], 
+             password=row[5],
+             student_number=row[2],
+             first_name=str(row[0]),
+             last_name=str(row[1]))
+        print(u)
 
 
 def extract(xl_file):
@@ -51,17 +55,16 @@ def strip_unused_cols(rows):
     for row in rows:
         new_row = []
         for col_num in valid_col_numbers:
-            new_row.append(row[col_num])
+            new_row.append(str(row[col_num]))
         new_rows.append(new_row)
     return new_rows
 
 
 def make_yos_int(rows):
-    pattern = re.compile('[^0-9]+')
     headers = rows[find_headers_row(rows)]
     i = headers.index('Year Of Study')
     for row in rows[1:]:
-        row[i] = pattern.sub('', row[i])
+        row[i] = int(float(row[i]))
     return rows
 
 
@@ -90,90 +93,17 @@ def add_usernames(rows):
         first_name = row[headers.index("First Name")]
         last_name = row[headers.index("Last Name")]
         username = last_name.lower().replace(" ", "") + first_name[0].lower()
-        row.append(username)
+        row.append(str(username))
         new_rows.append(row)
     return new_rows
 
 
 def add_passwords(rows):
     headers = rows[find_headers_row(rows)]
-    headers.append("NTPassword")
-    headers.append("LMPassword")
     headers.append("plainTextPassword")
     new_rows = []
     new_rows.append(headers)
     for row in rows[find_headers_row(rows) + 1:]:
-        student_number = row[headers.index("Student Number")]
-        lm_password, nt_password = smb_encrypt("dlab2014")
-        row.append(nt_password)
-        row.append(lm_password)
-        row.append(student_number)
+        row.append(str(default_password))
         new_rows.append(row)
     return new_rows
-
-
-def smb_encrypt(password):
-    """ Calls an smbencrypt which comes with freeradius-utils on Ubuntu
-        to encrypt the password given in smbencrypt form
-     """
-    smbencrypt_output = subprocess.check_output(["smbencrypt", password])
-    lm_password = smbencrypt_output[0:32].strip()
-    nt_password = smbencrypt_output[32:].strip()
-    return lm_password, nt_password
-
-
-def make_ldif(rows,  ldif_filename):
-    ldif_file = open(ldif_filename, 'w')
-    headers = rows[find_headers_row(rows)]
-    uidNumbers = [1000, 2000, 3000, 4000]
-    gidNumbers = [1000, 2000, 3000, 4000]
-    for row in rows[find_headers_row(rows) + 1:]:
-        first_name = row[headers.index("First Name")]
-        last_name = row[headers.index("Last Name")]
-        username = row[headers.index("Username")]
-        yos = row[headers.index("Year Of Study")]
-        nt_password = row[headers.index("NTPassword")]
-        lm_password = row[headers.index("LMPassword")]
-        plain_password = row[headers.index("plainTextPassword")]
-        uidNumber = uidNumbers[int(yos) - 1]
-        uidNumbers[int(yos) - 1] += 1
-        gidNumber = gidNumbers[int(yos) - 1]
-        smbRid = uidNumber*4
-        entry = ""
-        entry += "dn: uid=" + username + ",ou=people,dc=eie,dc=wits,dc=ac,dc=za\n"
-        entry += "objectClass: inetOrgPerson\n"
-        entry += "objectClass: organizationalPerson\n"
-        entry += "objectClass: posixAccount\n"
-        entry += "objectClass: sambaSamAccount\n"
-        entry += "objectClass: hostObject\n"
-        entry += "cn: " + first_name + "\n"
-        entry += "sn: " + last_name + "\n"
-        entry += "uid: " + username + "\n"
-        entry += "displayName: " + first_name + " " + last_name + "\n"
-        entry += "uidNumber: " + str(uidNumber) + "\n"
-        entry += "gidNumber: " + str(gidNumber) + "\n"
-        entry += "homeDirectory: /home/ug/" + username + "\n"
-        entry += "loginShell: /bin/bash \n"
-        entry += "# 4*uid to get RID (the last number)\n"
-        entry += "sambaSID: S-1-5-21-3949128619-541665055-2325163404-" + str(smbRid) + "\n"
-        entry += "sambaAcctFlags: [U         ] \n"
-        entry += "sambaNTPassword: " + nt_password + "\n"
-        entry += "sambaLMPassword: " + lm_password + "\n"
-        entry += "\n"
-        if int(yos) > 1 and int(yos) < 4:
-            ldif_file.write(entry.encode('utf-8'))
-    ldif_file.close()
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="""
-        Convert an xls file in a specific format to an ldif file used. """)
-
-    parser.add_argument('-i', '--input', dest='xls_url',
-                        help='the path to the xls filename')
-    parser.add_argument('-o', '--output', dest='ldif_url',
-                        help='the path to the output ldif filename')
-
-    args = parser.parse_args()
-    main(args.xls_url, args.ldif_url)
