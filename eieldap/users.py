@@ -36,7 +36,7 @@ class User(object):
     '''
     first_name = SizedString()
     last_name = SizedString()
-    yos = YearOfStudy(min=0, max=7)
+    year_of_study = YearOfStudy(min=0, max=7)
     password = PasswordString(
         min=6,  # even though regex takes care of it
         max=20,
@@ -56,20 +56,20 @@ class User(object):
     emails = []
     hosts = []
 
-    def __init__(self, username, yos, password, **kwargs):
+    def __init__(self, username, year_of_study, password, **kwargs):
 
         self.username = username
-        self.yos = yos
+        self.year_of_study = year_of_study
         self.password = password
 
         # Default values
         self.display_name = username
         self.first_name = username
         self.last_name = username
-        self.uid_number = str(self.next_uid_number(yos))
-        self.gid_number = str(self.user_gid_number(yos))
+        self.uid_number = str(self.next_uid_number(year_of_study))
+        self.gid_number = str(self.user_gid_number(year_of_study))
         self.login_shell = '/bin/bash'
-        self.home_directory = self.home_base(yos)
+        self.home_directory = self.home_base(year_of_study)
 
         # optional values take precedence except for samba_ntlm_passwords, dn,
         # samba_sid
@@ -235,11 +235,11 @@ class User(object):
                     new_user[nkey] = str(val)
 
         if 'gidNumber' in user:
-            new_user['yos'] = int(new_user['gid_number'])/1000
+            new_user['year_of_study'] = int(new_user['gid_number'])/1000
         else:
-            new_user['yos'] = 0
+            new_user['year_of_study'] = 0
 
-        u = User(new_user['username'], new_user['yos'], 'dummyPa3sword')
+        u = User(new_user['username'], new_user['year_of_study'], 'dummyPa3sword')
         for key, attr in new_user.items():
             setattr(u, key, attr)
 
@@ -265,11 +265,11 @@ class User(object):
         nt_password = smbencrypt_output[32:].strip()
         return lm_password, nt_password
 
-    def next_uid_number(self, yos):
+    def next_uid_number(self, year_of_study):
         ''' Goes through all the uid numbers in the chosen year of study and
         returns an available one. In that year of study range. There are 1000
         available uid numbers in a range, if the number is reached, an
-        exception is thrown yos can take on the following values
+        exception is thrown year_of_study can take on the following values
 
         0 - unknown
         1 - first year
@@ -281,13 +281,13 @@ class User(object):
         7 - machine
 
         '''
-        if yos not in range(0, 8):
-            error_msg = "{} is out of uid/yos range".format(str(yos))
+        if year_of_study not in range(0, 8):
+            error_msg = "{} is out of uid/year_of_study range".format(str(year_of_study))
             logger.error(error_msg)
             raise ValueError(error_msg)
         all_users = manager.find(basedn, filter_key="uid")
         uids = []
-        start_uid = yos*1000
+        start_uid = year_of_study*1000
         for user in all_users:
             try:
                 uid = int(user['uidNumber'])
@@ -299,32 +299,32 @@ class User(object):
         for uid in range(start_uid, start_uid + 1000):
             if uid not in uids:
                 return uid
-        error_msg = "uid numbers for {} have been depleted".format(str(yos))
+        error_msg = "uid numbers for {} have been depleted".format(str(year_of_study))
         logger.error(error_msg)
         raise RuntimeError(error_msg)  # How would anyone recover from this?
 
-    def user_gid_number(self, yos):
+    def user_gid_number(self, year_of_study):
         ''' There are 7 groups, depending on the year of study '''
-        if yos not in range(0, 8):
-            error_msg = "{} is out of uid/yos range".format(str(yos))
+        if year_of_study not in range(0, 8):
+            error_msg = "{} is out of uid/year_of_study range".format(str(year_of_study))
             logger.error(error_msg)
             raise ValueError(error_msg)
 
-        return yos*1000
+        return year_of_study*1000
 
-    def home_base(self, yos):
+    def home_base(self, year_of_study):
         ''' Home directory is changed based on the year of study
         '''
-        if int(yos) < 5 and int(yos) > 0:
+        if int(year_of_study) < 5 and int(year_of_study) > 0:
             home_base = "/home/ug/" + self.username
-        elif int(yos) == 5:
+        elif int(year_of_study) == 5:
             home_base = "/home/pg/" + self.username
-        elif int(yos) == 6:
+        elif int(year_of_study) == 6:
             home_base = "/home/staff/" + self.username
-        elif int(yos) == 7 or int(yos) == 0:
+        elif int(year_of_study) == 7 or int(year_of_study) == 0:
             home_base = "/dev/null"
         else:
-            error_msg = "Invalid Year of Study {}".format(yos)
+            error_msg = "Invalid Year of Study {}".format(year_of_study)
             logger.error(error_msg)
             raise TypeError(error_msg)
 
@@ -377,6 +377,7 @@ class User(object):
                 "first_name": self.first_name,
                 "last_name": self.last_name,
                 "home_directory": self.home_directory,
+                "year_of_study": self.year_of_study,
                 "login_shell": self.login_shell,
                 "uid_number": self.uid_number,
                 "gid_number": self.gid_number,
