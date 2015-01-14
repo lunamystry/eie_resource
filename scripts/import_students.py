@@ -3,7 +3,7 @@
 
 import argparse
 
-from eieldap import xlstoldif
+from eieldap import importer
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -16,4 +16,4 @@ if __name__ == "__main__":
                         help='the path to the output ldif filename')
 
     args = parser.parse_args()
-    xlstoldif.main(args.xls_url)
+    importer.import_from_xls(args.xls_url)

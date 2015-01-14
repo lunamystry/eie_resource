@@ -1,4 +1,3 @@
-#! /usr/bin/env python2
 import xlrd
 
 from .users import User, default_password
@@ -7,6 +6,7 @@ VALID_TITLES = ["Year Of Study", "Student Number", "First Name", "Last Name"]
 
 
 def import_from_xls(workbook_name):
+    """read file, create usernames and add user to ldap"""
     class_list = xlrd.open_workbook(workbook_name)
     rows = extract(class_list)
 
@@ -18,14 +18,12 @@ def import_from_xls(workbook_name):
     rows = make_yos_int(rows)
 
     for row in rows[1:]:
-        print(row)
-        u = User(username=row[4], 
+        User(username=row[4], 
              year_of_study=row[3], 
              password=row[5],
              student_number=row[2],
              first_name=str(row[0]),
-             last_name=str(row[1]))
-        print(u)
+             last_name=str(row[1])).create()
 
 
 def extract(xl_file):
