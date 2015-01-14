@@ -2,13 +2,19 @@ from __future__ import print_function
 
 import subprocess
 import logging
+import datetime
 
 from eieldap import manager
-from eieldap.descriptors import String, SizedString, RegexString,
-IntSizedString, YearOfStudy, PasswordString
+from eieldap.descriptors import (String,
+                                 SizedString,
+                                 RegexString,
+                                 IntSizedString,
+                                 YearOfStudy,
+                                 PasswordString)
 
 logger = logging.getLogger(__name__)
-BASEDN = "ou=people," + manager.base
+basedn = "ou=people," + manager.base
+default_password = "Dlab%s" % datetime.date.today().year
 
 
 class User(object):
@@ -70,7 +76,7 @@ class User(object):
         for key, val in kwargs.items():
             setattr(self, key, val)
 
-        self.dn = "uid=%s,%s" % (self.username, BASEDN)
+        self.dn = "uid=%s,%s" % (self.username, basedn)
         lm_password, nt_password = self.smb_encrypt(password)
         self.samba_nt_password = nt_password
         self.samba_lm_password = lm_password
@@ -159,7 +165,7 @@ class User(object):
         example:
             User.delete('pigg')
         '''
-        dn = "uid=%s,%s" % (username, BASEDN)
+        dn = "uid=%s,%s" % (username, basedn)
         manager.delete(dn)
 
     @classmethod
@@ -177,7 +183,7 @@ class User(object):
         if username:
             return User.find_one(username)
 
-        users = manager.find(BASEDN, filter_key="uid")
+        users = manager.find(basedn, filter_key="uid")
         users_list = []
         for user in users:
             new_user = User.convert_from_ldap(user)
@@ -189,7 +195,7 @@ class User(object):
         """ Returns a single user """
         attr = {}
         if username is not None:
-            dn = "uid=" + username + "," + BASEDN
+            dn = "uid=" + username + "," + basedn
             attr = manager.find_by_dn(dn)
 
         if attr:
@@ -279,7 +285,7 @@ class User(object):
             error_msg = "{} is out of uid/yos range".format(str(yos))
             logger.error(error_msg)
             raise ValueError(error_msg)
-        all_users = manager.find(BASEDN, filter_key="uid")
+        all_users = manager.find(basedn, filter_key="uid")
         uids = []
         start_uid = yos*1000
         for user in all_users:
@@ -324,6 +330,25 @@ class User(object):
 
         return home_base
 
+    def add_host(self, host_domain):
+        """ Allow the user with username to login to host with host_domain.
+        this assumes the host has been configured to use the host property
+        """
+        if host_domain not in self.hosts:
+            self.hosts.append(host_domain)
+            self.update()
+
+    def remove_host(username, host_domain):
+        """ Disallow a user with username to login into a host with host_domain.
+        this assumes the host has been configured to use the host property
+        """
+        if host_domain in self.hosts:
+            self.hosts.remove(host_domain)
+            self.update()
+
+    def authenticate(self, password):
+       return manager.authenticate(self.dn, password)
+
     def as_ldap_attrs(self):
         return {"objectClass": ["inetOrgPerson",
                                 "organizationalPerson",
@@ -345,34 +370,17 @@ class User(object):
                 "mail": self.emails
                 }
 
-    def add_host(self, host_domain):
-        """ Allow the user with username to login to host with host_domain.
-        this assumes the host has been configured to use the host property
-        """
-        if host_domain not in self.hosts:
-            self.hosts.append(host_domain)
-            self.update()
+    def as_dict(self):
+        return {"username": self.username,
+                "first_name": self.first_name,
+                "last_name": self.last_name,
+                "home_directory": self.home_directory,
+                "login_shell": self.login_shell,
+                "uid_number": self.uid_number,
+                "gid_number": self.gid_number,
+                "hosts": self.hosts,
+                "emails": self.emails
+                }
 
-    def remove_host(username, host_domain):
-        """ Disallow a user with username to login into a host with host_domain.
-        this assumes the host has been configured to use the host property
-        """
-        if host_domain in self.hosts:
-            self.hosts.remove(host_domain)
-            self.update()
-
-    def authenticate(self, password):
-       return manager.authenticate(self.dn, password)
-
-    def __repr__(self):
-        return str({"username": self.username,
-                    "first_name": self.first_name,
-                    "last_name": self.last_name,
-                    "home_directory": self.home_directory,
-                    "login_shell": self.login_shell,
-                    "uid_number": self.uid_number,
-                    "gid_number": self.gid_number,
-                    "hosts": self.hosts,
-                    "emails": self.emails
-                })
-
+    def __str__(self):
+        return str(self.as_dict())
