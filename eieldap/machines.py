@@ -26,7 +26,8 @@ def find():
 
 
 def delete(name=None, machine=None):
-    """ Deletes a machine """
+    """ Deletes a machine, can give either the name or the machine. If both are
+    given, then the name is used"""
     existing_machine = None
     if name is not None:
         dn = "uid=" + name + "," + basedn
