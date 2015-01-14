@@ -4,12 +4,8 @@ import subprocess
 import logging
 
 from eieldap import manager
-from eieldap.descriptors import String
-from eieldap.descriptors import SizedString
-from eieldap.descriptors import RegexString
-from eieldap.descriptors import IntSizedString
-from eieldap.descriptors import YearOfStudy
-from eieldap.descriptors import PasswordString
+from eieldap.descriptors import String, SizedString, RegexString,
+IntSizedString, YearOfStudy, PasswordString
 
 logger = logging.getLogger(__name__)
 BASEDN = "ou=people," + manager.base
@@ -95,10 +91,9 @@ class User(object):
         '''
         try:
             manager.create(self.dn, self.as_ldap_attrs())
-            if 'password' in attr:
-                set_password(user.attributes['uid'], None, attr['password'])
+            self.set_password(self.password)
         except ValueError:
-            error_msg = "user {} already exists".format(attr['username'])
+            error_msg = "user {} already exists".format(self.username)
             logger.error(error_msg)
             raise ValueError(error_msg)
 
@@ -148,7 +143,12 @@ class User(object):
             pigg.last_name = 'Pigs'
             pigg.save()
         '''
-        pass
+        existing = self.find(self.username)
+        if existing:
+            self.update()
+        else:
+            self.create()
+
 
     @classmethod
     def delete(cls, username):
