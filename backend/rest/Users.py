@@ -10,34 +10,13 @@ from utils import admin_only
 logger = logging.getLogger(__name__)
 
 
-class ChangePassword(Resource):
-    def put(self, username):
-        args = request.json
-        # Talk about weak security!
-        if users.set_password(username,
-                                 None,
-                                 args['new_password']):
-            return True, 201
-        else:
-            return {}, 500
-
-
-class ResetPassword(Resource):
-    def put(self, username):
-        if users.reset_password(username):
-            return True, 201
-        else:
-            return {}, 500
-
-
 class User(Resource):
     def get(self, username):
-        user = users.find_one(username)
+        user = users.User.find(username).as_dict()
         return user
 
     @admin_only
     def post(self, username):
-        # users = users.find()
         args = request.json
         data, errors = validate(args)
         data["password"] = "passing"
@@ -76,7 +55,9 @@ class Users(Resource):
         args = parser.parse_args()
         start = args["start"]
         limit = args["limit"]
-        user_list = users.find()[start:][:limit]
+        user_list = []
+        for user in users.User.find()[start:][:limit]:
+            user_list.append(user.as_dict())
         return user_list, 200
 
 

@@ -63,13 +63,13 @@ class Sessions(Resource):
         data, errors = self.validate(args)
         if errors:
             return errors, 401
-        user = users.find_one(data["username"])
+        user = users.User.find_one(data["username"])
 
         if(self.authenticate(data["username"], data["password"])):
             session = client.resource.sessions.find_one({
-                "username": str(user["username"])})
+                "username": str(user.username)})
             if not session:
-                session = {"username": str(user["username"])}
+                session = {"username": str(user.username)}
             if (session['username'] in groups.find('IT')['members']):
                 session['is_admin'] = True
             session["key"] = str(uuid.uuid4())
@@ -95,7 +95,7 @@ class Sessions(Resource):
 
     def authenticate(self, username, password):
         try:
-            users.authenticate(username, password)
+            users.User.authenticate(username, password)
             return True
         except ValueError:
             return False

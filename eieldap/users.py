@@ -346,8 +346,10 @@ class User(object):
             self.hosts.remove(host_domain)
             self.update()
 
-    def authenticate(self, password):
-       return manager.authenticate(self.dn, password)
+    @staticmethod
+    def authenticate(username, password):
+       dn = "uid=%s,%s" % (username, basedn)
+       return manager.authenticate(dn, password)
 
     def as_ldap_attrs(self):
         return {"objectClass": ["inetOrgPerson",
