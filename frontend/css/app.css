@@ -27,18 +27,46 @@ body {
     padding-left: 20px;
     padding-right: 20px;
 }
-.navbar-admin {
-    background-image: linear-gradient(to bottom, #E41B17, #C11B17);
-    background-repeat: repeat-x;
-    border: 1px solid #FF0000;
-    border-radius: 4px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
-    min-height: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
 .navbar a {
     color: white;
+}
+.navbar-admin a{
+    color: #FF0000;
+}
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
+.dashboard {
+    display: flex;
+    height: 400px;
+    width: 1000px;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+.dashboard-item {
+  width: 200px;  /* Or whatever */
+  height: 200px; /* Or whatever */
+  margin: auto;  /* Magic! */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+  border-radius: 0px;
+
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 1.5vw;
+
+  white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: pre-wrap;       /* css-3 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+  word-break: break-all;
+  white-space: normal;
 }
 .navbar .nav > li > a {
     border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -48,9 +76,8 @@ body {
     text-decoration: none;
     background-color: #1b228c;
 }
-.navbar-brand {
-    font-weight: bold;
-    font-size: x-large;
+.navbar-brand img {
+    width: 300px;
 }
 .jumbotron-eie {
     background-image: url('../img/dlab_cartoonified.jpg');
