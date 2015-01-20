@@ -33,6 +33,7 @@ body {
     font-size: 2em;
     font-weight: normal;
     margin: 0;
+    background: none repeat scroll 0 0 #FFFFFF;
 }
 
 .wrapper {
@@ -126,6 +127,18 @@ body {
     background: white;
 }
 
+.alert-eie {
+    position: fixed;
+    top: 3%;
+    right: 1%;
+    min-width: 150px;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-color: #000000;
+    opacity: 0.95;
+    z-index: 1000;
+}
+
 footer {
     padding: 5%;
     text-align: center;
@@ -153,7 +166,112 @@ footer {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     color: purple;
 }
+.computer {
+    color: #CCCCCC;
+    text-decoration: none;
+    border: 1px dotted #CCCCCC;
+    border-radius: 1px;
+    padding: 2px;
+}
+.computer h2 {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+.computer-booked {
+    border: 2px solid blue;
+    color: #blue;
+}
+.computer-available {
+    background-color: green;
+    border: 1px solid green;
+    color: #FFFFFF;
+}
+.computer-absent {
+    background-color: #000000;
+    border: 1px solid #000000;
+    color: #FFFFFF;
+}
+.computer-faulty {
+    background-color: red;
+    border: 1px solid red;
+    color: #FFFFFF;
+}
+.jumbotron-eie {
+    background-image: url('../img/dlab_cartoonified.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    border-color: #46B8DA;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 1px #000;
+    font-size: x-large;
+    font-weight: bold;
+}
+.container {
+    width: 1100px;
+}
+.container {
+    margin-left: auto;
+    margin-right: auto;
+}
+.container:before, .container:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+.container:after {
+    clear: both;
+}
+.container:before, .container:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
 
+.dashboard {
+    display: flex;
+    height: 400px;
+    width: 1000px;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+.dashboard-item {
+  width: 200px;  /* Or whatever */
+  height: 200px; /* Or whatever */
+  margin: auto;  /* Magic! */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+  border-radius: 0px;
+
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 1.5vw;
+
+  white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: pre-wrap;       /* css-3 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+  word-break: break-all;
+  white-space: normal;
+}
+
+.col-md-5 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 20%;
+    float: left;
+}
 @media all and (max-width: 800px) {
     .navigation {
         justify-content: space-around;
@@ -192,3 +310,4 @@ footer {
         border-bottom: none;
     }
 }
+

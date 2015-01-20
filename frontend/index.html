@@ -51,6 +51,11 @@
                     </li>
                 </ul>
             </aside>
+            <div ng-controller='homeCtrl'>
+                <div ng-repeat='alert in alerts'>
+                    <div eie-alert ng-model='alert'>{{alert.message}}</div>
+                </div>
+            </div>
             <div class="main">
                 <section class="header">
                     <div ng-controller="homeCtrl"

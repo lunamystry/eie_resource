@@ -11,16 +11,5 @@
       <section class="container">
       </section>
       <div ng-include="'views/navbar_guest.html'"></div>
-      <div ng-controller='homeCtrl'>
-          <div ng-repeat='alert in alerts'>
-              <div eie-alert ng-model='alert'>{{alert.message}}</div>
-          </div>
-      </div>
-      <div ng-view>
-          <div class='container loading'>
-              <p>make sure javascript is enabled please</p>
-              <img src='img/loading.gif'/>
-          </div>
-      </div>
   </body>
 </html>
