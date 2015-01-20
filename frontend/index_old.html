@@ -9,23 +9,6 @@
   </head>
   <body>
       <section class="container">
-          <div ng-controller="homeCtrl"
-              class="pull-right">
-              <a ng-show="isLoggedIn()"
-                  href="#/profile">
-                  <span class="glyphicon glyphicon-user"></span>
-                  {{ session().username }}
-              </a>
-              <a ng-show="isLoggedIn()"
-                  ng-click="sign_out()">
-                  (sign out)
-              </a>
-              <a ng-hide="isLoggedIn() || currentRoute() == 'home'"
-                  href="#/home">
-                  <span class="glyphicon glyphicon-user"></span>
-                  sign in
-              </a>
-          </div>
       </section>
       <div ng-include="'views/navbar_guest.html'"></div>
       <div ng-controller='homeCtrl'>
@@ -39,51 +22,5 @@
               <img src='img/loading.gif'/>
           </div>
       </div>
-      <footer class="col-md-12">
-          <span id="copyright">
-              <p>&#169; 2014, University Of The Witwatersrand, Johannesburg</p>
-          </span>
-          <div id="credit">
-              created by <a href="http://mandla.me"> Mandla Mbuli</a>
-          </div>
-      </footer>
-    <!-- lib -->
-    <script type="text/javascript" src="lib/angular/angular.js"></script>
-    <script type="text/javascript" src="lib/angular/angular-route.js"></script>
-    <script type="text/javascript" src="lib/angular/angular-resource.js"></script>
-    <script type="text/javascript" src="lib/angular/angular-cookies.js"></script>
-    <script type="text/javascript" src="lib/angular/angular-animate.min.js"></script>
-    <script type="text/javascript" src="lib/angular-ui/ui-bootstrap-tpls-0.10.0.js"></script>
-    <script type="text/javascript" src="lib/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="lib/underscore-min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="lib/FileSaver/FileSaver.js"></script>
-    <!-- app -->
-    <script type="text/javascript" src="js/app.js"></script>
-    <!-- controllers -->
-    <script type="text/javascript" src="js/controllers/home.js"></script>
-    <script type="text/javascript" src="js/controllers/profile.js"></script>
-    <script type="text/javascript" src="js/controllers/admin.js"></script>
-    <script type="text/javascript" src="js/controllers/users.js"></script>
-    <script type="text/javascript" src="js/controllers/groups.js"></script>
-    <script type="text/javascript" src="js/controllers/group_edit.js"></script>
-    <script type="text/javascript" src="js/controllers/about.js"></script>
-    <script type="text/javascript" src="js/controllers/gallery.js"></script>
-    <script type="text/javascript" src="js/controllers/computers.js"></script>
-    <script type="text/javascript" src="js/controllers/lab_layout.js"></script>
-    <script type="text/javascript" src="js/controllers/bookings.js"></script>
-    <!-- services -->
-    <script type="text/javascript" src="js/services/session.js"></script>
-    <script type="text/javascript" src="js/services/users.js"></script>
-    <script type="text/javascript" src="js/services/groups.js"></script>
-    <script type="text/javascript" src="js/services/alerts.js"></script>
-    <script type="text/javascript" src="js/services/images.js"></script>
-    <script type="text/javascript" src="js/services/computers.js"></script>
-    <script type="text/javascript" src="js/services/version.js"></script>
-    <!-- directives -->
-    <script type="text/javascript" src="js/directives/alert.js"></script>
-    <script type="text/javascript" src="js/directives/computer.js"></script>
-    <script type="text/javascript" src="js/directives/appVersion.js"></script>
-    <!-- filters -->
   </body>
 </html>

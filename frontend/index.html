@@ -52,17 +52,31 @@
                 </ul>
             </aside>
             <div class="main">
-                <section class="header">Login</section>
-                <article>
-                    <p>
-                        Pellentesque habitant morbi tristique senectus et netus et
-                        malesuada fames ac turpis egestas. Vestibulum tortor
-                        quam, feugiat vitae, ultricies eget, tempor sit amet,
-                        ante. Donec eu libero sit amet quam egestas semper.
-                        Aenean ultricies mi vitae est.  Mauris placerat eleifend
-                        leo.
-                    </p>
-                </article>
+                <section class="header">
+                    <div ng-controller="homeCtrl"
+                        class="pull-right">
+                        <a ng-show="isLoggedIn()"
+                            href="#/profile">
+                            <span class="glyphicon glyphicon-user"></span>
+                            {{ session().username }}
+                        </a>
+                        <a ng-show="isLoggedIn()"
+                            ng-click="sign_out()">
+                            (sign out)
+                        </a>
+                        <a ng-hide="isLoggedIn() || currentRoute() == 'home'"
+                            href="#/home">
+                            <span class="glyphicon glyphicon-user"></span>
+                            sign in
+                        </a>
+                    </div>
+                </section>
+                <div ng-view>
+                    <div class='container loading'>
+                        <p>make sure javascript is enabled please</p>
+                        <img src='img/loading.gif'/>
+                    </div>
+                </div>
             </div>
             <footer class="footer">
                 <span id="copyright">
