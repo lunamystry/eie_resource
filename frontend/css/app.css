@@ -1,94 +1,177 @@
+@font-face {
+    font-family: 'Holtwood-One-SC';
+    src:url('Holtwood-One-SC/Holtwood-One-SC.ttf.woff') format('woff'),
+    url('Holtwood-One-SC/Holtwood-One-SC.ttf.svg#Holtwood-One-SC') format('svg'),
+    url('Holtwood-One-SC/Holtwood-One-SC.ttf.eot'),
+    url('Holtwood-One-SC/Holtwood-One-SC.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Raleway-ExtraLight';
+    src:url('Raleway/Raleway-ExtraLight.ttf.woff') format('woff'),
+    url('Raleway/Raleway-ExtraLight.ttf.svg#Raleway-ExtraLight') format('svg'),
+    url('Raleway/Raleway-ExtraLight.ttf.eot'),
+    url('Raleway/Raleway-ExtraLight.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Droid-Sans';
+    src:url('Droid-Sans/Droid-Sans.ttf.woff') format('woff'),
+    url('Droid-Sans/Droid-Sans.ttf.svg#Droid-Sans') format('svg'),
+    url('Droid-Sans/Droid-Sans.ttf.eot'),
+    url('Droid-Sans/Droid-Sans.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 20px;
+    font-family: "Droid-Sans",Helvetica,sans-serif;
+    font-size: 2em;
+    font-weight: normal;
     margin: 0;
 }
+
 .wrapper {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-
-  -webkit-flex-flow: row wrap;
-  flex-flow: row wrap;
-
-  font-weight: bold;
-  text-align: center;
-}
-
-.wrapper > * {
-  flex: 1 100%;
-}
-
-.header {
-  background: blue;
-  color: white;
-  padding: 10px;
-}
-
-.brand img {
-  width: 450px;
-}
-
-.footer {
-  background: lightgreen;
-  padding: 10px;
-}
-
-.main {
-  text-align: left;
-  background: deepskyblue;
-}
-
-.main > * {
-  padding: 10px;
-}
-
-@media all and (min-width: 600px) {
-  .aside { flex: 1 auto; }
-}
-
-@media all and (min-width: 800px) {
-    .sidebar { order: 1; max-width: 250px;}
-    .main    { order: 2; flex: 4 0px;}
-    .footer  { order: 4; }
-}
-
-.navigation {
-    list-style: none;
-    margin: 0; 
-
-    background: deepskyblue;
-
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
 
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+
+    font-weight: bold;
+    text-align: center;
+}
+
+.wrapper > * {
+    flex: 1 100%;
+}
+
+.sidebar {
+    box-shadow: 3px 3px 5px 2px #ccc;
+}
+
+.header {
+    padding: 10px;
+}
+
+.footer {
+    padding: 10px;
+}
+
+.main > * {
+    padding: 10px;
+}
+
+.brand {
+    padding: 10px;
+}
+
+.brand a {
+    text-decoration: none;
+}
+
+.version {
+    font-family: 'Holtwood-One-SC';
+    font-size: 0.5em;
+    color: #333;
+}
+
+.brand h1 {
+    font-family: 'Holtwood-One-SC';
+    color: rgba(27, 34, 140, 255);
+    margin: 0;
+}
+
+.brand h2 {
+    font-family: 'Raleway-ExtraLight';
+    color: rgba(139, 101, 30, 255);
+    font-size: 0.7em;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    background: rgba(27, 34, 140, 255);
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
     flex-flow: column wrap;
     justify-content: flex-end;
 }
 
 .navigation a {
-    width: 200px;
     text-decoration: none;
     display: block;
-    padding: 2em;
     color: white;
     text-align: right;
+    padding: 0.5em 0.2em 0.5em 0;
+    font-family: "Raleway-ExtraLight",serif;
 }
 
 .navigation a:hover {
-    background: darken(deepskyblue, 2%);
+    color: rgba(139, 101, 30, 255);
+    background: white;
+}
+
+footer {
+    padding: 5%;
+    text-align: center;
+    background-color: #333;
+    color: white;
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+#credit {
+    font-size: 0.6em;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+#credit a {
+    color: #CCCCCC;
+    text-decoration: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#credit a:hover {
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: purple;
 }
 
 @media all and (max-width: 800px) {
     .navigation {
         justify-content: space-around;
     }
+
+    .navigation a {
+        text-decoration: none;
+        display: block;
+        padding: 0.5em 0.2em 0.5em 0;
+        color: white;
+        text-align: right;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .sidebar { order: 1; flex: 1 1px; }
+    .main    { order: 2; flex: 3 2px; }
+    .footer  { order: 3; }
 }
 
 @media all and (max-width: 600px) {
@@ -98,11 +181,11 @@ body {
         padding: 0;
     }
 
-    .navigation a { 
-        text-align: center; 
+    .navigation a {
+        text-align: center;
         padding: 10px;
-        border-top: 1px solid rgba(255,255,255,0.3); 
-        border-bottom: 1px solid rgba(0,0,0,0.1); 
+        border-top: 1px solid rgba(255,255,255,0.3);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
     }
 
     .navigation li:last-of-type a {

@@ -1,66 +1,114 @@
 <!doctype html>
 <html lang="en" ng-app="resource">
-  <head>
-    <meta charset="utf-8">
-    <title>Resource</title>
-    <link rel="shortcut icon" href="img/favicon.png" type="image/png"/>
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="css/app.css"/>
-  </head>
-  <body>
-      <div class="wrapper">
-          <aside class="aside sidebar">
-              <a href="#home">
-                  <img src='img/eielogo.png' alt='Resource'/>
-                  <small class='btn btn-xs' app-version></small>
-              </a>
-              <ul class="navigation">
-                  <li>
-                      <a href="#/home">
-                          <span class="glyphicon glyphicon-home"></span>
-                          home
-                      </a>
-                  </li>
-                  <li>
-                      <a href="http://resource.eie.wits.ac.za/repository">
-                          <span class="glyphicon glyphicon-shopping-cart"></span>
-                          repository
-                      </a>
-                  </li>
-                  <li>
-                      <a href="#/gallery">
-                          <span class="glyphicon glyphicon-picture"></span>
-                          class photos
-                      </a>
-                  </li>
-                  <li>
-                      <a href="#/bookings">
-                          <span class="glyphicon glyphicon-calendar"></span>
-                          bookings
-                      </a>
-                  </li>
-                  <li>
-                      <a href="#/about">
-                          <span class="glyphicon glyphicon-info-sign"></span>
-                          about
-                      </a>
-                  </li>
-              </ul>
-          </aside>
-          <div class="main">
-              <section class="header">Login</section>
-              <article>
-                  <p>
-                      Pellentesque habitant morbi tristique senectus et netus et
-                      malesuada fames ac turpis egestas. Vestibulum tortor
-                      quam, feugiat vitae, ultricies eget, tempor sit amet,
-                      ante. Donec eu libero sit amet quam egestas semper.
-                      Aenean ultricies mi vitae est.  Mauris placerat eleifend
-                      leo.
-                  </p>
-              </article>
-          </div>
-          <footer class="footer">Footer</footer>
-      </div>
-  </body>
+    <head>
+        <meta charset="utf-8">
+        <title>Resource</title>
+        <link rel="shortcut icon" href="img/favicon.png" type="image/png"/>
+        <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="css/app.css"/>
+    </head>
+    <body>
+        <div class="wrapper">
+            <aside class="aside sidebar">
+                <span class="brand">
+                    <a href="#home">
+                        <img src='img/logo.png' alt='Resource'/>
+                        <h1> Resource </h1>
+                        <h2> School of Electrical and Information Engineering </h2>
+                        <small class='version' app-version></small>
+                    </a>
+                </span>
+                <ul class="navigation">
+                    <li>
+                        <a href="#/home">
+                            <span class="glyphicon glyphicon-home"></span>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://resource.eie.wits.ac.za/repository">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                            Repository
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/gallery">
+                            <span class="glyphicon glyphicon-picture"></span>
+                            Class Photos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/bookings">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            Bookings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/about">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            About
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <div class="main">
+                <section class="header">Login</section>
+                <article>
+                    <p>
+                        Pellentesque habitant morbi tristique senectus et netus et
+                        malesuada fames ac turpis egestas. Vestibulum tortor
+                        quam, feugiat vitae, ultricies eget, tempor sit amet,
+                        ante. Donec eu libero sit amet quam egestas semper.
+                        Aenean ultricies mi vitae est.  Mauris placerat eleifend
+                        leo.
+                    </p>
+                </article>
+            </div>
+            <footer class="footer">
+                <span id="copyright">
+                    <p>&#169; 2014, University Of The Witwatersrand, Johannesburg</p>
+                </span>
+                <div id="credit">
+                    created by <a href="http://mandla.me"> Mandla Mbuli</a>
+                </div>
+            </footer>
+        </div>
+        <!-- lib -->
+        <script type="text/javascript" src="lib/angular/angular.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-route.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-resource.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-cookies.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-animate.min.js"></script>
+        <script type="text/javascript" src="lib/angular-ui/ui-bootstrap-tpls-0.10.0.js"></script>
+        <script type="text/javascript" src="lib/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="lib/underscore-min.js"></script>
+        <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="lib/FileSaver/FileSaver.js"></script>
+        <!-- app -->
+        <script type="text/javascript" src="js/app.js"></script>
+        <!-- controllers -->
+        <script type="text/javascript" src="js/controllers/home.js"></script>
+        <script type="text/javascript" src="js/controllers/profile.js"></script>
+        <script type="text/javascript" src="js/controllers/admin.js"></script>
+        <script type="text/javascript" src="js/controllers/users.js"></script>
+        <script type="text/javascript" src="js/controllers/groups.js"></script>
+        <script type="text/javascript" src="js/controllers/group_edit.js"></script>
+        <script type="text/javascript" src="js/controllers/about.js"></script>
+        <script type="text/javascript" src="js/controllers/gallery.js"></script>
+        <script type="text/javascript" src="js/controllers/computers.js"></script>
+        <script type="text/javascript" src="js/controllers/lab_layout.js"></script>
+        <script type="text/javascript" src="js/controllers/bookings.js"></script>
+        <!-- services -->
+        <script type="text/javascript" src="js/services/session.js"></script>
+        <script type="text/javascript" src="js/services/users.js"></script>
+        <script type="text/javascript" src="js/services/groups.js"></script>
+        <script type="text/javascript" src="js/services/alerts.js"></script>
+        <script type="text/javascript" src="js/services/images.js"></script>
+        <script type="text/javascript" src="js/services/computers.js"></script>
+        <script type="text/javascript" src="js/services/version.js"></script>
+        <!-- directives -->
+        <script type="text/javascript" src="js/directives/alert.js"></script>
+        <script type="text/javascript" src="js/directives/computer.js"></script>
+        <script type="text/javascript" src="js/directives/appVersion.js"></script>
+    </body>
 </html>
