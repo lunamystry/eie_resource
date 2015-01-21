@@ -18,38 +18,58 @@
                         <small class='version' app-version></small>
                     </a>
                 </span>
-                <ul class="navigation">
-                    <li>
-                        <a href="#/home">
-                            <span class="glyphicon glyphicon-home"></span>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://resource.eie.wits.ac.za/repository">
-                            <span class="glyphicon glyphicon-shopping-cart"></span>
-                            Repository
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#/gallery">
-                            <span class="glyphicon glyphicon-picture"></span>
-                            Class Photos
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#/bookings">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            Bookings
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#/about">
-                            <span class="glyphicon glyphicon-info-sign"></span>
-                            About
-                        </a>
-                    </li>
-                </ul>
+                <div class="sidebar-links">
+                    <ul class="navigation">
+                        <li>
+                            <a href="#/home">
+                                <span class="glyphicon glyphicon-home"></span>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://resource.eie.wits.ac.za/repository">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Repository
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/gallery">
+                                <span class="glyphicon glyphicon-picture"></span>
+                                Class Photos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/bookings">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                Bookings
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/about">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                About
+                            </a>
+                        </li>
+                    </ul>
+                    <h2>Useful Links</h2>
+                    <ul class="navigation">
+                        <li>
+                            <a href="http://www.eie.wits.ac.za">
+                                School Website
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://studentmail.wits.ac.za">
+                                Student mail
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://cle.wits.ac.za">
+                                Wits eLearn (Sakai)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </aside>
             <div ng-controller='homeCtrl'>
                 <div ng-repeat='alert in alerts'>
@@ -57,9 +77,52 @@
                 </div>
             </div>
             <div class="main">
-                <section class="header">
-                    <div ng-controller="homeCtrl"
-                        class="pull-right">
+                <section class="header pull-right">
+                    <div ng-controller="homeCtrl">
+                        <div ng-hide="isLoggedIn()">
+                            <form role="form" class="form-inline" name="login_form" ng-submit="sign_in()" novalidate>
+                                <fieldset>
+                                    <div class="alert alert-danger alert-login"
+                                        ng-show="has_error">
+                                        <strong>ERROR!</strong> {{login_form.error_message}}
+                                    </div>
+                                    <div class="alert alert-danger alert-login"
+                                        ng-show="server_error">
+                                        <strong>ERROR (STATUS 500)!</strong> Error occured is has,
+                                        fault of yours it not. Attempting to login again you should.
+
+                                        not your fault, try logging in again and if it still does
+                                        not let you in, send an email to the dlab administrator
+                                        <a href="mailto:dlabadmin@eie.wits.ac.za?Subject=Resource%20it%20is%20break">
+                                            my email: dlabadmin@eie.wits.ac.za
+                                        </a>.
+                                    </div>
+                                    <div class="form-group"
+                                        ng-class="{ 'has-error' : has_error || login_form.username.$error }">
+                                        <input type="text"
+                                        ng-model="username"
+                                        class="form-control input-sm"
+                                        name="username_input"
+                                        placeholder="username"
+                                        required/>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-class="{ 'has-error' : has_error || login_form.password.$error}">
+                                        <input type="password"
+                                        ng-model="password"
+                                        class="form-control input-sm"
+                                        name="password_input"
+                                        placeholder="password"
+                                        required/>
+                                    </div>
+                                    <button ng-disabled="!login_form.$valid"
+                                        type="submit"
+                                        class="btn btn-default btn-sm">
+                                        Sign in
+                                    </button>
+                                </fieldset>
+                            </form>
+                        </div>
                         <a ng-show="isLoggedIn()"
                             href="#/profile">
                             <span class="glyphicon glyphicon-user"></span>
@@ -76,6 +139,7 @@
                         </a>
                     </div>
                 </section>
+                <div class='clearfix'></div>
                 <div ng-view>
                     <div class='container loading'>
                         <p>make sure javascript is enabled please</p>

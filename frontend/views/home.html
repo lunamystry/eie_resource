@@ -1,117 +1,39 @@
-<div class='container'>
-    <section class="jumbotron jumbotron-eie">
-        <div class="col-md-8">
-            <h1> Resource </h1>
-            <p>
-                Welcome to resource. A resource repository for Information and Electrical Engineering students
-                at Wits.
-                You need to sign in for a locker, DHCP and DNS and to make dlab bookings
-            </p>
-        </div>
-        <div ng-hide="isLoggedIn()"
-             class="col-md-3">
-            <h2>Sign in</h2>
-            <form role="form" name="login_form" ng-submit="sign_in()" novalidate>
-                <fieldset>
-                    <div class="alert alert-danger alert-login"
-                        ng-show="has_error">
-                        <strong>ERROR!</strong> {{login_form.error_message}}
-                    </div>
-                    <div class="alert alert-danger alert-login"
-                        ng-show="server_error">
-                        <strong>ERROR (STATUS 500)!</strong> Error occured is has,
-                        fault of yours it not. Attempting to login again you should.
-
-                        not your fault, try logging in again and if it still does
-                        not let you in, send an email to the dlab administrator
-                        <a href="mailto:dlabadmin@eie.wits.ac.za?Subject=Resource%20it%20is%20break">
-                            my email: dlabadmin@eie.wits.ac.za
-                        </a>.
-                    </div>
-                    <div class="form-group"
-                        ng-class="{ 'has-error' : has_error || login_form.username.$error }">
-                        <input type="text"
-                        ng-model="username"
-                        class="form-control input-lg"
-                        name="username_input"
-                        placeholder="username"
-                        required/>
-                    </div>
-                    <div class="form-group"
-                        ng-class="{ 'has-error' : has_error || login_form.password.$error}">
-                        <input type="password"
-                        ng-model="password"
-                        class="form-control input-lg"
-                        name="password_input"
-                        placeholder="password"
-                        required/>
-                    </div>
-                    <button ng-disabled="!login_form.$valid"
-                        type="submit"
-                        class="btn btn-success">
-                        Sign in
-                    </button>
-                </fieldset>
-            </form>
-        </div>
-        <div class="clearfix"></div>
-    </section>
-    <section class="container">
-        <div class='col-md-12' ng-controller='labLayoutCtrl'>
-            <div class='col-md-4'>
-                <h4>SECTION 3</h4>
-                <div ng-repeat='computer in section3'>
-                    <span class='col-md-5 pull-right' eie-computer ng-model='computer'></span>
-                </div>
-            </div>
-            <div class='col-md-4'>
-                <h4>SECTION 2</h4>
-                <div ng-repeat='computer in section2'>
-                    <span class='col-md-3 pull-right' eie-computer ng-model='computer'></span>
-                </div>
-            </div>
-            <div class='col-md-3'>
-                <h4>SECTION 1</h4>
-                <div ng-repeat='computer in section1'>
-                    <span class='col-md-4 pull-right' eie-computer ng-model='computer'></span>
-                </div>
-            </div>
-            <div class='col-md-4'>
-                <h4>EXTENSION</h4>
-                <div ng-repeat='computer in section4'>
-                    <span class='col-md-5 pull-right' eie-computer ng-model='computer'></span>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-4'>
-            Legend:
-            <span class="label computer-available">available</span>
-            <span class="label computer-absent">absent</span>
-            <span class="label computer-faulty">faulty</span>
-            <span class="label computer">unknown</span>
-        </div>
-        <div class='col-md-8'>
-            <p class='text-center'> 
-                <i>
-                    NOTE: you can hover over either a faulty or an absent PC to see
-                    a comment
-                </i>
-            </p>
-        </div>
-    </section>
-    <section class=containter">
-        <h4>USEFUL LINKS</h4>
-        <div class="col-md-4">
-            <h5>School Website</h5>
-            <p><a role="button" href="http://www.eie.wits.ac.za" class="btn btn-default">Visit »</a></p>
-        </div>
-        <div class="col-md-4">
-            <h5>Student mail</h5>
-            <p><a role="button" href="http://studentmail.wits.ac.za" class="btn btn-default">Visit »</a></p>
-        </div>
-        <div class="col-md-4">
-            <h5>Wits eLearn (Sakai)</h5>
-            <p><a role="button" href="http://cle.wits.ac.za" class="btn btn-default">Visit »</a></p>
-        </div>
-    </section>
+<div class='legend pull-right'>
+    Legend:
+    <span class="label computer-available">available</span>
+    <span class="label computer-absent">absent</span>
+    <span class="label computer-faulty">faulty</span>
+    <span class="label computer">unknown</span>
 </div>
+<div class='clearfix'></div>
+<div class='col-md-12' ng-controller='labLayoutCtrl'>
+    <div class='col-md-4 computers'>
+        <h4>SECTION 3</h4>
+        <div ng-repeat='computer in section3'>
+            <span class='col-md-5 pull-right' eie-computer ng-model='computer'></span>
+        </div>
+    </div>
+    <div class='col-md-4 computers'>
+        <h4>SECTION 2</h4>
+        <div ng-repeat='computer in section2'>
+            <span class='col-md-3 pull-right' eie-computer ng-model='computer'></span>
+        </div>
+    </div>
+    <div class='col-md-3 computers'>
+        <h4>SECTION 1</h4>
+        <div ng-repeat='computer in section1'>
+            <span class='col-md-4 pull-right' eie-computer ng-model='computer'></span>
+        </div>
+    </div>
+    <div class='col-md-4 computers'>
+        <h4>EXTENSION</h4>
+        <div ng-repeat='computer in section4'>
+            <span class='col-md-5 pull-right' eie-computer ng-model='computer'></span>
+        </div>
+    </div>
+</div>
+<div class='clearfix'></div>
+<p class='note text-center'>
+    NOTE: you can hover over either a faulty or an absent PC to see
+    a comment
+</p>
