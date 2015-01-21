@@ -28,21 +28,28 @@ class User(Resource):
             user = users.User(username, year_of_study, password)
             user.create()
             for key, value in args.items():
-                setattr(user, key, str(value))
+                if key == 'year_of_study':
+                    setattr(user, key, int(value))
+                elif key != 'username':
+                    setattr(user, key, str(value))
             user.save()
         except ValueError as e:
             return str(e), 500
         return args, 201
 
     def put(self, username):
-        user = users.find_one(username)
+        user = users.User.find(username)
         args = request.json
         # TODO: Validation!
         if user:
-            for key, val in args.iteritems():
-                user[key] = val
-            users.update(user)
-            return user, 201
+            for key, value in args.items():
+                if key == 'year_of_study':
+                    setattr(user, key, int(value))
+                elif key != 'username':
+                    print(key,value)
+                    setattr(user, key, str(value))
+            user.update()
+            return user.as_dict(), 201
         else:
             logger.warning("user "+username+" not found")
             return username + " not found", 404
