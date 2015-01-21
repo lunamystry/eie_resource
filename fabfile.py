@@ -14,8 +14,7 @@ env.hosts = ['resource.eie.wits.ac.za']
 def clean():
     print(cyan("cleaning..."))
     with settings(warn_only=True):
-        local("find . -name '*.pyc' -exec rm -f {} \;", capture=False)
-        local("find . -name '__pycache__' -exec rm -rf {} \;", capture=False)
+        local("git clean -xdf", capture=False)
     print(green(u'\u2713'))
 
 
