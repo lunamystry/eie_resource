@@ -1,55 +1,53 @@
-<div class='container'>
-    <h2 class="page-header">
-        <span class="pull-right">
-            <span class="glyphicon glyphicon-th-large"></span>
-            Groups
-        </span>
-        <span class="clearfix"></span>
-    </h2>
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                add a new group
-            </div>
-            <div class="panel-body">
-                <div ng-include="'views/group_form.html'"></div>
-                <button ng-click="saveGroup()"
-                    class="btn-success btn">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    add
-                </button>
-            </div>
+<h2 class="page-header">
+    <span class="pull-right">
+        <span class="glyphicon glyphicon-th-large"></span>
+        Groups
+    </span>
+    <span class="clearfix"></span>
+</h2>
+<div class="col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            add a new group
+        </div>
+        <div class="panel-body">
+            <div ng-include="'views/group_form.html'"></div>
+            <button ng-click="saveGroup()"
+                class="btn-success btn">
+                <span class="glyphicon glyphicon-plus"></span>
+                add
+            </button>
         </div>
     </div>
+</div>
 
-    <div class="col-md-8">
-        There are {{groups.length}} posix groups.
+<div class="col-md-8">
+    There are {{groups.length}} posix groups.
+    <hr/>
+    <div class="form-group">
+        <input type="search"
+        class="form-control"
+        ng-model="q"
+        placeholder="filter posix groups..." />
+    </div>
+    <div ng-repeat="group in groups | filter:q">
+        <h2>
+            {{group.name}}  <small>gid: {{group.gid_number}}</small>
+            <button ng-click="deleteGroup(group, $index)"
+                class="btn btn-danger btn-xs pull-right">
+                <span class="glyphicon glyphicon-remove"></span>
+                delete
+            </button>
+            <button ng-click="editGroup(group.name)"
+                class="btn btn-primary btn-xs pull-right">
+                <span class="glyphicon glyphicon-pencil"></span>
+                edit
+            </button>
+        </h2>
         <hr/>
-        <div class="form-group">
-            <input type="search"
-            class="form-control"
-            ng-model="q"
-            placeholder="filter posix groups..." />
-        </div>
-        <div ng-repeat="group in groups | filter:q">
-            <h2>
-                {{group.name}}  <small>gid: {{group.gid_number}}</small>
-                <button ng-click="deleteGroup(group, $index)"
-                    class="btn btn-danger btn-xs pull-right">
-                    <span class="glyphicon glyphicon-remove"></span>
-                    delete
-                </button>
-                <button ng-click="editGroup(group.name)"
-                    class="btn btn-primary btn-xs pull-right">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                    edit
-                </button>
-            </h2>
-            <hr/>
-            <p><em>{{group.description}}</em></p>
-            <div ng-repeat="member in group.members">
-                {{member}}
-            </div>
+        <p><em>{{group.description}}</em></p>
+        <div ng-repeat="member in group.members">
+            {{member}}
         </div>
     </div>
 </div>

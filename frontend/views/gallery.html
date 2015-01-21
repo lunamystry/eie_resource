@@ -1,28 +1,26 @@
-<div class='container'>
-    <h2 class="page-header">
-        <span class="pull-right">
-            <span class="glyphicon glyphicon-picture"></span>
-            Class Photos
-            <small> Here you will find class photos from years past</small>
-        </span>
-        <span class="clearfix"></span>
-    </h2>
+<h2 class="page-header">
+    <span class="pull-right">
+        <span class="glyphicon glyphicon-picture"></span>
+        Class Photos
+        <small> Here you will find class photos from years past</small>
+    </span>
+    <span class="clearfix"></span>
+</h2>
 
-    <div class="form-group">
-        <input ng-model="query"
-        class="form-control"
-        type="search"
-        placeholder="filter..."/>
-    </div>
+<div class="form-group">
+    <input ng-model="query"
+    class="form-control"
+    type="search"
+    placeholder="filter..."/>
+</div>
 
-    <div class="row">
-        <div class="col-md-4" ng-repeat="image in images | filter:query | orderBy:orderProp">
-            <a href="{{image.imageUrl}}">
-                <img class="img-responsive img-thumbnail" ng-src="{{image.thumbUrl}}"/>
-                <div class="caption">
-                    {{image.name}}
-                </div>
-            </a>
-        </div>
+<div class="row">
+    <div class="col-md-4" ng-repeat="image in images | filter:query | orderBy:orderProp">
+        <a href="{{image.imageUrl}}">
+            <img class="img-responsive img-thumbnail" ng-src="{{image.thumbUrl}}"/>
+            <div class="caption">
+                {{image.name}}
+            </div>
+        </a>
     </div>
 </div>

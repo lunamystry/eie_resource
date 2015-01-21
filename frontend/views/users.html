@@ -1,106 +1,104 @@
-<div class='container'>
-    <h2 class="page-header">
-        <span class="pull-right">
-            <span class="glyphicon glyphicon-user"></span>
-            Users
-        </span>
-        <span class="clearfix"></span>
-    </h2>
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                add a new users
-            </div>
-            <div class="panel-body">
-                <div ng-include="'views/user_form.html'"></div>
-                <button ng-click="saveUser()"
-                    class="btn-success btn">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    add
+<h2 class="page-header">
+    <span class="pull-right">
+        <span class="glyphicon glyphicon-user"></span>
+        Users
+    </span>
+    <span class="clearfix"></span>
+</h2>
+<div class="col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            add a new users
+        </div>
+        <div class="panel-body">
+            <div ng-include="'views/user_form.html'"></div>
+            <button ng-click="saveUser()"
+                class="btn-success btn">
+                <span class="glyphicon glyphicon-plus"></span>
+                add
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8">
+    There are {{users.length}} users.
+    <hr/>
+    <div class="form-group">
+        <input type="search"
+        class="form-control"
+        ng-model="q"
+        placeholder="filter users..." />
+    </div>
+    <accordion close-others="true">
+    <accordion-group ng-repeat="user in users | filter:q">
+    <accordion-heading>
+    {{user.first_name}} {{ user.last_name }}
+    <div class="btn-group pull-right">
+        <button ng-click="deleteUser(user, $index)"
+            class='btn btn-danger btn-xs'>
+            <span class="glyphicon glyphicon-remove"></span>
+            delete
+        </button>
+
+    </div>
+    <div class="clearfix"></div>
+    </accordion-heading>
+    <div ng-controller="userViewCtrl">
+        <div ng-hide="editing">
+            <div class="btn-group pull-right">
+                <button ng-click="showEditForm()"
+                    class='btn btn-info btn-sm'>
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    edit
+                </button>
+                <button ng-click="resetPassword()"
+                    class='btn btn-danger btn-sm'>
+                    <span class="glyphicon glyphicon-backward"></span>
+                    reset password
                 </button>
             </div>
+            Username: {{ user.username }}
+            <br/>
+            email: {{ user.email }}
+            <br/>
+            Year of Study: {{ user.yos }}
+            <br/>
+            Hosts: {{ user.hosts}}
+            <br/>
+            Home Directory: {{ user.home_directory }}
+            <br/>
+            Login Shell: {{ user.login_shell }}
+            <br/>
+            UID number: {{ user.uid_number }}
+            <br/>
+            GID number: {{ user.gid_number }}
         </div>
-    </div>
-
-    <div class="col-md-8">
-        There are {{users.length}} users.
-        <hr/>
-        <div class="form-group">
-            <input type="search"
-            class="form-control"
-            ng-model="q"
-            placeholder="filter users..." />
-        </div>
-        <accordion close-others="true">
-        <accordion-group ng-repeat="user in users | filter:q">
-        <accordion-heading>
-        {{user.first_name}} {{ user.last_name }}
-        <div class="btn-group pull-right">
-            <button ng-click="deleteUser(user, $index)"
-                class='btn btn-danger btn-xs'>
-                <span class="glyphicon glyphicon-remove"></span>
-                delete
-            </button>
-
-        </div>
-        <div class="clearfix"></div>
-        </accordion-heading>
-        <div ng-controller="userViewCtrl">
-            <div ng-hide="editing">
-                <div class="btn-group pull-right">
-                    <button ng-click="showEditForm()"
-                        class='btn btn-info btn-sm'>
-                        <span class="glyphicon glyphicon-pencil"></span>
-                        edit
-                    </button>
-                    <button ng-click="resetPassword()"
-                        class='btn btn-danger btn-sm'>
-                        <span class="glyphicon glyphicon-backward"></span>
-                        reset password
-                    </button>
-                </div>
-                Username: {{ user.username }}
-                <br/>
-                email: {{ user.email }}
-                <br/>
-                Year of Study: {{ user.yos }}
-                <br/>
-                Hosts: {{ user.hosts}}
-                <br/>
-                Home Directory: {{ user.home_directory }}
-                <br/>
-                Login Shell: {{ user.login_shell }}
-                <br/>
-                UID number: {{ user.uid_number }}
-                <br/>
-                GID number: {{ user.gid_number }}
+        <div ng-show="editing">
+            <div class="btn-group pull-right">
+                <button ng-click="showView()"
+                    class='btn btn-info btn-sm'>
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    view
+                </button>
+                <button ng-click="resetPassword()"
+                    class='btn btn-danger btn-sm'>
+                    <span class="glyphicon glyphicon-backward"></span>
+                    reset password
+                </button>
             </div>
-            <div ng-show="editing">
-                <div class="btn-group pull-right">
-                    <button ng-click="showView()"
-                        class='btn btn-info btn-sm'>
-                        <span class="glyphicon glyphicon-eye-open"></span>
-                        view
+            <div class="col-md-6">
+                <div ng-include="'views/user_form.html'"></div>
+                <div class='form-group'>
+                    <button ng-click="updateUser(user)"
+                        class='btn-success btn'>
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                        save
                     </button>
-                    <button ng-click="resetPassword()"
-                        class='btn btn-danger btn-sm'>
-                        <span class="glyphicon glyphicon-backward"></span>
-                        reset password
-                    </button>
-                </div>
-                <div class="col-md-6">
-                    <div ng-include="'views/user_form.html'"></div>
-                    <div class='form-group'>
-                        <button ng-click="updateUser(user)"
-                            class='btn-success btn'>
-                            <span class="glyphicon glyphicon-floppy-disk"></span>
-                            save
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
-        </accordion-group>
-        </accordion>
     </div>
+    </accordion-group>
+    </accordion>
 </div>
