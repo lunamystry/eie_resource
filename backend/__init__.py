@@ -8,7 +8,7 @@ import logging.config
 
 
 def _setup_logging(
-        default_path='/etc/eie_config/logging_config.json',
+        default_path='/etc/eie_config/logging.cfg',
         default_level=logging.DEBUG,
         env_key='RESOURCE_LOG_CFG'
         ):
@@ -20,9 +20,7 @@ def _setup_logging(
     if value:
         path = value
     if os.path.exists(path):
-        with open(path, 'rt') as f:
-            config = json.loads(f.read())
-        logging.config.dictConfig(config)
+        logging.config.fileConfig(path)
     else:
         error_msg = "{} does not exist".format(path)
         logging.warn(error_msg)
