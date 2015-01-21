@@ -18,12 +18,20 @@ class User(Resource):
     @admin_only
     def post(self, username):
         args = request.json
-        data, errors = validate(args)
-        data["password"] = "passing"
-        if errors:
-            logger.error(errors)
-            return errors, 500
-        users.add(data)
+        try:
+            username = str(args['username'])
+            year_of_study = int(args['yos'])
+            password = users.default_password
+        except KeyError as e:
+            return str(e), 500
+        try:
+            user = users.User(username, year_of_study, password)
+            user.create()
+            for key, value in args.items():
+                setattr(user, key, str(value))
+            user.save()
+        except ValueError as e:
+            return str(e), 500
         return args, 201
 
     def put(self, username):
@@ -42,7 +50,7 @@ class User(Resource):
 
     @admin_only
     def delete(self, username):
-        users.delete(str(username))
+        users.User.delete(str(username))
         return username, 200
 
 
