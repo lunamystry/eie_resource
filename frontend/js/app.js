@@ -63,7 +63,7 @@ angular.module('resource', [
     .otherwise({redirectTo: '/home'});
 }])
 .run(['$rootScope', '$location', 'SessionUser', 'Alerts', function($rootScope, $location, SessionUser, Alerts) {
-    var noAuthRoutes = ['/home', '/about', '/gallery', '/computers', '/bookings'];
+    var noAuthRoutes = ['/home', '/about', '/gallery', '/bookings'];
 
     var routeClean = function (route) {
         return _.find(noAuthRoutes, function (noAuthRoute) {
@@ -74,7 +74,6 @@ angular.module('resource', [
     SessionUser.restore_session();
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (!routeClean($location.url()) && !SessionUser.isLoggedIn) {
-            Alerts.add('danger', "you are not authorized, please log in");
             $location.path("/home");
         }
     });
