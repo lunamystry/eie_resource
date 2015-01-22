@@ -150,13 +150,13 @@ h2 {
     border-color: #46B8DA;
     color: #FFFFFF;
     text-shadow: 1px 1px 1px #000;
-    font-size: x-large;
+    line-height: 30px;
     font-weight: bold;
 }
 
 .jumbotron-eie h2 {
     font-family: 'Holtwood-One-SC';
-    font-size: 3em;
+    font-size: 2em;
 }
 
 .alert-eie {
@@ -223,30 +223,27 @@ footer {
     font-size: 1em;
     font-weight: bold;
     text-align: center;
-    padding: 0;
+    padding: 10px;
     margin: 0;
 }
 
 .computer-booked {
-    border: 2px solid blue;
-    color: #blue;
+    border: 2px solid rgba(42, 42, 255, 255);
+    color: rgba(42, 42, 255, 255);
 }
 
 .computer-available {
-    background-color: green;
-    border: 1px solid green;
+    background-color: rgba(55, 200, 110, 255);
     color: #FFFFFF;
 }
 
 .computer-absent {
-    background-color: #000000;
-    border: 1px solid #000000;
+    background-color: rgba(102, 102, 102, 255);
     color: #FFFFFF;
 }
 
 .computer-faulty {
-    background-color: red;
-    border: 1px solid red;
+    background-color: rgba(255, 85, 85, 255);
     color: #FFFFFF;
 }
 
