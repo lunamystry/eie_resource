@@ -64,5 +64,6 @@ def deploy(version):
             sudo('mv /tmp/{0}/{0} /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
             sudo('chown -R wwwrun:wwwrun /srv/www/htdocs/vhosts/resource.eie.wits.ac.za'.format(dist))
         run('rm -rf /tmp/{0} /tmp/{0}.tar.gz'.format(dist))
+        sudo('/opt/mongodb/bin/mongod --config /etc/mongod.conf')
         sudo('touch /srv/www/wsgi-scripts/resource.wsgi')
         sudo('rcapache2 restart')
