@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Resource',
-    version='v0.15',
+    version='v2.0',
     long_description=__doc__,
     packages=['backend', 'eieldap'],
     include_package_data=True,
