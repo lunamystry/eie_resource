@@ -10,7 +10,7 @@ dir.directive('eieComputer', [
                 transclude: true,
                 require: 'ngModel',
                 template: "<div class='computer computer-{{ngModel.status}}'>"+
-                  "<h2 tooltip='{{ngModel.comment}}' tooltip-placement='right'>{{ngModel.name}}</h2>"+
+                  "<h2 tooltip='{{ngModel.comment}}' tooltip-placement='right'>{{ngModel.number}}</h2>"+
                   "<div class='clearfix'></div>"+
                   "</div>",
                 scope: {
