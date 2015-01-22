@@ -5,7 +5,7 @@
     </span>
     <span class="clearfix"></span>
 </h2>
-<div class='col-md-12'>
+<div class='col-md-12' ng-controller='labLayoutCtrl'>
     <div class='col-md-4 computers'>
         <h4>SECTION 3</h4>
         <div ng-repeat='computer in section3'>
@@ -31,7 +31,8 @@
         </div>
     </div>
 </div>
-<div class="col-md-8">
+<div class='clearfix'></div>
+<div class="text-left">
     <h2> Booking Procedure </h2>
     <ol>
         <li>
@@ -63,7 +64,7 @@
             </ol>
         </li>
         <li>
-            an assistant administrator will be on standby for the booking.
+            An assistant administrator will be on standby for the booking.
         </li>
         <li>
             Inform the PG demis that the wheelchair access door must be closed unless
@@ -87,61 +88,4 @@
         </a>
         Dlab usage policy
     </div>
-</div>
-<div class="col-md-4">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            New booking
-        </div>
-        <div class="panel-body">
-            <div style="color: red">
-                Note, this form does not work yet
-            </div>
-            <form role="form">
-                <div class="form-group">
-                    <input type="text"
-                    placeholder="Contact person"
-                    name="name_input"
-                    class="form-control">
-                    <span class="help-inline"></span>
-                </div>
-                <div class="form-group">
-                    <input type="text"
-                    placeholder="Dates"
-                    name="dates_input"
-                    class="form-control">
-                    <span class="help-inline"></span>
-                </div>
-                <div class="form-group">
-                    <input type="text"
-                    placeholder="Number of PCs"
-                    name="systems_input"
-                    class="form-control">
-                    <span class="help-inline"></span>
-                </div>
-                <div class="form-group">
-                    <input type="text"
-                    placeholder="Software"
-                    name="software_input"
-                    class="form-control">
-                    <span class="help-inline"></span>
-                </div>
-                <div class="form-group">
-                    <input type="text"
-                    placeholder="Demis on the day"
-                    name="demis_input"
-                    class="form-control">
-                    <span class="help-inline"></span>
-                </div>
-                <div class="form-group">
-                    <textarea placeholder="Comments"
-                        class="form-control"
-                        ></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">
-                    Book
-                </button>
-            </div>
-        </div>
-    </form>
 </div>
