@@ -259,7 +259,8 @@ class User(object):
         ''' Calls an smbencrypt which comes with freeradius-utils on Ubuntu
         to encrypt the password given in smbencrypt form
         '''
-        smbencrypt_output = subprocess.check_output(["smbencrypt", password])
+        smbencrypt_output = subprocess.Popen(["smbencrypt", password],
+                                    stdout=subprocess.PIPE).communicate()[0]
         # carefully counted where the password starts in the returned string
         lm_password = smbencrypt_output[0:32].strip()
         nt_password = smbencrypt_output[32:].strip()
