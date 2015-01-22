@@ -141,7 +141,26 @@ h2 {
     background: white;
 }
 
+.jumbotron-eie {
+    background-image: url('../img/dlab_cartoonified.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    border-color: #46B8DA;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 1px #000;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.jumbotron-eie h2 {
+    font-family: 'Holtwood-One-SC';
+    font-size: 3em;
+}
+
 .alert-eie {
+    font-size: 0.8em;
     position: fixed;
     top: 3%;
     right: 1%;
