@@ -1,0 +1,105 @@
+# default.ldif 
+#
+# Example of how to add this file:
+# ldapadd -x -D "cn=admin,dc=eie,dc=wits,dc=ac,dc=za" -W -f default.ldif
+#
+
+# The root organisation. Must be added first
+dn: dc=eie,dc=wits,dc=ac,dc=za
+objectclass: dcObject
+objectclass: organization
+o: School of Electrical and Information Engineering
+dc: eie
+
+## FIRST LEVEL ENTRIES
+# people
+dn: ou=people,dc=eie,dc=wits,dc=ac,dc=za
+ou: people
+description: All people in the School of Electrical and 
+ information. Including any who just come to visit or 
+ whatever
+objectClass: organizationalunit
+
+# groups
+dn: ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+ou: groups
+description: Groups 
+objectClass: organizationalunit
+
+# machines
+dn: ou=machines,dc=eie,dc=wits,dc=ac,dc=za
+ou: machines
+description: Machines, needed for Samba
+objectClass: organizationalunit
+
+## SECOND LEVEL ENTRIES
+# people
+# the password below is not real. It must be changed immediately after adding
+dn: uid=root,ou=people,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixAccount
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: hostObject
+objectClass: sambaSamAccount
+uid: root
+cn: root
+sn: root
+userPassword: secret
+description: Root or Administrator
+uidNumber: 100
+gidNumber: 100
+sambaAcctFlags: [U         ]
+sambaSID: S-1-5-21-3949128619-541665055-2325163404-100
+sambaNTPassword: 6D14A6C43C5C6A2A4B5B45BD97C2F09F
+sambaLMPAssword: 6D14A6C43C5C6A2A4B5B45BD97C2F09F
+homeDirectory: /dev/null
+
+# groups
+dn: cn=IT,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: IT
+gidNumber: 7100
+description: The IT group which includes the Network supervision and the hotseaters
+memberUid: root
+
+dn: cn=firstyr,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: firstyr
+gidNumber: 1000
+description: First year undergraduates
+
+dn: cn=secondyr,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: secondyr
+gidNumber: 2000
+description: Second year undergraduates
+
+dn: cn=thirdyr,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: thirdyr
+gidNumber: 3000
+description: Third year undergraduates
+
+dn: cn=fourthyr,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: fourthyr
+gidNumber: 4000
+description: Fourth year undergraduates
+
+dn: cn=postgrads,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: postgrads
+gidNumber: 5000
+description: Postgraduates
+
+dn: cn=staff,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: staff
+gidNumber: 6000
+description: Staff members
+
+dn: cn=machines,ou=groups,dc=eie,dc=wits,dc=ac,dc=za
+objectClass: posixGroup
+cn: machines
+gidNumber: 7000
+description: Machines

@@ -1,0 +1,52 @@
+# Default configuration file for ldap server
+# details can be found man(5) slapd.conf
+# This file is meant to be converted to slapd.conf format with
+# slaptest -F /etc/openldap/slapd.d -f slapd.conf.default
+#
+include		/etc/openldap/schema/core.schema
+include		/etc/openldap/schema/cosine.schema
+include		/etc/openldap/schema/inetorgperson.schema
+include		/etc/openldap/schema/nis.schema
+include		/etc/openldap/schema/yast.schema
+include		/etc/openldap/schema/ldapns.schema
+include		/etc/openldap/schema/samba.schema
+
+pidfile		/var/run/slapd/slapd.pid
+argsfile	/var/run/slapd/slapd.args
+
+access to attrs=userPassword,userPKCS12
+        by self write
+        by * auth
+
+access to attrs=shadowLastChange
+        by self write
+        by * read
+
+access to *
+        by * read
+
+
+#######################################################################
+# HDB database definitions
+#######################################################################
+
+database	hdb
+suffix		"dc=eie,dc=wits,dc=ac,dc=za"
+checkpoint      1024    5
+cachesize       10000
+rootdn		"cn=admin,dc=eie,dc=wits,dc=ac,dc=za"
+rootpw          {SSHA}make your own hash
+directory	/var/lib/ldap
+index	objectClass	eq
+index   cn,gn,mail      pres,eq,sub
+
+# enable monitoring and restrict it to root
+database monitor
+access to *
+  by dn.exact="cn=admin,dc=eie,dc=wits,dc=ac,dc=za"
+  by * none
+
+# enable config database useful when converting to slapd.config config
+database        config
+rootdn          "cn=admin,cn=config"
+rootpw          {SSHA}make you own hash

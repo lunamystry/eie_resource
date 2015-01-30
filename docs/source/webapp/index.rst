@@ -1,77 +1,47 @@
 Resource Dlab Webapp
 ====================
 
+The web front is an ambitious application to help manage the dlab. It started
+out as an idea to manage just the users on the ldap server. Then I just got all
+these ideas of what I can do with it that would be rather useful.
+
 Installation
 ------------
 
-The resource front in developed using Flask. Flask is best install using the
-Python package install pip.
-To install pip run the following commands:
-This is a minted python code::
+The web app uses Python (Flask), Javascript (AngularJS), CSS (Bootstrap) and
+HTML. It is hosted on `github`_ and that is where the code the be found
+together with a README on how to install it and what configurations are needed.
 
-        curl -O https://raw.github.com/pypa/virtualenv/master/virtualenv.py
-        python virtualenv.py my_new_env
-        . my_new_env/bin/activate
-        pip install
-
-More documentation can be found here:
-`<http://www.pip-installer.org/en/latest/installing.html>`_
-
-Also need to install hamlish_jinja and flask-wtf
-flask
-hamlish_jinja
-flask-wtf
-
-You need to run python version 27 for flask to work
-It works with git aswell. Currently on Mandla's github repo.
+.. _github : https://github.com/lunamystry/eie_resource
 
 Setting dev environment
 -----------------------
 
 Its worth looking at the Openldap documentation for how ldap works.
-Python-ldap has this doc site:
-`<http://www.python-ldap.org/docs.shtml>`_
+Python-ldap has this `doc site`_
+
+.. _doc site : http://www.python-ldap.org/docs.shtml
+
+
+Design Overview
+---------------
+
+This is a simple overview of how I designed and structured the resource (I
+still wish I could have called it iNqolobane).
 
 RESTful API
 -----------
 
-Users
-+++++
+The application has a sort of REST API providing access to the following
+resources:
 
-GET /users?start=5&limit=14
+    users (requires rather weak authentication)
 
-    Returns not more than 14 users starting with the fifth one, this depends on
-    the users, if there aren't enough users, the ones who are found are
-    returned. If the start point is after the number of users then zero is
-    returned.
+    computers
 
-GET /user/johnd
+    bookings
 
-    Get the user with username johnd
-
-PUT /users/johnd
-
-    Modify a user which has username username johnd, password cannot be changed
-    like this. To change password see below. The password field is simply
-    removed from the json object.
-
-PUT /users/johnd/resetpassword
-
-    Reset the password for an individual user with username  johnd
-
-PUT /users/johnd/set_password
-
-    Change the password for an individual user with username  johnd
-
-DELETE /users/johnd
-
-    Delete a user with username johnd
-
-POST /users
-
-    This takes a list which contains one to many users. If the list is empty, a
-    400 status code is returned. The current value in the database is replaced
-    with the value given.
+    something
 
 .. toctree::
    :maxdepth: 2
