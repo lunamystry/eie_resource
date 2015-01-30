@@ -34,25 +34,24 @@ def get_rows(workbook_name):
 
 def add_from_xls(workbook_name, sync=False):
     """
-        This will add users to the LDAP if they don't exist
-        This will synchronize the users in the LDAP with those in the workbook
-        provided. If the user is not on the list, they are removed from the
-        LDAP, if they are on the workbook but not on the LDAP they are added.
-        The root user will not be removed even if it is not in the xls file.
+        This will add users to the LDAP server configured in
+        /etc/eie_config/eieldap.conf.
+
+        If sync is True, then the users which are not in the xls file will be
+        removed from the LDAP.
     """
     rows = get_rows(workbook_name)
     hdr_rows = rows[0]
     for row in rows[1:]:
         if not User.find(row[hdr_rows.index('Username')]):
-            user = User(username=row[hdr_rows.index('Username')],
+            User(username=row[hdr_rows.index('Username')],
              year_of_study=row[hdr_rows.index('Year Of Study')],
              password=row[hdr_rows.index('Password')],
              student_number=row[hdr_rows.index('Student Number')],
              emails=[row[hdr_rows.index('Primary Email Address')]],
              hosts=['babbage.ug.eie.wits.ac.za'],
              first_name=str(row[hdr_rows.index('First Name')]),
-             last_name=str(row[hdr_rows.index('Last Name')]))
-            print(user.username)
+             last_name=str(row[hdr_rows.index('Last Name')])).create()
 
     if sync:
         exceptions = ['root', 'dlabadmin', 'supervisor', 'admin']
@@ -61,8 +60,7 @@ def add_from_xls(workbook_name, sync=False):
         for user in User.find():
             if user.username not in xls_usernames and \
                 user.username not in exceptions:
-                    print(user.username)
-                  # User.delete(user.username)
+                  User.delete(user.username)
 
 
 def get_usernames(rows):
