@@ -1,4 +1,5 @@
 import xlrd
+import os
 
 from .users import User, default_password
 
@@ -7,6 +8,10 @@ VALID_TITLES = ["Year Of Study", "Student Number", "First Name", "Last Name"]
 
 def import_from_xls(workbook_name):
     """read file, create usernames and add user to ldap"""
+
+    if not os.path.isfile(workbook_name):
+        raise IOError(workbook_name + " could not be opened")
+
     class_list = xlrd.open_workbook(workbook_name)
     rows = extract(class_list)
 
