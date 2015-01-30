@@ -14,7 +14,7 @@ env.hosts = ['resource.eie.wits.ac.za']
 def clean():
     print(cyan("cleaning..."))
     with settings(warn_only=True):
-        local("git clean -xdf", capture=False)
+        local("git clean -xdf -e build", capture=False)
     print(green(u'\u2713'))
 
 
