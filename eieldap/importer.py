@@ -31,34 +31,49 @@ def get_rows(workbook_name):
 
     return rows
 
-def sync(workbook_name):
+
+def add_from_xls(workbook_name, sync=False):
     """
+        This will add users to the LDAP if they don't exist
         This will synchronize the users in the LDAP with those in the workbook
         provided. If the user is not on the list, they are removed from the
         LDAP, if they are on the workbook but not on the LDAP they are added.
+        The root user will not be removed even if it is not in the xls file.
     """
     rows = get_rows(workbook_name)
     hdr_rows = rows[0]
     for row in rows[1:]:
         if not User.find(row[hdr_rows.index('Username')]):
+            user = User(username=row[hdr_rows.index('Username')],
+             year_of_study=row[hdr_rows.index('Year Of Study')],
+             password=row[hdr_rows.index('Password')],
+             student_number=row[hdr_rows.index('Student Number')],
+             emails=[row[hdr_rows.index('Primary Email Address')]],
+             hosts=['babbage.ug.eie.wits.ac.za'],
+             first_name=str(row[hdr_rows.index('First Name')]),
+             last_name=str(row[hdr_rows.index('Last Name')]))
+            print(user.username)
+
+    if sync:
+        exceptions = ['root', 'dlabadmin', 'supervisor', 'admin']
+        xls_usernames = get_usernames(rows)
+        print(xls_usernames)
+        for user in User.find():
+            if user.username not in xls_usernames and \
+                user.username not in exceptions:
+                    print(user.username)
+                  # User.delete(user.username)
 
 
-def import_from_xls(workbook_name):
+def get_usernames(rows):
     """
-        This will add users to the LDAP if they don't exist
+    Returns a list of all usernames in the rows given.
     """
-    rows = get_rows(workbook_name)
     hdr_rows = rows[0]
+    usernames = []
     for row in rows[1:]:
-        if not User.find(row[hdr_rows.index('Username')]):
-            u = User(username=row[hdr_rows.index('Username')],
-                 year_of_study=row[hdr_rows.index('Year Of Study')],
-                 password=row[hdr_rows.index('Password')],
-                 student_number=row[hdr_rows.index('Student Number')],
-                 emails=[row[hdr_rows.index('Primary Email Address')]],
-                 hosts=['babbage.ug.eie.wits.ac.za'],
-                 first_name=str(row[hdr_rows.index('First Name')]),
-                 last_name=str(row[hdr_rows.index('Last Name')]))
+        usernames.append(row[hdr_rows.index('Username')])
+    return usernames
 
 
 def extract(xl_file):

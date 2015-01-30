@@ -15,6 +15,11 @@ if __name__ == "__main__":
 
     parser.add_argument('-x', '--xlsfilename', dest='xlsfilename',
                         help='the path to the xls filename')
+    parser.add_argument('-s', '--sync', action='store_true',
+                        help='remove users which are not in the xls file')
 
     args = parser.parse_args()
-    importer.import_from_xls(str(args.xlsfilename))
+    if args.xlsfilename:
+        importer.add_from_xls(str(args.xlsfilename), args.sync)
+    else:
+        parser.print_usage()
