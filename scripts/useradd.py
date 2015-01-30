@@ -13,8 +13,8 @@ if __name__ == "__main__":
         Add users to the ldap directory which is configured in
         /etc/eie_ldap/ldap.cfg """)
 
-    parser.add_argument('-i', '--input', dest='xls_url',
+    parser.add_argument('-x', '--xlsfilename', dest='xlsfilename',
                         help='the path to the xls filename')
 
     args = parser.parse_args()
-    importer.import_from_xls(str(args.xls_url))
+    importer.import_from_xls(str(args.xlsfilename))

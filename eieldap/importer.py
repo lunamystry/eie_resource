@@ -1,13 +1,20 @@
 import xlrd
 import os
+import re
 
 from .users import User, default_password
 
-VALID_TITLES = ["Year Of Study", "Student Number", "First Name", "Last Name"]
+VALID_TITLES = ["Username",
+                "Password",
+                "Year Of Study",
+                "Student Number",
+                "Primary Email Address",
+                "First Name",
+                "Last Name"]
 
 
-def import_from_xls(workbook_name):
-    """read file, create usernames and add user to ldap"""
+def get_rows(workbook_name):
+    """read file, and returns a list of the rows in the file processed"""
 
     if not os.path.isfile(workbook_name):
         raise IOError(workbook_name + " could not be opened")
@@ -22,13 +29,36 @@ def import_from_xls(workbook_name):
     rows = add_passwords(rows)
     rows = make_yos_int(rows)
 
+    return rows
+
+def sync(workbook_name):
+    """
+        This will synchronize the users in the LDAP with those in the workbook
+        provided. If the user is not on the list, they are removed from the
+        LDAP, if they are on the workbook but not on the LDAP they are added.
+    """
+    rows = get_rows(workbook_name)
+    hdr_rows = rows[0]
     for row in rows[1:]:
-        User(username=row[4], 
-             year_of_study=row[3], 
-             password=row[5],
-             student_number=row[2],
-             first_name=str(row[0]),
-             last_name=str(row[1])).create()
+        if not User.find(row[hdr_rows.index('Username')]):
+
+
+def import_from_xls(workbook_name):
+    """
+        This will add users to the LDAP if they don't exist
+    """
+    rows = get_rows(workbook_name)
+    hdr_rows = rows[0]
+    for row in rows[1:]:
+        if not User.find(row[hdr_rows.index('Username')]):
+            u = User(username=row[hdr_rows.index('Username')],
+                 year_of_study=row[hdr_rows.index('Year Of Study')],
+                 password=row[hdr_rows.index('Password')],
+                 student_number=row[hdr_rows.index('Student Number')],
+                 emails=[row[hdr_rows.index('Primary Email Address')]],
+                 hosts=['babbage.ug.eie.wits.ac.za'],
+                 first_name=str(row[hdr_rows.index('First Name')]),
+                 last_name=str(row[hdr_rows.index('Last Name')]))
 
 
 def extract(xl_file):
@@ -38,9 +68,19 @@ def extract(xl_file):
     for row in range(sh.nrows):
         cols = []
         for col in range(sh.ncols):
-            cols.append(sh.cell(row, col).value)
+            cols.append(remove_nonascii(sh.cell(row, col).value))
         rows.append(cols)
     return rows
+
+
+def remove_nonascii(string):
+    """
+    This function removes all non-ascii characters from a string. I am really
+    sorry to have to butcher people's names. I can't get my head around unicode
+    in python2.7
+    """
+    s = ''.join([x for x in string if ord(x) < 128])
+    return str(s)
 
 
 def find_headers_row(rows):
@@ -67,9 +107,13 @@ def make_yos_int(rows):
     headers = rows[find_headers_row(rows)]
     i = headers.index('Year Of Study')
     for row in rows[1:]:
-        row[i] = int(float(row[i]))
+        row[i] = int(float(remove_nonint(row[i])))
     return rows
 
+
+def remove_nonint(string):
+    regex = re.compile('[^0-9\.]')
+    return regex.sub('', string)
 
 def find_valid_col_numbers(rows):
     titles = rows[find_headers_row(rows)]
@@ -103,7 +147,7 @@ def add_usernames(rows):
 
 def add_passwords(rows):
     headers = rows[find_headers_row(rows)]
-    headers.append("plainTextPassword")
+    headers.append("Password")
     new_rows = []
     new_rows.append(headers)
     for row in rows[find_headers_row(rows) + 1:]:
