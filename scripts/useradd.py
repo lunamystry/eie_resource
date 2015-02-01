@@ -20,14 +20,16 @@ if __name__ == "__main__":
                         help='remove users which are not in the xls file')
     parser.add_argument('-l', '--list', action='store_true',
                         help='list all the users in the ldap')
-    parser.add_argument('--show', dest='username',
+    parser.add_argument('--show', dest='show_username',
                         help='show the information for one user')
+    parser.add_argument('--delete', dest='delete_username',
+                        help='delete the information for one user')
 
     args = parser.parse_args()
     if args.xlsfilename:
         importer.add_from_xls(str(args.xlsfilename), args.sync)
-    elif args.username:
-        user = users.User.find(args.username)
+    elif args.show_username:
+        user = users.User.find(args.show_username)
         if user:
             print("{} ({} {})\nyos: {}\nhome: {}\nshell: {}\nuid: {}\ngid: {}".format(user.username,
                             user.first_name,
@@ -39,6 +41,8 @@ if __name__ == "__main__":
                             user.gid_number))
         else:
             print("User '{}' not found".format(args.username))
+    elif args.delete_username:
+        users.User.delete(args.delete_username)
     elif args.list:
         user_list = users.User.find()
         for user in user_list:
